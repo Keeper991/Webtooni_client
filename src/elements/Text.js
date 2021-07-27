@@ -5,14 +5,14 @@ const Text = (props) => {
   const { children, width, height, padding, margin, color, bgColor, fontSize, fontWeight, whiteSpace } = props;
 
   const styles = {
-    width: "auto",
-    height: "auto",
-    padding: 0,
-    margin: 0,
-    color: "#222831",
-    bgColor: "#fff",
-    fontSize: "1rem",
-    fontWeight: "normal",
+    width: width,
+    height: height,
+    padding: padding,
+    margin: margin,
+    color: color,
+    bgColor: bgColor,
+    fontSize: fontSize,
+    fontWeight: fontWeight,
     whiteSpace: whiteSpace,
   };
 
@@ -27,14 +27,14 @@ const Text = (props) => {
 
 Text.defaultProps = {
   children: null,
-  width: false,
-  height: false,
-  padding: false,
-  margin: false,
-  color: false,
-  bgColor: false,
-  fontSize: false,
-  fontWeight: false,
+  width: "auto",
+  height: "auto",
+  padding: 0,
+  margin: 0,
+  color: "#222831",
+  bgColor: "",
+  fontSize: "1rem",
+  fontWeight: "normal",
   whiteSpace: "nowrap",
 };
 

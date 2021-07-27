@@ -2,7 +2,7 @@ import React from "react";
 import styled from "styled-components";
 
 const Input = (props) => {
-  const { _onChange, children, width, height, padding, margin, color, bgColor, fontSize, fontWeight, border, type, placeholder, value, multiLine } = props;
+  const { _onChange, width, height, padding, margin, color, bgColor, fontSize, fontWeight, border, type, placeholder, value, multiLine } = props;
 
   const styles = {
     width: width,
@@ -19,31 +19,26 @@ const Input = (props) => {
   if (multiLine) {
     return (
       <React.Fragment>
-      <ElInput {...styles} type={type} placeholder={placeholder} value={value} onChange={_onChange} rows={10}>
-        {children}
-      </ElInput>
+      <ElInput {...styles} type={type} placeholder={placeholder} onChange={_onChange} rows={10}></ElInput>
     </React.Fragment>
     );
   };
 
   return (
     <React.Fragment>
-      <ElInput {...styles} type={type} placeholder={placeholder} value={value} onChange={_onChange} >
-        {children}
-      </ElInput>
+      <ElInput {...styles} type={type} placeholder={placeholder} onChange={_onChange}></ElInput>
     </React.Fragment>
   );
 };
 
 Input.defaultProps = {
   _onChange: () => {},
-  children: null,
   width: "auto",
   height: "auto",
   padding: 0,
   margin: 0,
   color: "#222831",
-  bgColor: "#fff",
+  bgColor: "",
   fontSize: "1rem",
   fontWeight: "normal",
   border: "solid",
