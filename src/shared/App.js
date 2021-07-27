@@ -2,7 +2,7 @@ import React from "react";
 import { ConnectedRouter } from "connected-react-router";
 import { Route } from "react-router-dom";
 import { history } from "../redux/configureStore";
-import { Login, SignUp, Main, Detail, Recommendation, Review, Board, Search, MyPage } from "../pages/index"
+import { Main, Detail, Recommendation, Review, Board, Search, MyPage } from "../pages/index"
 import GlobalStyle from "./GlobalStyle";
 
 function App() {
@@ -10,8 +10,6 @@ function App() {
     <ConnectedRouter history={history}>
       <GlobalStyle></GlobalStyle>
       <Route path="/" exact component={Main} />
-      <Route path="/login" exact component={Login} />
-      <Route path="/signup" exact component={SignUp} />
       <Route path="/detail" exact component={Detail} />
       <Route path="/recommendation" exact component={Recommendation} />
       <Route path="/review" exact component={Review} />
