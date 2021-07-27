@@ -5,14 +5,14 @@ const Text = (props) => {
   const { children, width, height, padding, margin, color, bgColor, fontSize, fontWeight, whiteSpace } = props;
 
   const styles = {
-    width: width,
-    height: height,
-    padding: padding,
-    margin: margin,
-    color: color,
-    bgColor: bgColor,
-    fontSize: fontSize,
-    fontWeight: fontWeight,
+    width: "auto",
+    height: "auto",
+    padding: 0,
+    margin: 0,
+    color: "#222831",
+    bgColor: "#fff",
+    fontSize: "1rem",
+    fontWeight: "normal",
     whiteSpace: whiteSpace,
   };
 

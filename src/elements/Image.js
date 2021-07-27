@@ -21,10 +21,10 @@ const Image = (props) => {
 
 Image.defaultProps = {
   _onClick: () => {},
-  width: false,
-  height: false,
-  padding: false,
-  margin: false,
+  width: "auto",
+  height: "auto",
+  padding: 0,
+  margin: 0,
   shape: "",
   src: "https://blog.kakaocdn.net/dn/cuKRq9/btq6skF4PU3/6dgz9y2RwrkJmwNITLgRBK/img.png",
 };

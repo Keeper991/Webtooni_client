@@ -29,16 +29,16 @@ const Button = (props) => {
 Button.defaultProps = {
   _onClick: () => {},
   children: null,
-  width: false,
-  height: false,
-  padding: false,
-  margin: false,
-  color: false,
-  bgColor: false,
-  fontSize: false,
-  borderRadius: false,
-  fontWeight: false,
-  border: false,
+  width: "auto",
+  height: "auto",
+  padding: 0,
+  margin: 0,
+  color: "#222831",
+  bgColor: "#ccc",
+  fontSize: "1rem",
+  borderRadius: 0,
+  fontWeight: "normal",
+  border: "solid",
 };
 
 const ElButton = styled.button`
