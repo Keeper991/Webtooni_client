@@ -31,7 +31,7 @@ const ModalContents = (props) => {
       return;
     };
 
-    console.log(id, pwd);
+    dispatch(userActions.loginDB( id, pwd ));
     props.getLogin(false);
     dispatch(modalActions.modalToggle(false));
 

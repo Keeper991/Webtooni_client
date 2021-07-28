@@ -16,8 +16,26 @@ const signUpDB = ( userId, userName, password, userImg ) => {
     console.log(userId, userName, password, userImg);
     
     meAPI.register({ userId, userName, password, userImg })
-    .then()
-    .catch()
+    .then((res) => {
+      console.log(res);
+    })
+    .catch((err) => {
+      console.log(err);
+    })
+  };
+};
+
+const loginDB = ( userId, password ) => {
+  return function (dispatch, getState, { history }) {
+    console.log(userId, password);
+
+    meAPI.login({ userId, password })
+    .then((res) => {
+      console.log(res);
+    })
+    .catch((err) => {
+      console.log(err);
+    })
   };
 };
 
@@ -33,6 +51,7 @@ export default handleActions(
 
 const actionCreators = {
   signUpDB,
+  loginDB,
 };
 
 export { actionCreators };
