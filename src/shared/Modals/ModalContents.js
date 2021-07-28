@@ -1,6 +1,7 @@
 import React from "react";
 import styled from "styled-components";
 import { actionCreators as modalActions } from "../../redux/modules/modal";
+import { actionCreators as userActions } from "../../redux/modules/user";
 import { useDispatch, useSelector } from "react-redux";
 import { Text, Input, Button } from "../../elements";
 import { emailCheck } from "../common";
@@ -16,6 +17,7 @@ const ModalContents = (props) => {
   const [pwd, setPwd] = React.useState("");
   const [nickName, setNickName] = React.useState("");
   const [pwdCheck, setPwdCheck] = React.useState("");
+  const [profileImage, setProfileImage] = React.useState();
 
   const handleLogin = () => {
 
@@ -52,10 +54,11 @@ const ModalContents = (props) => {
       return;
     }
 
-    console.log(id, nickName, pwd);
+    dispatch(userActions.signUpDB( id, nickName, pwd, profileImage ));
     props.getSignUp(false);
     dispatch(modalActions.modalToggle(false));
   };
+
 
   if (onLogin) {
     return (
@@ -76,6 +79,27 @@ const ModalContents = (props) => {
         <Input placeholder="닉네임을 입력해주세요." _onChange={(e) => {setNickName(e.target.value)}}></Input>
         <Input placeholder="패스워드를 입력해주세요." _onChange={(e) => {setPwd(e.target.value)}}></Input>
         <Input placeholder="패스워드를 다시 입력해주세요." _onChange={(e) => {setPwdCheck(e.target.value)}}></Input>
+        <Text>프로필 사진을 선택해주세요.</Text>
+        <div>
+          <input type="radio" name="profile" value="1" onChange={(e) => {setProfileImage(e.target.value)}}></input>
+          <lable for="1">1번</lable>
+        </div>
+        <div>
+          <input type="radio" name="profile" value="2" onChange={(e) => {setProfileImage(e.target.value)}}></input>
+          <lable for="2">2번</lable>
+        </div>
+        <div>
+          <input type="radio" name="profile" value="3" onChange={(e) => {setProfileImage(e.target.value)}}></input>
+          <lable for="3">3번</lable>
+        </div>
+        <div>
+          <input type="radio" name="profile" value="4" onChange={(e) => {setProfileImage(e.target.value)}}></input>
+          <lable for="4">4번</lable>
+        </div>
+        <div>
+          <input type="radio" name="profile" value="5" onChange={(e) => {setProfileImage(e.target.value)}}></input>
+          <lable for="5">5번</lable>
+        </div>
         <Button _onClick={handleSignUp}>회원가입하기</Button>
       </ModalWrap>
     );
