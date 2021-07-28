@@ -13,10 +13,10 @@ const webtoonAPI = {
 
 const reviewAPI = {
   getMain: () => instance.get(`rank/reviews`),
-  putStar: (webtoonId, userPointNumber) =>
+  putStar: ({ webtoonId, userPointNumber }) =>
     instance.put(`reviews/star`, { webtoonId, userPointNumber }),
   likeReview: (reviewId) => instance.post(`/reviews/${reviewId}/like`),
-  putReview: (reviewId, reviewContent) =>
+  putReview: ({ reviewId, reviewContent }) =>
     instance.put(`reviews/${reviewId}`, { reviewContent }),
   deleteReview: (reviewId) => instance.delete(`reviews/${reviewId}`),
   getOrderByCreatedAt: () => instance.get(`reviews/new`),
