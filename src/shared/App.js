@@ -3,12 +3,14 @@ import { ConnectedRouter } from "connected-react-router";
 import { Route } from "react-router-dom";
 import { history } from "../redux/configureStore";
 import { Main, Detail, Recommendation, Review, Board, Search, MyPage } from "../pages/index"
+import Header from "./Header";
 import GlobalStyle from "./GlobalStyle";
 
 function App() {
   return (
     <ConnectedRouter history={history}>
       <GlobalStyle></GlobalStyle>
+      <Header></Header>
       <Route path="/" exact component={Main} />
       <Route path="/detail" exact component={Detail} />
       <Route path="/recommendation" exact component={Recommendation} />
