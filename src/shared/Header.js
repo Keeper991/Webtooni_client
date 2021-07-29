@@ -4,7 +4,7 @@ import { actionCreators as modalActions } from "../redux/modules/modal";
 import { useDispatch, useSelector } from "react-redux";
 import { Button } from "../elements/index";
 import ModalBox from "./Modals/ModalBox";
-import ModalContents from "./Modals/ModalContents";
+import LoginRegisterForm from "./Modals/LoginRegisterForm";
 
 const Header = () => {
 
@@ -39,7 +39,7 @@ const Header = () => {
       <Button _onClick={showSignUpModal}>회원가입</Button>
       { is_modal && (
         <ModalBox getLogin={getLogin} getSignUp={getSignUp}>
-          <ModalContents loginModal={login} getLogin={getLogin} signUpModal={signUp} getSignUp={getSignUp}></ModalContents>
+          <LoginRegisterForm loginModal={login} getLogin={getLogin} signUpModal={signUp} getSignUp={getSignUp}></LoginRegisterForm>
         </ModalBox>) 
       }
     </React.Fragment>
