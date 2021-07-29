@@ -11,6 +11,15 @@ const initialState = {
   is_login: false,
 };
 
+const loginDB = ( userId, password ) => {
+  return function (dispatch, getState, { history }) {
+    
+    meAPI.login({ userId, password })
+    .then()
+    .catch()
+  };
+};
+
 const signUpDB = ( userId, userName, password, userImg ) => {
   return function (dispatch, getState, { history }) {
     console.log(userId, userName, password, userImg);
@@ -33,6 +42,7 @@ export default handleActions(
 
 const actionCreators = {
   signUpDB,
+  loginDB,
 };
 
 export { actionCreators };
