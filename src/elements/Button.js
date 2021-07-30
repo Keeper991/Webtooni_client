@@ -1,8 +1,22 @@
 import React from "react";
 import styled from "styled-components";
+import { Color } from "../shared/common";
 
 const Button = (props) => {
-  const { _onClick, children, width, height, padding, margin, color, bgColor, fontSize, borderRadius, fontWeight, border } = props;
+  const {
+    _onClick,
+    children,
+    width,
+    height,
+    padding,
+    margin,
+    color,
+    bgColor,
+    fontSize,
+    borderRadius,
+    fontWeight,
+    border,
+  } = props;
 
   const styles = {
     width: width,
@@ -31,14 +45,14 @@ Button.defaultProps = {
   children: null,
   width: "auto",
   height: "auto",
-  padding: 0,
+  padding: "12px 16px",
   margin: 0,
-  color: "#222831",
-  bgColor: "#ccc",
+  color: Color.black,
+  bgColor: Color.gray,
   fontSize: "1rem",
-  borderRadius: 0,
+  borderRadius: "4px",
   fontWeight: "normal",
-  border: "solid",
+  border: `1px solid ${Color.darkGray}`,
 };
 
 const ElButton = styled.button`
@@ -52,18 +66,17 @@ const ElButton = styled.button`
   font-weight: ${(props) => props.fontWeight};
   border: ${(props) => props.border};
   border-radius: ${(props) => props.borderRadius};
-  
+
   cursor: pointer;
   display: flex;
   justify-content: center;
   align-items: center;
-  white-space: no-wrap;
+  white-space: nowrap;
 
   &:focus,
   &:active {
     outline: none;
   }
-  
 `;
 
 export default Button;
