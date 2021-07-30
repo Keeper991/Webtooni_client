@@ -54,7 +54,7 @@ const ModalContents = (props) => {
       return;
     }
 
-    dispatch(userActions.signUpDB( id, nickName, pwd, profileImage ));
+    dispatch(userActions.signUpDB( id, nickName, pwd, pwdCheck, profileImage ));
     props.getSignUp(false);
     dispatch(modalActions.modalToggle(false));
   };
@@ -82,23 +82,23 @@ const ModalContents = (props) => {
         <Text>프로필 사진을 선택해주세요.</Text>
         <div>
           <input type="radio" name="profile" value="1" onChange={(e) => {setProfileImage(e.target.value)}}></input>
-          <lable for="1">1번</lable>
+          <label htmlFor="1">1번</label>
         </div>
         <div>
           <input type="radio" name="profile" value="2" onChange={(e) => {setProfileImage(e.target.value)}}></input>
-          <lable for="2">2번</lable>
+          <label htmlFor="2">2번</label>
         </div>
         <div>
           <input type="radio" name="profile" value="3" onChange={(e) => {setProfileImage(e.target.value)}}></input>
-          <lable for="3">3번</lable>
+          <label htmlFor="3">3번</label>
         </div>
         <div>
           <input type="radio" name="profile" value="4" onChange={(e) => {setProfileImage(e.target.value)}}></input>
-          <lable for="4">4번</lable>
+          <label htmlFor="4">4번</label>
         </div>
         <div>
           <input type="radio" name="profile" value="5" onChange={(e) => {setProfileImage(e.target.value)}}></input>
-          <lable for="5">5번</lable>
+          <label htmlFor="5">5번</label>
         </div>
         <Button _onClick={handleSignUp}>회원가입하기</Button>
       </ModalWrap>

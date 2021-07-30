@@ -1,7 +1,7 @@
 import axios from "axios";
 
 const instance = axios.create({
-  baseURL: "http://localhost:4000",
+  baseURL: "http://13.124.236.225/api/v1/",
 });
 
 const webtoonAPI = {
@@ -63,10 +63,10 @@ const meAPI = {
   getLevel: () => instance.get(`user/me/level`),
   putUserInfo: ({ userName, userImg }) =>
     instance.put(`user/me`, { userName, userImg }),
-  register: ({ userId, userName, password, userImg }) =>
-    instance.post(`user/register`, { userId, userName, password, userImg }),
-  login: ({ userId, password }) =>
-    instance.post(`user/login`, { userId, password }),
+  register: ({ userEmail, userName, password, passwordChecker, userImg }) =>
+    instance.post(`user/register`, { userEmail, userName, password, passwordChecker, userImg }),
+  login: ({ userEmail, password }) =>
+    instance.post(`user/login`, { userEmail, password }),
   socialLogin: () => instance.post(`user/social/callback`),
   search: (keyword) => instance.get(`search?keyword=${keyword}`),
 };
