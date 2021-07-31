@@ -13,18 +13,15 @@ const ModalBox = (props) => {
     dispatch(modalActions.modalToggle(false));
     props.getLogin(false);
     props.getSignUp(false);
-  }
+  };
 
   return (
     <React.Fragment>
-      <Container>
-        { children }
-      </Container>
+      <Container>{children}</Container>
       <ModalBg onClick={hideModal}></ModalBg>
     </React.Fragment>
   );
-}
-
+};
 
 const Container = styled.div`
   width: 60%;
@@ -47,6 +44,5 @@ const ModalBg = styled.div`
   position: fixed;
   top: 0;
   left: 0;
-
 `;
 export default ModalBox;
