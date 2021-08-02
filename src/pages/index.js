@@ -5,5 +5,6 @@ import Detail from "./Detail";
 import Board from "./Board";
 import Search from "./Search";
 import MyPage from "./MyPage";
+import Login from "./Login";
 
-export { Main, Recommendation, Review, Detail, Board, Search, MyPage };
+export { Main, Recommendation, Review, Detail, Board, Search, MyPage, Login };

@@ -18,6 +18,7 @@ const Input = (props) => {
     placeholder,
     value,
     multiLine,
+    children,
   } = props;
 
   const styles = {
@@ -35,25 +36,31 @@ const Input = (props) => {
   if (multiLine) {
     return (
       <React.Fragment>
-        <ElTextArea
-          {...styles}
-          placeholder={placeholder}
-          onChange={_onChange}
-          value={value}
-        ></ElTextArea>
+        <ElLabel>
+          <span>{children}</span>
+          <ElTextArea
+            {...styles}
+            placeholder={placeholder}
+            onChange={_onChange}
+            value={value}
+          ></ElTextArea>
+        </ElLabel>
       </React.Fragment>
     );
   }
 
   return (
     <React.Fragment>
-      <ElInput
-        {...styles}
-        type={type}
-        placeholder={placeholder}
-        onChange={_onChange}
-        value={value}
-      ></ElInput>
+      <ElLabel>
+        <span>{children}</span>
+        <ElInput
+          {...styles}
+          type={type}
+          placeholder={placeholder}
+          onChange={_onChange}
+          value={value}
+        ></ElInput>
+      </ElLabel>
     </React.Fragment>
   );
 };
@@ -73,7 +80,16 @@ Input.defaultProps = {
   placeholder: "텍스트를 입력해주세요.",
   type: "text",
   value: "",
+  children: "",
 };
+
+const ElLabel = styled.label`
+  display: flex;
+  flex-direction: column;
+  & > span {
+    margin-bottom: 4px;
+  }
+`;
 
 const ElInput = styled.input`
   width: ${(props) => props.width};
