@@ -5,12 +5,14 @@ import { connectRouter } from "connected-react-router";
 
 import Modal from "./modules/modal";
 import User from "./modules/user";
+import Webtoon from "./modules/webtoon";
 
 export const history = createBrowserHistory();
 
 const rootReducer = combineReducers({
   modal: Modal,
   user: User,
+  webtoon: Webtoon,
   router: connectRouter(history),
 });
 
