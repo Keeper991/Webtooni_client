@@ -11,7 +11,7 @@ const WebToonMonth = (props) => {
         </ImageGrid>
 
         <InfoGrid>
-          <Text fontSize="14px">{props.toonTitle}</Text>
+          <TitleText>{props.toonTitle}</TitleText>
           <Text fontSize="12px">{props.toonAuthor}</Text>
           <FlexGrid>
             <Text fontSize="12px">★{props.toonPointTotalNumber}</Text>
@@ -58,5 +58,13 @@ const InfoGrid = styled.div`
   display: flex;
   flex-direction: column;
   width: 60%;
+`;
+
+const TitleText = styled.p`
+  font-size: 14px;
+  width: 90px;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
 `;
 export default WebToonMonth;
