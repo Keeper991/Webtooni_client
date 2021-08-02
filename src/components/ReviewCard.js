@@ -1,8 +1,21 @@
 import React from "react";
 import styled from "styled-components";
-import { Text, Image, Button } from "../elements"
+import { Text, Image, Button } from "../elements";
 
 const ReviewCard = (props) => {
+  const [showMore, setShowMore] = React.useState(false);
+
+  React.useEffect(() => {
+    setShowMore(false);
+  }, []);
+
+  const handleTextToggle = () => {
+    if (showMore) {
+      setShowMore(false);
+    } else {
+      setShowMore(true);
+    }
+  };
 
   return (
     <React.Fragment>
@@ -11,24 +24,39 @@ const ReviewCard = (props) => {
           <UserGrid>
             <ImageCircle></ImageCircle>
             <ColumnGrid>
-            <Text fontSize="12px">{props.userName}</Text>
-            <Text fontSize="10px">{props.userGrade}</Text>
+              <Text fontSize="12px">{props.userName}</Text>
+              <Text fontSize="10px">{props.userGrade}</Text>
             </ColumnGrid>
-            
           </UserGrid>
-          <Button bgColor="none" fontSize="12px" border="none">자세히 보기</Button>
+          <Button
+            bgColor="none"
+            fontSize="12px"
+            border="none"
+            _onClick={handleTextToggle}
+          >
+            {showMore ? "줄이기" : "자세히보기"}
+          </Button>
         </FlexGrid>
 
         <ReviewGrid>
-          <Text fontSize="12px">{props.reviewContent}</Text>
+          {showMore ? (
+            <ReivewTextMore>{props.reviewContent}</ReivewTextMore>
+          ) : (
+            <ReivewText>{props.reviewContent}</ReivewText>
+          )}
         </ReviewGrid>
-        
+
         <hr />
 
         <FlexToonGrid>
-          <Image margin="0 7px" src={props.toonImg} width="40px" height="52px"></Image>
+          <Image
+            margin="0 7px"
+            src={props.toonImg}
+            width="40px"
+            height="52px"
+          ></Image>
           <InfoGrid>
-             <Text fontSize="14px">{props.toonTitle}</Text>
+            <Text fontSize="14px">{props.toonTitle}</Text>
             <FlexGrid>
               <Text fontSize="12px">{props.toonAuthor}</Text>
               <Text fontSize="12px">★{props.toonPointTotalNumber}</Text>
@@ -42,11 +70,11 @@ const ReviewCard = (props) => {
       </Container>
     </React.Fragment>
   );
-}
+};
 
 const Container = styled.div`
   width: 265px;
-  height: 240px;
+  height: auto;
   background: #f1f1f1;
   display: inline-block;
   padding: 10px;
@@ -76,10 +104,31 @@ const UserGrid = styled.div`
 `;
 
 const ReviewGrid = styled.div`
-  widtt: 100%;
-  height: 100px;
-  display: flex;
-  padding: 10px;
+  width: 245px;
+  min-height: 100px;
+  height: auto;
+  padding: 10px 0;
+`;
+
+const ReivewText = styled.div`
+  width: 245px;
+  font-size: 12px;
+  white-space: normal;
+  display: -webkit-box;
+  -webkit-line-clamp: 5;
+  -webkit-box-orient: vertical;
+  overflow: hidden;
+  word-break: break-word;
+  line-height: 1.4em;
+  max-height: 7em;
+`;
+
+const ReivewTextMore = styled.div`
+  width: 245px;
+  font-size: 12px;
+  white-space: normal;
+  word-break: break-word;
+  line-height: 1.4em;
 `;
 
 const ColumnGrid = styled.div`
@@ -87,7 +136,6 @@ const ColumnGrid = styled.div`
   flex-direction: column;
   margin: 0 10px;
 `;
-
 
 const ImageCircle = styled.div`
   width: 32px;
