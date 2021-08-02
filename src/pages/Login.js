@@ -1,6 +1,6 @@
 import React from "react";
 import styled from "styled-components";
-import { Image, Text } from "../elements";
+import { Text } from "../elements";
 
 const Login = () => {
   return (
