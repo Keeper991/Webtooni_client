@@ -1,32 +1,34 @@
 import React from "react";
 import styled from "styled-components";
-import { Text, Image, Button } from "../elements"
+import { Text } from "../elements";
 
 const BestReveiwerCard = (props) => {
-
   return (
     <React.Fragment>
       <Container>
         <ContentsBox>
-            <ImageCircle></ImageCircle>
-            <Text fontSize="12px">{props.userName}</Text>
-            <Text fontSize="10px">{props.userGrade}</Text>
+          <ImageCircle></ImageCircle>
+          <Text fontSize="12px">{props.userName}</Text>
+          <Text fontSize="10px">{props.userGrade}</Text>
           <BottomGrid>
             <FlexGrid>
               <Text fontSize="12px">리뷰 수</Text>
-              <Text fontSize="14px" fontWeight="bold">{props.totalReviews}</Text>
+              <Text fontSize="14px" fontWeight="bold">
+                {props.totalReviews}
+              </Text>
             </FlexGrid>
             <FlexGrid>
               <Text fontSize="12px">좋아요 수</Text>
-              <Text fontSize="14px" fontWeight="bold">{props.totalLikes}</Text>
+              <Text fontSize="14px" fontWeight="bold">
+                {props.totalLikes}
+              </Text>
             </FlexGrid>
           </BottomGrid>
-          
         </ContentsBox>
       </Container>
     </React.Fragment>
   );
-}
+};
 
 const Container = styled.div`
   width: 130px;
