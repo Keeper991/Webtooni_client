@@ -110,7 +110,8 @@ const Main = () => {
       userImg: 3,
       userName: "박모씨",
       userGrade: "네이버웹툰덕후",
-      reviewContent: "리뷰입니다아앙1",
+      reviewContent:
+        "리뷰입니다아앙1리뷰입니다아앙1리뷰입니다아앙1리뷰입니다아앙1리뷰입니다아앙1리뷰입니다아앙1리뷰입니다아앙1리뷰입니다아앙1리뷰입니다아앙1리뷰입니다아앙1리뷰입니다아앙1리뷰입니다아앙1리뷰입니다아앙1리뷰입니다아앙1리뷰입니다아앙1리뷰입니다아앙1리뷰입니다아앙1리뷰입니다아앙1",
       toonImg:
         "https://shared-comic.pstatic.net/thumb/webtoon/773459/thumbnail/thumbnail_IMAG06_74d73b73-0bed-42f7-9f81-19b9732087cf.jpg",
       toonTitle: "용사가 돌아왔다",
