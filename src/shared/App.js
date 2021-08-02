@@ -25,7 +25,7 @@ function App() {
       <GlobalStyle></GlobalStyle>
       <Header></Header>
       <Route path="/" exact component={Main} />
-      <Route path="/detail" exact component={Detail} />
+      <Route path="/detail/:id" exact component={Detail} />
       <Route path="/recommendation" exact component={Recommendation} />
       <Route path="/review" exact component={Review} />
       <Route path="/board" exact component={Board} />
