@@ -13,6 +13,7 @@ import {
   Search,
   MyPage,
   Login,
+  Taste,
 } from "../pages/index";
 import Header from "./Header";
 import GlobalStyle from "./GlobalStyle";
@@ -35,6 +36,7 @@ function App() {
       <Route path="/" exact component={Main} />
       <Route path="/detail/:id" exact component={Detail} />
       <Route path="/login" exact component={Login} />
+      <Route path="/taste" exact component={Taste} />
       <Route path="/recommendation" exact component={Recommendation} />
       <Route path="/review" exact component={Review} />
       <Route path="/board" exact component={Board} />

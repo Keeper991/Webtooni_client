@@ -6,5 +6,16 @@ import Board from "./Board";
 import Search from "./Search";
 import MyPage from "./MyPage";
 import Login from "./Login";
+import Taste from "./Taste";
 
-export { Main, Recommendation, Review, Detail, Board, Search, MyPage, Login };
+export {
+  Main,
+  Recommendation,
+  Review,
+  Detail,
+  Board,
+  Search,
+  MyPage,
+  Login,
+  Taste,
+};
