@@ -11,6 +11,8 @@ const DetailStar = (props) => {
   const { webtoon_id, is_login, prev_review } = props;
 
   //별점 주기
+  const starScores = [1, 2, 3, 4, 5];
+
   const starWidth = 40;
   const [starLocation, setStarLocation] = React.useState(0);
   useEffect(() => {
@@ -27,179 +29,47 @@ const DetailStar = (props) => {
     <>
       <StarContainer>
         <FillStar>
-          <Image
-            width="40px"
-            height="40px"
-            src="https://cdn.pixabay.com/photo/2013/07/12/17/39/star-152151_960_720.png"
-          />
-          <Image
-            width="40px"
-            height="40px"
-            src="https://cdn.pixabay.com/photo/2013/07/12/17/39/star-152151_960_720.png"
-          />
-          <Image
-            width="40px"
-            height="40px"
-            src="https://cdn.pixabay.com/photo/2013/07/12/17/39/star-152151_960_720.png"
-          />
-          <Image
-            width="40px"
-            height="40px"
-            src="https://cdn.pixabay.com/photo/2013/07/12/17/39/star-152151_960_720.png"
-          />
-          <Image
-            width="40px"
-            height="40px"
-            src="https://cdn.pixabay.com/photo/2013/07/12/17/39/star-152151_960_720.png"
-          />
+          {Array.from({ length: 5 }).map((_) => (
+            <Image
+              width="40px"
+              height="40px"
+              src="https://cdn.pixabay.com/photo/2013/07/12/17/39/star-152151_960_720.png"
+            />
+          ))}
         </FillStar>
 
         <EmptyStar hideEmptyStar={hideEmptyStar}>
-          <Image
-            display="flex"
-            width="40px"
-            height="40px"
-            src="https://cdn.pixabay.com/photo/2017/02/01/00/29/lone-star-2028578_640.png"
-          >
-            <StarPart
-              star={starLocation}
-              onClick={() => {
-                if (is_login) {
-                  setStarLocation(0.5);
-                  putStar();
-                } else {
-                  alert("로그인하세요~");
-                }
-              }}
-            ></StarPart>
-            <StarPart
-              star={starLocation}
-              onClick={() => {
-                if (is_login) {
-                  setStarLocation(1);
-                  putStar();
-                } else {
-                  alert("로그인하세요~");
-                }
-              }}
-            ></StarPart>
-          </Image>
-          <Image
-            display="flex"
-            width="40px"
-            height="40px"
-            src="https://cdn.pixabay.com/photo/2017/02/01/00/29/lone-star-2028578_640.png"
-          >
-            <StarPart
-              star={starLocation}
-              onClick={() => {
-                if (is_login) {
-                  setStarLocation(1.5);
-                  putStar();
-                } else {
-                  alert("로그인하세요~");
-                }
-              }}
-            />
-            <StarPart
-              star={starLocation}
-              onClick={() => {
-                if (is_login) {
-                  setStarLocation(2);
-                  putStar();
-                } else {
-                  alert("로그인하세요~");
-                }
-              }}
-            />
-          </Image>
-          <Image
-            display="flex"
-            width="40px"
-            height="40px"
-            src="https://cdn.pixabay.com/photo/2017/02/01/00/29/lone-star-2028578_640.png"
-          >
-            <StarPart
-              star={starLocation}
-              onClick={() => {
-                if (is_login) {
-                  setStarLocation(2.5);
-                  putStar();
-                } else {
-                  alert("로그인하세요~");
-                }
-              }}
-            />
-            <StarPart
-              star={starLocation}
-              onClick={() => {
-                if (is_login) {
-                  setStarLocation(3);
-                  putStar();
-                } else {
-                  alert("로그인하세요~");
-                }
-              }}
-            />
-          </Image>
-          <Image
-            display="flex"
-            width="40px"
-            height="40px"
-            src="https://cdn.pixabay.com/photo/2017/02/01/00/29/lone-star-2028578_640.png"
-          >
-            <StarPart
-              star={starLocation}
-              onClick={() => {
-                if (is_login) {
-                  setStarLocation(3.5);
-                  putStar();
-                } else {
-                  alert("로그인하세요~");
-                }
-              }}
-            />
-            <StarPart
-              star={starLocation}
-              onClick={() => {
-                if (is_login) {
-                  setStarLocation(4);
-                  putStar();
-                } else {
-                  alert("로그인하세요~");
-                }
-              }}
-            />
-          </Image>
-          <Image
-            display="flex"
-            width="40px"
-            height="40px"
-            src="https://cdn.pixabay.com/photo/2017/02/01/00/29/lone-star-2028578_640.png"
-          >
-            <StarPart
-              star={starLocation}
-              onClick={() => {
-                if (is_login) {
-                  setStarLocation(4.5);
-                  putStar();
-                } else {
-                  alert("로그인하세요~");
-                }
-              }}
-            />
-            <StarPart
-              star={starLocation}
-              onClick={() => {
-                if (is_login) {
-                  setStarLocation(5);
-                  putStar();
-                } else {
-                  alert("로그인하세요~");
-                }
-              }}
-            />
-          </Image>
+          {starScores.map((score) => (
+            <Image
+              display="flex"
+              width="40px"
+              height="40px"
+              src="https://cdn.pixabay.com/photo/2017/02/01/00/29/lone-star-2028578_640.png"
+            >
+              <StarPart
+                star={starLocation}
+                onClick={() => {
+                  if (is_login) {
+                    setStarLocation(score - 0.5);
+                    putStar();
+                  } else {
+                    alert("로그인하세요~");
+                  }
+                }}
+              ></StarPart>
+              <StarPart
+                star={starLocation}
+                onClick={() => {
+                  if (is_login) {
+                    setStarLocation(score);
+                    putStar();
+                  } else {
+                    alert("로그인하세요~");
+                  }
+                }}
+              ></StarPart>
+            </Image>
+          ))}
         </EmptyStar>
       </StarContainer>
     </>
