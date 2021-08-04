@@ -1,42 +1,17 @@
 import React from "react";
 import styled from "styled-components";
 import { history } from "../redux/configureStore";
-import { actionCreators as modalActions } from "../redux/modules/modal";
 import { actionCreators as userActions } from "../redux/modules/user";
 import { useDispatch, useSelector } from "react-redux";
-import { Button, Text } from "../elements/index";
-import ModalBox from "./Modals/ModalBox";
-import LoginRegisterForm from "./Modals/LoginRegisterForm";
+import { Button } from "../elements/index";
 
 const Header = () => {
   const dispatch = useDispatch();
 
-  const is_modal = useSelector((state) => state.modal.is_modal);
   const is_login = useSelector((state) => state.user.is_login);
-
-  const [login, setLogin] = React.useState(false);
-  const [signUp, setSignUp] = React.useState(false);
 
   const handleLogOut = () => {
     dispatch(userActions.logOut());
-  };
-
-  const showLoginModal = () => {
-    dispatch(modalActions.modalToggle(true));
-    setLogin(true);
-  };
-
-  const showSignUpModal = () => {
-    dispatch(modalActions.modalToggle(true));
-    setSignUp(true);
-  };
-
-  const getLogin = (_) => {
-    setLogin(_);
-  };
-
-  const getSignUp = (_) => {
-    setSignUp(_);
   };
 
   if (is_login) {
@@ -97,17 +72,6 @@ const Header = () => {
           로그인
         </Button>
       </Container>
-
-      {/* {is_modal && (
-        <ModalBox getLogin={getLogin} getSignUp={getSignUp}>
-          <LoginRegisterForm
-            loginModal={login}
-            getLogin={getLogin}
-            signUpModal={signUp}
-            getSignUp={getSignUp}
-          ></LoginRegisterForm>
-        </ModalBox>
-      )} */}
     </React.Fragment>
   );
 };
