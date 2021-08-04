@@ -2,7 +2,17 @@ import React from "react";
 import styled from "styled-components";
 
 const Image = (props) => {
-  const { width, height, padding, margin, shape, src, size } = props;
+  const {
+    width,
+    height,
+    padding,
+    margin,
+    shape,
+    src,
+    size,
+    children,
+    display,
+  } = props;
 
   const styles = {
     width: width,
@@ -11,6 +21,7 @@ const Image = (props) => {
     margin: margin,
     src: src,
     size: size,
+    display: display,
   };
 
   if (shape === "circle") {
@@ -31,7 +42,7 @@ const Image = (props) => {
 
   return (
     <React.Fragment>
-      <ElImage {...styles}></ElImage>
+      <ElImage {...styles}>{children}</ElImage>
     </React.Fragment>
   );
 };
@@ -45,6 +56,8 @@ Image.defaultProps = {
   shape: "",
   src: "https://blog.kakaocdn.net/dn/cuKRq9/btq6skF4PU3/6dgz9y2RwrkJmwNITLgRBK/img.png",
   size: 0,
+  children: null,
+  display: "",
 };
 
 const ElCircle = styled.div`
@@ -80,6 +93,8 @@ const ElImage = styled.div`
 
   background-size: cover;
   background-position: center;
+
+  display: ${(props) => props.display};
 `;
 
 export default Image;
