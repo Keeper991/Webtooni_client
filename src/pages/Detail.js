@@ -1,18 +1,19 @@
 import React, { useEffect } from "react";
 import { useSelector, useDispatch } from "react-redux";
-
 import styled from "styled-components";
 import { Text, Image, Button, Input } from "../elements";
 import { WebToonCard, DetailReview, Slick, DetailStar } from "../components";
-import {
-  getToonOneServer,
-  addToonServer,
-  similarToonServer,
-  uploadReviewServer,
-  deleteReviewServer,
-} from "../redux/modules/webtoon";
+import { actionCreators as webtoonActions } from "../redux/modules/webtoon";
 
 const Detail = (props) => {
+  const {
+    getToonOneServer,
+    addToonServer,
+    similarToonServer,
+    uploadReviewServer,
+    deleteReviewServer,
+  } = webtoonActions;
+
   console.log(props, "props");
   // 웹툰 상세정보, 비슷한 웹툰 정보 가져오기
   const webtoon_id = props.match.params.id;

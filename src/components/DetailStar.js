@@ -3,9 +3,11 @@ import { useSelector, useDispatch } from "react-redux";
 
 import styled from "styled-components";
 import { Text, Image, Button, Input } from "../elements";
-import { putStarServer } from "../redux/modules/webtoon";
+import { actionCreators as webtoonActions } from "../redux/modules/webtoon";
 
 const DetailStar = (props) => {
+  const { putStarServer } = webtoonActions;
+
   const { webtoon_id, is_login, prev_review } = props;
 
   //별점 주기

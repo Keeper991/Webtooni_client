@@ -79,101 +79,87 @@ const initialState = {
 
 //웹툰 상세정보 받아오기
 const getToonOneServer = (id = null) => {
-  return function (dispatch, getState, { history }) {
-    webtoonAPI
-      .getOne(id)
-      .then(function (response) {
-        console.log(response, "getToonOneOK");
-        dispatch(setToonOne(response.data));
-      })
-      .catch(function (err) {
-        console.log(err, "getToonOneError");
-      });
+  return async function (dispatch, getState, { history }) {
+    try {
+      const response = await webtoonAPI.getOne(id);
+      console.log(response, "getToonOneOK");
+      dispatch(setToonOne(response.data));
+    } catch (err) {
+      console.log(err, "getToonOneError");
+    }
   };
 };
 
 //웹툰 리스트에 추가
 const addToonServer = (id = null) => {
-  return function (dispatch) {
-    meAPI
-      .addWebtoon(id)
-      .then(function (response) {
-        console.log(response, "addToonOK");
-      })
-      .catch(function (err) {
-        console.log(err, "addToonError");
-      });
+  return async function (dispatch) {
+    try {
+      const response = await meAPI.addWebtoon(id);
+      console.log(response, "addToonOK");
+    } catch (err) {
+      console.log(err, "addToonError");
+    }
   };
 };
 
 //비슷한 웹툰 추천
 const similarToonServer = (id = null) => {
-  return function (dispatch) {
-    offerAPI
-      .getSimilarGenre(id)
-      .then(function (response) {
-        console.log(response, "similarToonOK");
-      })
-      .catch(function (err) {
-        console.log(err, "similarToonError");
-      });
+  return async function (dispatch) {
+    try {
+      const response = await offerAPI.getSimilarGenre(id);
+      console.log(response, "similarToonOK");
+    } catch (err) {
+      console.log(err, "similarToonError");
+    }
   };
 };
 
 //리뷰 작성
 const uploadReviewServer = (rewviewId = null, reviewContent = null) => {
-  return function (dispatch) {
-    reviewAPI
-      .putReview({ rewviewId, reviewContent })
-      .then(function (response) {
-        console.log(response, "uploadReviewOK");
-      })
-      .catch(function (err) {
-        console.log(err, "uploadReviewError");
-      });
+  return async function (dispatch) {
+    try {
+      const response = await reviewAPI.putReview({ rewviewId, reviewContent });
+      console.log(response, "uploadReviewOK");
+    } catch (err) {
+      console.log(err, "uploadReviewError");
+    }
   };
 };
 
 //리뷰 삭제
 const deleteReviewServer = (reviewId = null) => {
-  return function (dispatch) {
-    reviewAPI
-      .deleteReview(reviewId)
-      .then(function (response) {
-        console.log(response, "deleteReviewOK");
-      })
-      .catch(function (err) {
-        console.log(err, "deleteReviewError");
-      });
+  return async function (dispatch) {
+    try {
+      const response = await reviewAPI.deleteReview(reviewId);
+      console.log(response, "deleteReviewOK");
+    } catch (err) {
+      console.log(err, "deleteReviewError");
+    }
   };
 };
 
 //웹툰 별점 주기
 const putStarServer = (webtoonId = null, userPointNumber = null) => {
-  return function (dispatch) {
-    reviewAPI
-      .putStar({ webtoonId, userPointNumber })
-      .then(function (response) {
-        console.log(response, "putStarOK");
-        dispatch(setReviewId(response.data.reviewId)); //리뷰 아이디 생성
-      })
-      .catch(function (err) {
-        console.log(err, "putStarError");
-      });
+  return async function (dispatch) {
+    try {
+      const response = await reviewAPI.putStar({ webtoonId, userPointNumber });
+      console.log(response, "putStarOK");
+      dispatch(setReviewId(response.data.reviewId)); //리뷰 아이디 생성
+    } catch (err) {
+      console.log(err, "putStarError");
+    }
   };
 };
 
 //웹툰 별점 주기
 const likeReviewServer = (reviewId = null) => {
-  return function (dispatch) {
-    reviewAPI
-      .likeReview(reviewId)
-      .then(function (response) {
-        console.log(response, "likeReviewOK");
-      })
-      .catch(function (err) {
-        console.log(err, "likeReviewError");
-      });
+  return async function (dispatch) {
+    try {
+      const response = await reviewAPI.likeReview(reviewId);
+      console.log(response, "likeReviewOK");
+    } catch (err) {
+      console.log(err, "likeReviewError");
+    }
   };
 };
 
@@ -191,7 +177,7 @@ export default handleActions(
   initialState
 );
 
-export {
+const actionCreators = {
   getToonOneServer,
   addToonServer,
   similarToonServer,
@@ -200,3 +186,5 @@ export {
   putStarServer,
   likeReviewServer,
 };
+
+export { actionCreators };

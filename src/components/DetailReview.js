@@ -1,7 +1,7 @@
 import React from "react";
 import styled from "styled-components";
 import { Image, Text } from "../elements";
-import { likeReviewServer } from "../redux/modules/webtoon";
+import { actionCreators as webtoonActions } from "../redux/modules/webtoon";
 
 const DetailReview = (props) => {
   const { id, reviewContent, userPointNumber, likeCount } = props.review;
@@ -19,7 +19,10 @@ const DetailReview = (props) => {
         </Grid>
 
         {/* 클릭 시 좋아요 토글. 로그인한 유저가 좋아요 누른 리뷰 리스트를 받아올 예정(지금은 없음) -> 그 때 토글을 위한 이미지도 구분해 넣기 */}
-        <Grid position="relative" onClick={() => likeReviewServer(id)}>
+        <Grid
+          position="relative"
+          onClick={() => webtoonActions.likeReviewServer(id)}
+        >
           <Image
             width="20px"
             height="20px"
