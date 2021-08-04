@@ -7,15 +7,19 @@ import {
   ReviewCard,
   BestReveiwerCard,
   WebToonMonth,
+  Slick,
 } from "../components";
 import { Button, Text } from "../elements";
-import { Link } from "react-router-dom";
+import Slider from "react-slick";
 
 const Main = () => {
   const webToonList = [
     {
+      toonId: 1,
       toonImg:
         "https://shared-comic.pstatic.net/thumb/webtoon/703846/thumbnail/thumbnail_IMAG06_aa715a18-fe51-4adf-b21b-5fc253ed3f32.jpg",
+      toonUrl:
+        "https://comic.naver.com/webtoon/list?titleId=703846&weekday=tue",
       toonTitle: "여신강림",
       toonAuthor: "야옹이",
       toonPointTotalNumber: 4.8,
@@ -25,6 +29,8 @@ const Main = () => {
     {
       toonImg:
         "https://shared-comic.pstatic.net/thumb/webtoon/773459/thumbnail/thumbnail_IMAG06_74d73b73-0bed-42f7-9f81-19b9732087cf.jpg",
+      toonUrl:
+        "https://comic.naver.com/webtoon/list?titleId=773459&weekday=tue",
       toonTitle: "용사가 돌아왔다",
       toonAuthor: "나락 / 풍백",
       toonPointTotalNumber: 3,
@@ -34,6 +40,7 @@ const Main = () => {
     {
       toonImg:
         "https://shared-comic.pstatic.net/thumb/webtoon/703852/thumbnail/thumbnail_IMAG06_0aacf362-325b-4d8d-ad60-4b7d888b2fdd.jpg",
+      toonUrl: "https://comic.naver.com/webtoon/list?titleId=703852",
       toonTitle: "바른연애 길잡이",
       toonAuthor: "남수",
       toonPointTotalNumber: 5,
@@ -286,99 +293,82 @@ const Main = () => {
 
   return (
     <React.Fragment>
-      <PageBtnBox>
-        <Button
-          _onClick={() => {
-            history.push("/recommendation");
-          }}
-          margin="0 10px"
-          width="70px"
-          height="30px"
-          bgColor="#fff"
-          border="none"
-        >
-          추천
-        </Button>
-        <Button
-          _onClick={() => {
-            history.push("/review");
-          }}
-          margin="0 10px"
-          width="70px"
-          height="30px"
-          bgColor="#fff"
-          border="none"
-        >
-          리뷰
-        </Button>
-        <Button
-          _onClick={() => {
-            history.push("/board");
-          }}
-          margin="0 10px"
-          width="70px"
-          height="30px"
-          bgColor="#fff"
-          border="none"
-        >
-          톡톡
-        </Button>
-      </PageBtnBox>
-
       <Text>이번 주 웹툰 평론가의 추천</Text>
-      <HiddenBox>
-        {webToonList.map((_, idx) => {
-          return <WebToonCard key={idx} {..._}></WebToonCard>;
-        })}
-      </HiddenBox>
-
-      <Text>이번 달 네이버 웹툰 TOP 10</Text>
-      <MonthBox>
-        {webToonList.map((_, idx) => {
-          return <WebToonMonth key={idx} {..._} idx={idx}></WebToonMonth>;
-        })}
-      </MonthBox>
-
-      {is_login ? (
-        <HiddenBox>
+      <SliderBox>
+        <Slick is_infinite>
           {webToonList.map((_, idx) => {
             return <WebToonCard key={idx} {..._}></WebToonCard>;
           })}
-        </HiddenBox>
+        </Slick>
+      </SliderBox>
+
+      <Slick is_arrow is_variableWidth={false} is_infinite>
+        <MonthBox>
+          <TextGrid>
+            <Text>이번 달 네이버 웹툰 TOP 10</Text>
+          </TextGrid>
+          <RankGrid>
+            {webToonList.map((_, idx) => {
+              return <WebToonMonth key={idx} {..._} idx={idx}></WebToonMonth>;
+            })}
+          </RankGrid>
+        </MonthBox>
+
+        <MonthBox>
+          <TextGrid>
+            <Text>이번 달 카카오 웹툰 TOP 10</Text>
+          </TextGrid>
+          <RankGrid>
+            {webToonList.map((_, idx) => {
+              return <WebToonMonth key={idx} {..._} idx={idx}></WebToonMonth>;
+            })}
+          </RankGrid>
+        </MonthBox>
+      </Slick>
+
+      {is_login ? (
+        <SliderBox>
+          <Slick is_infinite>
+            {webToonList.map((_, idx) => {
+              return <WebToonCard key={idx} {..._}></WebToonCard>;
+            })}
+          </Slick>
+        </SliderBox>
       ) : (
         <HiddenBlurBox>
           <BlurText>지금 로그인하고 맞춤 웹툰 추천 받기!</BlurText>
-          {webToonList.map((_, idx) => {
-            return <WebToonCard key={idx} {..._}></WebToonCard>;
-          })}
+          <BlurBox>
+            {webToonList.map((_, idx) => {
+              return <WebToonCard key={idx} {..._}></WebToonCard>;
+            })}
+          </BlurBox>
         </HiddenBlurBox>
       )}
 
       <Text>베스트 리뷰</Text>
-      <HiddenBox>
-        {ReviewList.map((_, idx) => {
-          return <ReviewCard key={idx} {..._}></ReviewCard>;
-        })}
-      </HiddenBox>
+      <SliderBox>
+        <Slick is_infinite>
+          {ReviewList.map((_, idx) => {
+            return <ReviewCard key={idx} {..._}></ReviewCard>;
+          })}
+        </Slick>
+      </SliderBox>
 
       <Text>베스트 리뷰어</Text>
-      <HiddenBox>
-        {BestReveiwerList.map((_, idx) => {
-          return <BestReveiwerCard key={idx} {..._}></BestReveiwerCard>;
-        })}
-      </HiddenBox>
+      <SliderBox>
+        <Slick is_infinite>
+          {BestReveiwerList.map((_, idx) => {
+            return <BestReveiwerCard key={idx} {..._}></BestReveiwerCard>;
+          })}
+        </Slick>
+      </SliderBox>
     </React.Fragment>
   );
 };
 
-const PageBtnBox = styled.div`
-  display: flex;
-  margin: 20px 0;
-`;
-
-const HiddenBox = styled.div`
+const SliderBox = styled.div`
   white-space: nowrap;
-  overflow-x: scroll;
+  overflow: hidden;
   margin: 10px 0 50px 0;
 `;
 
@@ -399,11 +389,17 @@ const HiddenBlurBox = styled.div`
   }
 `;
 
+const BlurBox = styled.div`
+  filter: blur(1.5px);
+`;
+
 const BlurText = styled.p`
   width: 100%;
+  height: 100%;
+  display: flex;
   position: absolute;
-  text-align: center;
-  top: 30%;
+  justify-content: center;
+  align-items: center;
   font-size: 16px;
   font-weight: bold;
   color: #fff;
@@ -411,8 +407,8 @@ const BlurText = styled.p`
 `;
 
 const MonthBox = styled.div`
-  width: 100%;
-  height: 350px;
+  width: 100vw !important;
+  height: 390px !important;
   display: flex;
   flex-wrap: wrap;
   flex-direction: column;
@@ -421,4 +417,22 @@ const MonthBox = styled.div`
   margin: 10px 0 50px 0;
 `;
 
+const TextGrid = styled.div`
+  width: 100%;
+  height: 30px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  text-align: center;
+`;
+
+const RankGrid = styled.div`
+  width: 100%;
+  height: 90%;
+  display: flex;
+  flex-wrap: wrap;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+`;
 export default Main;
