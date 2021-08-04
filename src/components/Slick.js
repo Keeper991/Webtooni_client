@@ -54,7 +54,7 @@ const Slick = ({
     return (
       <SliderWrap
         infinite={is_infinite}
-        speed="300"
+        speed={300}
         slidesToShow={1}
         draggable
         variableWidth={is_variableWidth}
@@ -69,8 +69,8 @@ const Slick = ({
   return (
     <SliderWrap
       infinite={is_infinite}
-      speed="300"
-      slidesToShow="1"
+      speed={300}
+      slidesToShow={1}
       draggable
       variableWidth={is_variableWidth}
     >
