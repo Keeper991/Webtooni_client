@@ -1,44 +1,49 @@
 import React from "react";
 import styled from "styled-components";
-import { Image, Text, Button } from "../elements";
+import { Image, Text } from "../elements";
+import { actionCreators as webtoonActions } from "../redux/modules/webtoon";
 
 const DetailReview = (props) => {
-  const { reviewContent, userPointNumber, likeCount } = props.review;
+  const { id, reviewContent, userPointNumber, likeCount } = props.review;
   console.log(props, "detailReview");
+
   return (
-    <>
-      <ItemContainer>
-        <Grid display="flex" justify="space-between">
-          <Grid display="flex">
-            <Image size="35px" shape="circle"></Image>
-            <Grid padding="0 0 0 5px">
-              <Text type="p">유저네임{props.userName}</Text>
-              <Text type="p">등급{props.userGrade}</Text>
-            </Grid>
-          </Grid>
-          <Grid position="relative">
-            <Image
-              width="20px"
-              height="20px"
-              src="https://cdn.pixabay.com/photo/2013/07/12/17/39/star-152151_960_720.png"
-            ></Image>
-            <LikeText>{likeCount}</LikeText>
+    <ItemContainer>
+      <Grid display="flex" justify="space-between">
+        <Grid display="flex">
+          <Image size="35px" shape="circle"></Image>
+          <Grid padding="0 0 0 5px">
+            <Text type="p">유저네임{props.userName}</Text>
+            <Text type="p">등급{props.userGrade}</Text>
           </Grid>
         </Grid>
 
-        <Grid display="flex" align="center">
-          <Grid display="flex" align="center">
-            <Image
-              width="20px"
-              height="20px"
-              src="https://cdn.pixabay.com/photo/2013/07/12/17/39/star-152151_960_720.png"
-            ></Image>
-            <Text>&nbsp;{userPointNumber}</Text>
-          </Grid>
-          <Text padding="0 0 0 20px">{reviewContent}</Text>
+        {/* 클릭 시 좋아요 토글. 로그인한 유저가 좋아요 누른 리뷰 리스트를 받아올 예정(지금은 없음) -> 그 때 토글을 위한 이미지도 구분해 넣기 */}
+        <Grid
+          position="relative"
+          onClick={() => webtoonActions.likeReviewServer(id)}
+        >
+          <Image
+            width="20px"
+            height="20px"
+            src="https://cdn.pixabay.com/photo/2013/07/12/17/39/star-152151_960_720.png"
+          ></Image>
+          <LikeText>{likeCount}</LikeText>
         </Grid>
-      </ItemContainer>
-    </>
+      </Grid>
+
+      <Grid display="flex" align="center">
+        <Grid display="flex" align="center">
+          <Image
+            width="20px"
+            height="20px"
+            src="https://cdn.pixabay.com/photo/2013/07/12/17/39/star-152151_960_720.png"
+          ></Image>
+          <Text>&nbsp;{userPointNumber}</Text>
+        </Grid>
+        <Text padding="0 0 0 20px">{reviewContent}</Text>
+      </Grid>
+    </ItemContainer>
   );
 };
 

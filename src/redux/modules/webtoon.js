@@ -1,10 +1,12 @@
 import { createAction, handleActions } from "redux-actions";
 import { produce } from "immer";
-import { webtoonAPI, meAPI } from "../../shared/API";
+import { webtoonAPI, meAPI, offerAPI, reviewAPI } from "../../shared/API";
 
 const SET_TOON_ONE = "SET_TOON_ONE";
+const SET_REVIEW_ID = "SET_REVIEW_ID";
 
 const setToonOne = createAction(SET_TOON_ONE, (toon) => ({ toon }));
+const setReviewId = createAction(SET_REVIEW_ID, (review_id) => ({ review_id }));
 
 const initialState = {
   toon_one: {
@@ -30,34 +32,134 @@ const initialState = {
     ],
   },
   my_list: [],
+  similar_list: [
+    {
+      toonImg:
+        "https://cdn.pixabay.com/photo/2018/01/10/23/53/rabbit-3075088_640.png",
+      toonTitle: "1여신강림",
+      toonAuthor: "야옹이",
+      toonFlatform: "네이버",
+      toonWeekday: ["월", "목"],
+      toonAvgPoint: 4.8,
+      totalPointCount: 20,
+    },
+    {
+      toonImg:
+        "https://cdn.pixabay.com/photo/2018/01/10/23/53/rabbit-3075088_640.png",
+      toonTitle: "2여신강림",
+      toonAuthor: "야옹이",
+      toonFlatform: "네이버",
+      toonWeekday: ["월", "목"],
+      toonAvgPoint: 4.8,
+      totalPointCount: 20,
+    },
+    {
+      toonImg:
+        "https://cdn.pixabay.com/photo/2018/01/10/23/53/rabbit-3075088_640.png",
+      toonTitle: "3여신강림",
+      toonAuthor: "야옹이",
+      toonFlatform: "네이버",
+      toonWeekday: ["월", "목"],
+      toonAvgPoint: 4.8,
+      totalPointCount: 20,
+    },
+    {
+      toonImg:
+        "https://cdn.pixabay.com/photo/2018/01/10/23/53/rabbit-3075088_640.png",
+      toonTitle: "4여신강림",
+      toonAuthor: "야옹이",
+      toonFlatform: "네이버",
+      toonWeekday: ["월", "목"],
+      toonAvgPoint: 4.8,
+      totalPointCount: 20,
+    },
+  ],
+  review_id: "", //별점 준 후 받아온 리뷰 아이디
 };
 
 //웹툰 상세정보 받아오기
 const getToonOneServer = (id = null) => {
-  return function (dispatch, getState, { history }) {
-    webtoonAPI
-      .getOne(id)
-      .then(function (response) {
-        console.log(response, "getToonOneOK");
-        dispatch(setToonOne(response.data));
-      })
-      .catch(function (err) {
-        console.log(err, "getToonOneError");
-      });
+  return async function (dispatch, getState, { history }) {
+    try {
+      const response = await webtoonAPI.getOne(id);
+      console.log(response, "getToonOneOK");
+      dispatch(setToonOne(response.data));
+    } catch (err) {
+      console.log(err, "getToonOneError");
+    }
   };
 };
 
 //웹툰 리스트에 추가
-const addToon = (id = null) => {
-  return function (dispatch) {
-    meAPI
-      .addWebtoon(id)
-      .then(function (response) {
-        console.log(response, "addToonOK");
-      })
-      .catch(function (err) {
-        console.log(err, "addToonError");
-      });
+const addToonServer = (id = null) => {
+  return async function (dispatch) {
+    try {
+      const response = await meAPI.addWebtoon(id);
+      console.log(response, "addToonOK");
+    } catch (err) {
+      console.log(err, "addToonError");
+    }
+  };
+};
+
+//비슷한 웹툰 추천
+const similarToonServer = (id = null) => {
+  return async function (dispatch) {
+    try {
+      const response = await offerAPI.getSimilarGenre(id);
+      console.log(response, "similarToonOK");
+    } catch (err) {
+      console.log(err, "similarToonError");
+    }
+  };
+};
+
+//리뷰 작성
+const uploadReviewServer = (rewviewId = null, reviewContent = null) => {
+  return async function (dispatch) {
+    try {
+      const response = await reviewAPI.putReview({ rewviewId, reviewContent });
+      console.log(response, "uploadReviewOK");
+    } catch (err) {
+      console.log(err, "uploadReviewError");
+    }
+  };
+};
+
+//리뷰 삭제
+const deleteReviewServer = (reviewId = null) => {
+  return async function (dispatch) {
+    try {
+      const response = await reviewAPI.deleteReview(reviewId);
+      console.log(response, "deleteReviewOK");
+    } catch (err) {
+      console.log(err, "deleteReviewError");
+    }
+  };
+};
+
+//웹툰 별점 주기
+const putStarServer = (webtoonId = null, userPointNumber = null) => {
+  return async function (dispatch) {
+    try {
+      const response = await reviewAPI.putStar({ webtoonId, userPointNumber });
+      console.log(response, "putStarOK");
+      dispatch(setReviewId(response.data.reviewId)); //리뷰 아이디 생성
+    } catch (err) {
+      console.log(err, "putStarError");
+    }
+  };
+};
+
+//웹툰 별점 주기
+const likeReviewServer = (reviewId = null) => {
+  return async function (dispatch) {
+    try {
+      const response = await reviewAPI.likeReview(reviewId);
+      console.log(response, "likeReviewOK");
+    } catch (err) {
+      console.log(err, "likeReviewError");
+    }
   };
 };
 
@@ -67,8 +169,22 @@ export default handleActions(
       produce(state, (draft) => {
         draft.toon_one = action.payload.toon;
       }),
+    [SET_REVIEW_ID]: (state, action) =>
+      produce(state, (draft) => {
+        draft.review_id = action.payload.review_id;
+      }),
   },
   initialState
 );
 
-export { getToonOneServer, addToon };
+const actionCreators = {
+  getToonOneServer,
+  addToonServer,
+  similarToonServer,
+  uploadReviewServer,
+  deleteReviewServer,
+  putStarServer,
+  likeReviewServer,
+};
+
+export { actionCreators };
