@@ -1,12 +1,16 @@
 import React from "react";
+import { Link } from "react-router-dom";
 import styled from "styled-components";
-import { Text, Image } from "../elements"
-
+import { Text, Image } from "../elements";
+import { history } from "../redux/configureStore";
 const WebToonCard = (props) => {
-
   return (
     <React.Fragment>
-      <Container>
+      <Container
+        onClick={() => {
+          history.push(`/detail/${props.toonId}`);
+        }}
+      >
         <Image src={props.toonImg} width="100%" height="148px"></Image>
         <ContentsGrid>
           <Text fontSize="14px">{props.toonTitle}</Text>
@@ -19,12 +23,10 @@ const WebToonCard = (props) => {
             <Text fontSize="10px">{props.toonDay}</Text>
           </FlexGrid>
         </ContentsGrid>
-       
-        
       </Container>
     </React.Fragment>
   );
-}
+};
 
 const Container = styled.div`
   width: 155px;
