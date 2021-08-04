@@ -3,25 +3,84 @@ import { useSelector, useDispatch } from "react-redux";
 
 import styled from "styled-components";
 import { Text, Image, Button, Input } from "../elements";
-import { WebToonCard, DetailReview } from "../components";
-import { getToonOneServer } from "../redux/modules/webtoon";
+import { WebToonCard, DetailReview, Slick, DetailStar } from "../components";
+import {
+  getToonOneServer,
+  addToonServer,
+  similarToonServer,
+  uploadReviewServer,
+  deleteReviewServer,
+} from "../redux/modules/webtoon";
 
 const Detail = (props) => {
-  //웹툰 상세정보 가져오기 (서버 연결 시 주석 해제)
-  // const id = props.match.params.id;
-  // const dispatch = useDispatch();
-  // useEffect(() => {
-  //   dispatch(getToonOneServer(id));
-  // }, []);
+  console.log(props, "props");
+  // 웹툰 상세정보, 비슷한 웹툰 정보 가져오기
+  const webtoon_id = props.match.params.id;
+  const dispatch = useDispatch();
+  useEffect(() => {
+    dispatch(getToonOneServer(webtoon_id));
+    dispatch(similarToonServer(webtoon_id));
+  }, []);
   const toon = useSelector((store) => store.webtoon.toon_one);
+  const similar_list = useSelector((store) => store.webtoon.similar_list);
 
-  const [star, setStar] = React.useState(0);
+  const is_login = useSelector((store) => store.user.is_login);
+  const user = useSelector((store) => store.user.user);
+  const userEmail = user?.userEmail;
+
+  //내 리스트에 추가하기
+  const addList = () => {
+    if (is_login) {
+      dispatch(addToonServer(webtoon_id));
+    } else {
+      alert("로그인하세요~");
+    }
+  };
+
+  // 기존 리뷰 가져오기
+  const prev_review = toon.reviews.filter(
+    (item) => item.userEmail === userEmail //로그인한 유저의 리뷰 찾기
+  )[0];
+
+  // const review_id = useSelector((store) => store.webtoon.review_id);  //별점 주고 받아온 리뷰 아이디. 얘는 필요없을 듯~ 리렌더링 해서 상세페이지 정보를 새로 받아오면 추가된 리뷰 아이디 가져오기..
+  const review_id = prev_review.id; //리뷰 아이디
+
+  //리뷰 작성하기
+  const [review, setReview] = React.useState("");
+  const writeReview = (e) => {
+    setReview(e.target.value);
+  };
+  const uploadReview = () => {
+    uploadReviewServer(review_id, review);
+  };
+
+  //리뷰 삭제하기
+  const deleteReview = () => {
+    deleteReviewServer(review_id);
+  };
+
+  //리뷰 정렬(좋아요, 최신순)
+  const sortLike = () => {
+    toon.reviews.sort(function (a, b) {
+      return a.createDate > b.createDate
+        ? -1
+        : a.createDate < b.createDate
+        ? 1
+        : 0;
+    });
+  };
+  const sortNew = () => {
+    toon.reviews.sort(function (a, b) {
+      return a.likeCount - b.likeCount;
+    });
+  };
 
   return (
     <React.Fragment>
       {toon && (
         <>
           <Grid padding="10px">
+            {/* 웹툰 정보 */}
             <ToonContainer>
               <Image src={toon.toonImg} width="100%" height="148px"></Image>
               <Grid
@@ -58,64 +117,81 @@ const Detail = (props) => {
                 </Grid>
               </Grid>
             </ToonContainer>
-
             <AddContainer>
-              <Button>내 리스트에 추가</Button>
+              <Button _onClick={addList}>내 리스트에 추가</Button>
               <a href={`${toon.realUrl}`} target="_blank">
                 <Button>보러가기</Button>
               </a>
             </AddContainer>
-
             <ItemContainer>
-              <Star>
-                <FillStar>
-                  <span>★</span>
-                  <span>★</span>
-                  <span>★</span>
-                  <span>★</span>
-                  <span>★</span>
-                </FillStar>
-                <EmptyStar>
-                  <StarItem value={1} star={star} onClick={() => setStar(1)}>
-                    ◆
-                  </StarItem>
-                  <StarItem value={2} star={star} onClick={() => setStar(2)}>
-                    ◆
-                  </StarItem>
-                  <StarItem value={3} star={star} onClick={() => setStar(3)}>
-                    ◆
-                  </StarItem>
-                  <StarItem value={4} star={star} onClick={() => setStar(4)}>
-                    ◆
-                  </StarItem>
-                  <StarItem value={5} star={star} onClick={() => setStar(5)}>
-                    ◆
-                  </StarItem>
-                </EmptyStar>
-              </Star>
-              <Input multiLine placeholder="리뷰를 작성해 주세요"></Input>
-              <Button>리뷰등록</Button>
+              {/* 별점 주기 */}
+              <DetailStar
+                webtoon_id={webtoon_id}
+                is_login={is_login}
+                prev_review={prev_review}
+              />
+
+              {/* 리뷰 작성 또는 기존 리뷰 삭제 */}
+              {prev_review &&
+                (!prev_review.reviewContent ? (
+                  <Grid
+                    display="flex"
+                    justify="center"
+                    flexDir="column"
+                    align="center"
+                    width="90%"
+                  >
+                    <Input
+                      multiLine
+                      placeholder="리뷰를 작성해 주세요"
+                      _onChange={writeReview}
+                      value={review}
+                    ></Input>
+                    <Button _onClick={uploadReview}>리뷰등록</Button>
+                  </Grid>
+                ) : (
+                  <Grid
+                    display="flex"
+                    justify="center"
+                    flexDir="column"
+                    align="center"
+                    width="90%"
+                  >
+                    <Text
+                      type="p"
+                      padding="20px"
+                      margin="10px"
+                      bgColor="white"
+                      width="300px"
+                    >
+                      {prev_review.reviewContent}
+                    </Text>
+                    <Button _onClick={deleteReview} width="20px">
+                      삭제
+                    </Button>
+                  </Grid>
+                ))}
             </ItemContainer>
-
             <Line>리뷰({toon.reviewCount})</Line>
-
-            {toon.reviews.map((item) => (
-              <DetailReview key={item.id} review={item} />
+            {/* 리뷰 정렬하기 */}
+            <Grid display="flex" justify="flex-end">
+              <Button _onClick={sortLike}>좋아요</Button>
+              <Button _onClick={sortNew}>최신순</Button>
+            </Grid>
+            {/* 리뷰 목록 */}
+            {toon.reviews.map((item, idx) => (
+              <DetailReview key={idx} review={item} />
             ))}
-
             <Line>비슷한 장르의 웹툰</Line>
-
-            <SimContainer>
-              <ToonContainer>
-                <WebToonCard />
-              </ToonContainer>
-              <ToonContainer>
-                <WebToonCard />
-              </ToonContainer>
-              <ToonContainer>
-                <WebToonCard />
-              </ToonContainer>
-            </SimContainer>
+            {/* 아래 웹툰카드에서 필요한 것 1. 변수명 통일해야 함(웹툰 메인 랭킹과
+            상세, 기타 등등...) 2. onClick -> 상세페이지 연결하기 */}
+            <Slick>
+              {similar_list.map((item) => (
+                <SimContainer>
+                  <WebToonCard {...item} />
+                </SimContainer>
+              ))}
+            </Slick>
           </Grid>
         </>
       )}
@@ -156,29 +232,15 @@ const ItemContainer = styled.div`
   display: flex;
   flex-direction: column;
   justify-content: center;
-`;
-
-const Star = styled.div`
-  position: relative;
-`;
-
-const FillStar = styled.div``;
-
-const EmptyStar = styled.div`
-  position: absolute;
-  top: 0;
-  left: 0;
-  z-index: 1;
-`;
-
-const StarItem = styled.span`
-  ${(props) => (props.value <= props.star ? "opacity:0" : "")};
+  align-items: center;
 `;
 
 const SimContainer = styled.div`
-  display: flex;
-  width: 100%;
-  overflow: hidden;
+  width: 30vw;
+  height: auto;
+  /* background: #f1f1f1; */
+  padding: 10px;
+  margin: 5px;
 `;
 
 const Line = styled.div`
