@@ -120,7 +120,11 @@ const Detail = (props) => {
             </ToonContainer>
             <AddContainer>
               <Button _onClick={addList}>내 리스트에 추가</Button>
-              <a href={`${toon.realUrl}`} target="_blank">
+              <a
+                href={`${toon.realUrl}`}
+                target="_blank"
+                rel="noopener noreferrer"
+              >
                 <Button>보러가기</Button>
               </a>
             </AddContainer>
