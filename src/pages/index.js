@@ -7,6 +7,7 @@ import Search from "./Search";
 import MyPage from "./MyPage";
 import Login from "./Login";
 import Taste from "./Taste";
+import Profile from "./Profile";
 
 export {
   Main,
@@ -18,4 +19,5 @@ export {
   MyPage,
   Login,
   Taste,
+  Profile,
 };
