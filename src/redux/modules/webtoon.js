@@ -86,6 +86,8 @@ const getToonOneServer = (id = null) => {
       dispatch(setToonOne(response.data));
     } catch (err) {
       console.log(err, "getToonOneError");
+      alert("게시글 정보가 없어요");
+      history.replace("/");
     }
   };
 };

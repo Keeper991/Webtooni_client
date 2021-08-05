@@ -9,10 +9,12 @@ import {
   Detail,
   Recommendation,
   Review,
-  Board,
   Search,
   MyPage,
   Login,
+  Talk,
+  TalkWrite,
+  TalkDetail,
   Taste,
 } from "../pages/index";
 import Header from "./Header";
@@ -39,9 +41,12 @@ function App() {
       <Route path="/taste" exact component={Taste} />
       <Route path="/recommendation" exact component={Recommendation} />
       <Route path="/review" exact component={Review} />
-      <Route path="/board" exact component={Board} />
       <Route path="/search" exact component={Search} />
       <Route path="/mypage" exact component={MyPage} />
+      <Route path="/talk" exact component={Talk} />
+      <Route path="/talk/write" exact component={TalkWrite} />
+      <Route path="/talk/write/:id" exact component={TalkWrite} />
+      <Route path="/talk/:id" exact component={TalkDetail} />
     </ConnectedRouter>
   );
 }
