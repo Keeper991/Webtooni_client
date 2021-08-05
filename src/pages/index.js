@@ -9,6 +9,7 @@ import Talk from "./Talk";
 import TalkWrite from "./TalkWrite";
 import TalkDetail from "./TalkDetail";
 import Taste from "./Taste";
+import Profile from "./Profile";
 
 
 export {
@@ -23,4 +24,5 @@ export {
   TalkWrite,
   TalkDetail,
   Taste,
+  Profile,
 };

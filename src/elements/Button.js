@@ -86,6 +86,7 @@ Button.defaultProps = {
 const ElCircleButton = styled.button`
   width: ${(props) => props.size};
   height: ${(props) => props.size};
+  padding: ${(props) => props.padding};
   margin: ${(props) => props.margin};
   color: ${(props) => props.color};
   background-color: ${(props) => props.bgColor};

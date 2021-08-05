@@ -16,6 +16,7 @@ import {
   TalkWrite,
   TalkDetail,
   Taste,
+  Profile,
 } from "../pages/index";
 import Header from "./Header";
 import GlobalStyle from "./GlobalStyle";
@@ -39,6 +40,7 @@ function App() {
       <Route path="/detail/:id" exact component={Detail} />
       <Route path="/login" exact component={Login} />
       <Route path="/taste" exact component={Taste} />
+      <Route path="/profile" exact component={Profile} />
       <Route path="/recommendation" exact component={Recommendation} />
       <Route path="/review" exact component={Review} />
       <Route path="/search" exact component={Search} />
