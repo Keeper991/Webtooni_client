@@ -166,7 +166,7 @@ const Recommendation = () => {
         <Text fontSize="12px">08.02</Text>
         <Text fontSize="12px">150 ♥</Text>
         <Text>
-          기본적으로 재밌습니다. 이야기 전개도 빠르고 흡입력 있습니다.
+          기본적으로 재밌습니다. <br /> 이야기 전개도 빠르고 흡입력 있습니다.
         </Text>
       </MdCommentBox>
 
