@@ -10,7 +10,7 @@ import {
   Slick,
 } from "../components";
 import { Button, Text } from "../elements";
-import Slider from "react-slick";
+import { Color } from "../shared/common";
 
 const Main = () => {
   const webToonList = [
@@ -293,7 +293,19 @@ const Main = () => {
 
   return (
     <React.Fragment>
-      <Text>이번 주 웹툰 평론가의 추천</Text>
+      <TitleGrid>
+        <Text fontSize="16px" fontWeight="bold">
+          이번 주 웹툰 평론가의 추천
+        </Text>
+        <Button
+          border="none"
+          bgColor={Color.white}
+          fontSize="12px"
+          width="50px"
+        >
+          더보기
+        </Button>
+      </TitleGrid>
       <SliderBox>
         <Slick is_infinite>
           {webToonList.map((_, idx) => {
@@ -305,7 +317,7 @@ const Main = () => {
       <Slick is_arrow is_variableWidth={false} is_infinite>
         <MonthBox>
           <TextGrid>
-            <Text>이번 달 네이버 웹툰 TOP 10</Text>
+            <Text fontWeight="bold">이번 달 네이버 웹툰 TOP 10</Text>
           </TextGrid>
           <RankGrid>
             {webToonList.map((_, idx) => {
@@ -365,6 +377,14 @@ const Main = () => {
     </React.Fragment>
   );
 };
+
+const TitleGrid = styled.div`
+  display: flex;
+  width: 95%;
+  margin: 10px auto;
+  align-items: center;
+  justify-content: space-between;
+`;
 
 const SliderBox = styled.div`
   white-space: nowrap;

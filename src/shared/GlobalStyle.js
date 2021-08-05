@@ -8,7 +8,7 @@ const GlobalStyle = createGlobalStyle`
   }
   body {
     position: relative;
-    padding-top: 170px;
+    padding-top: 130px;
   }
 `;
 
