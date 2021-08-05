@@ -5,6 +5,7 @@ import { Button, Text } from "../elements";
 import { Color } from "../shared/common";
 
 import { history } from "../redux/configureStore";
+import ProgressStepBtns from "../components/ProgressStepBtns";
 
 const MAX_SELECT_COUNT = 5;
 const TASTE_LS = "TASTE_LIST";
@@ -30,32 +31,21 @@ const Taste = () => {
     tasteDataLS && setTastes(tasteDataLS.split(","));
   }, []);
 
+  const progressStepClickHandlers = [
+    () => history.push("/taste"),
+    () => {
+      localStorage.setItem(TASTE_LS, tastes);
+      tastes.length > 0 && history.push("/profile");
+    },
+  ];
+
   return (
     <Container>
       <ProgressArea>
-        <Button
-          shape="circle"
-          color={Color.white}
-          bgColor={Color.black}
-          border="none"
-          size="24px"
-          _onClick={() => history.push("/taste")}
-        >
-          1
-        </Button>
-        <Line />
-        <Button
-          shape="circle"
-          border="none"
-          color={Color.darkGray}
-          size="24px"
-          _onClick={() => {
-            localStorage.setItem(TASTE_LS, tastes);
-            tastes.length > 0 && history.push("/profile");
-          }}
-        >
-          2
-        </Button>
+        <ProgressStepBtns
+          currentPageNum={1}
+          clickHandlers={progressStepClickHandlers}
+        />
       </ProgressArea>
       <TitleArea>
         <Text type="title" fontSize="3rem" fontWeight={600}>
@@ -112,24 +102,17 @@ const Taste = () => {
 
 const Container = styled.div`
   max-width: 360px;
-  height: calc(100vh - 70px);
+  height: 800px;
   margin: 0 auto;
   display: flex;
   flex-direction: column;
   justify-content: space-between;
-  padding: 5em 0;
 `;
 
 const ProgressArea = styled.section`
   display: flex;
   justify-content: center;
   align-items: center;
-`;
-
-const Line = styled.div`
-  width: 1.5em;
-  height: 0.5px;
-  background-color: ${Color.gray};
 `;
 
 const TitleArea = styled.section`
