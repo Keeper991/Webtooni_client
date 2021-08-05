@@ -1,43 +1,39 @@
 import React from "react";
 import styled from "styled-components";
 import { history } from "../redux/configureStore";
-import { actionCreators as modalActions } from "../redux/modules/modal";
 import { actionCreators as userActions } from "../redux/modules/user";
 import { useDispatch, useSelector } from "react-redux";
-import { Button, Text } from "../elements/index";
-import ModalBox from "./Modals/ModalBox";
-import LoginRegisterForm from "./Modals/LoginRegisterForm";
+import { Button } from "../elements/index";
+import { withRouter } from "react-router";
 
-const Header = () => {
+const Header = (props) => {
   const dispatch = useDispatch();
 
-  const is_modal = useSelector((state) => state.modal.is_modal);
   const is_login = useSelector((state) => state.user.is_login);
-
-  const [login, setLogin] = React.useState(false);
-  const [signUp, setSignUp] = React.useState(false);
 
   const handleLogOut = () => {
     dispatch(userActions.logOut());
   };
 
-  const showLoginModal = () => {
-    dispatch(modalActions.modalToggle(true));
-    setLogin(true);
-  };
-
-  const showSignUpModal = () => {
-    dispatch(modalActions.modalToggle(true));
-    setSignUp(true);
-  };
-
-  const getLogin = (_) => {
-    setLogin(_);
-  };
-
-  const getSignUp = (_) => {
-    setSignUp(_);
-  };
+  if (props.location.pathname === "/login") {
+    return (
+      <Container>
+        <Button
+          _onClick={() => {
+            history.push("/");
+          }}
+          margin="0 0 0 15px"
+          fontWeight="bold"
+          fontSize="17px"
+          color="#fff"
+          border="none"
+          bgColor="#333"
+        >
+          Webtooniverse
+        </Button>
+      </Container>
+    );
+  }
 
   if (is_login) {
     return (
@@ -65,6 +61,44 @@ const Header = () => {
             로그아웃
           </Button>
         </Container>
+        <PageBtnBox>
+          <Button
+            _onClick={() => {
+              history.push("/recommendation");
+            }}
+            margin="0 10px"
+            width="70px"
+            height="30px"
+            bgColor="#fff"
+            border="none"
+          >
+            추천
+          </Button>
+          <Button
+            _onClick={() => {
+              history.push("/review");
+            }}
+            margin="0 10px"
+            width="70px"
+            height="30px"
+            bgColor="#fff"
+            border="none"
+          >
+            리뷰
+          </Button>
+          <Button
+            _onClick={() => {
+              history.push("/board");
+            }}
+            margin="0 10px"
+            width="70px"
+            height="30px"
+            bgColor="#fff"
+            border="none"
+          >
+            톡톡
+          </Button>
+        </PageBtnBox>
       </React.Fragment>
     );
   }
@@ -97,17 +131,44 @@ const Header = () => {
           로그인
         </Button>
       </Container>
-
-      {/* {is_modal && (
-        <ModalBox getLogin={getLogin} getSignUp={getSignUp}>
-          <LoginRegisterForm
-            loginModal={login}
-            getLogin={getLogin}
-            signUpModal={signUp}
-            getSignUp={getSignUp}
-          ></LoginRegisterForm>
-        </ModalBox>
-      )} */}
+      <PageBtnBox>
+        <Button
+          _onClick={() => {
+            history.push("/recommendation");
+          }}
+          margin="0 10px"
+          width="70px"
+          height="30px"
+          bgColor="#fff"
+          border="none"
+        >
+          추천
+        </Button>
+        <Button
+          _onClick={() => {
+            history.push("/review");
+          }}
+          margin="0 10px"
+          width="70px"
+          height="30px"
+          bgColor="#fff"
+          border="none"
+        >
+          리뷰
+        </Button>
+        <Button
+          _onClick={() => {
+            history.push("/board");
+          }}
+          margin="0 10px"
+          width="70px"
+          height="30px"
+          bgColor="#fff"
+          border="none"
+        >
+          톡톡
+        </Button>
+      </PageBtnBox>
     </React.Fragment>
   );
 };
@@ -121,4 +182,9 @@ const Container = styled.div`
   justify-content: space-between;
 `;
 
-export default Header;
+const PageBtnBox = styled.div`
+  display: flex;
+  margin: 20px 0;
+`;
+
+export default withRouter(Header);

@@ -8,6 +8,8 @@ import Login from "./Login";
 import Talk from "./Talk";
 import TalkWrite from "./TalkWrite";
 import TalkDetail from "./TalkDetail";
+import Taste from "./Taste";
+
 
 export {
   Main,
@@ -20,4 +22,5 @@ export {
   Talk,
   TalkWrite,
   TalkDetail,
+  Taste,
 };
