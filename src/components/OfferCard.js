@@ -1,6 +1,7 @@
 import React from "react";
 import styled from "styled-components";
 import { Image, Text } from "../elements";
+import { Color } from "../shared/common";
 
 const OfferCard = (props) => {
   return (
@@ -8,21 +9,35 @@ const OfferCard = (props) => {
       <Container>
         <Image src={props[0].toonImg} width="100%" height="100%"></Image>
         <InfoGrid>
-          <Text fontSize="20px" fontWeight="bold" color="#fff">
+          <Text
+            type="p"
+            fontSize="20px"
+            fontWeight="bold"
+            color={Color.white}
+            margin="0 0 8px 0"
+          >
             {props[0].toonTitle}
           </Text>
           <FlexGrid>
-            <Text fontSize="12px" color="#fff">
+            <Text fontSize="12px" color={Color.white}>
               {props[0].toonAuthor}
             </Text>
-            <Text fontSize="12px" color="#fff">
-              ★{props[0].toonPointTotalNumber}
-            </Text>
+            <FlexGrid>
+              <Image
+                shape="square"
+                margin="0 5px 0 0"
+                size="12px"
+                src="https://lh3.googleusercontent.com/pw/AM-JKLXIrRX56QwruA9no5dsQDpzLmNNgGigp4H-mNbe8Zll_MgRc1OVhN8nKaqDwTOSKiNGUT6bQ6O7sYRBDsPhnj49j7ACDz5qWrSeebdROovTQKhnt8O2jbq6QpskSozPMpq02E2hUQqTjg3gfLZpx-xv=s12-no?authuser=0"
+              ></Image>
+              <Text fontSize="12px" color={Color.white}>
+                {props[0].toonPointTotalNumber}
+              </Text>
+            </FlexGrid>
           </FlexGrid>
         </InfoGrid>
         <BottomBox>
-          <Text fontSize="12px" color="#fff" fontWeight="bold">
-            김투니님 만을 위한 추천
+          <Text fontSize="12px" color={Color.white} fontWeight="bold">
+            😍김투니님 만을 위한 추천
           </Text>
         </BottomBox>
       </Container>
@@ -40,7 +55,7 @@ const Container = styled.div`
 const BottomBox = styled.div`
   width: 100%;
   height: 32px;
-  background: rgba(0, 0, 0, 0.5);
+  background: rgba(0, 0, 0, 0.7);
   position: absolute;
   bottom: 0;
   display: flex;
@@ -54,5 +69,8 @@ const InfoGrid = styled.div`
   bottom: 60px;
 `;
 
-const FlexGrid = styled.div``;
+const FlexGrid = styled.div`
+  display: flex;
+  justify-content: space-between;
+`;
 export default OfferCard;

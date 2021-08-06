@@ -12,6 +12,7 @@ const Image = (props) => {
     size,
     children,
     display,
+    radius,
   } = props;
 
   const styles = {
@@ -22,6 +23,7 @@ const Image = (props) => {
     src: src,
     size: size,
     display: display,
+    radius: radius,
   };
 
   if (shape === "circle") {
@@ -58,6 +60,7 @@ Image.defaultProps = {
   size: 0,
   children: null,
   display: "",
+  radius: 0,
 };
 
 const ElCircle = styled.div`
@@ -90,6 +93,7 @@ const ElImage = styled.div`
   padding: ${(props) => props.padding};
   margin: ${(props) => props.margin};
   background-image: url("${(props) => props.src}");
+  border-radius: ${(props) => props.radius};
 
   background-size: cover;
   background-position: center;

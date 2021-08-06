@@ -9,6 +9,7 @@ export const Color = {
   black: "#333333",
   lightGray: "#D2D2D2",
   lightGray2: "#C6C6C6",
+  lightGray3: "#EAEAEA",
   darkGray: "#666666",
   gray: "#BABABA",
   kakaoYellow: "#FEE500",
@@ -16,4 +17,5 @@ export const Color = {
   blueberry: "#707EFF",
   white: "#FEFEFE",
   red: "#B3130B",
+  orange: "#F05729",
 };

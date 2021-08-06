@@ -1,8 +1,9 @@
 import React from "react";
 import styled from "styled-components";
 import { OfferCard } from "../components";
-import { Text, Image } from "../elements";
+import { Text, Image, Button } from "../elements";
 import { Slick, WebToonCard } from "../components";
+import { Color } from "../shared/common";
 
 const Recommendation = () => {
   const webToonList = [
@@ -14,7 +15,7 @@ const Recommendation = () => {
       toonTitle: "여신강림",
       toonAuthor: "야옹이",
       toonPointTotalNumber: 4.8,
-      toonPlatform: "네이버 웹툰",
+      toonPlatform: "카카오 웹툰",
       toonDay: "화",
     },
     {
@@ -35,7 +36,7 @@ const Recommendation = () => {
       toonTitle: "바른연애 길잡이",
       toonAuthor: "남수",
       toonPointTotalNumber: 5,
-      toonPlatform: "네이버 웹툰",
+      toonPlatform: "카카오 웹툰",
       toonDay: "수",
     },
     {
@@ -111,11 +112,23 @@ const Recommendation = () => {
           좋아하실만한 웹툰을 추천해 드릴게요.
         </Text>
         <Text fontSize="14px" margin="0 0 0 15px" fontWeight="bold">
-          재밌게 본 웹툰의 리뷰를 등록해보세요!
+          재밌게 본 웹툰의 리뷰를 등록해보세요! 🖍
         </Text>
       </BannerBox>
 
-      <Text>이번 주 웹툰 평론가의 추천</Text>
+      <TitleGrid>
+        <Text fontSize="16px" fontWeight="bold">
+          이번 주 웹툰 평론가의 추천
+        </Text>
+        <Button
+          border="none"
+          bgColor={Color.white}
+          fontSize="12px"
+          width="50px"
+        >
+          더보기
+        </Button>
+      </TitleGrid>
       <SliderBox>
         <Slick is_infinite>
           {webToonList.map((_, idx) => {
@@ -124,53 +137,139 @@ const Recommendation = () => {
         </Slick>
       </SliderBox>
 
-      <Text>MD 추천 + 간단 코멘트</Text>
-      <MdBox>
+      <MdBox toonImg={webToonList[0].toonImg}>
+        <BookMark></BookMark>
         <MdInfoBox>
-          <Text fontSize="16px" color="#fff">
+          <Text fontSize="10px" color={Color.white}>
+            #MD추천
+          </Text>
+          <Text fontSize="20px" color={Color.white}>
             네웹 대표 <br /> 글로벌 인기작!
           </Text>
-          <Text fontSize="14px" color="#fff">
+          <Text fontSize="12px" color={Color.white}>
             두근두근 청춘 로맨스물을 찾고 있다면?
           </Text>
         </MdInfoBox>
-
-        <FlexToonGrid>
+        <PlatformImg>
           <Image
-            margin="0 7px"
-            src={webToonList[0].toonImg}
-            shape="circle"
-            size="64px"
+            shape="square"
+            size="33px"
+            src="https://lh3.googleusercontent.com/pw/AM-JKLUzns3dJ9QMMvbc1SAKf7CNsU2e3HAN-XkY-qHk_1o5X_CskFJiSAwZ9F8lRBhNaRwxMMqOI32OBdJW3bPgupH1FAx-z9WI51FwqIiIC5ggfzfGxiIM47ux759UeRX5p1-7dv2Uf3GKP-NZ9hPi0cqR=s33-no?authuser=0"
           ></Image>
-          <InfoGrid>
-            <Text fontSize="14px" color="#fff">
-              {webToonList[0].toonTitle}
-            </Text>
-            <Text fontSize="12px" color="#fff">
-              {webToonList[0].toonAuthor}
-            </Text>
-            <FlexGrid>
-              <Text fontSize="12px" color="#fff">
-                ★{webToonList[0].toonPointTotalNumber}
-              </Text>
-              <Text fontSize="10px" color="#fff">
-                {webToonList[0].toonDay}
-              </Text>
-            </FlexGrid>
-          </InfoGrid>
-        </FlexToonGrid>
+        </PlatformImg>
       </MdBox>
+
+      <FlexToonGrid>
+        <Image
+          margin="0 7px"
+          src={webToonList[0].toonImg}
+          shape="circle"
+          size="64px"
+        ></Image>
+        <InfoGrid>
+          <Text fontSize="14px" fontWeight="bold">
+            {webToonList[0].toonTitle}
+          </Text>
+          <FlexGrid>
+            <Text fontSize="12px">{webToonList[0].toonAuthor}</Text>
+            <Image
+              shape="square"
+              margin="0 5px 0 7px"
+              size="12px"
+              src="https://lh3.googleusercontent.com/pw/AM-JKLXIrRX56QwruA9no5dsQDpzLmNNgGigp4H-mNbe8Zll_MgRc1OVhN8nKaqDwTOSKiNGUT6bQ6O7sYRBDsPhnj49j7ACDz5qWrSeebdROovTQKhnt8O2jbq6QpskSozPMpq02E2hUQqTjg3gfLZpx-xv=s12-no?authuser=0"
+            ></Image>
+            <Text fontSize="12px">{webToonList[0].toonPointTotalNumber}</Text>
+            <Text fontSize="10px">{webToonList[0].toonDay}</Text>
+          </FlexGrid>
+          <Text fontSize="10px" color={Color.darkGray}>
+            긴 호흡을 지닌???
+          </Text>
+          <Text></Text>
+        </InfoGrid>
+      </FlexToonGrid>
       <MdCommentBox>
-        <Image size="32px" shape="circle"></Image>
-        <Text>김모씨</Text>
-        <Text fontSize="12px">08.02</Text>
-        <Text fontSize="12px">150 ♥</Text>
-        <Text>
+        <FlexGrid>
+          <Image size="32px" shape="circle"></Image>
+          <Text type="p" margin="0 7px" fontSize="12px" fontWeight="bold">
+            김모씨
+          </Text>
+          <Text fontSize="12px" color={Color.gray}>
+            08.02
+          </Text>
+        </FlexGrid>
+
+        <Text
+          type="p"
+          margin="10px 0 0 0"
+          fontSize="14px"
+          color={Color.darkGray}
+        >
           기본적으로 재밌습니다. <br /> 이야기 전개도 빠르고 흡입력 있습니다.
         </Text>
       </MdCommentBox>
 
-      <Text>완결 작품 추천</Text>
+      <FlexToonGrid>
+        <Image
+          margin="0 7px"
+          src={webToonList[0].toonImg}
+          shape="circle"
+          size="64px"
+        ></Image>
+        <InfoGrid>
+          <Text fontSize="14px" fontWeight="bold">
+            {webToonList[0].toonTitle}
+          </Text>
+          <FlexGrid>
+            <Text fontSize="12px">{webToonList[0].toonAuthor}</Text>
+            <Image
+              shape="square"
+              margin="0 5px 0 7px"
+              size="12px"
+              src="https://lh3.googleusercontent.com/pw/AM-JKLXIrRX56QwruA9no5dsQDpzLmNNgGigp4H-mNbe8Zll_MgRc1OVhN8nKaqDwTOSKiNGUT6bQ6O7sYRBDsPhnj49j7ACDz5qWrSeebdROovTQKhnt8O2jbq6QpskSozPMpq02E2hUQqTjg3gfLZpx-xv=s12-no?authuser=0"
+            ></Image>
+            <Text fontSize="12px">{webToonList[0].toonPointTotalNumber}</Text>
+            <Text fontSize="10px">{webToonList[0].toonDay}</Text>
+          </FlexGrid>
+          <Text fontSize="10px" color={Color.darkGray}>
+            긴 호흡을 지닌???
+          </Text>
+          <Text></Text>
+        </InfoGrid>
+      </FlexToonGrid>
+      <MdCommentBox>
+        <FlexGrid>
+          <Image size="32px" shape="circle"></Image>
+          <Text type="p" margin="0 7px" fontSize="12px" fontWeight="bold">
+            김모씨
+          </Text>
+          <Text fontSize="12px" color={Color.gray}>
+            08.02
+          </Text>
+        </FlexGrid>
+
+        <Text
+          type="p"
+          margin="10px 0 0 0"
+          fontSize="14px"
+          color={Color.darkGray}
+        >
+          기본적으로 재밌습니다. <br /> 이야기 전개도 빠르고 흡입력 있습니다.
+        </Text>
+      </MdCommentBox>
+
+      <TitleGrid>
+        <Text fontSize="16px" fontWeight="bold">
+          완결 작품 추천
+        </Text>
+        <Button
+          border="none"
+          bgColor={Color.white}
+          fontSize="12px"
+          width="50px"
+        >
+          더보기
+        </Button>
+      </TitleGrid>
       <SliderBox>
         <Slick is_infinite>
           {webToonList.map((_, idx) => {
@@ -179,7 +278,19 @@ const Recommendation = () => {
         </Slick>
       </SliderBox>
 
-      <Text>비슷한 취향을 가진 사용자가 본 웹툰</Text>
+      <TitleGrid>
+        <Text fontSize="16px" fontWeight="bold">
+          비슷한 취향을 가진 사용자가 본 웹툰
+        </Text>
+        <Button
+          border="none"
+          bgColor={Color.white}
+          fontSize="12px"
+          width="50px"
+        >
+          더보기
+        </Button>
+      </TitleGrid>
       <SliderBox>
         <Slick is_infinite>
           {webToonList.map((_, idx) => {
@@ -209,15 +320,33 @@ const SliderBox = styled.div`
 `;
 
 const MdBox = styled.div`
-  width: 320px;
-  height: 186px;
+  width: 100%;
+  height: 200px;
   background-color: #333333;
-  margin: 20px auto;
-  padding: 10px;
-  border-radius: 8px;
+  margin: 20px 0;
   display: flex;
   flex-direction: column;
   justify-content: space-around;
+  background-image: url("${(props) => props.toonImg}");
+  background-repeat: no-repeat;
+  background-position: center;
+  background-size: cover;
+  position: relative;
+`;
+
+const PlatformImg = styled.div`
+  position: absolute;
+  bottom: 15px;
+  right: 20px;
+`;
+
+const BookMark = styled.div`
+  width: 32px;
+  height: 30px;
+  position: absolute;
+  top: 0;
+  left: 20px;
+  background-image: url("https://lh3.googleusercontent.com/pw/AM-JKLX9TMSv2HEBZvBU_2HfbBWkcbzob3Q2xbO5n37lvHAZRT4odoycyeUVUkFGCwH_xAO5_5LEDVZILVVnysQykUskGSHW6ujh4TN5xEDOPEifCnVAQB2A-cgnomeNlOhShd6zrjuHq28mg8y7_Mrh1lSL=w32-h30-no?authuser=0");
 `;
 
 const FlexGrid = styled.div`
@@ -225,21 +354,33 @@ const FlexGrid = styled.div`
   align-items: center;
 `;
 
+const TitleGrid = styled.div`
+  display: flex;
+  width: 95%;
+  margin: 0 auto;
+  align-items: center;
+  justify-content: space-between;
+`;
+
 const FlexToonGrid = styled.div`
   display: flex;
   align-items: center;
+  padding: 0 0 0 23px;
 `;
 
 const InfoGrid = styled.div`
   display: flex;
   flex-direction: column;
-  width: 30%;
+  width: 70%;
+  height: 64px;
+  justify-content: space-around;
+  padding: 3px;
 `;
 
 const MdCommentBox = styled.div`
   width: 320px;
-  height: 75px;
-  background-color: #eaeaea;
+  padding: 13px 15px 70px;
+  background-color: ${Color.lightGray3};
   margin: 20px auto;
   border-radius: 8px;
   display: flex;
@@ -248,9 +389,12 @@ const MdCommentBox = styled.div`
 `;
 
 const MdInfoBox = styled.div`
-  height: 80px;
+  height: 90px;
   display: flex;
+  position: absolute;
+  bottom: 15px;
   flex-direction: column;
-  justify-content: space-around;
+  justify-content: space-between;
+  padding: 0 0 0 20px;
 `;
 export default Recommendation;

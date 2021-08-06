@@ -3,9 +3,10 @@ import styled from "styled-components";
 import { history } from "../redux/configureStore";
 import { actionCreators as userActions } from "../redux/modules/user";
 import { useDispatch, useSelector } from "react-redux";
-import { Button } from "../elements/index";
+import { Button, Image } from "../elements/index";
 import { withRouter } from "react-router";
 import { NavLink } from "react-router-dom";
+import { Color } from "./common";
 
 const Header = (props) => {
   const dispatch = useDispatch();
@@ -54,14 +55,19 @@ const Header = (props) => {
           _onClick={() => {
             history.push("/");
           }}
-          margin="0 0 0 5px"
-          fontWeight="bold"
-          fontSize="17px"
-          color="#fff"
           border="none"
-          bgColor="#333"
+          bgColor={Color.white}
+          width="151px"
+          height="25px"
+          borderRadius="none"
+          padding="0"
+          margin="-10px 0 0 15px"
         >
-          Webtooniverse
+          <Image
+            width="100%"
+            height="25px"
+            src="https://lh3.googleusercontent.com/pw/AM-JKLXT8w8Fi8N_J4qEQdB2mlrNjcj_p7g67WEiyBiwZPw2__VjiJYiaYfWgAs8hFj8p2wwWJaaqYATW0rFu9zc-apqE_5kw7_If516xxw0Mia2-4ouK1qmTxyY7dr8ZQrGVwQRvjhVBerRu-ddqBYN6xk4=w151-h25-no?authuser=0"
+          ></Image>
         </Button>
       </LoginHeaderWrap>
     );
@@ -76,19 +82,24 @@ const Header = (props) => {
               _onClick={() => {
                 history.push("/");
               }}
-              margin="0 0 0 5px"
-              fontWeight="bold"
-              fontSize="17px"
-              color="#fff"
               border="none"
-              bgColor="#333"
+              bgColor={Color.white}
+              width="151px"
+              height="25px"
+              borderRadius="none"
+              padding="0"
+              margin="-10px 0 0 15px"
             >
-              Webtooniverse
+              <Image
+                width="100%"
+                height="25px"
+                src="https://lh3.googleusercontent.com/pw/AM-JKLXT8w8Fi8N_J4qEQdB2mlrNjcj_p7g67WEiyBiwZPw2__VjiJYiaYfWgAs8hFj8p2wwWJaaqYATW0rFu9zc-apqE_5kw7_If516xxw0Mia2-4ouK1qmTxyY7dr8ZQrGVwQRvjhVBerRu-ddqBYN6xk4=w151-h25-no?authuser=0"
+              ></Image>
             </Button>
 
             <Button
-              color="#fff"
-              bgColor="#333"
+              color={Color.black}
+              bgColor={Color.white}
               border="none"
               _onClick={handleLogOut}
             >
@@ -113,7 +124,7 @@ const Header = (props) => {
             </NavBtn>
             <NavBtn
               onClick={() => {
-                history.push("/board");
+                history.push("/talk");
               }}
             >
               톡톡
@@ -132,19 +143,24 @@ const Header = (props) => {
             _onClick={() => {
               history.push("/");
             }}
-            margin="0 0 0 5px"
-            fontWeight="bold"
-            fontSize="17px"
-            color="#fff"
             border="none"
-            bgColor="#333"
+            bgColor={Color.white}
+            width="151px"
+            height="25px"
+            borderRadius="none"
+            padding="0"
+            margin="-10px 0 0 15px"
           >
-            Webtooniverse
+            <Image
+              width="100%"
+              height="25px"
+              src="https://lh3.googleusercontent.com/pw/AM-JKLXT8w8Fi8N_J4qEQdB2mlrNjcj_p7g67WEiyBiwZPw2__VjiJYiaYfWgAs8hFj8p2wwWJaaqYATW0rFu9zc-apqE_5kw7_If516xxw0Mia2-4ouK1qmTxyY7dr8ZQrGVwQRvjhVBerRu-ddqBYN6xk4=w151-h25-no?authuser=0"
+            ></Image>
           </Button>
 
           <Button
-            color="#fff"
-            bgColor="#333"
+            color={Color.black}
+            bgColor={Color.white}
             border="none"
             _onClick={() => {
               history.push("/login");
@@ -176,7 +192,7 @@ const Header = (props) => {
           <NavLink
             activeStyle={activeStyle}
             exact
-            to="/board"
+            to="/talk"
             style={defaultStyle}
           >
             톡톡
@@ -194,15 +210,15 @@ const defaultStyle = {
   alignItems: "center",
   justifyContent: "center",
   textDecoration: "none",
-  color: "#000",
+  color: Color.black,
   fontSize: "16px",
   fontWeight: "bold",
-  background: "#fff",
+  background: Color.white,
   margin: "0 7px",
 };
 
 const activeStyle = {
-  color: "orange",
+  color: `${Color.orange}`,
   borderBottom: "2px solid orange",
   marginTop: "2px",
 };
@@ -215,7 +231,7 @@ const PageBtnBox = styled.div`
   top: 0;
   left: 0;
   z-index: 40;
-  background: #fff;
+  background: ${Color.white};
 `;
 
 const Container = styled.div`
@@ -234,7 +250,7 @@ const NavBtn = styled.button`
   margin: 0 10px;
   width: 70px;
   height: 30px;
-  background: #fff;
+  background: ${Color.white};
   border: none;
   font-size: 16px;
   font-weight: bold;
@@ -247,10 +263,11 @@ const HeaderWrap = styled.div`
   width: 100%;
   height: 70px;
   transition: 0.4s ease;
-  background-color: #333;
+  background-color: ${Color.white};
   display: flex;
   align-items: center;
   justify-content: space-between;
+  border-bottom: 1px solid rgba(0, 0, 0, 0.08);
 `;
 
 const LoginHeaderWrap = styled.div`
@@ -260,10 +277,11 @@ const LoginHeaderWrap = styled.div`
   z-index: 100;
   width: 100%;
   height: 70px;
-  background-color: #333;
+  background-color: ${Color.white};
   display: flex;
   align-items: center;
   justify-content: space-between;
+  border-bottom: 1px solid rgba(0, 0, 0, 0.08);
 `;
 
 export default withRouter(Header);
