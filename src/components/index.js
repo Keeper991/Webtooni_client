@@ -6,6 +6,7 @@ import OfferCard from "./OfferCard";
 import Slick from "./Slick";
 import DetailReview from "./DetailReview";
 import DetailStar from "./DetailStar";
+import TalkComment from "./TalkComment";
 
 export {
   WebToonCard,
@@ -16,4 +17,5 @@ export {
   Slick,
   DetailReview,
   DetailStar,
+  TalkComment,
 };

@@ -7,6 +7,7 @@ import Modal from "./modules/modal";
 import User from "./modules/user";
 import Webtoon from "./modules/webtoon";
 import Talk from "./modules/talk";
+import TalkComment from "./modules/talkComment";
 import Admin from "./modules/admin";
 
 export const history = createBrowserHistory();
@@ -16,6 +17,7 @@ const rootReducer = combineReducers({
   user: User,
   webtoon: Webtoon,
   talk: Talk,
+  talkComment: TalkComment,
   admin: Admin,
   router: connectRouter(history),
 });
