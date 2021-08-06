@@ -77,12 +77,13 @@ const editPostServer = (
 };
 
 //포스트 삭제
-const deletePostServer = (post_id = null) => {
+const deletePostServer = (postId = null) => {
   return async function (dispatch, getState, { history }) {
     try {
-      const response = await talkAPI.deletePost(post_id);
+      const response = await talkAPI.deletePost(postId);
       console.log(response, "deletePostOK");
-      dispatch(deletePostOne(post_id));
+      dispatch(deletePostOne(postId));
+      history.replace("/talk");
     } catch (err) {
       console.log(err, "deletePostError");
       alert("포스트 정보가 없어요");
@@ -112,6 +113,18 @@ const getPostOneServer = (post_id = null) => {
       console.log(err, "getTalkOneError");
       alert("게시글 정보가 없어요");
       history.replace("/talk");
+    }
+  };
+};
+
+//포스트 좋아요 토글 : 로그인 유저의 기존 좋아요 여부를 상세 api로 받아야 함 + 리듀서 액션 추가
+const likePostServer = (post_id = null) => {
+  return async function (dispatch) {
+    try {
+      const response = await talkAPI.likePost(post_id);
+      console.log(response, "likePostwOK");
+    } catch (err) {
+      console.log(err, "likePostwError");
     }
   };
 };
@@ -150,6 +163,7 @@ const actionCreators = {
   editPostServer,
   getPostOneServer,
   deletePostServer,
+  likePostServer,
 };
 
 export { actionCreators };
