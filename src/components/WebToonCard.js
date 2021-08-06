@@ -9,7 +9,7 @@ const WebToonCard = (props) => {
     <React.Fragment>
       <Container
         onClick={() => {
-          history.push(`/detail/${props.toonId}`);
+          history.push(`/detail/${props.id}`);
         }}
       >
         <ImageGrid>
@@ -25,14 +25,14 @@ const WebToonCard = (props) => {
           <FlexGrid>
             <FlexGrid>
               <Text color={Color.orange} fontSize="11px" fontWeight="bold">
-                장르
+                {props.webtoonGenre}
               </Text>
               <Text
                 color={Color.lightGray2}
                 fontSize="10px"
                 margin="0 0 0 10px"
               >
-                {props.toonDay}
+                {props.toonWeekday}
               </Text>
             </FlexGrid>
             <FlexGrid>
@@ -43,7 +43,7 @@ const WebToonCard = (props) => {
                 src="https://lh3.googleusercontent.com/pw/AM-JKLXIrRX56QwruA9no5dsQDpzLmNNgGigp4H-mNbe8Zll_MgRc1OVhN8nKaqDwTOSKiNGUT6bQ6O7sYRBDsPhnj49j7ACDz5qWrSeebdROovTQKhnt8O2jbq6QpskSozPMpq02E2hUQqTjg3gfLZpx-xv=s12-no?authuser=0"
               ></Image>
               <Text fontSize="12px" fontWeight="bold">
-                {props.toonPointTotalNumber}
+                {props.toonAvgPoint}
               </Text>
             </FlexGrid>
           </FlexGrid>

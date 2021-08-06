@@ -48,7 +48,11 @@ const Header = (props) => {
       documentRef.current.removeEventListener("scroll", throttleScroll);
   }, [pageY]);
 
-  if (props.location.pathname === "/login") {
+  if (
+    props.location.pathname === "/login" ||
+    props.location.pathname === "/profile" ||
+    props.location.pathname === "/taste"
+  ) {
     return (
       <LoginHeaderWrap>
         <Button

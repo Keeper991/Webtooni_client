@@ -4,9 +4,21 @@ import { webtoonAPI, meAPI, offerAPI, reviewAPI } from "../../shared/API";
 
 const SET_TOON_ONE = "SET_TOON_ONE";
 const SET_REVIEW_ID = "SET_REVIEW_ID";
+const SET_WEBTOONI_RANK = "SET_WEBTOONI_RANK";
+const SET_NAVER_RANK = "SET_NAVER_RANK";
+const SET_KAKAO_RANK = "SET_KAKAO_RANK";
 
 const setToonOne = createAction(SET_TOON_ONE, (toon) => ({ toon }));
 const setReviewId = createAction(SET_REVIEW_ID, (review_id) => ({ review_id }));
+const setWebtooniRank = createAction(SET_WEBTOONI_RANK, (webtooni_rank) => ({
+  webtooni_rank,
+}));
+const setNaverRank = createAction(SET_NAVER_RANK, (naver_rank) => ({
+  naver_rank,
+}));
+const setKakaoRank = createAction(SET_KAKAO_RANK, (kakao_rank) => ({
+  kakao_rank,
+}));
 
 const initialState = {
   toon_one: {
@@ -74,7 +86,50 @@ const initialState = {
       totalPointCount: 20,
     },
   ],
+  webtooni_rank: [],
+  naver_rank: [],
+  kakao_rank: [],
+
   review_id: "", //별점 준 후 받아온 리뷰 아이디
+};
+
+//이번 달 웹투니버스 순위 받아오기
+const getWebtooniRank = () => {
+  return async function (dispatch, getState, { history }) {
+    try {
+      const response = await webtoonAPI.getRank();
+      console.log(response);
+      dispatch(setWebtooniRank(response.data));
+    } catch (err) {
+      console.log(err);
+    }
+  };
+};
+
+//네이버 웹툰 순위 받아오기
+const getNaverRank = () => {
+  return async function (dispatch, getState, { history }) {
+    try {
+      const response = await webtoonAPI.getNaverRank();
+      console.log(response);
+      dispatch(setNaverRank(response.data));
+    } catch (err) {
+      console.log(err);
+    }
+  };
+};
+
+//카카오 웹툰 순위 받아오기
+const getKakaoRank = () => {
+  return async function (dispatch, getState, { history }) {
+    try {
+      const response = await webtoonAPI.getKakaoRank();
+      console.log(response);
+      dispatch(setKakaoRank(response.data));
+    } catch (err) {
+      console.log(err);
+    }
+  };
 };
 
 //웹툰 상세정보 받아오기
@@ -176,6 +231,18 @@ export default handleActions(
       produce(state, (draft) => {
         draft.review_id = action.payload.review_id;
       }),
+    [SET_WEBTOONI_RANK]: (state, action) =>
+      produce(state, (draft) => {
+        draft.webtooni_rank = action.payload.webtooni_rank;
+      }),
+    [SET_NAVER_RANK]: (state, action) =>
+      produce(state, (draft) => {
+        draft.naver_rank = action.payload.naver_rank;
+      }),
+    [SET_KAKAO_RANK]: (state, action) =>
+      produce(state, (draft) => {
+        draft.kakao_rank = action.payload.kakao_rank;
+      }),
   },
   initialState
 );
@@ -188,6 +255,9 @@ const actionCreators = {
   deleteReviewServer,
   putStarServer,
   likeReviewServer,
+  getWebtooniRank,
+  getNaverRank,
+  getKakaoRank,
 };
 
 export { actionCreators };

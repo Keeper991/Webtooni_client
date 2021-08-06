@@ -1,21 +1,36 @@
 import React from "react";
 import styled from "styled-components";
 import { Text, Image } from "../elements";
+import { history } from "../redux/configureStore";
 
 const WebToonMonth = (props) => {
   return (
     <React.Fragment>
-      <FlexToonGrid>
+      <FlexToonGrid
+        onClick={() => {
+          history.push(`/detail/${props.id}`);
+        }}
+      >
         <ImageGrid index={props.idx + 1}>
           <Image src={props.toonImg} width="100%" height="100%"></Image>
         </ImageGrid>
 
         <InfoGrid>
           <TitleText>{props.toonTitle}</TitleText>
-          <Text fontSize="12px">{props.toonAuthor}</Text>
+          <Text type="p" margin="5px 0" fontSize="12px">
+            {props.toonAuthor}
+          </Text>
           <FlexGrid>
-            <Text fontSize="12px">★{props.toonPointTotalNumber}</Text>
-            <Text fontSize="10px">{props.toonDay}</Text>
+            <FlexGrid>
+              <Image
+                shape="square"
+                margin="0 5px 0 0"
+                size="12px"
+                src="https://lh3.googleusercontent.com/pw/AM-JKLXIrRX56QwruA9no5dsQDpzLmNNgGigp4H-mNbe8Zll_MgRc1OVhN8nKaqDwTOSKiNGUT6bQ6O7sYRBDsPhnj49j7ACDz5qWrSeebdROovTQKhnt8O2jbq6QpskSozPMpq02E2hUQqTjg3gfLZpx-xv=s12-no?authuser=0"
+              ></Image>
+              <Text fontSize="12px">{props.toonAvgPoint}</Text>
+            </FlexGrid>
+            <Text fontSize="10px">{props.toonWeekday}</Text>
           </FlexGrid>
         </InfoGrid>
       </FlexToonGrid>
@@ -58,6 +73,7 @@ const InfoGrid = styled.div`
   display: flex;
   flex-direction: column;
   width: 60%;
+  margin-left: 5px;
 `;
 
 const TitleText = styled.p`

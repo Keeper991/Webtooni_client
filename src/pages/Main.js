@@ -1,7 +1,9 @@
 import React from "react";
 import styled from "styled-components";
 import { history } from "../redux/configureStore";
-import { useSelector } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
+import { actionCreators as webtoonActions } from "../redux/modules/webtoon";
+import { actionCreators as adminActions } from "../redux/modules/admin";
 import {
   WebToonCard,
   ReviewCard,
@@ -13,6 +15,21 @@ import { Button, Text } from "../elements";
 import { Color } from "../shared/common";
 
 const Main = () => {
+  const dispatch = useDispatch();
+
+  React.useEffect(() => {
+    dispatch(webtoonActions.getWebtooniRank());
+    dispatch(webtoonActions.getNaverRank());
+    dispatch(webtoonActions.getKakaoRank());
+    dispatch(adminActions.getMainReview());
+  }, []);
+
+  const webtooniList = useSelector((state) => state.webtoon.webtooni_rank);
+  const naveriList = useSelector((state) => state.webtoon.naver_rank);
+  const kakaoList = useSelector((state) => state.webtoon.kakao_rank);
+
+  const [is_best, setIsBest] = React.useState(true);
+  console.log(is_best);
   const webToonList = [
     {
       toonId: 1,
@@ -308,7 +325,7 @@ const Main = () => {
       </TitleGrid>
       <SliderBox>
         <Slick is_infinite>
-          {webToonList.map((_, idx) => {
+          {webtooniList?.map((_, idx) => {
             return <WebToonCard key={idx} {..._}></WebToonCard>;
           })}
         </Slick>
@@ -320,7 +337,7 @@ const Main = () => {
             <Text fontWeight="bold">이번 달 네이버 웹툰 TOP 10</Text>
           </TextGrid>
           <RankGrid>
-            {webToonList.map((_, idx) => {
+            {naveriList?.map((_, idx) => {
               return <WebToonMonth key={idx} {..._} idx={idx}></WebToonMonth>;
             })}
           </RankGrid>
@@ -331,7 +348,7 @@ const Main = () => {
             <Text>이번 달 카카오 웹툰 TOP 10</Text>
           </TextGrid>
           <RankGrid>
-            {webToonList.map((_, idx) => {
+            {kakaoList?.map((_, idx) => {
               return <WebToonMonth key={idx} {..._} idx={idx}></WebToonMonth>;
             })}
           </RankGrid>
@@ -357,14 +374,45 @@ const Main = () => {
         </HiddenBlurBox>
       )}
 
-      <Text>베스트 리뷰</Text>
-      <SliderBox>
-        <Slick is_infinite>
-          {ReviewList.map((_, idx) => {
-            return <ReviewCard key={idx} {..._}></ReviewCard>;
-          })}
-        </Slick>
-      </SliderBox>
+      <ReviewTabGrid>
+        <Button
+          _onClick={() => {
+            setIsBest(true);
+          }}
+          bgColor={Color.white}
+          width="100px"
+          border="none"
+        >
+          베스트 리뷰
+        </Button>
+        <Button
+          _onClick={() => {
+            setIsBest(false);
+          }}
+          bgColor={Color.white}
+          width="100px"
+          border="none"
+        >
+          최신 리뷰
+        </Button>
+      </ReviewTabGrid>
+      {is_best ? (
+        <SliderBox>
+          <Slick is_infinite>
+            {ReviewList.map((_, idx) => {
+              return <ReviewCard key={idx} {..._}></ReviewCard>;
+            })}
+          </Slick>
+        </SliderBox>
+      ) : (
+        <SliderBox>
+          <Slick is_infinite>
+            {ReviewList.map((_, idx) => {
+              return <ReviewCard key={idx} {..._}></ReviewCard>;
+            })}
+          </Slick>
+        </SliderBox>
+      )}
 
       <Text>베스트 리뷰어</Text>
       <SliderBox>
@@ -454,5 +502,10 @@ const RankGrid = styled.div`
   flex-direction: column;
   align-items: center;
   justify-content: center;
+`;
+
+const ReviewTabGrid = styled.div`
+  width: 90%;
+  display: flex;
 `;
 export default Main;
