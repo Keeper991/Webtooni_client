@@ -130,10 +130,11 @@ const uploadReviewServer = (rewviewId = null, reviewContent = null) => {
 
 //리뷰 삭제
 const deleteReviewServer = (reviewId = null) => {
-  return async function (dispatch) {
+  return async function (dispatch, getState, { history }) {
     try {
       const response = await reviewAPI.deleteReview(reviewId);
       console.log(response, "deleteReviewOK");
+      history.replace("/");
     } catch (err) {
       console.log(err, "deleteReviewError");
     }
@@ -153,7 +154,7 @@ const putStarServer = (webtoonId = null, userPointNumber = null) => {
   };
 };
 
-//웹툰 별점 주기
+//리뷰 좋아요 토글
 const likeReviewServer = (reviewId = null) => {
   return async function (dispatch) {
     try {
