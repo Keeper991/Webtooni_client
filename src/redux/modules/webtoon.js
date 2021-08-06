@@ -192,6 +192,8 @@ const deleteReviewServer = (reviewId = null) => {
       history.replace("/");
     } catch (err) {
       console.log(err, "deleteReviewError");
+      alert("리뷰 정보가 없어요");
+      history.replace("/");
     }
   };
 };
@@ -209,7 +211,7 @@ const putStarServer = (webtoonId = null, userPointNumber = null) => {
   };
 };
 
-//리뷰 좋아요 토글
+//리뷰 좋아요 토글 : 로그인 유저의 기존 좋아요 여부를 상세 api로 받아야 함 + 리듀서 액션 추가
 const likeReviewServer = (reviewId = null) => {
   return async function (dispatch) {
     try {

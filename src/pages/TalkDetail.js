@@ -12,7 +12,7 @@ const TalkDetail = (props) => {
   const post_list = useSelector((store) => store.talk.post_list);
   console.log(post_list, "postlist");
   const post = post_list.filter((p) => p.postId === post_id)[0];
-  //포스트가 없거나 있어도 포스트 콘텐트가 없으면 서버에 요청
+  //서버에 포스트 요청(포스트가 없거나 있어도 포스트 콘텐트가 없을 때)
   const dispatch = useDispatch();
   useEffect(() => {
     if (!post?.postContent || !post) {
@@ -21,7 +21,7 @@ const TalkDetail = (props) => {
     }
   }, []);
 
-  //유저가 포스트 작성자가 아닐 때 메인으로 이동 . 서버 열리면 다시 테스트 하기!!
+  const is_login = useSelector((store) => store.user.is_login); //로그인 여부
   const userName = useSelector((store) => store.user.user?.userName); //로그인 유저 정보
   console.log(userName, "userName");
 
@@ -32,6 +32,14 @@ const TalkDetail = (props) => {
     } else return;
   };
 
+  //좋아요 토글
+  const toggleLike = () => {
+    if (is_login) {
+      talkActions.likePostServer(post_id);
+    } else {
+      alert("로그인하세요~");
+    }
+  };
   return (
     <>
       {post && (
@@ -74,12 +82,13 @@ const TalkDetail = (props) => {
               </Grid>
             )}
 
-            {/* 게시글 좋아요 */}
+            {/* 클릭 시 좋아요 토글. 로그인한 유저의 좋아요 여부 알아야함 -> 그 때 토글을 위한 이미지도 구분해 넣기 */}
             <Grid
               display="flex"
               bgColor={Color.white}
               margin="10px 0"
               width="100%"
+              onClick={toggleLike}
             >
               <Image
                 width="20px"
@@ -87,6 +96,35 @@ const TalkDetail = (props) => {
                 src="https://cdn.pixabay.com/photo/2013/07/12/17/39/star-152151_960_720.png"
               ></Image>
               <Text type="p">좋아요 수</Text>
+            </Grid>
+          </Grid>
+
+          {/* 댓글 목록 */}
+          <Grid
+            display="flex"
+            justify="center"
+            flexDir="column"
+            align="center"
+            width="90%"
+            padding="20px"
+            margin="20px"
+            bgColor={Color.lightGray}
+          >
+            <Grid
+              display="flex"
+              justify="space-between"
+              flexDir="column"
+              bgColor={Color.white}
+              width="90%"
+            >
+              <Grid display="flex">
+                <Image size="35px" shape="circle"></Image>
+                <Grid padding="0 0 0 5px">
+                  <Text type="p">유저네임{props.userName}</Text>
+                  <Text type="p">등급{props.userGrade}</Text>
+                </Grid>
+              </Grid>
+              <Text padding="0 0 0 20px">댓글 내용{props.reviewContent}</Text>
             </Grid>
           </Grid>
         </Grid>
