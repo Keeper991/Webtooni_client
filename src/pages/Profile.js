@@ -47,7 +47,8 @@ const Profile = () => {
       userProfile: profile,
       userName: userName,
     };
-    // dispatch register api..
+    alert("로그인되었습니다.");
+    history.replace("/");
   };
 
   return (
@@ -117,7 +118,7 @@ const Profile = () => {
           </>
         )}
       </ContentWrap>
-      {profile === -1 ? (
+      {profile === -1 || !userName ? (
         <Button width="100%" margin="0 auto" disabled>
           가입완료
         </Button>
