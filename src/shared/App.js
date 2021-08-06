@@ -48,7 +48,7 @@ function App() {
       <Route path="/talk" exact component={Talk} />
       <Route path="/talk/write" exact component={TalkWrite} />
       <Route path="/talk/write/:id" exact component={TalkWrite} />
-      <Route path="/talk/:id" exact component={TalkDetail} />
+      <Route path="/talk/detail/:id" exact component={TalkDetail} />
     </ConnectedRouter>
   );
 }
