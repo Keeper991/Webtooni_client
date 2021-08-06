@@ -6,11 +6,11 @@ import { actionCreators as talkActions } from "../redux/modules/talk";
 
 const Talk = (props) => {
   const dispatch = useDispatch();
-  //talk list 불러오기
-  useEffect((props) => {
-    dispatch(talkActions.getTalkAllServer());
+  //톡 리스트 불러오기
+  useEffect(() => {
+    dispatch(talkActions.getPostAllServer());
   }, []);
-  const talk_list = useSelector((store) => store.talk.talk_list);
+  const post_list = useSelector((store) => store.talk.post_list);
 
   //로그인 여부 알기
   const is_login = useSelector((store) => store.user.is_login);
@@ -23,11 +23,17 @@ const Talk = (props) => {
         </Button>
       )}
       {/* 톡 리스트 */}
-      {talk_list.map((talk, idx) => (
-        <Grid padding="20px" margin="20px" bgColor="#fff" key={idx}>
+      {post_list.map((post, idx) => (
+        <Grid
+          padding="20px"
+          margin="20px"
+          bgColor="#fff"
+          cursor
+          onClick={() => props.history.push(`/talk/detail/${post.postId}`)}
+        >
           <Grid display="flex" justify="space-between">
-            <Text type="p">{talk.postTitle}</Text>
-            <Text type="p">{talk.userName}</Text>
+            <Text type="p">{post.postTitle}</Text>
+            <Text type="p">{post.userName}</Text>
           </Grid>
           <Grid display="flex" justify="center">
             <Grid display="flex">
@@ -64,6 +70,7 @@ const Grid = styled.div`
   padding: ${(props) => (props.padding ? props.padding : "")};
   position: ${(props) => props.position || ""};
   background-color: ${(props) => props.bgColor || ""};
+  ${(props) => (props.cursor ? "cursor: pointer" : "")};
 `;
 
 export default Talk;
