@@ -47,82 +47,84 @@ const Profile = () => {
       userProfile: profile,
       userName: userName,
     };
-    // dispatch register api..
+    alert("로그인되었습니다.");
+    history.replace("/");
   };
 
   return (
     <Container>
-      <ProgressArea>
-        <ProgressStepBtns
-          currentPageNum={2}
-          clickHandlers={progressStepClickHandlers}
-        />
-      </ProgressArea>
-      <TitleArea>
-        <Text type="title" fontSize="3rem" fontWeight={600}>
-          프로필을 선택해주세요
-        </Text>
-      </TitleArea>
-      {profile === -1 ? (
-        <ProfileArea>
-          {profileImgList.map((profileImg, i) => (
-            <Button
-              shape="circle"
-              size="auto"
-              border="none"
-              padding="0"
-              bgColor="transparent"
-              _onClick={() => {
-                setProfile(i + 1);
-                localStorage.setItem(PROFILE_LS, profile);
-              }}
-            >
-              <Image shape="circle" size="4em" src={profileImg} />
-            </Button>
-          ))}
-        </ProfileArea>
-      ) : (
-        <>
-          <ReSelectBtnArea>
-            <Button
-              bgColor="transparent"
-              width="auto"
-              height="auto"
-              padding="0"
-              border="none"
-              _onClick={() => {
-                setProfile(-1);
-              }}
-            >
-              <u>재선택</u>
-            </Button>
-          </ReSelectBtnArea>
+      <ContentWrap>
+        <ProgressArea>
+          <ProgressStepBtns
+            currentPageNum={2}
+            clickHandlers={progressStepClickHandlers}
+          />
+        </ProgressArea>
+        <TitleArea>
+          <Text type="title" fontSize="1.5rem" fontWeight={600}>
+            프로필을 선택해주세요
+          </Text>
+        </TitleArea>
+        {profile === -1 ? (
           <ProfileArea>
-            <Image
-              shape="circle"
-              size="8em"
-              src={profileImgList[profile - 1]}
-            />
+            {profileImgList.map((profileImg, i) => (
+              <Button
+                shape="circle"
+                size="auto"
+                border="none"
+                padding="0"
+                bgColor="transparent"
+                _onClick={() => {
+                  setProfile(i + 1);
+                  localStorage.setItem(PROFILE_LS, profile);
+                }}
+              >
+                <Image shape="circle" size="4em" src={profileImg} />
+              </Button>
+            ))}
           </ProfileArea>
-          <UserNameArea>
-            <Input
-              value={userName}
-              _onChange={(e) => setUserName(e.target.value)}
-              placeholder="닉네임 입력"
-            >
-              닉네임
-            </Input>
-          </UserNameArea>
-        </>
-      )}
-
-      {profile === -1 ? (
-        <Button width="90%" margin="0 auto" disabled>
+        ) : (
+          <>
+            <ReSelectBtnArea>
+              <Button
+                bgColor="transparent"
+                width="auto"
+                height="auto"
+                padding="0"
+                border="none"
+                _onClick={() => {
+                  setProfile(-1);
+                }}
+              >
+                <u>재선택</u>
+              </Button>
+            </ReSelectBtnArea>
+            <SelectedProfileArea>
+              <Image
+                shape="circle"
+                size="90px"
+                src={profileImgList[profile - 1]}
+              />
+            </SelectedProfileArea>
+            <UserNameArea>
+              <Input
+                value={userName}
+                _onChange={(e) => setUserName(e.target.value)}
+                placeholder="닉네임 입력"
+              >
+                닉네임
+              </Input>
+            </UserNameArea>
+          </>
+        )}
+      </ContentWrap>
+      {profile === -1 || !userName ? (
+        <Button width="100%" margin="0 auto" disabled>
           가입완료
         </Button>
       ) : (
         <Button
-          width="90%"
+          width="100%"
           margin="0 auto"
           bgColor={Color.black}
           color={Color.white}
@@ -137,11 +139,17 @@ const Profile = () => {
 
 const Container = styled.div`
   max-width: 360px;
-  height: 800px;
+  height: 502px;
   margin: 0 auto;
   display: flex;
   flex-direction: column;
   justify-content: space-between;
+`;
+
+const ContentWrap = styled.div`
+  & > section:first-child {
+    margin-bottom: 32px;
+  }
 `;
 
 const ProgressArea = styled.section`
@@ -155,11 +163,6 @@ const TitleArea = styled.section`
   flex-direction: column;
   justify-content: center;
   align-items: center;
-  & > *:last-child {
-    text-align: center;
-    line-height: 1.25;
-    margin-top: 1em;
-  }
 `;
 
 const ProfileArea = styled.section`
@@ -168,13 +171,23 @@ const ProfileArea = styled.section`
   justify-content: center;
   gap: 8px 4px;
   padding-bottom: 3em;
+  margin-top: 43px;
 `;
 
 const ReSelectBtnArea = styled.section`
   display: flex;
   justify-content: flex-end;
+  margin-top: 28px;
 `;
 
-const UserNameArea = styled.section``;
+const SelectedProfileArea = styled.section`
+  margin-top: 25px;
+  display: flex;
+  justify-content: center;
+`;
+
+const UserNameArea = styled.section`
+  margin-top: 43px;
+`;
 
 export default Profile;

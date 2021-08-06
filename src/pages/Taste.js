@@ -41,50 +41,52 @@ const Taste = () => {
 
   return (
     <Container>
-      <ProgressArea>
-        <ProgressStepBtns
-          currentPageNum={1}
-          clickHandlers={progressStepClickHandlers}
-        />
-      </ProgressArea>
-      <TitleArea>
-        <Text type="title" fontSize="3rem" fontWeight={600}>
-          취향을 알려주세요
-        </Text>
-        <Text type="p">
-          최대 {MAX_SELECT_COUNT}개를 골라주세요.
-          <br />
-          분석하여 취향에 딱 맞는 웹툰을 추천해드릴게요.
-        </Text>
-      </TitleArea>
-      <TasteArea>
-        {genreList.map((genre, i) => (
-          <TasteBtnWrap includes={tastes.includes(genre)}>
-            <Button
-              shape="pill"
-              border={`1px solid ${Color.gray}`}
-              _onClick={() => {
-                if (tastes.includes(genre)) {
-                  setTastes(tastes.filter((t) => t !== genre));
-                } else if (tastes.length < MAX_SELECT_COUNT) {
-                  setTastes([...tastes, genre]);
-                } else {
-                  return;
-                }
-              }}
-            >
-              {genre}
-            </Button>
-          </TasteBtnWrap>
-        ))}
-      </TasteArea>
+      <ContentWrap>
+        <ProgressArea>
+          <ProgressStepBtns
+            currentPageNum={1}
+            clickHandlers={progressStepClickHandlers}
+          />
+        </ProgressArea>
+        <TitleArea>
+          <Text type="title" fontSize="1.5rem" fontWeight={600}>
+            취향을 알려주세요
+          </Text>
+          <Text type="p" fontSize="0.875rem">
+            최대 {MAX_SELECT_COUNT}개를 골라주세요.
+            <br />
+            분석하여 취향에 딱 맞는 웹툰을 추천해드릴게요.
+          </Text>
+        </TitleArea>
+        <TasteArea>
+          {genreList.map((genre, i) => (
+            <TasteBtnWrap includes={tastes.includes(genre)}>
+              <Button
+                shape="pill"
+                border={`1px solid ${Color.gray}`}
+                _onClick={() => {
+                  if (tastes.includes(genre)) {
+                    setTastes(tastes.filter((t) => t !== genre));
+                  } else if (tastes.length < MAX_SELECT_COUNT) {
+                    setTastes([...tastes, genre]);
+                  } else {
+                    return;
+                  }
+                }}
+              >
+                {genre}
+              </Button>
+            </TasteBtnWrap>
+          ))}
+        </TasteArea>
+      </ContentWrap>
       {tastes.length < 1 ? (
-        <Button width="90%" margin="0 auto" disabled>
+        <Button width="100%" margin="0 auto" disabled>
           선택완료
         </Button>
       ) : (
         <Button
-          width="90%"
+          width="100%"
           margin="0 auto"
           bgColor={Color.black}
           color={Color.white}
@@ -102,11 +104,23 @@ const Taste = () => {
 
 const Container = styled.div`
   max-width: 360px;
-  height: 800px;
+  height: 502px;
   margin: 0 auto;
   display: flex;
   flex-direction: column;
   justify-content: space-between;
+`;
+
+const ContentWrap = styled.div`
+  & > section:first-child {
+    margin-bottom: 32px;
+  }
+  & > section:nth-child(2) {
+    & > *:first-child {
+      margin-bottom: 22px;
+    }
+    margin-bottom: 22px;
+  }
 `;
 
 const ProgressArea = styled.section`
@@ -123,7 +137,6 @@ const TitleArea = styled.section`
   & > *:last-child {
     text-align: center;
     line-height: 1.25;
-    margin-top: 1em;
   }
 `;
 
