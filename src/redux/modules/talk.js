@@ -19,12 +19,14 @@ const initialState = {
       postTitle: "게시글 제목",
       userName: "닉네임",
       postContent: "게시글 내용...",
+      commentCount: 3, //댓글 수 변수명은 임시로 지정
     },
     {
       postId: "2",
       postTitle: "게시글 제목",
       userName: "닉네임",
       postContent: "게시글 내용...",
+      commentCount: 4,
     },
   ],
 };
@@ -164,6 +166,7 @@ const actionCreators = {
   getPostOneServer,
   deletePostServer,
   likePostServer,
+  editPostOne,
 };
 
 export { actionCreators };
