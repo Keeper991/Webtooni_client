@@ -42,16 +42,16 @@ const WebToonCard = (props) => {
                 size="12px"
                 src="https://lh3.googleusercontent.com/pw/AM-JKLXIrRX56QwruA9no5dsQDpzLmNNgGigp4H-mNbe8Zll_MgRc1OVhN8nKaqDwTOSKiNGUT6bQ6O7sYRBDsPhnj49j7ACDz5qWrSeebdROovTQKhnt8O2jbq6QpskSozPMpq02E2hUQqTjg3gfLZpx-xv=s12-no?authuser=0"
               ></Image>
-              <Text fontSize="12px" fontWeight="bold">
+              <Text fontSize="12px" fontWeight="bold" color={Color.black}>
                 {props.toonAvgPoint}
               </Text>
             </FlexGrid>
           </FlexGrid>
-          <Text fontSize="14px" fontWeight="bold">
+          <Text fontSize="14px" fontWeight="bold" color={Color.black}>
             {props.toonTitle}
           </Text>
           <FlexGrid>
-            <Text fontSize="12px">{props.toonAuthor}</Text>
+            <AuthorText>{props.toonAuthor}</AuthorText>
             {props.toonPlatform === "네이버 웹툰" ? (
               <Image
                 shape="square"
@@ -77,7 +77,8 @@ const Container = styled.div`
   height: 220px;
   background: ${Color.white};
   display: inline-block;
-  margin: 0 10px;
+  margin: 10px 10px;
+  box-shadow: rgba(0, 0, 0, 0.05) 0px 1px 2px 0px;
 `;
 
 const FlexGrid = styled.div`
@@ -99,4 +100,12 @@ const ImageGrid = styled.div`
   height: 140px;
 `;
 
+const AuthorText = styled.p`
+  font-size: 12px;
+  width: 130px;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+  color: ${Color.darkGray};
+`;
 export default WebToonCard;
