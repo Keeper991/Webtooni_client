@@ -4,6 +4,7 @@ import { OfferCard } from "../components";
 import { Text, Image, Button } from "../elements";
 import { Slick, WebToonCard } from "../components";
 import { Color } from "../shared/common";
+import { history } from "../redux/configureStore";
 
 const Recommendation = () => {
   const webToonList = [
@@ -125,6 +126,9 @@ const Recommendation = () => {
           bgColor={Color.white}
           fontSize="12px"
           width="50px"
+          _onClick={() => {
+            history.push("/toonlist/list2");
+          }}
         >
           더보기
         </Button>

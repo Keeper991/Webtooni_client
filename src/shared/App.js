@@ -17,6 +17,7 @@ import {
   TalkDetail,
   Taste,
   Profile,
+  ToonList,
 } from "../pages/index";
 import Header from "./Header";
 import GlobalStyle from "./GlobalStyle";
@@ -38,6 +39,7 @@ function App() {
       <Header></Header>
       <Route path="/" exact component={Main} />
       <Route path="/detail/:id" exact component={Detail} />
+      <Route path="/toonlist/:id" exact component={ToonList} />
       <Route path="/login" exact component={Login} />
       <Route path="/taste" exact component={Taste} />
       <Route path="/profile" exact component={Profile} />
