@@ -24,7 +24,7 @@ const reviewAPI = {
 };
 
 const reviewerAPI = {
-  getBest: () => instance.get(`best-reviewer`),
+  getBest: () => instance.get(`rank/reviewers`),
 };
 
 const offerAPI = {
@@ -32,6 +32,7 @@ const offerAPI = {
     instance.get(`webtoon/${webtoonId}/offer/genre`),
   getBestReviewersChoice: () => instance.get(`offer/best-reviewer`),
   getSimilarUsersChoice: () => instance.get(`offer/similar-user`),
+  getForUser: () => instance.get("offer/for-user"),
   getMd: () => instance.get(`offer/md`),
   getEnd: () => instance.get(`offer/end`),
 };
