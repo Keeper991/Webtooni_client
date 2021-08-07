@@ -7,6 +7,7 @@ const SET_REVIEW_ID = "SET_REVIEW_ID";
 const SET_WEBTOONI_RANK = "SET_WEBTOONI_RANK";
 const SET_NAVER_RANK = "SET_NAVER_RANK";
 const SET_KAKAO_RANK = "SET_KAKAO_RANK";
+const LOADING = "IS_LOADING";
 
 const setToonOne = createAction(SET_TOON_ONE, (toon) => ({ toon }));
 const setReviewId = createAction(SET_REVIEW_ID, (review_id) => ({ review_id }));
@@ -19,6 +20,7 @@ const setNaverRank = createAction(SET_NAVER_RANK, (naver_rank) => ({
 const setKakaoRank = createAction(SET_KAKAO_RANK, (kakao_rank) => ({
   kakao_rank,
 }));
+const Loading = createAction(LOADING, (is_loading) => ({ is_loading }));
 
 const initialState = {
   toon_one: {
@@ -89,16 +91,16 @@ const initialState = {
   webtooni_rank: [],
   naver_rank: [],
   kakao_rank: [],
-
   review_id: "", //별점 준 후 받아온 리뷰 아이디
+  is_loading: false,
 };
 
 //이번 달 웹투니버스 순위 받아오기
 const getWebtooniRank = () => {
   return async function (dispatch, getState, { history }) {
     try {
+      dispatch(Loading(true));
       const response = await webtoonAPI.getRank();
-      console.log(response);
       dispatch(setWebtooniRank(response.data));
     } catch (err) {
       console.log(err);
@@ -111,7 +113,6 @@ const getNaverRank = () => {
   return async function (dispatch, getState, { history }) {
     try {
       const response = await webtoonAPI.getNaverRank();
-      console.log(response);
       dispatch(setNaverRank(response.data));
     } catch (err) {
       console.log(err);
@@ -124,7 +125,6 @@ const getKakaoRank = () => {
   return async function (dispatch, getState, { history }) {
     try {
       const response = await webtoonAPI.getKakaoRank();
-      console.log(response);
       dispatch(setKakaoRank(response.data));
     } catch (err) {
       console.log(err);
@@ -236,6 +236,7 @@ export default handleActions(
     [SET_WEBTOONI_RANK]: (state, action) =>
       produce(state, (draft) => {
         draft.webtooni_rank = action.payload.webtooni_rank;
+        draft.is_loading = false;
       }),
     [SET_NAVER_RANK]: (state, action) =>
       produce(state, (draft) => {
@@ -244,6 +245,10 @@ export default handleActions(
     [SET_KAKAO_RANK]: (state, action) =>
       produce(state, (draft) => {
         draft.kakao_rank = action.payload.kakao_rank;
+      }),
+    [LOADING]: (state, action) =>
+      produce(state, (draft) => {
+        draft.is_loading = action.payload.is_loading;
       }),
   },
   initialState

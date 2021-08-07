@@ -10,6 +10,7 @@ import {
   BestReveiwerCard,
   WebToonMonth,
   Slick,
+  SkeletonCard,
 } from "../components";
 import { Button, Text } from "../elements";
 import { Color } from "../shared/common";
@@ -24,12 +25,13 @@ const Main = () => {
     dispatch(adminActions.getMainReview());
   }, []);
 
+  const is_loading = useSelector((state) => state.webtoon.is_loading);
   const webtooniList = useSelector((state) => state.webtoon.webtooni_rank);
   const naveriList = useSelector((state) => state.webtoon.naver_rank);
   const kakaoList = useSelector((state) => state.webtoon.kakao_rank);
 
   const [is_best, setIsBest] = React.useState(true);
-  console.log(is_best);
+
   const webToonList = [
     {
       toonId: 1,
@@ -312,24 +314,35 @@ const Main = () => {
     <React.Fragment>
       <TitleGrid>
         <Text fontSize="16px" fontWeight="bold">
-          이번 주 웹툰 평론가의 추천
+          이달의 웹투니버스 순위
         </Text>
         <Button
           border="none"
           bgColor={Color.white}
           fontSize="12px"
           width="50px"
+          _onClick={() => {
+            history.push("/toonlist/webtooniverse_rank");
+          }}
         >
           더보기
         </Button>
       </TitleGrid>
-      <SliderBox>
-        <Slick is_infinite>
-          {webtooniList?.map((_, idx) => {
-            return <WebToonCard key={idx} {..._}></WebToonCard>;
-          })}
-        </Slick>
-      </SliderBox>
+      {is_loading ? (
+        <SliderBox>
+          <Slick is_infinite>
+            <SkeletonCard></SkeletonCard>
+          </Slick>
+        </SliderBox>
+      ) : (
+        <SliderBox>
+          <Slick is_infinite>
+            {webtooniList?.map((_, idx) => {
+              return <WebToonCard key={idx} {..._}></WebToonCard>;
+            })}
+          </Slick>
+        </SliderBox>
+      )}
 
       <Slick is_arrow is_variableWidth={false} is_infinite>
         <MonthBox>
@@ -345,7 +358,7 @@ const Main = () => {
 
         <MonthBox>
           <TextGrid>
-            <Text>이번 달 카카오 웹툰 TOP 10</Text>
+            <Text fontWeight="bold">이번 달 카카오 웹툰 TOP 10</Text>
           </TextGrid>
           <RankGrid>
             {kakaoList?.map((_, idx) => {
@@ -380,8 +393,11 @@ const Main = () => {
             setIsBest(true);
           }}
           bgColor={Color.white}
-          width="100px"
+          width="90px"
+          height="30px"
           border="none"
+          fontWeight="bold"
+          color={is_best ? Color.black : Color.gray}
         >
           베스트 리뷰
         </Button>
@@ -390,8 +406,11 @@ const Main = () => {
             setIsBest(false);
           }}
           bgColor={Color.white}
-          width="100px"
+          width="90px"
+          height="30px"
           border="none"
+          fontWeight="bold"
+          color={!is_best ? Color.black : Color.gray}
         >
           최신 리뷰
         </Button>
@@ -414,7 +433,9 @@ const Main = () => {
         </SliderBox>
       )}
 
-      <Text>베스트 리뷰어</Text>
+      <TitleGrid>
+        <Text fontWeight="bold">베스트 리뷰어</Text>
+      </TitleGrid>
       <SliderBox>
         <Slick is_infinite>
           {BestReveiwerList.map((_, idx) => {
@@ -505,7 +526,8 @@ const RankGrid = styled.div`
 `;
 
 const ReviewTabGrid = styled.div`
-  width: 90%;
+  width: 95%;
+  margin: 0 auto;
   display: flex;
 `;
 export default Main;

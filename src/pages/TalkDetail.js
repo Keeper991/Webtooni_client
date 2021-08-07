@@ -3,6 +3,8 @@ import { useSelector, useDispatch } from "react-redux";
 import styled from "styled-components";
 import { Button, Input, Text, Image } from "../elements";
 import { actionCreators as talkActions } from "../redux/modules/talk";
+import { actionCreators as talkCommentActions } from "../redux/modules/talkComment";
+import { TalkComment } from "../components";
 import { Color } from "../shared/common";
 
 const TalkDetail = (props) => {
@@ -12,13 +14,21 @@ const TalkDetail = (props) => {
   const post_list = useSelector((store) => store.talk.post_list);
   console.log(post_list, "postlist");
   const post = post_list.filter((p) => p.postId === post_id)[0];
-  //서버에 포스트 요청(포스트가 없거나 있어도 포스트 콘텐트가 없을 때)
+  //댓글 가져오기
+  const comment_all = useSelector((store) => store.talkComment.list);
+  console.log(comment_all, "commentall");
+  const comment_list = comment_all.filter((item) => item.postId === post_id)[0]
+    .commentList;
+  console.log(comment_list, "comment_list");
   const dispatch = useDispatch();
   useEffect(() => {
+    //서버에 포스트 요청(포스트가 없거나 있어도 포스트 콘텐트가 없을 때)
     if (!post?.postContent || !post) {
       dispatch(talkActions.getPostOneServer(post_id));
-      return;
     }
+    //서버에 댓글 요청(포스트의 댓글 수가 0이 아님에도 댓글리스트가 없을 때) //댓글 변수명 수정...
+    if (post?.commentCount !== 0 && !comment_list)
+      dispatch(talkCommentActions.getCommentAllServer(post_id));
   }, []);
 
   const is_login = useSelector((store) => store.user.is_login); //로그인 여부
@@ -40,6 +50,13 @@ const TalkDetail = (props) => {
       alert("로그인하세요~");
     }
   };
+
+  //댓글 작성하기
+  const [comment, setComment] = React.useState("");
+  const writeComment = (e) => {
+    setComment(e.target.value);
+  };
+
   return (
     <>
       {post && (
@@ -99,7 +116,7 @@ const TalkDetail = (props) => {
             </Grid>
           </Grid>
 
-          {/* 댓글 목록 */}
+          {/* 댓글 */}
           <Grid
             display="flex"
             justify="center"
@@ -110,22 +127,41 @@ const TalkDetail = (props) => {
             margin="20px"
             bgColor={Color.lightGray}
           >
+            {/* 댓글 작성 */}
             <Grid
               display="flex"
-              justify="space-between"
+              justify="center"
               flexDir="column"
-              bgColor={Color.white}
+              align="center"
               width="90%"
             >
-              <Grid display="flex">
-                <Image size="35px" shape="circle"></Image>
-                <Grid padding="0 0 0 5px">
-                  <Text type="p">유저네임{props.userName}</Text>
-                  <Text type="p">등급{props.userGrade}</Text>
-                </Grid>
-              </Grid>
-              <Text padding="0 0 0 20px">댓글 내용{props.reviewContent}</Text>
+              <Input
+                placeholder="댓글을 작성해 주세요"
+                _onChange={writeComment}
+                value={comment}
+              ></Input>
+              <Button
+                _onClick={() => {
+                  dispatch(
+                    talkCommentActions.addCommentServer(
+                      post_id,
+                      comment,
+                      post.commentCount
+                    )
+                  );
+                }}
+              >
+                등록
+              </Button>
             </Grid>
+            {/* 댓글 목록 */}
+            {comment_list.map((_, idx) => (
+              <TalkComment
+                key={idx}
+                comment_info={_}
+                post_id={post_id}
+              ></TalkComment>
+            ))}
           </Grid>
         </Grid>
       )}
