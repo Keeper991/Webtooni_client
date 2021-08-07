@@ -10,7 +10,7 @@ import TalkWrite from "./TalkWrite";
 import TalkDetail from "./TalkDetail";
 import Taste from "./Taste";
 import Profile from "./Profile";
-
+import ToonList from "./ToonList";
 
 export {
   Main,
@@ -25,4 +25,5 @@ export {
   TalkDetail,
   Taste,
   Profile,
+  ToonList,
 };

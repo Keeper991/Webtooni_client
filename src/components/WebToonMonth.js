@@ -2,6 +2,7 @@ import React from "react";
 import styled from "styled-components";
 import { Text, Image } from "../elements";
 import { history } from "../redux/configureStore";
+import { Color } from "../shared/common";
 
 const WebToonMonth = (props) => {
   return (
@@ -17,9 +18,7 @@ const WebToonMonth = (props) => {
 
         <InfoGrid>
           <TitleText>{props.toonTitle}</TitleText>
-          <Text type="p" margin="5px 0" fontSize="12px">
-            {props.toonAuthor}
-          </Text>
+          <AuthorText>{props.toonAuthor}</AuthorText>
           <FlexGrid>
             <FlexGrid>
               <Image
@@ -79,6 +78,18 @@ const InfoGrid = styled.div`
 const TitleText = styled.p`
   font-size: 14px;
   width: 90px;
+  color: ${Color.black};
+  font-weight: bold;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+`;
+
+const AuthorText = styled.p`
+  font-size: 12px;
+  width: 90px;
+  color: ${Color.darkGray};
+  margin: 7px 0;
   overflow: hidden;
   text-overflow: ellipsis;
   white-space: nowrap;
