@@ -10,7 +10,7 @@ const TalkComment = (props) => {
   const is_login = useSelector((store) => store.user.is_login);
   const userName = useSelector((store) => store.user.user?.userName);
 
-  const { comment_info, post_id } = props;
+  const { comment_info, commentCount } = props;
   //댓글 수정 여부
   const [edit, isEdit] = React.useState(false);
   //댓글 수정 작성
@@ -23,7 +23,7 @@ const TalkComment = (props) => {
   const editComment = () => {
     dispatch(
       talkCommentActions.editCommentServer(
-        post_id,
+        comment_info.postId,
         comment_info.commentId,
         comment_info.commentContent
       )
@@ -33,7 +33,11 @@ const TalkComment = (props) => {
   const deleteComment = () => {
     if (window.confirm("정말 삭제하시려고요?")) {
       dispatch(
-        talkCommentActions.deleteCommentServer(post_id, comment_info.commentId)
+        talkCommentActions.deleteCommentServer(
+          comment_info.postId,
+          comment_info.commentId,
+          commentCount
+        )
       );
     } else return;
   };
@@ -63,7 +67,7 @@ const TalkComment = (props) => {
             <Image size="35px" shape="circle"></Image>
             <Grid padding="0 0 0 5px">
               <Text type="p">{comment_info.userName}</Text>
-              <Text type="p">등급{props.userGrade}</Text>
+              <Text type="p">등급{comment_info.userGrade}</Text>
             </Grid>
           </Grid>
           <Text padding="0 0 0 20px">{comment_info.commentContent}</Text>
