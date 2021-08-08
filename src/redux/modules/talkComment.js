@@ -8,12 +8,10 @@ const ADD_COMMENT_ONE = "ADD_COMMENT_ONE";
 const EDIT_COMMENT_ONE = "EDIT_COMMENT_ONE";
 const DELETE_COMMENT_ONE = "DELETE_COMMENT_ONE";
 
-const setCommentAll = createAction(SET_COMMENT_ALL, (postId, commentList) => ({
-  postId,
+const setCommentAll = createAction(SET_COMMENT_ALL, (commentList) => ({
   commentList,
 }));
-const addCommentOne = createAction(ADD_COMMENT_ONE, (postId, comment) => ({
-  postId,
+const addCommentOne = createAction(ADD_COMMENT_ONE, (comment) => ({
   comment,
 }));
 const editCommentOne = createAction(
@@ -24,45 +22,23 @@ const editCommentOne = createAction(
     commentContent,
   })
 );
-const deleteCommentOne = createAction(
-  DELETE_COMMENT_ONE,
-  (postId, commentId) => ({
-    postId,
-    commentId,
-  })
-);
+const deleteCommentOne = createAction(DELETE_COMMENT_ONE, (commentId) => ({
+  commentId,
+}));
 
 const initialState = {
   list: [
     {
       postId: "1",
-      commentList: [
-        {
-          commentId: "댓글 postId",
-          userName: "닉네임",
-          commentContent: "댓글 내용",
-        },
-        {
-          commentId: "댓글 postId",
-          userName: "닉네임",
-          commentContent: "댓글 내용",
-        },
-      ],
+      commentId: "댓글 postId",
+      userName: "닉네임",
+      commentContent: "댓글 내용",
     },
     {
       postId: "2",
-      commentList: [
-        {
-          commentId: "댓글 postId",
-          userName: "닉네임",
-          commentContent: "댓글 내용",
-        },
-        {
-          commentId: "댓글 postId",
-          userName: "닉네임",
-          commentContent: "댓글 내용",
-        },
-      ],
+      commentId: "댓글 postId",
+      userName: "닉네임",
+      commentContent: "댓글 내용",
     },
   ],
 };
@@ -73,7 +49,7 @@ const getCommentAllServer = (postId) => {
     try {
       const response = await talkAPI.getComments(postId);
       console.log(response, "getCommetAllOK");
-      dispatch(setCommentAll(postId, response.data));
+      dispatch(setCommentAll(response.data));
     } catch (err) {
       console.log(err, "getCommetAllError");
     }
@@ -81,23 +57,21 @@ const getCommentAllServer = (postId) => {
 };
 
 //댓글 작성
-const addCommentServer = (
-  postId = null,
-  commentContent = null,
-  commentCount = null
-) => {
+const addCommentServer = (postId, commentContent, commentCount) => {
   return async function (dispatch, getState) {
     try {
       const response = await talkAPI.addComment({ postId, commentContent });
       console.log(response, "addCommentOK");
 
-      const { commentId, userName } = response.data;
-      dispatch(addCommentOne(postId, { commentId, commentContent, userName }));
+      const { userImg, userName, userGrade } = getState().user.user; //유저 정보 가져오기
+      dispatch(
+        addCommentOne({ ...response.data, userImg, userName, userGrade })
+      );
       //톡 리듀서에서 포스트 댓글 수 수정
       const post_list = getState().talk.post_list;
       const post = post_list.filter((p) => p.postId === postId)[0];
       dispatch(
-        talkActions.editPostOne({ ...post, commentCount: commentCount + 1 })
+        talkActions.editPostOne({ ...post, commentCount: commentCount + 1 }) //댓글수 변수명 나중에 수정
       );
     } catch (err) {
       console.log(postId, commentContent, commentCount, "addComment변수");
@@ -107,11 +81,7 @@ const addCommentServer = (
 };
 
 //댓글 수정
-const editCommentServer = (
-  postId = null,
-  commentId = null,
-  commentContent = null
-) => {
+const editCommentServer = (postId, commentId, commentContent) => {
   return async function (dispatch, getState) {
     try {
       const response = await talkAPI.editCommentOne({
@@ -128,16 +98,12 @@ const editCommentServer = (
 };
 
 //댓글 삭제
-const deleteCommentServer = (
-  postId = null,
-  commentId = null,
-  commentCount = null
-) => {
+const deleteCommentServer = (postId, commentId, commentCount) => {
   return async function (dispatch, getState, { history }) {
     try {
       const response = await talkAPI.deleteComment({ postId, commentId });
       console.log(response, "deleteCommentOK");
-      dispatch(deleteCommentOne(postId, commentId));
+      dispatch(deleteCommentOne(commentId));
       //톡 리듀서에서 포스트 댓글 수 수정
       const post_list = getState().talk.post_list;
       const post = post_list.filter((p) => p.postId === postId)[0];
@@ -155,40 +121,26 @@ export default handleActions(
   {
     [SET_COMMENT_ALL]: (state, action) =>
       produce(state, (draft) => {
-        draft.list.push({
-          postId: action.payload.postId,
-          commentList: action.payload.commentList,
-        });
+        draft.list.push(...action.payload.commentList);
       }),
     [ADD_COMMENT_ONE]: (state, action) =>
       produce(state, (draft) => {
-        let postIdx = draft.list.findIndex(
-          (p) => p.postId === action.payload.postId
-        );
-        draft.list[postIdx].commentList.push(action.payload.comment);
+        draft.list.push(action.payload.comment);
       }),
 
     [EDIT_COMMENT_ONE]: (state, action) =>
       produce(state, (draft) => {
-        let post_postIdx = draft.list.findIndex(
-          (p) => p.postId === action.payload.postId
-        );
-        const _list = draft.list[post_postIdx].commentList;
-        let comment_postIdx = _list.findIndex(
+        let idx = draft.list.findIndex(
           (c) => c.commentId === action.payload.commentId
         );
-        _list[comment_postIdx].commentContent = action.payload.commentContent;
+        draft.list[idx].commentContent = action.payload.commentContent;
       }),
     [DELETE_COMMENT_ONE]: (state, action) =>
       produce(state, (draft) => {
-        let post_postIdx = draft.list.findIndex(
-          (p) => p.postId === action.payload.postId
-        );
-        const _list = draft.list[post_postIdx].commentList;
-        let comment_postIdx = _list.findIndex(
+        let idx = draft.list.findIndex(
           (c) => c.commentId === action.payload.commentId
         );
-        _list.splice(comment_postIdx, 1);
+        draft.list.splice(idx, 1);
       }),
   },
   initialState
