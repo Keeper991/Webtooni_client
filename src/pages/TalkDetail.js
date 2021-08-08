@@ -17,13 +17,12 @@ const TalkDetail = (props) => {
   //댓글 가져오기
   const comment_all = useSelector((store) => store.talkComment.list);
   console.log(comment_all, "commentall");
-  const comment_list = comment_all.filter((item) => item.postId === post_id)[0]
-    .commentList;
+  const comment_list = comment_all.filter((item) => item.postId === post_id);
   console.log(comment_list, "comment_list");
   const dispatch = useDispatch();
   useEffect(() => {
-    //서버에 포스트 요청(포스트가 없거나 있어도 포스트 콘텐트가 없을 때)
-    if (!post?.postContent || !post) {
+    //서버에 포스트 요청
+    if (!post) {
       dispatch(talkActions.getPostOneServer(post_id));
     }
     //서버에 댓글 요청(포스트의 댓글 수가 0이 아님에도 댓글리스트가 없을 때) //댓글 변수명 수정...
@@ -51,7 +50,7 @@ const TalkDetail = (props) => {
     }
   };
 
-  //댓글 작성하기
+  //댓글 입력하기
   const [comment, setComment] = React.useState("");
   const writeComment = (e) => {
     setComment(e.target.value);
@@ -99,7 +98,7 @@ const TalkDetail = (props) => {
               </Grid>
             )}
 
-            {/* 클릭 시 좋아요 토글. 로그인한 유저의 좋아요 여부 알아야함 -> 그 때 토글을 위한 이미지도 구분해 넣기 */}
+            {/* 클릭 시 좋아요 토글. 이미지도 구분해 넣기 */}
             <Grid
               display="flex"
               bgColor={Color.white}
@@ -107,12 +106,21 @@ const TalkDetail = (props) => {
               width="100%"
               onClick={toggleLike}
             >
-              <Image
-                width="20px"
-                height="20px"
-                src="https://cdn.pixabay.com/photo/2013/07/12/17/39/star-152151_960_720.png"
-              ></Image>
-              <Text type="p">좋아요 수</Text>
+              {post.isLike ? (
+                <Image
+                  width="20px"
+                  height="20px"
+                  src="https://cdn.pixabay.com/photo/2013/07/12/17/39/star-152151_960_720.png"
+                ></Image>
+              ) : (
+                <Image
+                  width="20px"
+                  height="20px"
+                  src="https://cdn.pixabay.com/photo/2013/07/12/17/39/star-152151_960_720.png"
+                ></Image>
+              )}
+
+              <Text type="p">{post.likeCount}좋아요 수</Text>
             </Grid>
           </Grid>
 
@@ -159,7 +167,7 @@ const TalkDetail = (props) => {
               <TalkComment
                 key={idx}
                 comment_info={_}
-                post_id={post_id}
+                commentCount={post.commentCount}
               ></TalkComment>
             ))}
           </Grid>
