@@ -17,7 +17,7 @@ const WebToonCard = (props) => {
             src={props.toonImg}
             width="100%"
             height="100%"
-            radius="4px"
+            radius="5px"
           ></Image>
         </ImageGrid>
 

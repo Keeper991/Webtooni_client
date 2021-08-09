@@ -94,5 +94,6 @@ const AuthorText = styled.p`
   overflow: hidden;
   text-overflow: ellipsis;
   white-space: nowrap;
+
 `;
 export default ToonListCard;

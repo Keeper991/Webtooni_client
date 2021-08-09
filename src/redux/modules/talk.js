@@ -33,11 +33,24 @@ const initialState = {
 
 //톡 리스트 불러오기
 const getPostAllServer = () => {
-  return async function (dispatch) {
+  return async function (dispatch, getState) {
     try {
       const response = await talkAPI.getAll();
       console.log(response, "getTalkAllOK");
-      dispatch(setPostAll(response.data));
+      const _list = response.data;
+
+      const { userLikePostID } = getState().user.user; //유저가 좋아요 한 톡 포스트. 변수명 나중에 수정
+      // 로그인 유저의 좋아요 여부 추가
+      const list = _list.map((item) => {
+        if (userLikePostID.includes(item.postId)) {
+          item.isLike = true;
+        } else {
+          item.isLike = false;
+        }
+        return item;
+      });
+
+      dispatch(setPostAll(list));
     } catch (err) {
       console.log(err, "getTalkAllError");
     }
@@ -45,24 +58,20 @@ const getPostAllServer = () => {
 };
 
 //포스트 작성. 서버에 요청 후 포스트아이디도 받아와서 같이 저장해야 함...
-const addPostServer = (postTitle = null, postContent = null) => {
+const addPostServer = (postTitle, postContent) => {
   return async function (dispatch, getState) {
     try {
       const response = await talkAPI.addPost({ postTitle, postContent });
       console.log(response, "addTalkOK");
-      const userName = getState().user.user.userName;
-      dispatch(addPostOne({ postTitle, postContent, userName })); //리스폰스 데이터로 포스트 아이디를 받아와서 같이 저장해야...
+      const { userImg, userName, userGrade } = getState().user.user;
+      dispatch(addPostOne({ ...response.data, userImg, userName, userGrade })); //리스폰스 데이터로 포스트 아이디도 들어와야 함
     } catch (err) {
       console.log(err, "addTalkError");
     }
   };
 };
 //포스트 수정
-const editPostServer = (
-  postId = null,
-  postTitle = null,
-  postContent = null
-) => {
+const editPostServer = (postId, postTitle, postContent) => {
   return async function (dispatch, getState) {
     try {
       const response = await talkAPI.editPost({
@@ -71,7 +80,7 @@ const editPostServer = (
         postContent,
       });
       console.log(response, "editTalkOK");
-      dispatch(editPostOne({ postId, postTitle, postContent })); //리스폰스 데이터로 포스트 아이디를 받아와서 같이 저장해야...
+      dispatch(editPostOne({ postId, postTitle, postContent }));
     } catch (err) {
       console.log(err, "editTalkError");
     }
@@ -79,7 +88,7 @@ const editPostServer = (
 };
 
 //포스트 삭제
-const deletePostServer = (postId = null) => {
+const deletePostServer = (postId) => {
   return async function (dispatch, getState, { history }) {
     try {
       const response = await talkAPI.deletePost(postId);
@@ -95,22 +104,21 @@ const deletePostServer = (postId = null) => {
 };
 
 //포스트 상세정보 받아오기
-const getPostOneServer = (post_id = null) => {
+const getPostOneServer = (post_id) => {
   return async function (dispatch, getState, { history }) {
     try {
       const response = await talkAPI.getOne(post_id);
-      console.log(response, "getTalkOneOK");
-      //스토어에 포스트 저장하는 방법 분기
-      const talk = getState().talk.post_list.filter(
-        (p) => p.postId === post_id
-      )[0];
-      if (!talk) {
-        //스토어에 포스트가 아예 없으면
-        dispatch(addPostOne(response.data));
+      const post = response.data;
+
+      const { userLikePostID } = getState().user.user; //유저가 좋아요 한 톡 포스트. 변수명 나중에 수정
+      // 로그인 유저의 좋아요 여부 추가
+      if (userLikePostID.includes(post.postId)) {
+        post.isLike = true;
       } else {
-        //포스트에서 컨텐트 정보만 없으면
-        dispatch(editPostOne(response.data));
+        post.isLike = false;
       }
+
+      dispatch(addPostOne(post));
     } catch (err) {
       console.log(err, "getTalkOneError");
       alert("게시글 정보가 없어요");
@@ -120,11 +128,24 @@ const getPostOneServer = (post_id = null) => {
 };
 
 //포스트 좋아요 토글 : 로그인 유저의 기존 좋아요 여부를 상세 api로 받아야 함 + 리듀서 액션 추가
-const likePostServer = (post_id = null) => {
-  return async function (dispatch) {
+const likePostServer = (post_id) => {
+  return async function (dispatch, getState) {
     try {
       const response = await talkAPI.likePost(post_id);
       console.log(response, "likePostwOK");
+      const post_list = getState().talk.post_list;
+      const post = post_list.filter((p) => p.postId === post_id)[0];
+
+      //좋아요 여부, 좋아요 수 변경
+      if (post.isLike) {
+        post.isLike = false;
+        post.likeCount -= 1; //변수명 나중에 수정
+      } else {
+        post.isLike = true;
+        post.likeCount += 1;
+      }
+
+      dispatch(editPostOne(post));
     } catch (err) {
       console.log(err, "likePostwError");
     }

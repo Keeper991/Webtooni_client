@@ -1,6 +1,6 @@
 import { createAction, handleActions } from "redux-actions";
 import { produce } from "immer";
-import { webtoonAPI, meAPI, offerAPI, reviewAPI } from "../../shared/API";
+import { webtoonAPI, userAPI, offerAPI, reviewAPI } from "../../shared/API";
 
 const SET_TOON_ONE = "SET_TOON_ONE";
 const SET_REVIEW_ID = "SET_REVIEW_ID";
@@ -211,7 +211,7 @@ const getEndToonOffer = () => {
 };
 
 //웹툰 상세정보 받아오기
-const getToonOneServer = (id = null) => {
+const getToonOneServer = (id) => {
   return async function (dispatch, getState, { history }) {
     try {
       const response = await webtoonAPI.getOne(id);
@@ -226,10 +226,10 @@ const getToonOneServer = (id = null) => {
 };
 
 //웹툰 리스트에 추가
-const addToonServer = (id = null) => {
+const addToonServer = (id) => {
   return async function (dispatch) {
     try {
-      const response = await meAPI.addWebtoon(id);
+      const response = await userAPI.addWebtoon(id);
       console.log(response, "addToonOK");
     } catch (err) {
       console.log(err, "addToonError");
@@ -238,7 +238,7 @@ const addToonServer = (id = null) => {
 };
 
 //비슷한 웹툰 추천
-const similarToonServer = (id = null) => {
+const similarToonServer = (id) => {
   return async function (dispatch) {
     try {
       const response = await offerAPI.getSimilarGenre(id);
@@ -250,7 +250,7 @@ const similarToonServer = (id = null) => {
 };
 
 //리뷰 작성
-const uploadReviewServer = (rewviewId = null, reviewContent = null) => {
+const uploadReviewServer = (rewviewId, reviewContent) => {
   return async function (dispatch) {
     try {
       const response = await reviewAPI.putReview({ rewviewId, reviewContent });
@@ -262,7 +262,7 @@ const uploadReviewServer = (rewviewId = null, reviewContent = null) => {
 };
 
 //리뷰 삭제
-const deleteReviewServer = (reviewId = null) => {
+const deleteReviewServer = (reviewId) => {
   return async function (dispatch, getState, { history }) {
     try {
       const response = await reviewAPI.deleteReview(reviewId);
@@ -277,7 +277,7 @@ const deleteReviewServer = (reviewId = null) => {
 };
 
 //웹툰 별점 주기
-const putStarServer = (webtoonId = null, userPointNumber = null) => {
+const putStarServer = (webtoonId, userPointNumber) => {
   return async function (dispatch) {
     try {
       const response = await reviewAPI.putStar({ webtoonId, userPointNumber });
@@ -290,7 +290,7 @@ const putStarServer = (webtoonId = null, userPointNumber = null) => {
 };
 
 //리뷰 좋아요 토글 : 로그인 유저의 기존 좋아요 여부를 상세 api로 받아야 함 + 리듀서 액션 추가
-const likeReviewServer = (reviewId = null) => {
+const likeReviewServer = (reviewId) => {
   return async function (dispatch) {
     try {
       const response = await reviewAPI.likeReview(reviewId);

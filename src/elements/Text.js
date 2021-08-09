@@ -87,6 +87,7 @@ const ElP = styled.p`
   background-color: ${(props) => props.bgColor};
   font-size: ${(props) => props.fontSize};
   font-weight: ${(props) => props.fontWeight};
+  white-space: ${(props) => props.whiteSpace};
 `;
 
 const ElSpan = styled.span`

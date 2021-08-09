@@ -6,6 +6,7 @@ import OfferCard from "./OfferCard";
 import Slick from "./Slick";
 import DetailReview from "./DetailReview";
 import DetailStar from "./DetailStar";
+import ProgressStepBtns from "./ProgressStepBtns";
 import TalkComment from "./TalkComment";
 import SkeletonCard from "./SkeletonCard";
 import ToonListCard from "./ToonListCard";
@@ -19,6 +20,7 @@ export {
   Slick,
   DetailReview,
   DetailStar,
+  ProgressStepBtns,
   TalkComment,
   SkeletonCard,
   ToonListCard,

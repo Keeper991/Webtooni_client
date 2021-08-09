@@ -17,13 +17,12 @@ const TalkDetail = (props) => {
   //댓글 가져오기
   const comment_all = useSelector((store) => store.talkComment.list);
   console.log(comment_all, "commentall");
-  const comment_list = comment_all.filter((item) => item.postId === post_id)[0]
-    .commentList;
+  const comment_list = comment_all.filter((item) => item.postId === post_id);
   console.log(comment_list, "comment_list");
   const dispatch = useDispatch();
   useEffect(() => {
-    //서버에 포스트 요청(포스트가 없거나 있어도 포스트 콘텐트가 없을 때)
-    if (!post?.postContent || !post) {
+    //서버에 포스트 요청
+    if (!post) {
       dispatch(talkActions.getPostOneServer(post_id));
     }
     //서버에 댓글 요청(포스트의 댓글 수가 0이 아님에도 댓글리스트가 없을 때) //댓글 변수명 수정...
@@ -51,7 +50,7 @@ const TalkDetail = (props) => {
     }
   };
 
-  //댓글 작성하기
+  //댓글 입력하기
   const [comment, setComment] = React.useState("");
   const writeComment = (e) => {
     setComment(e.target.value);
@@ -60,27 +59,47 @@ const TalkDetail = (props) => {
   return (
     <>
       {post && (
-        <Grid>
-          <Grid
-            display="flex"
-            justify="center"
-            flexDir="column"
-            align="center"
-            width="90%"
-            padding="20px"
-            margin="20px"
-            bgColor={Color.lightGray}
-          >
-            {/* 게시글 내용 */}
-            <Grid
-              display="flex"
-              justify="space-between"
-              bgColor={Color.white}
-              margin="10px 0"
-              width="100%"
-            >
+        <Grid bgColor={Color.lightGray6}>
+          {/* 게시글 내용 */}
+          <Grid bgColor={Color.white} padding="20px" width="100%">
+            <Grid borderBottom={`1px solid ${Color.lightGray4}`}>
               <Text type="p">{post.postTitle}</Text>
-              <Text type="p">{post.userName}</Text>
+              <Grid display="flex" justify="space-between" align="center">
+                <Grid display="flex">
+                  <Text color={Color.lightGray5} type="p" whiteSpace="nowrap">
+                    {post.userName}
+                  </Text>
+                  <Text color={Color.lightGray5} type="p" whiteSpace="nowrap">
+                    작성시간{post.createDate}
+                  </Text>
+                </Grid>
+
+                {/* 클릭 시 좋아요 토글. 이미지도 구분해 넣기 */}
+                <Grid
+                  display="flex"
+                  align="center"
+                  bgColor={Color.white}
+                  margin="10px 0"
+                  onClick={toggleLike}
+                >
+                  {post.isLike ? (
+                    <Image
+                      width="20px"
+                      height="20px"
+                      src="https://cdn.pixabay.com/photo/2013/07/12/17/39/star-152151_960_720.png"
+                    ></Image>
+                  ) : (
+                    <Image
+                      width="20px"
+                      height="20px"
+                      src="https://cdn.pixabay.com/photo/2013/07/12/17/39/star-152151_960_720.png"
+                    ></Image>
+                  )}{" "}
+                  <Text type="p" whiteSpace="nowrap">
+                    {post.likeCount}좋아요 수
+                  </Text>
+                </Grid>
+              </Grid>
             </Grid>
             <Grid bgColor={Color.white} margin="10px 0" width="100%">
               <Text type="p">{post.postContent}</Text>
@@ -98,45 +117,16 @@ const TalkDetail = (props) => {
                 <Button _onClick={deletePost}>삭제</Button>
               </Grid>
             )}
-
-            {/* 클릭 시 좋아요 토글. 로그인한 유저의 좋아요 여부 알아야함 -> 그 때 토글을 위한 이미지도 구분해 넣기 */}
-            <Grid
-              display="flex"
-              bgColor={Color.white}
-              margin="10px 0"
-              width="100%"
-              onClick={toggleLike}
-            >
-              <Image
-                width="20px"
-                height="20px"
-                src="https://cdn.pixabay.com/photo/2013/07/12/17/39/star-152151_960_720.png"
-              ></Image>
-              <Text type="p">좋아요 수</Text>
-            </Grid>
           </Grid>
 
           {/* 댓글 */}
-          <Grid
-            display="flex"
-            justify="center"
-            flexDir="column"
-            align="center"
-            width="90%"
-            padding="20px"
-            margin="20px"
-            bgColor={Color.lightGray}
-          >
+          <Grid margin="10px 0" bgColor={Color.white} width="100%">
             {/* 댓글 작성 */}
-            <Grid
-              display="flex"
-              justify="center"
-              flexDir="column"
-              align="center"
-              width="90%"
-            >
+            <Grid display="flex" justify="center" align="center" width="100%">
               <Input
-                placeholder="댓글을 작성해 주세요"
+                placeholder="내용을 입력해 주세요"
+                // color={Color.lightGray5}
+                placeHolderGray
                 _onChange={writeComment}
                 value={comment}
               ></Input>
@@ -159,7 +149,7 @@ const TalkDetail = (props) => {
               <TalkComment
                 key={idx}
                 comment_info={_}
-                post_id={post_id}
+                commentCount={post.commentCount}
               ></TalkComment>
             ))}
           </Grid>
@@ -179,5 +169,6 @@ const Grid = styled.div`
   padding: ${(props) => (props.padding ? props.padding : "")};
   position: ${(props) => props.position || ""};
   background-color: ${(props) => props.bgColor || ""};
+  border-bottom: ${(props) => props.borderBottom || ""};
 `;
 export default TalkDetail;
