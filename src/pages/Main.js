@@ -10,6 +10,7 @@ import {
   BestReveiwerCard,
   WebToonMonth,
   Slick,
+  SkeletonCard,
 } from "../components";
 import { Button, Text } from "../elements";
 import { Color } from "../shared/common";
@@ -21,113 +22,17 @@ const Main = () => {
     dispatch(webtoonActions.getWebtooniRank());
     dispatch(webtoonActions.getNaverRank());
     dispatch(webtoonActions.getKakaoRank());
+    dispatch(webtoonActions.getUserOffer());
     dispatch(adminActions.getMainReview());
+    dispatch(adminActions.getMainBestReviewer());
   }, []);
 
-  const webtooniList = useSelector((state) => state.webtoon.webtooni_rank);
-  const naveriList = useSelector((state) => state.webtoon.naver_rank);
-  const kakaoList = useSelector((state) => state.webtoon.kakao_rank);
+  const is_loading = useSelector((state) => state.webtoon.is_loading);
+  const webtooni_list = useSelector((state) => state.webtoon.webtooni_rank);
+  const naver_list = useSelector((state) => state.webtoon.naver_rank);
+  const kakao_list = useSelector((state) => state.webtoon.kakao_rank);
 
   const [is_best, setIsBest] = React.useState(true);
-  console.log(is_best);
-  const webToonList = [
-    {
-      toonId: 1,
-      toonImg:
-        "https://shared-comic.pstatic.net/thumb/webtoon/703846/thumbnail/thumbnail_IMAG06_aa715a18-fe51-4adf-b21b-5fc253ed3f32.jpg",
-      toonUrl:
-        "https://comic.naver.com/webtoon/list?titleId=703846&weekday=tue",
-      toonTitle: "여신강림",
-      toonAuthor: "야옹이",
-      toonPointTotalNumber: 4.8,
-      toonPlatform: "네이버 웹툰",
-      toonDay: "화",
-    },
-    {
-      toonImg:
-        "https://shared-comic.pstatic.net/thumb/webtoon/773459/thumbnail/thumbnail_IMAG06_74d73b73-0bed-42f7-9f81-19b9732087cf.jpg",
-      toonUrl:
-        "https://comic.naver.com/webtoon/list?titleId=773459&weekday=tue",
-      toonTitle: "용사가 돌아왔다",
-      toonAuthor: "나락 / 풍백",
-      toonPointTotalNumber: 3,
-      toonPlatform: "네이버 웹툰",
-      toonDay: "목",
-    },
-    {
-      toonImg:
-        "https://shared-comic.pstatic.net/thumb/webtoon/703852/thumbnail/thumbnail_IMAG06_0aacf362-325b-4d8d-ad60-4b7d888b2fdd.jpg",
-      toonUrl: "https://comic.naver.com/webtoon/list?titleId=703852",
-      toonTitle: "바른연애 길잡이",
-      toonAuthor: "남수",
-      toonPointTotalNumber: 5,
-      toonPlatform: "네이버 웹툰",
-      toonDay: "수",
-    },
-    {
-      toonImg:
-        "https://shared-comic.pstatic.net/thumb/webtoon/703846/thumbnail/thumbnail_IMAG06_aa715a18-fe51-4adf-b21b-5fc253ed3f32.jpg",
-      toonTitle: "여신강림",
-      toonAuthor: "야옹이",
-      toonPointTotalNumber: 4.8,
-      toonPlatform: "네이버 웹툰",
-      toonDay: "화",
-    },
-    {
-      toonImg:
-        "https://shared-comic.pstatic.net/thumb/webtoon/773459/thumbnail/thumbnail_IMAG06_74d73b73-0bed-42f7-9f81-19b9732087cf.jpg",
-      toonTitle: "용사가 돌아왔다",
-      toonAuthor: "나락 / 풍백",
-      toonPointTotalNumber: 3,
-      toonPlatform: "네이버 웹툰",
-      toonDay: "목",
-    },
-    {
-      toonImg:
-        "https://shared-comic.pstatic.net/thumb/webtoon/703852/thumbnail/thumbnail_IMAG06_0aacf362-325b-4d8d-ad60-4b7d888b2fdd.jpg",
-      toonTitle: "바른연애 길잡이",
-      toonAuthor: "남수",
-      toonPointTotalNumber: 5,
-      toonPlatform: "네이버 웹툰",
-      toonDay: "수",
-    },
-    {
-      toonImg:
-        "https://shared-comic.pstatic.net/thumb/webtoon/703846/thumbnail/thumbnail_IMAG06_aa715a18-fe51-4adf-b21b-5fc253ed3f32.jpg",
-      toonTitle: "여신강림",
-      toonAuthor: "야옹이",
-      toonPointTotalNumber: 4.8,
-      toonPlatform: "네이버 웹툰",
-      toonDay: "화",
-    },
-    {
-      toonImg:
-        "https://shared-comic.pstatic.net/thumb/webtoon/773459/thumbnail/thumbnail_IMAG06_74d73b73-0bed-42f7-9f81-19b9732087cf.jpg",
-      toonTitle: "용사가 돌아왔다",
-      toonAuthor: "나락 / 풍백",
-      toonPointTotalNumber: 3,
-      toonPlatform: "네이버 웹툰",
-      toonDay: "목",
-    },
-    {
-      toonImg:
-        "https://shared-comic.pstatic.net/thumb/webtoon/703852/thumbnail/thumbnail_IMAG06_0aacf362-325b-4d8d-ad60-4b7d888b2fdd.jpg",
-      toonTitle: "바른연애 길잡이",
-      toonAuthor: "남수",
-      toonPointTotalNumber: 5,
-      toonPlatform: "네이버 웹툰",
-      toonDay: "수",
-    },
-    {
-      toonImg:
-        "https://shared-comic.pstatic.net/thumb/webtoon/703846/thumbnail/thumbnail_IMAG06_aa715a18-fe51-4adf-b21b-5fc253ed3f32.jpg",
-      toonTitle: "여신강림",
-      toonAuthor: "야옹이",
-      toonPointTotalNumber: 4.8,
-      toonPlatform: "네이버 웹툰",
-      toonDay: "화",
-    },
-  ];
 
   const ReviewList = [
     {
@@ -312,64 +217,109 @@ const Main = () => {
     <React.Fragment>
       <TitleGrid>
         <Text fontSize="16px" fontWeight="bold">
-          이번 주 웹툰 평론가의 추천
+          이달의 웹투니버스 순위
         </Text>
         <Button
           border="none"
           bgColor={Color.white}
           fontSize="12px"
           width="50px"
+          _onClick={() => {
+            history.push("/toonlist/webtooniverse_rank");
+          }}
         >
           더보기
         </Button>
       </TitleGrid>
-      <SliderBox>
-        <Slick is_infinite>
-          {webtooniList?.map((_, idx) => {
-            return <WebToonCard key={idx} {..._}></WebToonCard>;
-          })}
-        </Slick>
-      </SliderBox>
 
+      <SliderBox>
+        {is_loading || webtooni_list.length === 0 ? (
+          <Slick is_infinite>
+            {Array.from({ length: 10 }).map(() => {
+              return <SkeletonCard></SkeletonCard>;
+            })}
+          </Slick>
+        ) : (
+          <Slick is_infinite>
+            {webtooni_list?.map((_, idx) => {
+              return <WebToonCard key={idx} {..._}></WebToonCard>;
+            })}
+          </Slick>
+        )}
+      </SliderBox>
       <Slick is_arrow is_variableWidth={false} is_infinite>
         <MonthBox>
           <TextGrid>
             <Text fontWeight="bold">이번 달 네이버 웹툰 TOP 10</Text>
           </TextGrid>
-          <RankGrid>
-            {naveriList?.map((_, idx) => {
-              return <WebToonMonth key={idx} {..._} idx={idx}></WebToonMonth>;
-            })}
-          </RankGrid>
+          {is_loading || naver_list.length === 0 ? (
+            <RankGrid>
+              {Array.from({ length: 10 }).map(() => {
+                return <SkeletonCard rank></SkeletonCard>;
+              })}
+            </RankGrid>
+          ) : (
+            <RankGrid>
+              {naver_list?.map((_, idx) => {
+                return <WebToonMonth key={idx} {..._} idx={idx}></WebToonMonth>;
+              })}
+            </RankGrid>
+          )}
         </MonthBox>
 
         <MonthBox>
           <TextGrid>
-            <Text>이번 달 카카오 웹툰 TOP 10</Text>
+            <Text fontWeight="bold">이번 달 카카오 웹툰 TOP 10</Text>
           </TextGrid>
-          <RankGrid>
-            {kakaoList?.map((_, idx) => {
-              return <WebToonMonth key={idx} {..._} idx={idx}></WebToonMonth>;
-            })}
-          </RankGrid>
+          {is_loading || kakao_list.length === 0 ? (
+            <RankGrid>
+              {Array.from({ length: 10 }).map(() => {
+                return <SkeletonCard rank></SkeletonCard>;
+              })}
+            </RankGrid>
+          ) : (
+            <RankGrid>
+              {kakao_list?.map((_, idx) => {
+                return <WebToonMonth key={idx} {..._} idx={idx}></WebToonMonth>;
+              })}
+            </RankGrid>
+          )}
         </MonthBox>
       </Slick>
 
       {is_login ? (
         <SliderBox>
-          <Slick is_infinite>
-            {webToonList.map((_, idx) => {
-              return <WebToonCard key={idx} {..._}></WebToonCard>;
-            })}
-          </Slick>
+          {is_loading || webtooni_list.length === 0 ? (
+            <Slick is_infinite>
+              {Array.from({ length: 10 }).map(() => {
+                return <SkeletonCard></SkeletonCard>;
+              })}
+            </Slick>
+          ) : (
+            <Slick is_infinite>
+              {webtooni_list?.map((_, idx) => {
+                return <WebToonCard key={idx} {..._}></WebToonCard>;
+              })}
+            </Slick>
+          )}
         </SliderBox>
       ) : (
         <HiddenBlurBox>
           <BlurText>지금 로그인하고 맞춤 웹툰 추천 받기!</BlurText>
           <BlurBox>
-            {webToonList.map((_, idx) => {
-              return <WebToonCard key={idx} {..._}></WebToonCard>;
-            })}
+            {is_loading || webtooni_list.length === 0 ? (
+              <Slick is_infinite>
+                {Array.from({ length: 10 }).map(() => {
+                  return <SkeletonCard></SkeletonCard>;
+                })}
+              </Slick>
+            ) : (
+              <Slick is_infinite>
+                {webtooni_list?.map((_, idx) => {
+                  return <WebToonCard key={idx} {..._}></WebToonCard>;
+                })}
+              </Slick>
+            )}
           </BlurBox>
         </HiddenBlurBox>
       )}
@@ -380,8 +330,11 @@ const Main = () => {
             setIsBest(true);
           }}
           bgColor={Color.white}
-          width="100px"
+          width="90px"
+          height="30px"
           border="none"
+          fontWeight="bold"
+          color={is_best ? Color.black : Color.gray}
         >
           베스트 리뷰
         </Button>
@@ -390,8 +343,11 @@ const Main = () => {
             setIsBest(false);
           }}
           bgColor={Color.white}
-          width="100px"
+          width="90px"
+          height="30px"
           border="none"
+          fontWeight="bold"
+          color={!is_best ? Color.black : Color.gray}
         >
           최신 리뷰
         </Button>
@@ -414,7 +370,9 @@ const Main = () => {
         </SliderBox>
       )}
 
-      <Text>베스트 리뷰어</Text>
+      <TitleGrid>
+        <Text fontWeight="bold">베스트 리뷰어</Text>
+      </TitleGrid>
       <SliderBox>
         <Slick is_infinite>
           {BestReveiwerList.map((_, idx) => {
@@ -505,7 +463,8 @@ const RankGrid = styled.div`
 `;
 
 const ReviewTabGrid = styled.div`
-  width: 90%;
+  width: 95%;
+  margin: 0 auto;
   display: flex;
 `;
 export default Main;

@@ -27,7 +27,7 @@ const Detail = (props) => {
 
   const is_login = useSelector((store) => store.user.is_login);
   const user = useSelector((store) => store.user.user);
-  const userEmail = user?.userEmail;
+  const userName = user?.userName;
 
   //내 리스트에 추가하기
   const addList = () => {
@@ -40,7 +40,7 @@ const Detail = (props) => {
 
   // 기존 리뷰 가져오기
   const prev_review = toon.reviews.filter(
-    (item) => item.userEmail === userEmail //로그인한 유저의 리뷰 찾기
+    (item) => item.userName === userName //로그인한 유저의 리뷰 찾기
   )[0];
 
   // const review_id = useSelector((store) => store.webtoon.review_id);  //별점 주고 받아온 리뷰 아이디. 얘는 필요없을 듯~ 리렌더링 해서 상세페이지 정보를 새로 받아오면 추가된 리뷰 아이디 가져오기..

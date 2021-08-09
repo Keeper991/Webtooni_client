@@ -7,6 +7,9 @@ import Slick from "./Slick";
 import DetailReview from "./DetailReview";
 import DetailStar from "./DetailStar";
 import ProgressStepBtns from "./ProgressStepBtns";
+import TalkComment from "./TalkComment";
+import SkeletonCard from "./SkeletonCard";
+import ToonListCard from "./ToonListCard";
 
 export {
   WebToonCard,
@@ -18,4 +21,7 @@ export {
   DetailReview,
   DetailStar,
   ProgressStepBtns,
+  TalkComment,
+  SkeletonCard,
+  ToonListCard,
 };
