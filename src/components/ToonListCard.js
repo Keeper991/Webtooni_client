@@ -24,10 +24,10 @@ const ToonListCard = (props) => {
         <InfoGrid>
           <FlexGrid flexStart>
             <Text fontSize="12px" color={Color.orange}>
-              판타지
+              {props.genre ? props.genre.genreType : null}
             </Text>
             <Text type="p" margin="0 15px" fontSize="12px" color={Color.gray}>
-              토
+              {props.toonWeekday ? props.toonWeekday : "완결"}
             </Text>
           </FlexGrid>
           <TitleText>{props.toonTitle}</TitleText>
@@ -76,6 +76,7 @@ const InfoGrid = styled.div`
   display: flex;
   justify-content: space-around;
   flex-direction: column;
+  width: 260px;
   height: 64px;
   margin-left: 5px;
 `;
@@ -88,6 +89,10 @@ const TitleText = styled.p`
 
 const AuthorText = styled.p`
   font-size: 12px;
+  max-width: 130px;
   color: ${Color.darkGray};
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
 `;
 export default ToonListCard;

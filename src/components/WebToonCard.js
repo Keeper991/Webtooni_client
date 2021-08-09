@@ -17,7 +17,7 @@ const WebToonCard = (props) => {
             src={props.toonImg}
             width="100%"
             height="100%"
-            radius="5px"
+            radius="4px"
           ></Image>
         </ImageGrid>
 
@@ -25,7 +25,7 @@ const WebToonCard = (props) => {
           <FlexGrid>
             <FlexGrid>
               <Text color={Color.orange} fontSize="11px" fontWeight="bold">
-                {props.webtoonGenre ? props.webtoonGenre : props.toonAge}
+                {props.genre ? props.genre.genreType : null}
               </Text>
               <Text
                 color={Color.lightGray2}
