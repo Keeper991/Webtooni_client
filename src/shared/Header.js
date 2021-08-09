@@ -7,6 +7,12 @@ import { Button, Image } from "../elements/index";
 import { withRouter } from "react-router";
 import { NavLink } from "react-router-dom";
 import { Color } from "./common";
+import {
+  UserOutlined,
+  SearchOutlined,
+  LoginOutlined,
+  LogoutOutlined,
+} from "@ant-design/icons";
 
 const Header = (props) => {
   const dispatch = useDispatch();
@@ -63,16 +69,11 @@ const Header = (props) => {
           bgColor={Color.white}
           width="151px"
           height="25px"
-          borderRadius="none"
+          borderRadius="0"
           padding="0"
           margin="-10px 0 0 15px"
-        >
-          <Image
-            width="100%"
-            height="25px"
-            src="https://lh3.googleusercontent.com/pw/AM-JKLXT8w8Fi8N_J4qEQdB2mlrNjcj_p7g67WEiyBiwZPw2__VjiJYiaYfWgAs8hFj8p2wwWJaaqYATW0rFu9zc-apqE_5kw7_If516xxw0Mia2-4ouK1qmTxyY7dr8ZQrGVwQRvjhVBerRu-ddqBYN6xk4=w151-h25-no?authuser=0"
-          ></Image>
-        </Button>
+          src="https://lh3.googleusercontent.com/pw/AM-JKLXT8w8Fi8N_J4qEQdB2mlrNjcj_p7g67WEiyBiwZPw2__VjiJYiaYfWgAs8hFj8p2wwWJaaqYATW0rFu9zc-apqE_5kw7_If516xxw0Mia2-4ouK1qmTxyY7dr8ZQrGVwQRvjhVBerRu-ddqBYN6xk4=w151-h25-no?authuser=0"
+        ></Button>
       </LoginHeaderWrap>
     );
   }
@@ -101,38 +102,49 @@ const Header = (props) => {
               ></Image>
             </Button>
 
-            <Button
-              color={Color.black}
-              bgColor={Color.white}
-              border="none"
-              _onClick={handleLogOut}
-            >
-              로그아웃
-            </Button>
+            <IconWrap>
+              <LogoutOutlined></LogoutOutlined>
+              <SearchOutlined></SearchOutlined>
+              <UserOutlined></UserOutlined>
+            </IconWrap>
           </HeaderWrap>
 
           <PageBtnBox>
-            <NavBtn
+            <NavLink
+              activeStyle={activeStyle}
+              exact
+              to="/recommendation"
+              style={defaultStyle}
               onClick={() => {
-                history.push("/recommendation");
+                history.push("/talk");
               }}
             >
               추천
-            </NavBtn>
-            <NavBtn
+            </NavLink>
+
+            <NavLink
+              activeStyle={activeStyle}
+              exact
+              to="/review"
+              style={defaultStyle}
               onClick={() => {
-                history.push("/review");
+                history.push("/talk");
               }}
             >
               리뷰
-            </NavBtn>
-            <NavBtn
+            </NavLink>
+
+            <NavLink
+              activeStyle={activeStyle}
+              exact
+              to="/talk"
+              style={defaultStyle}
               onClick={() => {
                 history.push("/talk");
               }}
             >
               톡톡
-            </NavBtn>
+            </NavLink>
           </PageBtnBox>
         </Container>
       </React.Fragment>
@@ -151,27 +163,20 @@ const Header = (props) => {
             bgColor={Color.white}
             width="151px"
             height="25px"
-            borderRadius="none"
+            borderRadius="0"
             padding="0"
             margin="-10px 0 0 15px"
-          >
-            <Image
-              width="100%"
-              height="25px"
-              src="https://lh3.googleusercontent.com/pw/AM-JKLXT8w8Fi8N_J4qEQdB2mlrNjcj_p7g67WEiyBiwZPw2__VjiJYiaYfWgAs8hFj8p2wwWJaaqYATW0rFu9zc-apqE_5kw7_If516xxw0Mia2-4ouK1qmTxyY7dr8ZQrGVwQRvjhVBerRu-ddqBYN6xk4=w151-h25-no?authuser=0"
-            ></Image>
-          </Button>
+            src="https://lh3.googleusercontent.com/pw/AM-JKLXT8w8Fi8N_J4qEQdB2mlrNjcj_p7g67WEiyBiwZPw2__VjiJYiaYfWgAs8hFj8p2wwWJaaqYATW0rFu9zc-apqE_5kw7_If516xxw0Mia2-4ouK1qmTxyY7dr8ZQrGVwQRvjhVBerRu-ddqBYN6xk4=w151-h25-no?authuser=0"
+          ></Button>
 
-          <Button
-            color={Color.black}
-            bgColor={Color.white}
-            border="none"
-            _onClick={() => {
-              history.push("/login");
-            }}
-          >
-            로그인
-          </Button>
+          <IconWrap>
+            <LoginOutlined
+              onClick={() => {
+                history.push("/login");
+              }}
+            ></LoginOutlined>
+            <SearchOutlined style={{ margin: "0 15px" }}></SearchOutlined>
+          </IconWrap>
         </HeaderWrap>
 
         <PageBtnBox>
@@ -180,6 +185,9 @@ const Header = (props) => {
             exact
             to="/recommendation"
             style={defaultStyle}
+            onClick={() => {
+              history.push("/talk");
+            }}
           >
             추천
           </NavLink>
@@ -189,6 +197,9 @@ const Header = (props) => {
             exact
             to="/review"
             style={defaultStyle}
+            onClick={() => {
+              history.push("/talk");
+            }}
           >
             리뷰
           </NavLink>
@@ -198,6 +209,9 @@ const Header = (props) => {
             exact
             to="/talk"
             style={defaultStyle}
+            onClick={() => {
+              history.push("/talk");
+            }}
           >
             톡톡
           </NavLink>
@@ -250,15 +264,6 @@ const Container = styled.div`
   box-shadow: rgba(0, 0, 0, 0.05) 0px 6px 24px 0px,
     rgba(0, 0, 0, 0.08) 0px 0px 0px 1px;
 `;
-const NavBtn = styled.button`
-  margin: 0 10px;
-  width: 70px;
-  height: 30px;
-  background: ${Color.white};
-  border: none;
-  font-size: 16px;
-  font-weight: bold;
-`;
 
 const HeaderWrap = styled.div`
   top: 0;
@@ -272,6 +277,13 @@ const HeaderWrap = styled.div`
   align-items: center;
   justify-content: space-between;
   border-bottom: 1px solid rgba(0, 0, 0, 0.08);
+`;
+
+const IconWrap = styled.div`
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  font-size: 20px;
 `;
 
 const LoginHeaderWrap = styled.div`
