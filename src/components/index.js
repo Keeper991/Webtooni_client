@@ -8,6 +8,7 @@ import DetailReview from "./DetailReview";
 import DetailStar from "./DetailStar";
 import TalkComment from "./TalkComment";
 import SkeletonCard from "./SkeletonCard";
+import ToonListCard from "./ToonListCard";
 
 export {
   WebToonCard,
@@ -20,4 +21,5 @@ export {
   DetailStar,
   TalkComment,
   SkeletonCard,
+  ToonListCard,
 };
