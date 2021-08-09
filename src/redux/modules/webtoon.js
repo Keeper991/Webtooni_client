@@ -1,6 +1,6 @@
 import { createAction, handleActions } from "redux-actions";
 import { produce } from "immer";
-import { webtoonAPI, meAPI, offerAPI, reviewAPI } from "../../shared/API";
+import { webtoonAPI, userAPI, offerAPI, reviewAPI } from "../../shared/API";
 
 const SET_TOON_ONE = "SET_TOON_ONE";
 const SET_REVIEW_ID = "SET_REVIEW_ID";
@@ -229,7 +229,7 @@ const getToonOneServer = (id) => {
 const addToonServer = (id) => {
   return async function (dispatch) {
     try {
-      const response = await meAPI.addWebtoon(id);
+      const response = await userAPI.addWebtoon(id);
       console.log(response, "addToonOK");
     } catch (err) {
       console.log(err, "addToonError");

@@ -55,7 +55,7 @@ const talkAPI = {
     instance.delete(`talk/${postId}/comment`, { commentpostId }),
 };
 
-const meAPI = {
+const userAPI = {
   addWebtoon: (id) => instance.post(`user/me/webtoons`, { id }),
   getWebtoon: () => instance.get(`user/me/webtoons`),
   getNickname: () => instance.get(`user/me/nick`),
@@ -78,4 +78,4 @@ const meAPI = {
   search: (keyword) => instance.get(`search?keyword=${keyword}`),
 };
 
-export { webtoonAPI, reviewAPI, reviewerAPI, offerAPI, talkAPI, meAPI };
+export { webtoonAPI, reviewAPI, reviewerAPI, offerAPI, talkAPI, userAPI };

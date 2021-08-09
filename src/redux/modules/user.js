@@ -1,6 +1,6 @@
 import { createAction, handleActions } from "redux-actions";
 import { produce } from "immer";
-import { meAPI } from "../../shared/API";
+import { userAPI } from "../../shared/API";
 
 const SET_USER = "SET_USER";
 const LOG_OUT = "LOG_OUT";
@@ -8,15 +8,10 @@ const LOG_OUT = "LOG_OUT";
 const setUser = createAction(SET_USER, (user) => ({ user }));
 const logOut = createAction(LOG_OUT, (user) => ({ user }));
 
-const initialState = {
-  user: null,
-  is_login: false,
-};
-
 const loginDB = (userEmail, password) => {
   return async function (dispatch, getState, { history }) {
     try {
-      const res = await meAPI.login({ userEmail, password });
+      const res = await userAPI.login({ userEmail, password });
       console.log(res);
 
       dispatch(
@@ -47,7 +42,7 @@ const signUpDB = (userEmail, userName, password, passwordChecker, userImg) => {
     console.log(userEmail, userName, password, passwordChecker, userImg);
 
     try {
-      const res = meAPI.register({
+      const res = userAPI.register({
         userEmail,
         userName,
         password,
@@ -79,6 +74,22 @@ const loginCheck = () => {
   };
 };
 
+const initialState = {
+  // info 로 수정예정.
+  user: {
+    userName: "",
+    userEmail: "",
+    userImg: -1,
+    userGrade: "",
+  },
+  subscribeList: [],
+  reviewLikeList: [],
+  postList: [],
+  postLikeList: [],
+  commentList: [],
+  is_login: false,
+};
+
 export default handleActions(
   {
     [SET_USER]: (state, action) =>
@@ -88,7 +99,7 @@ export default handleActions(
       }),
     [LOG_OUT]: (state, action) =>
       produce(state, (draft) => {
-        draft.user = null;
+        draft.user = initialState.user;
         draft.is_login = false;
       }),
   },
