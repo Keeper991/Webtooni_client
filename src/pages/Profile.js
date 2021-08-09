@@ -7,7 +7,7 @@ import { Color } from "../shared/common";
 import { history } from "../redux/configureStore";
 
 import profileImgList from "../images/profiles";
-import ProgressStepBtns from "../components/ProgressStepBtns";
+import { ProgressStepBtns } from "../components";
 import { useDispatch } from "react-redux";
 import { userAPI } from "../shared/API";
 

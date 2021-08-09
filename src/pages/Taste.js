@@ -5,7 +5,7 @@ import { Button, Text } from "../elements";
 import { Color } from "../shared/common";
 
 import { history } from "../redux/configureStore";
-import ProgressStepBtns from "../components/ProgressStepBtns";
+import { ProgressStepBtns } from "../components";
 
 const MAX_SELECT_COUNT = 5;
 const TASTE_LS = "TASTE_LIST";
