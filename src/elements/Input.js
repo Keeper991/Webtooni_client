@@ -102,6 +102,22 @@ const ElInput = styled.input`
   font-weight: ${(props) => props.fontWeight};
   border: ${(props) => props.border};
   border-radius: 4px;
+  /* 
+  플레이스 홀더 색상 입혀야 하는데...
+  ${(props) =>
+    props.placeHolderGray
+      ? `
+  &::placeholder {
+	color: #fff;
+};
+&:-ms-input-placeholder {
+	color: #fff;
+};
+&::-ms-input-placeholder {
+	color: #fff;
+};
+}`
+      : ""} */
 
   &:focus,
   &:active {

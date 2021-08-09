@@ -4,6 +4,7 @@ import styled from "styled-components";
 import { Button, Input } from "../elements";
 import { actionCreators as talkActions } from "../redux/modules/talk";
 import { history } from "../redux/configureStore";
+import { Color } from "../shared/common";
 
 const TalkWrite = (props) => {
   const dispatch = useDispatch();
@@ -29,21 +30,19 @@ const TalkWrite = (props) => {
   //상황 별 분기
   useEffect(() => {
     //로그인 안 했으면 메인으로 이동
-    if (!is_login) {
-      alert("로그인 후 이용하세요~");
-      history.replace("/talk");
-      return;
-    }
-
-    //유저가 포스트 작성자가 아닐 때 메인으로 이동 . 얘가 실행 안 되어야 하는데 실행됨...
-    if (userName && userName !== prevPost.userName) {
-      alert("다른 사람의 글이에요");
-      history.replace("/talk");
-      return;
-    }
+    // if (!is_login) {
+    //   alert("로그인 후 이용하세요~");
+    //   history.replace("/talk");
+    //   return;
+    // }
+    // //유저가 포스트 작성자가 아닐 때 메인으로 이동 . 얘가 실행 안 되어야 하는데 실행됨...
+    // if (userName && userName !== prevPost.userName) {
+    //   alert("다른 사람의 글이에요");
+    //   history.replace("/talk");
+    //   return;
+    // }
     //기존 포스트 상세 정보가 없으면 서버에 요청
-    if (!prevPost?.postContent) {
-      console.log("작업 실행 확인");
+    if (prevPost && !prevPost.postContent) {
       dispatch(talkActions.getPostOneServer(post_id));
       return;
     }
@@ -55,11 +54,11 @@ const TalkWrite = (props) => {
       alert("빠진 항목이 있어요");
       return;
     }
-    if (is_login) {
-      dispatch(talkActions.addPostServer(post.postTitle, post.postContent));
-    } else {
-      alert("로그인하세요~");
-    }
+    // if (is_login) {
+    dispatch(talkActions.addPostServer(post.postTitle, post.postContent));
+    // } else {
+    //   alert("로그인하세요~");
+    // }
   };
   //포스트 수정
   const editPost = () => {
@@ -77,34 +76,83 @@ const TalkWrite = (props) => {
   };
 
   return (
-    <Grid
-      display="flex"
-      justify="center"
-      flexDir="column"
-      align="center"
-      width="90%"
-    >
-      <Input
-        placeholder="제목을 입력하세요"
-        _onChange={(e) => setPost({ ...post, postTitle: e.target.value })}
-        value={post.postTitle}
+    <>
+      <Grid
+        display="flex"
+        justify="space-between"
+        align="center"
+        borderBottom={`1px solid ${Color.lightGray4}`}
+        padding="20px 30px 20px 5px"
       >
-        제목
-      </Input>
+        {/* 뒤로가기 */}
+        <Button
+          bgColor="transparent"
+          border="none"
+          _onClick={() => {
+            history.push("/talk");
+          }}
+        >
+          <svg
+            width="40"
+            height="40"
+            viewBox="0 0 28 28"
+            fill="none"
+            xmlns="http://www.w3.org/2000/svg"
+            onClick={() => {
+              history.go(-1);
+            }}
+          >
+            <path
+              d="M17.1238 6L10.419 13.5093L10 14L10.419 14.4907L17.1238 22L18 21.0187L11.7333 14L18 6.98133L17.1238 6Z"
+              fill="black"
+            />
+          </svg>
+        </Button>
+        {/* 게시글 등록 */}
+        {!prevPost ? (
+          <Button
+            border="none"
+            color={Color.white}
+            bgColor={Color.black2}
+            width="80px"
+            height="45px"
+            fontSize="17px"
+            fontWeight="bold"
+            _onClick={addPost}
+          >
+            작성
+          </Button>
+        ) : (
+          <Button
+            border="none"
+            color={Color.white}
+            bgColor={Color.black2}
+            width="80px"
+            height="45px"
+            fontSize="17px"
+            fontWeight="bold"
+            _onClick={editPost}
+          >
+            수정
+          </Button>
+        )}
+      </Grid>
+      <Grid borderBottom={`1px solid ${Color.lightGray4}`}>
+        <Input
+          placeholder="제목을 입력하세요"
+          _onChange={(e) => setPost({ ...post, postTitle: e.target.value })}
+          border="none"
+          value={post.postTitle}
+        ></Input>
+      </Grid>
       <Input
         multiLine
         placeholder="내용을 입력하세요"
         _onChange={(e) => setPost({ ...post, postContent: e.target.value })}
+        border="none"
         value={post.postContent}
-      >
-        내용
-      </Input>
-      {!prevPost ? (
-        <Button _onClick={addPost}>등록</Button>
-      ) : (
-        <Button _onClick={editPost}>수정</Button>
-      )}
-    </Grid>
+      ></Input>
+    </>
   );
 };
 const Grid = styled.div`
@@ -118,6 +166,7 @@ const Grid = styled.div`
   padding: ${(props) => (props.padding ? props.padding : "")};
   position: ${(props) => props.position || ""};
   background-color: ${(props) => props.bgColor || ""};
+  border-bottom: ${(props) => props.borderBottom || ""};
 `;
 
 export default TalkWrite;
