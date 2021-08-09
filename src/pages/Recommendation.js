@@ -5,7 +5,7 @@ import { actionCreators as webtoonActions } from "../redux/modules/webtoon";
 import { actionCreators as adminActions } from "../redux/modules/admin";
 import { OfferCard } from "../components";
 import { Text, Image, Button } from "../elements";
-import { Slick, WebToonCard } from "../components";
+import { Slick, WebToonCard, SkeletonCard } from "../components";
 import { Color } from "../shared/common";
 import { history } from "../redux/configureStore";
 
@@ -22,6 +22,7 @@ const Recommendation = () => {
 
   const md_offer_list = useSelector((state) => state.admin.md_offer);
   const end_toon_list = useSelector((state) => state.webtoon.end_toon);
+  const is_loading = useSelector((state) => state.webtoon.is_loading);
 
   const webToonList = [
     {
@@ -304,9 +305,19 @@ const Recommendation = () => {
       </TitleGrid>
       <SliderBox>
         <Slick is_infinite>
-          {end_toon_list.map((_, idx) => {
-            return <WebToonCard key={idx} {..._}></WebToonCard>;
-          })}
+          {is_loading || end_toon_list.length === 0 ? (
+            <Slick is_infinite>
+              {Array.from({ length: 10 }).map(() => {
+                return <SkeletonCard></SkeletonCard>;
+              })}
+            </Slick>
+          ) : (
+            <Slick is_infinite>
+              {end_toon_list?.map((_, idx) => {
+                return <WebToonCard key={idx} {..._}></WebToonCard>;
+              })}
+            </Slick>
+          )}
         </Slick>
       </SliderBox>
 
