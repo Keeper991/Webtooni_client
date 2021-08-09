@@ -1,12 +1,16 @@
 import { createAction, handleActions } from "redux-actions";
 import { produce } from "immer";
-import { webtoonAPI, meAPI, offerAPI, reviewAPI } from "../../shared/API";
+import { webtoonAPI, userAPI, offerAPI, reviewAPI } from "../../shared/API";
 
 const SET_TOON_ONE = "SET_TOON_ONE";
 const SET_REVIEW_ID = "SET_REVIEW_ID";
 const SET_WEBTOONI_RANK = "SET_WEBTOONI_RANK";
 const SET_NAVER_RANK = "SET_NAVER_RANK";
 const SET_KAKAO_RANK = "SET_KAKAO_RANK";
+const SET_USER_OFFER = "SET_USER_OFFER";
+const SET_BEST_REVIEWER_OFFER = "SET_BEST_REVIEWER_OFFER";
+const SET_SIMILAR_USER_OFFER = "SET_SIMILAR_USER_OFFER";
+const SET_END_TOON_OFFER = "SET_END_TOON_OFFER";
 const LOADING = "IS_LOADING";
 
 const setToonOne = createAction(SET_TOON_ONE, (toon) => ({ toon }));
@@ -19,6 +23,25 @@ const setNaverRank = createAction(SET_NAVER_RANK, (naver_rank) => ({
 }));
 const setKakaoRank = createAction(SET_KAKAO_RANK, (kakao_rank) => ({
   kakao_rank,
+}));
+const setUserOffer = createAction(SET_USER_OFFER, (user_offer) => ({
+  user_offer,
+}));
+const setBestReviewerOffer = createAction(
+  SET_BEST_REVIEWER_OFFER,
+  (best_reviewer_offer) => ({
+    best_reviewer_offer,
+  })
+);
+const setSimilarUserOffer = createAction(
+  SET_SIMILAR_USER_OFFER,
+  (similar_user_offer) => ({
+    similar_user_offer,
+  })
+);
+
+const setEndToonOffer = createAction(SET_END_TOON_OFFER, (end_toon) => ({
+  end_toon,
 }));
 const Loading = createAction(LOADING, (is_loading) => ({ is_loading }));
 
@@ -91,7 +114,11 @@ const initialState = {
   webtooni_rank: [],
   naver_rank: [],
   kakao_rank: [],
+  user_offer: [],
+  best_reviewer_offer: [],
   review_id: "", //별점 준 후 받아온 리뷰 아이디
+  similar_user_offer: [],
+  end_toon: [],
   is_loading: false,
 };
 
@@ -132,8 +159,59 @@ const getKakaoRank = () => {
   };
 };
 
+//유저 맞춤 추천 웹툰 받아오기
+const getUserOffer = () => {
+  return async function (dispatch, getState, { history }) {
+    try {
+      const response = await offerAPI.getForUser();
+      dispatch(setUserOffer(response.data));
+    } catch (err) {
+      console.log(err);
+    }
+  };
+};
+
+//베스트 리뷰어의 추천 웹툰 받아오기
+const getBestReviewerOffer = () => {
+  return async function (dispatch, getState, { history }) {
+    try {
+      const response = await offerAPI.getBestReviewersChoice();
+      console.log(response);
+      dispatch(setBestReviewerOffer(response.data));
+    } catch (err) {
+      console.log(err);
+    }
+  };
+};
+
+//유저와 비슷한 취향을 가진 사용자가 많이 본 웹툰 받아오기
+const getSimilarUserOffer = () => {
+  return async function (dispatch, getState, { history }) {
+    try {
+      const response = await offerAPI.getSimilarUsersChoice();
+      console.log(response);
+      dispatch(setSimilarUserOffer(response.data));
+    } catch (err) {
+      console.log(err);
+    }
+  };
+};
+
+//완결 웹툰 받아오기
+const getEndToonOffer = () => {
+  return async function (dispatch, getState, { history }) {
+    try {
+      const response = await offerAPI.getEnd();
+      console.log(response);
+      dispatch(setEndToonOffer(response.data));
+    } catch (err) {
+      console.log(err);
+    }
+  };
+};
+
 //웹툰 상세정보 받아오기
-const getToonOneServer = (id = null) => {
+const getToonOneServer = (id) => {
   return async function (dispatch, getState, { history }) {
     try {
       const response = await webtoonAPI.getOne(id);
@@ -148,10 +226,10 @@ const getToonOneServer = (id = null) => {
 };
 
 //웹툰 리스트에 추가
-const addToonServer = (id = null) => {
+const addToonServer = (id) => {
   return async function (dispatch) {
     try {
-      const response = await meAPI.addWebtoon(id);
+      const response = await userAPI.addWebtoon(id);
       console.log(response, "addToonOK");
     } catch (err) {
       console.log(err, "addToonError");
@@ -160,7 +238,7 @@ const addToonServer = (id = null) => {
 };
 
 //비슷한 웹툰 추천
-const similarToonServer = (id = null) => {
+const similarToonServer = (id) => {
   return async function (dispatch) {
     try {
       const response = await offerAPI.getSimilarGenre(id);
@@ -172,7 +250,7 @@ const similarToonServer = (id = null) => {
 };
 
 //리뷰 작성
-const uploadReviewServer = (rewviewId = null, reviewContent = null) => {
+const uploadReviewServer = (rewviewId, reviewContent) => {
   return async function (dispatch) {
     try {
       const response = await reviewAPI.putReview({ rewviewId, reviewContent });
@@ -184,7 +262,7 @@ const uploadReviewServer = (rewviewId = null, reviewContent = null) => {
 };
 
 //리뷰 삭제
-const deleteReviewServer = (reviewId = null) => {
+const deleteReviewServer = (reviewId) => {
   return async function (dispatch, getState, { history }) {
     try {
       const response = await reviewAPI.deleteReview(reviewId);
@@ -199,7 +277,7 @@ const deleteReviewServer = (reviewId = null) => {
 };
 
 //웹툰 별점 주기
-const putStarServer = (webtoonId = null, userPointNumber = null) => {
+const putStarServer = (webtoonId, userPointNumber) => {
   return async function (dispatch) {
     try {
       const response = await reviewAPI.putStar({ webtoonId, userPointNumber });
@@ -212,7 +290,7 @@ const putStarServer = (webtoonId = null, userPointNumber = null) => {
 };
 
 //리뷰 좋아요 토글 : 로그인 유저의 기존 좋아요 여부를 상세 api로 받아야 함 + 리듀서 액션 추가
-const likeReviewServer = (reviewId = null) => {
+const likeReviewServer = (reviewId) => {
   return async function (dispatch) {
     try {
       const response = await reviewAPI.likeReview(reviewId);
@@ -246,6 +324,22 @@ export default handleActions(
       produce(state, (draft) => {
         draft.kakao_rank = action.payload.kakao_rank;
       }),
+    [SET_USER_OFFER]: (state, action) =>
+      produce(state, (draft) => {
+        draft.user_offer = action.payload.user_offer;
+      }),
+    [SET_BEST_REVIEWER_OFFER]: (state, action) =>
+      produce(state, (draft) => {
+        draft.best_reviewer_offer = action.payload.best_reviewer_offer;
+      }),
+    [SET_SIMILAR_USER_OFFER]: (state, action) =>
+      produce(state, (draft) => {
+        draft.similar_user_offer = action.payload.similar_user_offer;
+      }),
+    [SET_END_TOON_OFFER]: (state, action) =>
+      produce(state, (draft) => {
+        draft.end_toon = action.payload.end_toon;
+      }),
     [LOADING]: (state, action) =>
       produce(state, (draft) => {
         draft.is_loading = action.payload.is_loading;
@@ -265,6 +359,10 @@ const actionCreators = {
   getWebtooniRank,
   getNaverRank,
   getKakaoRank,
+  getUserOffer,
+  getBestReviewerOffer,
+  getSimilarUserOffer,
+  getEndToonOffer,
 };
 
 export { actionCreators };

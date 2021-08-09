@@ -1,12 +1,22 @@
 import React from "react";
 import styled from "styled-components";
+import { useSelector, useDispatch } from "react-redux";
 import { Image, Text } from "../elements";
 import { actionCreators as webtoonActions } from "../redux/modules/webtoon";
 
 const DetailReview = (props) => {
   const { id, reviewContent, userPointNumber, likeCount } = props.review;
   console.log(props, "detailReview");
+  const is_login = useSelector((store) => store.user.is_login);
 
+  //좋아요 토글
+  const toggleLike = () => {
+    if (is_login) {
+      webtoonActions.likeReviewServer(id);
+    } else {
+      alert("로그인하세요~");
+    }
+  };
   return (
     <ItemContainer>
       <Grid display="flex" justify="space-between">
@@ -18,11 +28,8 @@ const DetailReview = (props) => {
           </Grid>
         </Grid>
 
-        {/* 클릭 시 좋아요 토글. 로그인한 유저가 좋아요 누른 리뷰 리스트를 받아올 예정(지금은 없음) -> 그 때 토글을 위한 이미지도 구분해 넣기 */}
-        <Grid
-          position="relative"
-          onClick={() => webtoonActions.likeReviewServer(id)}
-        >
+        {/* 클릭 시 좋아요 토글. 로그인한 유저의 좋아요 여부 알아야함 -> 그 때 토글을 위한 이미지도 구분해 넣기 */}
+        <Grid position="relative" onClick={toggleLike}>
           <Image
             width="20px"
             height="20px"

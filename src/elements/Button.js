@@ -19,6 +19,7 @@ const Button = (props) => {
     shape,
     size,
     disabled,
+    src,
   } = props;
 
   const styles = {
@@ -34,6 +35,7 @@ const Button = (props) => {
     border: border,
     size: size,
     disabled: disabled,
+    src: src,
   };
 
   if (shape === "circle") {
@@ -143,7 +145,7 @@ const ElButton = styled.button`
   font-weight: ${(props) => props.fontWeight};
   border: ${(props) => props.border};
   border-radius: ${(props) => props.borderRadius};
-
+  background-image: url("${(props) => props.src}");
   cursor: pointer;
   display: flex;
   justify-content: center;

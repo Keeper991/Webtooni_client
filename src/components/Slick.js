@@ -4,6 +4,7 @@ import styled from "styled-components";
 import "slick-carousel/slick/slick.css";
 import "slick-carousel/slick/slick-theme.css";
 
+import { Color } from "../shared/common";
 // children에 width나 display 속성을 사용할 경우, !important를 붙여줄 것.
 const Slick = ({
   width,
@@ -16,37 +17,40 @@ const Slick = ({
   const CustomNextArrows = (props) => {
     const { className, style, onClick } = props;
     return (
-      <div
+      <RightArrow
         className={className}
         style={{
           ...style,
-          display: "block",
-          background: "#ccc",
+          display: "flex",
+          width: "30px",
+          height: "30px",
           position: "absolute",
-          right: "10%",
-          top: "5%",
+          right: "5%",
+          top: "24px",
+          zIndex: 1,
         }}
         onClick={onClick}
-      ></div>
+      ></RightArrow>
     );
   };
 
   const CustomPrevArrows = (props) => {
     const { className, style, onClick } = props;
     return (
-      <div
+      <LeftArrow
         className={className}
         style={{
           ...style,
-          display: "block",
-          background: "#ccc",
+          display: "flex",
+          width: "30px",
+          height: "30px",
           position: "absolute",
-          left: "10%",
-          top: "5%",
+          left: "5%",
+          top: "24px",
           zIndex: 1,
         }}
         onClick={onClick}
-      ></div>
+      ></LeftArrow>
     );
   };
 
@@ -90,4 +94,33 @@ const SliderWrap = styled(Slider)`
   margin: 0 auto;
 `;
 
+const LeftArrow = styled.div`
+  &::before {
+    content: "〈" !important;
+    position: absolute;
+    width: 100% !important;
+    height: 100% !important;
+    display: flex !important;
+    align-items: center !important;
+    justify-content: center !important;
+    font-size: 23px !important;
+    color: ${Color.black} !important;
+    font-weight: bold;
+  }
+`;
+
+const RightArrow = styled.div`
+  &::before {
+    content: "〉" !important;
+    position: absolute;
+    width: 100% !important;
+    height: 100% !important;
+    display: flex !important;
+    align-items: center !important;
+    justify-content: center !important;
+    font-size: 23px !important;
+    color: ${Color.black} !important;
+    font-weight: bold;
+  }
+`;
 export default Slick;

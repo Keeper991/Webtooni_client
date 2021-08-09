@@ -24,7 +24,7 @@ const reviewAPI = {
 };
 
 const reviewerAPI = {
-  getBest: () => instance.get(`best-reviewer`),
+  getBest: () => instance.get(`rank/reviewers`),
 };
 
 const offerAPI = {
@@ -32,6 +32,7 @@ const offerAPI = {
     instance.get(`webtoon/${webtoonId}/offer/genre`),
   getBestReviewersChoice: () => instance.get(`offer/best-reviewer`),
   getSimilarUsersChoice: () => instance.get(`offer/similar-user`),
+  getForUser: () => instance.get("offer/for-user"),
   getMd: () => instance.get(`offer/md`),
   getEnd: () => instance.get(`offer/end`),
 };
@@ -54,7 +55,7 @@ const talkAPI = {
     instance.delete(`talk/${postId}/comment`, { commentpostId }),
 };
 
-const meAPI = {
+const userAPI = {
   addWebtoon: (id) => instance.post(`user/me/webtoons`, { id }),
   getWebtoon: () => instance.get(`user/me/webtoons`),
   getNickname: () => instance.get(`user/me/nick`),
@@ -77,4 +78,4 @@ const meAPI = {
   search: (keyword) => instance.get(`search?keyword=${keyword}`),
 };
 
-export { webtoonAPI, reviewAPI, reviewerAPI, offerAPI, talkAPI, meAPI };
+export { webtoonAPI, reviewAPI, reviewerAPI, offerAPI, talkAPI, userAPI };
