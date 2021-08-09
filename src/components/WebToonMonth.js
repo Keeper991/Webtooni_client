@@ -29,7 +29,9 @@ const WebToonMonth = (props) => {
               ></Image>
               <Text fontSize="12px">{props.toonAvgPoint}</Text>
             </FlexGrid>
-            <Text fontSize="10px">{props.toonWeekday}</Text>
+            <Text fontSize="10px">
+              {props.toonWeekday ? props.toonWeekday : "완결"}
+            </Text>
           </FlexGrid>
         </InfoGrid>
       </FlexToonGrid>

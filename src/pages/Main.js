@@ -386,8 +386,8 @@ const Main = () => {
 
 const TitleGrid = styled.div`
   display: flex;
-  width: 95%;
-  margin: 10px auto;
+  width: 100%;
+  padding: 0 16px;
   align-items: center;
   justify-content: space-between;
 `;
@@ -395,7 +395,7 @@ const TitleGrid = styled.div`
 const SliderBox = styled.div`
   white-space: nowrap;
   overflow: hidden;
-  margin: 10px 0 50px 0;
+  margin: 10px 0 50px 5px;
 `;
 
 const HiddenBlurBox = styled.div`
@@ -463,8 +463,8 @@ const RankGrid = styled.div`
 `;
 
 const ReviewTabGrid = styled.div`
-  width: 95%;
-  margin: 0 auto;
+  width: 100%;
+  padding: 0 16px;
   display: flex;
 `;
 export default Main;

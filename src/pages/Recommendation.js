@@ -299,31 +299,32 @@ const Recommendation = () => {
           bgColor={Color.white}
           fontSize="12px"
           width="50px"
+          _onClick={() => {
+            history.push("/toonlist/end_toon");
+          }}
         >
           더보기
         </Button>
       </TitleGrid>
       <SliderBox>
-        <Slick is_infinite>
-          {is_loading || end_toon_list.length === 0 ? (
-            <Slick is_infinite>
-              {Array.from({ length: 10 }).map(() => {
-                return <SkeletonCard></SkeletonCard>;
-              })}
-            </Slick>
-          ) : (
-            <Slick is_infinite>
-              {end_toon_list?.map((_, idx) => {
-                return <WebToonCard key={idx} {..._}></WebToonCard>;
-              })}
-            </Slick>
-          )}
-        </Slick>
+        {is_loading || end_toon_list.length === 0 ? (
+          <Slick is_infinite>
+            {Array.from({ length: 10 }).map(() => {
+              return <SkeletonCard></SkeletonCard>;
+            })}
+          </Slick>
+        ) : (
+          <Slick is_infinite>
+            {end_toon_list?.map((_, idx) => {
+              return <WebToonCard key={idx} {..._}></WebToonCard>;
+            })}
+          </Slick>
+        )}
       </SliderBox>
 
       <TitleGrid>
         <Text fontSize="16px" fontWeight="bold">
-          비슷한 취향을 가진 사용자가 본 웹툰
+          비슷한 취향의 사용자가 본 웹툰
         </Text>
         <Button
           border="none"
@@ -359,7 +360,7 @@ const BannerBox = styled.div`
 const SliderBox = styled.div`
   white-space: nowrap;
   overflow: hidden;
-  margin: 20px 0 50px 0;
+  margin: 20px 0 50px 5px;
 `;
 
 const MdBox = styled.div`
@@ -400,8 +401,8 @@ const FlexGrid = styled.div`
 
 const TitleGrid = styled.div`
   display: flex;
-  width: 95%;
-  margin: 0 auto;
+  width: 100%;
+  padding: 0 16px;
   align-items: center;
   justify-content: space-between;
 `;
