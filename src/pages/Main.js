@@ -22,7 +22,9 @@ const Main = () => {
     dispatch(webtoonActions.getWebtooniRank());
     dispatch(webtoonActions.getNaverRank());
     dispatch(webtoonActions.getKakaoRank());
+    dispatch(webtoonActions.getUserOffer());
     dispatch(adminActions.getMainReview());
+    dispatch(adminActions.getMainBestReviewer());
   }, []);
 
   const is_loading = useSelector((state) => state.webtoon.is_loading);
@@ -328,32 +330,40 @@ const Main = () => {
           더보기
         </Button>
       </TitleGrid>
-      {is_loading ? (
-        <SliderBox>
+
+      <SliderBox>
+        {is_loading ? (
           <Slick is_infinite>
-            <SkeletonCard></SkeletonCard>
+            {Array.from({ length: 10 }).map(() => {
+              return <SkeletonCard></SkeletonCard>;
+            })}
           </Slick>
-        </SliderBox>
-      ) : (
-        <SliderBox>
+        ) : (
           <Slick is_infinite>
             {webtooniList?.map((_, idx) => {
               return <WebToonCard key={idx} {..._}></WebToonCard>;
             })}
           </Slick>
-        </SliderBox>
-      )}
-
+        )}
+      </SliderBox>
       <Slick is_arrow is_variableWidth={false} is_infinite>
         <MonthBox>
           <TextGrid>
             <Text fontWeight="bold">이번 달 네이버 웹툰 TOP 10</Text>
           </TextGrid>
-          <RankGrid>
-            {naveriList?.map((_, idx) => {
-              return <WebToonMonth key={idx} {..._} idx={idx}></WebToonMonth>;
-            })}
-          </RankGrid>
+          {is_loading ? (
+            <RankGrid>
+              {Array.from({ length: 10 }).map(() => {
+                return <SkeletonCard rank></SkeletonCard>;
+              })}
+            </RankGrid>
+          ) : (
+            <RankGrid>
+              {naveriList?.map((_, idx) => {
+                return <WebToonMonth key={idx} {..._} idx={idx}></WebToonMonth>;
+              })}
+            </RankGrid>
+          )}
         </MonthBox>
 
         <MonthBox>

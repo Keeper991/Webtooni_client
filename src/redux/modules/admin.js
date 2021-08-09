@@ -1,20 +1,28 @@
 import { createAction, handleActions } from "redux-actions";
 import { produce } from "immer";
-import { reviewAPI, reviewerAPI } from "../../shared/API";
+import { offerAPI, reviewAPI, reviewerAPI } from "../../shared/API";
 
 const SET_MAIN_REVIEW = "SET_MAIN_REVIEW";
-const SET_BEST_REVIEWER = "SET_BEST_REVIEWER";
+const SET_MAIN_BEST_REVIEWER = "SET_BEST_REVIEWER";
+const SET_MD_OFFER = "SET_MD_OFFER";
 
 const setMainReview = createAction(SET_MAIN_REVIEW, (main_review) => ({
   main_review,
 }));
-const setBestReviewer = createAction(SET_BEST_REVIEWER, (best_reviewer) => ({
-  best_reviewer,
+const setMainBestReviewer = createAction(
+  SET_MAIN_BEST_REVIEWER,
+  (best_reviewer) => ({
+    best_reviewer,
+  })
+);
+const setMdOffer = createAction(SET_MD_OFFER, (md_offer) => ({
+  md_offer,
 }));
 
 const initialState = {
   main_review: [],
-  best_reviewer: [],
+  main_best_reviewer: [],
+  md_offer: {},
 };
 
 const getMainReview = () => {
@@ -29,12 +37,24 @@ const getMainReview = () => {
   };
 };
 
-const getBestReviewer = () => {
+const getMainBestReviewer = () => {
   return async function (dispatch, getState, { history }) {
     try {
       const response = await reviewerAPI.getBest();
       console.log(response);
-      dispatch(setBestReviewer(response.data));
+      dispatch(setMainBestReviewer(response.data));
+    } catch (err) {
+      console.log(err);
+    }
+  };
+};
+
+const getMdOffer = () => {
+  return async function (dispatch, getState, { history }) {
+    try {
+      const response = await offerAPI.getMd();
+      console.log(response.data);
+      dispatch(setMdOffer(response.data));
     } catch (err) {
       console.log(err);
     }
@@ -47,9 +67,13 @@ export default handleActions(
       produce(state, (draft) => {
         draft.main_review = action.payload.main_review;
       }),
-    [SET_BEST_REVIEWER]: (state, action) =>
+    [SET_MAIN_BEST_REVIEWER]: (state, action) =>
       produce(state, (draft) => {
-        draft.best_reviewer = action.payload.best_reviewer;
+        draft.main_best_reviewer = action.payload.main_best_reviewer;
+      }),
+    [SET_MD_OFFER]: (state, action) =>
+      produce(state, (draft) => {
+        draft.md_offer = action.payload.md_offer;
       }),
   },
   initialState
@@ -57,7 +81,8 @@ export default handleActions(
 
 const actionCreators = {
   getMainReview,
-  getBestReviewer,
+  getMainBestReviewer,
+  getMdOffer,
 };
 
 export { actionCreators };
