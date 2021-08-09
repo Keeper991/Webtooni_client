@@ -7,6 +7,10 @@ const SET_REVIEW_ID = "SET_REVIEW_ID";
 const SET_WEBTOONI_RANK = "SET_WEBTOONI_RANK";
 const SET_NAVER_RANK = "SET_NAVER_RANK";
 const SET_KAKAO_RANK = "SET_KAKAO_RANK";
+const SET_USER_OFFER = "SET_USER_OFFER";
+const SET_BEST_REVIEWER_OFFER = "SET_BEST_REVIEWER_OFFER";
+const SET_SIMILAR_USER_OFFER = "SET_SIMILAR_USER_OFFER";
+const SET_END_TOON_OFFER = "SET_END_TOON_OFFER";
 const LOADING = "IS_LOADING";
 
 const setToonOne = createAction(SET_TOON_ONE, (toon) => ({ toon }));
@@ -19,6 +23,25 @@ const setNaverRank = createAction(SET_NAVER_RANK, (naver_rank) => ({
 }));
 const setKakaoRank = createAction(SET_KAKAO_RANK, (kakao_rank) => ({
   kakao_rank,
+}));
+const setUserOffer = createAction(SET_USER_OFFER, (user_offer) => ({
+  user_offer,
+}));
+const setBestReviewerOffer = createAction(
+  SET_BEST_REVIEWER_OFFER,
+  (best_reviewer_offer) => ({
+    best_reviewer_offer,
+  })
+);
+const setSimilarUserOffer = createAction(
+  SET_SIMILAR_USER_OFFER,
+  (similar_user_offer) => ({
+    similar_user_offer,
+  })
+);
+
+const setEndToonOffer = createAction(SET_END_TOON_OFFER, (end_toon) => ({
+  end_toon,
 }));
 const Loading = createAction(LOADING, (is_loading) => ({ is_loading }));
 
@@ -91,7 +114,11 @@ const initialState = {
   webtooni_rank: [],
   naver_rank: [],
   kakao_rank: [],
+  user_offer: [],
+  best_reviewer_offer: [],
   review_id: "", //별점 준 후 받아온 리뷰 아이디
+  similar_user_offer: [],
+  end_toon: [],
   is_loading: false,
 };
 
@@ -126,6 +153,57 @@ const getKakaoRank = () => {
     try {
       const response = await webtoonAPI.getKakaoRank();
       dispatch(setKakaoRank(response.data));
+    } catch (err) {
+      console.log(err);
+    }
+  };
+};
+
+//유저 맞춤 추천 웹툰 받아오기
+const getUserOffer = () => {
+  return async function (dispatch, getState, { history }) {
+    try {
+      const response = await offerAPI.getForUser();
+      dispatch(setUserOffer(response.data));
+    } catch (err) {
+      console.log(err);
+    }
+  };
+};
+
+//베스트 리뷰어의 추천 웹툰 받아오기
+const getBestReviewerOffer = () => {
+  return async function (dispatch, getState, { history }) {
+    try {
+      const response = await offerAPI.getBestReviewersChoice();
+      console.log(response);
+      dispatch(setBestReviewerOffer(response.data));
+    } catch (err) {
+      console.log(err);
+    }
+  };
+};
+
+//유저와 비슷한 취향을 가진 사용자가 많이 본 웹툰 받아오기
+const getSimilarUserOffer = () => {
+  return async function (dispatch, getState, { history }) {
+    try {
+      const response = await offerAPI.getSimilarUsersChoice();
+      console.log(response);
+      dispatch(setSimilarUserOffer(response.data));
+    } catch (err) {
+      console.log(err);
+    }
+  };
+};
+
+//완결 웹툰 받아오기
+const getEndToonOffer = () => {
+  return async function (dispatch, getState, { history }) {
+    try {
+      const response = await offerAPI.getEnd();
+      console.log(response);
+      dispatch(setEndToonOffer(response.data));
     } catch (err) {
       console.log(err);
     }
@@ -246,6 +324,22 @@ export default handleActions(
       produce(state, (draft) => {
         draft.kakao_rank = action.payload.kakao_rank;
       }),
+    [SET_USER_OFFER]: (state, action) =>
+      produce(state, (draft) => {
+        draft.user_offer = action.payload.user_offer;
+      }),
+    [SET_BEST_REVIEWER_OFFER]: (state, action) =>
+      produce(state, (draft) => {
+        draft.best_reviewer_offer = action.payload.best_reviewer_offer;
+      }),
+    [SET_SIMILAR_USER_OFFER]: (state, action) =>
+      produce(state, (draft) => {
+        draft.similar_user_offer = action.payload.similar_user_offer;
+      }),
+    [SET_END_TOON_OFFER]: (state, action) =>
+      produce(state, (draft) => {
+        draft.end_toon = action.payload.end_toon;
+      }),
     [LOADING]: (state, action) =>
       produce(state, (draft) => {
         draft.is_loading = action.payload.is_loading;
@@ -265,6 +359,10 @@ const actionCreators = {
   getWebtooniRank,
   getNaverRank,
   getKakaoRank,
+  getUserOffer,
+  getBestReviewerOffer,
+  getSimilarUserOffer,
+  getEndToonOffer,
 };
 
 export { actionCreators };

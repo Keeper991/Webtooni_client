@@ -17,7 +17,7 @@ const WebToonCard = (props) => {
             src={props.toonImg}
             width="100%"
             height="100%"
-            radius="4px"
+            radius="5px"
           ></Image>
         </ImageGrid>
 
@@ -25,14 +25,14 @@ const WebToonCard = (props) => {
           <FlexGrid>
             <FlexGrid>
               <Text color={Color.orange} fontSize="11px" fontWeight="bold">
-                {props.webtoonGenre}
+                {props.webtoonGenre ? props.webtoonGenre : props.toonAge}
               </Text>
               <Text
                 color={Color.lightGray2}
                 fontSize="10px"
                 margin="0 0 0 10px"
               >
-                {props.toonWeekday}
+                {props.toonWeekday ? props.toonWeekday : "완결"}
               </Text>
             </FlexGrid>
             <FlexGrid>
@@ -47,12 +47,10 @@ const WebToonCard = (props) => {
               </Text>
             </FlexGrid>
           </FlexGrid>
-          <Text fontSize="14px" fontWeight="bold" color={Color.black}>
-            {props.toonTitle}
-          </Text>
+          <TitleText>{props.toonTitle}</TitleText>
           <FlexGrid>
             <AuthorText>{props.toonAuthor}</AuthorText>
-            {props.toonPlatform === "네이버 웹툰" ? (
+            {props.toonPlatform === "네이버" ? (
               <Image
                 shape="square"
                 size="12px"
@@ -102,10 +100,20 @@ const ImageGrid = styled.div`
 
 const AuthorText = styled.p`
   font-size: 12px;
-  width: 130px;
+  width: 120px;
   overflow: hidden;
   text-overflow: ellipsis;
   white-space: nowrap;
   color: ${Color.darkGray};
+`;
+
+const TitleText = styled.p`
+  font-size: 14px;
+  font-weight: bold;
+  width: 140px;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+  color: ${Color.black};
 `;
 export default WebToonCard;

@@ -1,12 +1,29 @@
 import React from "react";
 import styled from "styled-components";
+import { useDispatch, useSelector } from "react-redux";
+import { actionCreators as webtoonActions } from "../redux/modules/webtoon";
+import { actionCreators as adminActions } from "../redux/modules/admin";
 import { OfferCard } from "../components";
 import { Text, Image, Button } from "../elements";
-import { Slick, WebToonCard } from "../components";
+import { Slick, WebToonCard, SkeletonCard } from "../components";
 import { Color } from "../shared/common";
 import { history } from "../redux/configureStore";
 
 const Recommendation = () => {
+  const dispatch = useDispatch();
+
+  React.useEffect(() => {
+    dispatch(webtoonActions.getUserOffer());
+    dispatch(webtoonActions.getBestReviewerOffer());
+    dispatch(webtoonActions.getSimilarUserOffer());
+    dispatch(webtoonActions.getEndToonOffer());
+    dispatch(adminActions.getMdOffer());
+  }, []);
+
+  const md_offer_list = useSelector((state) => state.admin.md_offer);
+  const end_toon_list = useSelector((state) => state.webtoon.end_toon);
+  const is_loading = useSelector((state) => state.webtoon.is_loading);
+
   const webToonList = [
     {
       toonImg:
@@ -141,16 +158,16 @@ const Recommendation = () => {
         </Slick>
       </SliderBox>
 
-      <MdBox toonImg={webToonList[0].toonImg}>
+      <MdBox>
         <BookMark></BookMark>
         <MdInfoBox>
-          <Text fontSize="10px" color={Color.white}>
+          <Text fontSize="10px" color={Color.orange} fontWeight="bold">
             #MD추천
           </Text>
-          <Text fontSize="20px" color={Color.white}>
+          <Text fontSize="20px" color={Color.white} fontWeight="bold">
             네웹 대표 <br /> 글로벌 인기작!
           </Text>
-          <Text fontSize="12px" color={Color.white}>
+          <Text fontSize="12px" color={Color.white} fontWeight="bold">
             두근두근 청춘 로맨스물을 찾고 있다면?
           </Text>
         </MdInfoBox>
@@ -166,27 +183,33 @@ const Recommendation = () => {
       <FlexToonGrid>
         <Image
           margin="0 7px"
-          src={webToonList[0].toonImg}
+          src={md_offer_list.toonImg}
           shape="circle"
           size="64px"
         ></Image>
         <InfoGrid>
           <Text fontSize="14px" fontWeight="bold">
-            {webToonList[0].toonTitle}
+            {md_offer_list.toonTitle}
           </Text>
           <FlexGrid>
-            <Text fontSize="12px">{webToonList[0].toonAuthor}</Text>
+            <Text fontSize="12px" color={Color.gray}>
+              {md_offer_list.toonAuthor}
+            </Text>
             <Image
               shape="square"
               margin="0 5px 0 7px"
               size="12px"
               src="https://lh3.googleusercontent.com/pw/AM-JKLXIrRX56QwruA9no5dsQDpzLmNNgGigp4H-mNbe8Zll_MgRc1OVhN8nKaqDwTOSKiNGUT6bQ6O7sYRBDsPhnj49j7ACDz5qWrSeebdROovTQKhnt8O2jbq6QpskSozPMpq02E2hUQqTjg3gfLZpx-xv=s12-no?authuser=0"
             ></Image>
-            <Text fontSize="12px">{webToonList[0].toonPointTotalNumber}</Text>
-            <Text fontSize="10px">{webToonList[0].toonDay}</Text>
+            <Text type="p" fontSize="12px" margin="0 10px 0 0">
+              {md_offer_list.toonAvgPoint}
+            </Text>
+            <Text fontSize="10px" color={Color.gray}>
+              {md_offer_list.toonWeekday}
+            </Text>
           </FlexGrid>
           <Text fontSize="10px" color={Color.darkGray}>
-            긴 호흡을 지닌???
+            여기 들어갈거 생각
           </Text>
           <Text></Text>
         </InfoGrid>
@@ -215,27 +238,33 @@ const Recommendation = () => {
       <FlexToonGrid>
         <Image
           margin="0 7px"
-          src={webToonList[0].toonImg}
+          src={md_offer_list.toonImg}
           shape="circle"
           size="64px"
         ></Image>
         <InfoGrid>
           <Text fontSize="14px" fontWeight="bold">
-            {webToonList[0].toonTitle}
+            {md_offer_list.toonTitle}
           </Text>
           <FlexGrid>
-            <Text fontSize="12px">{webToonList[0].toonAuthor}</Text>
+            <Text fontSize="12px" color={Color.gray}>
+              {md_offer_list.toonAuthor}
+            </Text>
             <Image
               shape="square"
               margin="0 5px 0 7px"
               size="12px"
               src="https://lh3.googleusercontent.com/pw/AM-JKLXIrRX56QwruA9no5dsQDpzLmNNgGigp4H-mNbe8Zll_MgRc1OVhN8nKaqDwTOSKiNGUT6bQ6O7sYRBDsPhnj49j7ACDz5qWrSeebdROovTQKhnt8O2jbq6QpskSozPMpq02E2hUQqTjg3gfLZpx-xv=s12-no?authuser=0"
             ></Image>
-            <Text fontSize="12px">{webToonList[0].toonPointTotalNumber}</Text>
-            <Text fontSize="10px">{webToonList[0].toonDay}</Text>
+            <Text type="p" fontSize="12px" margin="0 10px 0 0">
+              {md_offer_list.toonAvgPoint}
+            </Text>
+            <Text fontSize="10px" color={Color.gray}>
+              {md_offer_list.toonWeekday}
+            </Text>
           </FlexGrid>
           <Text fontSize="10px" color={Color.darkGray}>
-            긴 호흡을 지닌???
+            여기 들어갈거 생각
           </Text>
           <Text></Text>
         </InfoGrid>
@@ -276,9 +305,19 @@ const Recommendation = () => {
       </TitleGrid>
       <SliderBox>
         <Slick is_infinite>
-          {webToonList.map((_, idx) => {
-            return <WebToonCard key={idx} {..._}></WebToonCard>;
-          })}
+          {is_loading || end_toon_list.length === 0 ? (
+            <Slick is_infinite>
+              {Array.from({ length: 10 }).map(() => {
+                return <SkeletonCard></SkeletonCard>;
+              })}
+            </Slick>
+          ) : (
+            <Slick is_infinite>
+              {end_toon_list?.map((_, idx) => {
+                return <WebToonCard key={idx} {..._}></WebToonCard>;
+              })}
+            </Slick>
+          )}
         </Slick>
       </SliderBox>
 
@@ -331,7 +370,7 @@ const MdBox = styled.div`
   display: flex;
   flex-direction: column;
   justify-content: space-around;
-  background-image: url("${(props) => props.toonImg}");
+  background-image: url("https://lh3.googleusercontent.com/pw/AM-JKLWSzGXMxqDz78istsHPT-R9gjN-iDKqA48koTRwLHHaiUOwWjpjurhUQF3jb8q4XukxQpAMrabtNceGVSKh2_idGz2h9HoZU4dV4dtTdA2mn2ICENPjgpGHz8EEgPR4vw1Oub4gh-swnzDko6sYIzfX=w360-h200-no?authuser=0");
   background-repeat: no-repeat;
   background-position: center;
   background-size: cover;
@@ -356,6 +395,7 @@ const BookMark = styled.div`
 const FlexGrid = styled.div`
   display: flex;
   align-items: center;
+  margin: 5px 0;
 `;
 
 const TitleGrid = styled.div`
