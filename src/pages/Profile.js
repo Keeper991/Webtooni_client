@@ -9,7 +9,7 @@ import { history } from "../redux/configureStore";
 import profileImgList from "../images/profiles";
 import ProgressStepBtns from "../components/ProgressStepBtns";
 import { useDispatch } from "react-redux";
-import { meAPI } from "../shared/API";
+import { userAPI } from "../shared/API";
 
 const TASTE_LS = "TASTE_LIST";
 const PROFILE_LS = "PROFILE";

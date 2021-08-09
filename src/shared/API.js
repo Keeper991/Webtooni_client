@@ -54,7 +54,7 @@ const talkAPI = {
     instance.post(`talk/${id}/comment`, { commentId }),
 };
 
-const meAPI = {
+const userAPI = {
   addWebtoon: (id) => instance.post(`user/me/webtoons`, { id }),
   getWebtoon: () => instance.get(`user/me/webtoons`),
   getNickname: () => instance.get(`user/me/nick`),
@@ -64,11 +64,17 @@ const meAPI = {
   putUserInfo: ({ userName, userImg }) =>
     instance.put(`user/me`, { userName, userImg }),
   register: ({ userEmail, userName, password, passwordChecker, userImg }) =>
-    instance.post(`user/register`, { userEmail, userName, password, passwordChecker, userImg }),
+    instance.post(`user/register`, {
+      userEmail,
+      userName,
+      password,
+      passwordChecker,
+      userImg,
+    }),
   login: ({ userEmail, password }) =>
     instance.post(`user/login`, { userEmail, password }),
   socialLogin: () => instance.post(`user/social/callback`),
   search: (keyword) => instance.get(`search?keyword=${keyword}`),
 };
 
-export { webtoonAPI, reviewAPI, reviewerAPI, offerAPI, talkAPI, meAPI };
+export { webtoonAPI, reviewAPI, reviewerAPI, offerAPI, talkAPI, userAPI };
