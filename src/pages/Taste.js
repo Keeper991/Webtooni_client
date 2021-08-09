@@ -12,17 +12,18 @@ const TASTE_LS = "TASTE_LIST";
 
 const Taste = () => {
   const genreList = [
-    "액션",
-    "로맨스",
-    "SF",
-    "학원물",
-    "스릴러",
-    "개그",
-    "드라마",
     "일상",
-    "스포츠",
+    "개그",
+    "판타지",
+    "액션",
+    "드라마",
+    "로맨스",
     "감성",
+    "스릴러",
     "시대극",
+    "스포츠",
+    "로맨스 판타지",
+    "액션 무협",
   ];
   const [tastes, setTastes] = useState([]);
 
