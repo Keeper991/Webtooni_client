@@ -239,15 +239,14 @@ const defaultStyle = {
   alignItems: "center",
   justifyContent: "center",
   textDecoration: "none",
-  color: Color.black,
+  color: `${Color.black}`,
   fontSize: "16px",
   fontWeight: "bold",
-  background: Color.white,
   margin: "0 7px",
 };
 
 const activeStyle = {
-  color: `${Color.orange}`,
+  color: `${Color.primary}`,
   borderBottom: "2px solid orange",
   marginTop: "2px",
 };

@@ -1,17 +1,21 @@
 import React from "react";
-import { Input } from "../elements";
+import { Input, Text } from "../elements";
 import _ from "lodash";
 import { userAPI } from "../shared/API";
+import { ToonListCard } from "../components";
+import styled from "styled-components";
 
 const Search = () => {
   const [search_value, setSearchValue] = React.useState("");
-  const [search_result, setSearchResult] = React.useState("");
+  const [search_result, setSearchResult] = React.useState([]);
 
   const getSearchResult = async (keyword) => {
-    if (keyword.length === 0) return;
+    if (keyword.length === 0) {
+      setSearchResult([]);
+      return;
+    }
     try {
       const response = await userAPI.search(keyword);
-      console.log(response?.data);
       setSearchResult(response?.data);
     } catch (error) {
       console.log(error);
@@ -24,20 +28,43 @@ const Search = () => {
 
   const handleSearch = (e) => {
     setSearchValue(e.target.value);
-    console.log(search_value);
     delayedQueryCall(e.target.value);
     if (search_value.trim() === "") {
-      setSearchResult({
-        title: [],
-      });
+      setSearchResult([]);
     }
   };
-  console.log(search_result);
+
   return (
     <React.Fragment>
-      <Input type="text" _onChange={handleSearch} value={search_value}></Input>
+      <Container>
+        <Input
+          type="text"
+          _onChange={handleSearch}
+          value={search_value}
+          placeholder="검색어를 입력해주세요."
+        ></Input>
+
+        <Text type="p" margin="20px 0 0 0">
+          검색 결과
+        </Text>
+      </Container>
+      {search_result?.map((_, idx) => {
+        return <ToonListCard key={idx} {..._}></ToonListCard>;
+      })}
+      {search_result.length === 0 ? (
+        <TitleGrid>검색 결과가 없습니다</TitleGrid>
+      ) : null}
     </React.Fragment>
   );
 };
 
+const Container = styled.div`
+  padding: 16px;
+`;
+
+const TitleGrid = styled.div`
+  margin-top: 20px;
+  display: flex;
+  justify-content: center;
+`;
 export default Search;

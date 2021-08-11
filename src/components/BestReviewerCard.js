@@ -9,25 +9,25 @@ const BestReveiwerCard = (props) => {
     <React.Fragment>
       <Container>
         <Image
-          src={profileImgList[props.userImg]}
+          src={profileImgList[props.user.userImg]}
           shape="circle"
           size="64px"
         ></Image>
         <Text type="caption" fontWeight="bold">
-          {props.userName}
+          {props.user.userName}
         </Text>
-        <Text type="small">{props.userGrade}</Text>
+        <Text type="small">{props.user.userGrade}</Text>
         <BottomGrid>
           <FlexGrid>
             <Text type="small">리뷰 수</Text>
             <Text type="en" fontSize="14px" fontWeight="bold">
-              {props.totalReviews}
+              {props.reviewCount}
             </Text>
           </FlexGrid>
           <FlexGrid>
             <Text type="small">좋아요 수</Text>
             <Text type="en" fontSize="14px" fontWeight="bold">
-              {props.totalLikes}
+              {props.likeCount}
             </Text>
           </FlexGrid>
         </BottomGrid>
@@ -37,20 +37,19 @@ const BestReveiwerCard = (props) => {
 };
 
 const Container = styled.div`
-  width: 130px;
-  height: 157px;
+  width: 110px;
+  height: auto;
   background: ${Color.gray100};
   display: inline-flex;
   flex-direction: column;
   justify-content: space-between;
   align-items: center;
-  padding: 12px;
   margin: 0 10px;
   border-radius: 5px;
 `;
 
 const BottomGrid = styled.div`
-  width: 80%;
+  width: 100%;
   display: flex;
   justify-content: space-between;
 `;
