@@ -15,6 +15,10 @@ const Text = (props) => {
     fontWeight,
     whiteSpace,
     type,
+    _onClick,
+    cursor,
+    textAlign,
+    lineHeight,
   } = props;
 
   const styles = {
@@ -27,12 +31,16 @@ const Text = (props) => {
     fontSize: fontSize,
     fontWeight: fontWeight,
     whiteSpace: whiteSpace,
+    textAlign: textAlign,
+    lineHeight: lineHeight,
   };
 
   if (type === "title") {
     return (
       <React.Fragment>
-        <ElTitle {...styles}>{children}</ElTitle>
+        <ElTitle {...styles} onClick={_onClick} cursor={cursor}>
+          {children}
+        </ElTitle>
       </React.Fragment>
     );
   }
@@ -40,19 +48,24 @@ const Text = (props) => {
   if (type === "p") {
     return (
       <React.Fragment>
-        <ElP {...styles}>{children}</ElP>
+        <ElP {...styles} onClick={_onClick} cursor={cursor}>
+          {children}
+        </ElP>
       </React.Fragment>
     );
   }
 
   return (
     <React.Fragment>
-      <ElSpan {...styles}>{children}</ElSpan>
+      <ElSpan {...styles} onClick={_onClick} cursor={cursor}>
+        {children}
+      </ElSpan>
     </React.Fragment>
   );
 };
 
 Text.defaultProps = {
+  _onClick: () => {},
   children: null,
   width: "auto",
   height: "auto",
@@ -63,6 +76,9 @@ Text.defaultProps = {
   fontSize: "1rem",
   fontWeight: "normal",
   whiteSpace: "nowrap",
+  cursor: false,
+  textAlign: "",
+  lineHeight: "",
 };
 
 const ElTitle = styled.h2`
@@ -74,8 +90,10 @@ const ElTitle = styled.h2`
   background-color: ${(props) => props.bgColor};
   font-size: ${(props) => props.fontSize};
   font-weight: ${(props) => props.fontWeight};
-
   white-space: ${(props) => props.whiteSpace};
+  text-align: ${(props) => props.textAlign};
+  line-height: ${(props) => props.lineHeight};
+  ${(props) => (props.cursor ? "cursor: pointer" : "")};
 `;
 
 const ElP = styled.p`
@@ -88,6 +106,9 @@ const ElP = styled.p`
   font-size: ${(props) => props.fontSize};
   font-weight: ${(props) => props.fontWeight};
   white-space: ${(props) => props.whiteSpace};
+  text-align: ${(props) => props.textAlign};
+  line-height: ${(props) => props.lineHeight};
+  ${(props) => (props.cursor ? "cursor: pointer" : "")};
 `;
 
 const ElSpan = styled.span`
@@ -97,8 +118,10 @@ const ElSpan = styled.span`
   background-color: ${(props) => props.bgColor};
   font-size: ${(props) => props.fontSize};
   font-weight: ${(props) => props.fontWeight};
-
   white-space: ${(props) => props.whiteSpace};
+  text-align: ${(props) => props.textAlign};
+  line-height: ${(props) => props.lineHeight};
+  ${(props) => (props.cursor ? "cursor: pointer" : "")};
 `;
 
 export default Text;

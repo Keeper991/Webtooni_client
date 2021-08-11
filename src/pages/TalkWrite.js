@@ -81,24 +81,20 @@ const TalkWrite = (props) => {
       <Grid
         display="flex"
         justify="space-between"
-        align="center"
+        align="flex-start"
         borderBottom={`1px solid ${Color.gray200}`}
-        padding="20px 30px 20px 5px"
+        padding="20px"
       >
         {/* 뒤로가기 */}
-        <Button
-          bgColor="transparent"
-          border="none"
-          _onClick={() => {
-            history.push("/talk");
+        <Grid
+          cursor
+          onClick={() => {
+            history.go(-1);
           }}
         >
-          <BackButton
-            onClick={() => {
-              history.go(-1);
-            }}
-          ></BackButton>
-        </Button>
+          <BackButton></BackButton>
+        </Grid>
+
         {/* 게시글 등록 */}
         {!prevPost ? (
           <Button
@@ -128,19 +124,23 @@ const TalkWrite = (props) => {
           </Button>
         )}
       </Grid>
-      <Grid borderBottom={`1px solid ${Color.gray200}`}>
+
+      <Grid borderBottom={`1px solid ${Color.gray200}`} padding="15px 20px">
         <Input
           placeholder="제목을 입력하세요"
           _onChange={(e) => setPost({ ...post, postTitle: e.target.value })}
           border="none"
           value={post.postTitle}
+          padding="0"
         ></Input>
       </Grid>
       <Input
+        padding="15px 20px"
         multiLine
         placeholder="내용을 입력하세요"
         _onChange={(e) => setPost({ ...post, postContent: e.target.value })}
         border="none"
+        height="400px"
         value={post.postContent}
       ></Input>
     </>
@@ -158,6 +158,7 @@ const Grid = styled.div`
   position: ${(props) => props.position || ""};
   background-color: ${(props) => props.bgColor || ""};
   border-bottom: ${(props) => props.borderBottom || ""};
+  ${(props) => (props.cursor ? "cursor: pointer" : "")};
 `;
 
 export default TalkWrite;

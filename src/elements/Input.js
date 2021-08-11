@@ -36,7 +36,7 @@ const Input = (props) => {
   if (multiLine) {
     return (
       <React.Fragment>
-        <ElLabel>
+        <ElLabel width={width}>
           <span>{children}</span>
           <ElTextArea
             {...styles}
@@ -51,7 +51,7 @@ const Input = (props) => {
 
   return (
     <React.Fragment>
-      <ElLabel>
+      <ElLabel width={width}>
         <span>{children}</span>
         <ElInput
           {...styles}
@@ -89,6 +89,7 @@ const ElLabel = styled.label`
   & > span {
     margin-bottom: 4px;
   }
+  width: ${(props) => props.width};
 `;
 
 const ElInput = styled.input`
@@ -123,6 +124,7 @@ const ElTextArea = styled.textarea`
   font-weight: ${(props) => props.fontWeight};
   border: ${(props) => props.border};
   border-radius: 4px;
+  resize: none;
 
   &:focus,
   &:active {
