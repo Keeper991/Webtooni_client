@@ -144,7 +144,7 @@ const TalkDetail = (props) => {
                   </Grid>
 
                   <Grid display="flex" cursor>
-                    <Comment />
+                    <Comment width="16px" height="16px" />
                     <Text
                       type="p"
                       whiteSpace="nowrap"
@@ -164,34 +164,30 @@ const TalkDetail = (props) => {
               {cmtInp && (
                 <Grid
                   display="flex"
-                  justify="space-between"
+                  justify="flex-start"
                   align="center"
                   width="100%"
                   height="56px"
                   padding="20px"
-                  borderTop={`1px solid ${Color.lightGray4}`}
-                  borderBottom={`1px solid ${Color.lightGray4}`}
+                  borderTop={`1px solid ${Color.gray200}`}
+                  borderBottom={`1px solid ${Color.gray200}`}
                 >
-                  <Grid display="flex">
-                    <Image
-                      size="28px"
-                      shape="circle"
-                      // src={userImg}
-                    ></Image>
-                    <Input
-                      width="100%"
-                      minWidth="260px" //입력창 사이즈 조정 필요...
-                      maxWidth="680px" //입력창 사이즈 조정 필요...
-                      margin="0 0 0 9px"
-                      padding="0"
-                      placeholder="내용을 입력해 주세요"
-                      border="none"
-                      // color={Color.lightGray5}
-                      placeHolderGray
-                      _onChange={writeComment}
-                      value={comment}
-                    ></Input>
-                  </Grid>
+                  <Image
+                    size="28px"
+                    shape="circle"
+                    // src={userImg}
+                  ></Image>
+                  <Input
+                    width="95%"
+                    margin="0 0 0 9px"
+                    padding="0"
+                    placeholder="내용을 입력해 주세요"
+                    border="none"
+                    // color={Color.lightGray5}
+                    placeHolderGray
+                    _onChange={writeComment}
+                    value={comment}
+                  ></Input>
                   <Text
                     width="26px"
                     type="p"
@@ -229,6 +225,7 @@ const TalkDetail = (props) => {
               width="100vw"
               height="100vh"
               bgColor="rgba(0, 0, 0, 0.5);"
+              zIndex="101"
             >
               <Grid
                 position="relative"
