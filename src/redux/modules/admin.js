@@ -11,8 +11,8 @@ const setMainReview = createAction(SET_MAIN_REVIEW, (main_review) => ({
 }));
 const setMainBestReviewer = createAction(
   SET_MAIN_BEST_REVIEWER,
-  (best_reviewer) => ({
-    best_reviewer,
+  (main_best_reviewer) => ({
+    main_best_reviewer,
   })
 );
 const setMdOffer = createAction(SET_MD_OFFER, (md_offer) => ({

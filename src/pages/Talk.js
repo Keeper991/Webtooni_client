@@ -6,6 +6,7 @@ import { ReactComponent as WriteButton } from "../images/WriteButton.svg";
 import { actionCreators as talkActions } from "../redux/modules/talk";
 import { history } from "../redux/configureStore";
 import { Color } from "../shared/common";
+import { ReactComponent as Comment } from "../images/Comment.svg";
 
 const Talk = (props) => {
   // const is_login = useSelector((store) => store.user.is_login);   //로그인 여부 알기
@@ -34,6 +35,8 @@ const Talk = (props) => {
 
   const [startPage, setStartPage] = React.useState(1); //페이지 번호 설정
 
+  const [select, isSelect] = React.useState(0); //선택한 페이지 표시
+
   let post_list = []; //클릭한 페이지의 포스트 리스트
 
   let page_order = all_page_number.indexOf(cur_page) + 1; //클릭한 페이지 중 현재 페이지 순서
@@ -51,7 +54,7 @@ const Talk = (props) => {
     if (!all_page_number.includes(page_number)) {
       dispatch(talkActions.getPageServer(page_number));
     } else {
-      dispatch(talkActions.setPageNumber(page_number));
+      dispatch(talkActions.setPageNumber(page_number)); //기 조회한 페이지 번호를 클릭한 경우
     }
   };
 
@@ -69,6 +72,31 @@ const Talk = (props) => {
           <WriteButton />
         </Grid>
       )}
+      <Grid
+        padding="16px"
+        bgColor={Color.white}
+        borderBottom={`1px solid ${Color.lightGray4}`}
+        display="flex"
+        justify="flex-end"
+      >
+        <Button
+          width="128px"
+          height="36px"
+          shape="pill"
+          bgColor={Color.white}
+          border={`1px solid ${Color.lightGray4}`}
+          padding="9px 16px"
+        >
+          <Text
+            type="p"
+            color={Color.darkGray}
+            textAlign="justify"
+            width="auto"
+          >
+            최신순
+          </Text>
+        </Button>
+      </Grid>
       {/* 포스트 리스트 */}
       <Grid bgColor={Color.white} padding="20px">
         {post_list.map((post, idx) => (
@@ -79,40 +107,58 @@ const Talk = (props) => {
             onClick={() => history.push(`/talk/detail/${post.postId}`)}
           >
             <Text type="p">{post.postTitle}</Text>
-            <Grid display="flex" justify="space-between" align="center">
+            <Grid
+              display="flex"
+              margin="7px 0 0 0"
+              justify="space-between"
+              align="center"
+            >
               <Grid display="flex">
-                <Text color={Color.gray400} type="caption" whiteSpace="nowrap">
+                <Text
+                  color={Color.gray400}
+                  type="p"
+                  whiteSpace="nowrap"
+                  padding="0 12px 0 0"
+                >
                   {post.userName}
                 </Text>
                 <Text
                   color={Color.gray400}
-                  type="en"
-                  fontSize="12px"
+                  type="p"
                   whiteSpace="nowrap"
+                  padding="0 12px 0 0"
                 >
-                  작성시간{post.createDate}
+                  {post.createDate.substr(5, 5)}
+                </Text>
+                <Text
+                  color={Color.lightGray5}
+                  type="p"
+                  whiteSpace="nowrap"
+                  padding="0 12px 0 0"
+                >
+                  좋아요&nbsp;{post.likeCount}
                 </Text>
               </Grid>
 
               <Grid
-                display="flex"
-                align="center"
+                position="relative"
                 bgColor={Color.white}
-                margin="10px 0"
+                padding="0 0 0 6px"
               >
-                <Image
-                  width="20px"
-                  height="20px"
-                  src="https://cdn.pixabay.com/photo/2013/07/12/17/39/star-152151_960_720.png"
-                ></Image>
-                <Text type="p" whiteSpace="nowrap">
-                  댓글{post.commentCount}
-                </Text>
+                <Comment width="24px" height="24px" />
+                <Grid position="absolute" top="0" left="45%">
+                  <Text type="p">{post.commentCount}</Text>
+                </Grid>
               </Grid>
             </Grid>
           </Grid>
         ))}
-        <Grid display="flex" height="20px">
+        <Grid
+          display="flex"
+          padding="32px 16px"
+          justify="center"
+          align="center"
+        >
           {/* 이전 페이지 목록 보여주기 */}
           {startPage !== 1 && (
             <Grid
@@ -120,40 +166,47 @@ const Talk = (props) => {
                 setStartPage(startPage - 5);
                 getPagePosts(startPage);
               }}
+              padding="0 15px 0 0"
             >
               이전
             </Grid>
           )}
           {/* 선택 가능한 페이지 번호 */}
-          {Array.from({ length: 5 }).map((_, idx) => {
-            const page_btn_no = startPage + idx;
-            if (page_btn_no <= last_page) {
+          <PageBtnGrid select={select}>
+            {Array.from({ length: 5 }).map((_, idx) => {
+              const page_btn_no = startPage + idx;
+              // if (page_btn_no <= last_page) {
               return (
                 <Button
                   shape="circle"
                   size="32px"
+                  margin="5px"
                   bgColor={Color.white}
+                  color={Color.black}
                   border={`1px solid ${Color.darkGray}`}
                   _onClick={() => {
                     getPagePosts(page_btn_no);
+                    isSelect(idx % 5);
                   }}
                 >
-                  <Text color={Color.darkGray}>{page_btn_no}</Text>
+                  {page_btn_no}
                 </Button>
               );
-            }
-          })}
-          {/* 다음 페이지 목록 보여주기*/}
-          {startPage + 5 <= last_page && (
-            <Grid
-              onClick={() => {
-                setStartPage(startPage + 5);
-                getPagePosts(startPage);
-              }}
-            >
-              다음
-            </Grid>
-          )}
+              // }
+            })}
+          </PageBtnGrid>
+          {/* 다음 페이지 목록 보여주기.  주석제거하기*/}
+          {/* {startPage + 5 <= last_page && ( */}
+          <Grid
+            onClick={() => {
+              setStartPage(startPage + 5);
+              getPagePosts(startPage);
+            }}
+            padding="0 0 0 15px"
+          >
+            다음
+          </Grid>
+          {/* )} */}
         </Grid>
       </Grid>
     </Grid>
@@ -171,10 +224,21 @@ const Grid = styled.div`
   padding: ${(props) => (props.padding ? props.padding : "")};
   position: ${(props) => props.position || ""};
   bottom: ${(props) => props.bottom || ""};
+  top: ${(props) => props.top || ""};
+  left: ${(props) => props.left || ""};
   right: ${(props) => props.right || ""};
   background-color: ${(props) => props.bgColor || ""};
   ${(props) => (props.cursor ? "cursor: pointer" : "")};
   border-bottom: ${(props) => props.borderBottom || ""};
 `;
 
+const PageBtnGrid = styled.div`
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  & > button:nth-child(${(props) => props.select + 1}) {
+    border: 1px solid ${Color.primary};
+    color: ${Color.primary};
+  }
+`;
 export default Talk;

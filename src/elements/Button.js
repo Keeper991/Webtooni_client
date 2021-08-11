@@ -82,6 +82,7 @@ Button.defaultProps = {
   border: `1px solid ${Color.black}`,
   shape: "",
   size: 0,
+  src: "",
   disabled: false,
 };
 
