@@ -60,8 +60,8 @@ const Detail = (props) => {
     deleteReviewServer(review_id);
   };
 
-  //리뷰 정렬(좋아요, 최신순)
-  const sortLike = () => {
+  //리뷰 정렬(최신순,좋아요순)
+  const sortNew = () => {
     toon.reviews.sort(function (a, b) {
       return a.createDate > b.createDate
         ? -1
@@ -70,7 +70,7 @@ const Detail = (props) => {
         : 0;
     });
   };
-  const sortNew = () => {
+  const sortLike = () => {
     toon.reviews.sort(function (a, b) {
       return a.likeCount - b.likeCount;
     });

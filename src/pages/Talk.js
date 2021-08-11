@@ -1,22 +1,59 @@
 import React, { useEffect } from "react";
 import { useSelector, useDispatch } from "react-redux";
 import styled from "styled-components";
-import { Text, Image, Button, Input, WriteButton } from "../elements";
+import { Text, Image, Button, Input } from "../elements";
+import { ReactComponent as WriteButton } from "../images/WriteButton.svg";
 import { actionCreators as talkActions } from "../redux/modules/talk";
 import { history } from "../redux/configureStore";
 import { Color } from "../shared/common";
 
 const Talk = (props) => {
-  const dispatch = useDispatch();
-  //톡 리스트 불러오기
-  useEffect(() => {
-    dispatch(talkActions.getPostAllServer());
-  }, []);
-  const post_list = useSelector((store) => store.talk.post_list);
-
-  //로그인 여부 알기
-  // const is_login = useSelector((store) => store.user.is_login);
+  // const is_login = useSelector((store) => store.user.is_login);   //로그인 여부 알기
   const is_login = true; //나중에 지우기
+
+  const all_post_list = useSelector((store) => store.talk.post_list); //조회한 페이지의 전체 포스트 목록
+  const all_page_number = useSelector((store) => store.talk.page_number_list); //클릭한 페이지 목록
+  let cur_page = useSelector((store) => store.talk.cur_page); //현재 페이지 번호
+  const post_count = useSelector((store) => store.talk.post_count); //전체 포스트 수
+  const post_per_page = 10; //페이지 별 포스트 수
+  let last_page = 1; //마지막 페이지 번호
+
+  const dispatch = useDispatch();
+  //처음 페이지 진입 시
+  useEffect(() => {
+    if (all_page_number.length === 0) dispatch(talkActions.getPageServer(1)); //1번 페이지 포스트 요청
+  }, []);
+
+  //마지막 페이지 번호 구하기
+  if (post_count === 0) {
+  } else if (post_count % post_per_page === 0) {
+    last_page = parseInt(post_count / post_per_page);
+  } else {
+    last_page = parseInt(post_count / post_per_page) + 1;
+  }
+
+  const [startPage, setStartPage] = React.useState(1); //페이지 번호 설정
+
+  let post_list = []; //클릭한 페이지의 포스트 리스트
+
+  let page_order = all_page_number.indexOf(cur_page) + 1; //클릭한 페이지 중 현재 페이지 순서
+
+  //현재 페이지의 포스트 리스트
+  post_list = all_post_list.filter(
+    (_, idx) =>
+      (page_order - 1) * post_per_page <= idx &&
+      idx < page_order * post_per_page
+  );
+
+  //클릭한 페이지의 포스트 목록 가져오기
+  const getPagePosts = (page_number) => {
+    //새로운 페이지번호를 클릭한 경우 서버에서 포스트 받아오기
+    if (!all_page_number.includes(page_number)) {
+      dispatch(talkActions.getPageServer(page_number));
+    } else {
+      dispatch(talkActions.setPageNumber(page_number));
+    }
+  };
 
   return (
     <Grid bgColor={Color.lightGray6}>
@@ -70,6 +107,49 @@ const Talk = (props) => {
             </Grid>
           </Grid>
         ))}
+        <Grid display="flex" height="20px">
+          {/* 이전 페이지 목록 보여주기 */}
+          {startPage !== 1 && (
+            <Grid
+              onClick={() => {
+                setStartPage(startPage - 5);
+                getPagePosts(startPage);
+              }}
+            >
+              이전
+            </Grid>
+          )}
+          {/* 선택 가능한 페이지 번호 */}
+          {Array.from({ length: 5 }).map((_, idx) => {
+            const page_btn_no = startPage + idx;
+            if (page_btn_no <= last_page) {
+              return (
+                <Button
+                  shape="circle"
+                  size="32px"
+                  bgColor={Color.white}
+                  border={`1px solid ${Color.darkGray}`}
+                  _onClick={() => {
+                    getPagePosts(page_btn_no);
+                  }}
+                >
+                  <Text color={Color.darkGray}>{page_btn_no}</Text>
+                </Button>
+              );
+            }
+          })}
+          {/* 다음 페이지 목록 보여주기*/}
+          {startPage + 5 <= last_page && (
+            <Grid
+              onClick={() => {
+                setStartPage(startPage + 5);
+                getPagePosts(startPage);
+              }}
+            >
+              다음
+            </Grid>
+          )}
+        </Grid>
       </Grid>
     </Grid>
   );
