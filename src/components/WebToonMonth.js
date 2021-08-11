@@ -29,7 +29,9 @@ const WebToonMonth = (props) => {
               ></Image>
               <Text fontSize="12px">{props.toonAvgPoint}</Text>
             </FlexGrid>
-            <Text fontSize="10px">{props.toonWeekday}</Text>
+            <Text fontSize="10px">
+              {props.toonWeekday ? props.toonWeekday : "완결"}
+            </Text>
           </FlexGrid>
         </InfoGrid>
       </FlexToonGrid>
@@ -60,11 +62,11 @@ const ImageGrid = styled.div`
     position: absolute;
     width: 16px;
     height: 16px;
-    background-color: #666666;
+    background-color: ${Color.gray600};
     font-size: 9px;
     justify-content: center;
     align-items: center;
-    color: #fff;
+    color: ${Color.white};
   }
 `;
 

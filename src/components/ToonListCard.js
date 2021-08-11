@@ -23,27 +23,59 @@ const ToonListCard = (props) => {
 
         <InfoGrid>
           <FlexGrid flexStart>
-            <Text fontSize="12px" color={Color.orange}>
-              판타지
+            <Text type="caption" color={Color.primary}>
+              {props.genre ? props.genre.genreType : null}
             </Text>
-            <Text type="p" margin="0 15px" fontSize="12px" color={Color.gray}>
-              토
+            <Text margin="0 15px" type="caption" color={Color.gray400}>
+              {props.toonWeekday ? props.toonWeekday : "완결"}
             </Text>
           </FlexGrid>
-          <TitleText>{props.toonTitle}</TitleText>
+          <Text fontWeight="bold">{props.toonTitle}</Text>
 
           <FlexGrid>
             <FlexGrid>
-              <AuthorText>{props.toonAuthor}</AuthorText>
+              <AuthorWrap>
+                <Text type="caption" color={Color.gray400}>
+                  {props.toonAuthor}
+                </Text>
+              </AuthorWrap>
               <Image
                 shape="square"
                 margin="0 5px 0 5px"
                 size="12px"
                 src="https://lh3.googleusercontent.com/pw/AM-JKLXIrRX56QwruA9no5dsQDpzLmNNgGigp4H-mNbe8Zll_MgRc1OVhN8nKaqDwTOSKiNGUT6bQ6O7sYRBDsPhnj49j7ACDz5qWrSeebdROovTQKhnt8O2jbq6QpskSozPMpq02E2hUQqTjg3gfLZpx-xv=s12-no?authuser=0"
               ></Image>
-              <Text fontSize="12px">{props.toonAvgPoint}</Text>
+              <Text
+                type="en"
+                fontWeight="bold"
+                fontSize="12px"
+                color={Color.primary}
+              >
+                {props.toonAvgPoint}
+              </Text>
             </FlexGrid>
-            <Text fontSize="10px">{props.toonWeekday}</Text>
+
+            {props.toonPlatform === "네이버" ? (
+              <FlexGrid>
+                <Image
+                  shape="square"
+                  size="12px"
+                  margin="0 3px"
+                  src="https://lh3.googleusercontent.com/pw/AM-JKLWCsjme2ZNKF3nOEAXrSzYgStfkJAcVZvk17v_KeIKxWNOMJIieajxO7a69mwuRMqSyzqmzCvs6Ltnu3UGFDH5WVOtg1LbHz1w5Pwnuh4utNPgkPm7inmkUX-5eDSRRwFa8HFQSfTb3Fngc2oY2cfyc=s12-no?authuser=0"
+                ></Image>
+                <Text fontSize="10px">네이버 웹툰</Text>
+              </FlexGrid>
+            ) : (
+              <FlexGrid>
+                <Image
+                  shape="square"
+                  size="12px"
+                  margin="0 3px"
+                  src="https://lh3.googleusercontent.com/pw/AM-JKLW7PImSbXv8cZ3MOmgkjwKdGNaPHtZ0VG72ZeEv9LZMl89iivlbAcUBLL6fZ836fZHed6gJQNUhMr-12eZgqqFOd-XGWU06ZftPdRGgQnVtbhNGidtMMByNP7a184KzHyKcXLpjUyHS4CFGd6NSctFf=s12-no?authuser=0"
+                ></Image>
+                <Text fontSize="10px">카카오 웹툰</Text>
+              </FlexGrid>
+            )}
           </FlexGrid>
         </InfoGrid>
       </FlexToonGrid>
@@ -63,8 +95,8 @@ const FlexToonGrid = styled.div`
   align-items: center;
   width: 100%;
   height: 90px;
-  padding: 0 15px;
-  border-bottom: 1px solid ${Color.lightGray3};
+  padding: 0 16px;
+  border-bottom: 1px solid ${Color.gray200};
 `;
 
 const ImageGrid = styled.div`
@@ -76,18 +108,15 @@ const InfoGrid = styled.div`
   display: flex;
   justify-content: space-around;
   flex-direction: column;
+  width: 80%;
   height: 64px;
   margin-left: 5px;
 `;
 
-const TitleText = styled.p`
-  font-size: 14px;
-  color: ${Color.black};
-  font-weight: bold;
-`;
-
-const AuthorText = styled.p`
-  font-size: 12px;
-  color: ${Color.darkGray};
+const AuthorWrap = styled.div`
+  max-width: 130px;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
 `;
 export default ToonListCard;

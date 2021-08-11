@@ -24,14 +24,10 @@ const WebToonCard = (props) => {
         <ContentsGrid>
           <FlexGrid>
             <FlexGrid>
-              <Text color={Color.orange} fontSize="11px" fontWeight="bold">
-                {props.webtoonGenre ? props.webtoonGenre : props.toonAge}
+              <Text color={Color.primary} type="caption">
+                {props.genre ? props.genre.genreType : null}
               </Text>
-              <Text
-                color={Color.lightGray2}
-                fontSize="10px"
-                margin="0 0 0 10px"
-              >
+              <Text color={Color.gray400} type="caption" margin="0 0 0 10px">
                 {props.toonWeekday ? props.toonWeekday : "완결"}
               </Text>
             </FlexGrid>
@@ -42,14 +38,27 @@ const WebToonCard = (props) => {
                 size="12px"
                 src="https://lh3.googleusercontent.com/pw/AM-JKLXIrRX56QwruA9no5dsQDpzLmNNgGigp4H-mNbe8Zll_MgRc1OVhN8nKaqDwTOSKiNGUT6bQ6O7sYRBDsPhnj49j7ACDz5qWrSeebdROovTQKhnt8O2jbq6QpskSozPMpq02E2hUQqTjg3gfLZpx-xv=s12-no?authuser=0"
               ></Image>
-              <Text fontSize="12px" fontWeight="bold" color={Color.black}>
+              <Text
+                type="en"
+                fontSize="12px"
+                fontWeight="bold"
+                color={Color.gray700}
+              >
                 {props.toonAvgPoint}
               </Text>
             </FlexGrid>
           </FlexGrid>
-          <TitleText>{props.toonTitle}</TitleText>
+          <TitleWrap>
+            <Text fontWeight="medium" color={Color.gray800}>
+              {props.toonTitle}
+            </Text>
+          </TitleWrap>
           <FlexGrid>
-            <AuthorText>{props.toonAuthor}</AuthorText>
+            <AuthorWrap>
+              <Text type="small" color={Color.gray400}>
+                {props.toonAuthor}
+              </Text>
+            </AuthorWrap>
             {props.toonPlatform === "네이버" ? (
               <Image
                 shape="square"
@@ -98,22 +107,17 @@ const ImageGrid = styled.div`
   height: 140px;
 `;
 
-const AuthorText = styled.p`
-  font-size: 12px;
+const AuthorWrap = styled.div`
   width: 120px;
   overflow: hidden;
   text-overflow: ellipsis;
   white-space: nowrap;
-  color: ${Color.darkGray};
 `;
 
-const TitleText = styled.p`
-  font-size: 14px;
-  font-weight: bold;
+const TitleWrap = styled.div`
   width: 140px;
   overflow: hidden;
   text-overflow: ellipsis;
   white-space: nowrap;
-  color: ${Color.black};
 `;
 export default WebToonCard;
