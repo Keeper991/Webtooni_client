@@ -25,8 +25,8 @@ const ReviewCard = (props) => {
             <UserGrid>
               <Image src={props.toonImg} shape="circle" size="40px"></Image>
               <ColumnGrid>
-                <Text fontSize="12px">{props.userName}</Text>
-                <Text fontSize="10px">{props.userGrade}</Text>
+                <Text type="caption">{props.userName}</Text>
+                <Text type="caption">{props.userGrade}</Text>
               </ColumnGrid>
             </UserGrid>
             <Button
@@ -57,14 +57,14 @@ const ReviewCard = (props) => {
               height="52px"
             ></Image>
             <InfoGrid>
-              <Text fontSize="14px">{props.toonTitle}</Text>
+              <Text>{props.toonTitle}</Text>
               <FlexGrid>
-                <Text fontSize="12px">{props.toonAuthor}</Text>
-                <Text fontSize="12px">★{props.toonPointTotalNumber}</Text>
+                <Text type="caption">{props.toonAuthor}</Text>
+                <Text tyep="caption">★{props.toonPointTotalNumber}</Text>
               </FlexGrid>
               <FlexGrid>
-                <Text fontSize="10px">{props.platform}</Text>
-                <Text fontSize="10px">{props.toonDay}</Text>
+                <Text type="small">{props.platform}</Text>
+                <Text type="small">{props.toonDay}</Text>
               </FlexGrid>
             </InfoGrid>
           </FlexToonGrid>
@@ -84,24 +84,24 @@ const ReviewCard = (props) => {
           ></Image>
           <InfoGrid>
             <FlexGrid flexStart>
-              <Text fontSize="12px" color={Color.orange}>
+              <Text type="caption" color={Color.primary}>
                 {props.genre ? props.genre.genreType : "뭐넣지"}
               </Text>
-              <Text type="p" margin="0 10px" fontSize="12px" color={Color.gray}>
+              <Text margin="0 10px" type="caption" color={Color.gray500}>
                 {props.finished ? "완결" : props.toonWeekday}
               </Text>
             </FlexGrid>
-            <Text fontSize="14px">{props.toonTitle}</Text>
+            <Text>{props.toonTitle}</Text>
             <FlexGrid>
               <FlexGrid>
-                <Text fontSize="12px">{props.toonAuthor}</Text>
+                <Text type="caption">{props.toonAuthor}</Text>
                 <Image
                   shape="square"
                   margin="0 5px 0"
                   size="12px"
                   src="https://lh3.googleusercontent.com/pw/AM-JKLXIrRX56QwruA9no5dsQDpzLmNNgGigp4H-mNbe8Zll_MgRc1OVhN8nKaqDwTOSKiNGUT6bQ6O7sYRBDsPhnj49j7ACDz5qWrSeebdROovTQKhnt8O2jbq6QpskSozPMpq02E2hUQqTjg3gfLZpx-xv=s12-no?authuser=0"
                 ></Image>
-                <Text fontSize="12px">{props.userPointNumber}</Text>
+                <Text type="caption">{props.userPointNumber}</Text>
               </FlexGrid>
               {props.toonPlatform === "네이버" ? (
                 <Image
@@ -126,8 +126,8 @@ const ReviewCard = (props) => {
           <UserGrid>
             <Image src={props.toonImg} shape="circle" size="40px"></Image>
             <ColumnGrid>
-              <Text fontSize="12px">{props.userName}</Text>
-              <Text fontSize="10px">{props.userGrade}</Text>
+              <Text type="caption">{props.userName}</Text>
+              <Text type="small">{props.userGrade}</Text>
             </ColumnGrid>
           </UserGrid>
         </FlexGrid>

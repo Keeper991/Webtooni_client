@@ -78,7 +78,7 @@ const Talk = (props) => {
             cursor
             onClick={() => history.push(`/talk/detail/${post.postId}`)}
           >
-            <Text type="p">{post.postTitle}</Text>
+            <Text>{post.postTitle}</Text>
             <Grid display="flex" justify="space-between" align="center">
               <Grid display="flex">
                 <Text color={Color.gray400} type="caption" whiteSpace="nowrap">
@@ -86,7 +86,7 @@ const Talk = (props) => {
                 </Text>
                 <Text
                   color={Color.gray400}
-                  type="en"
+                  type="num"
                   fontSize="12px"
                   whiteSpace="nowrap"
                 >
@@ -105,7 +105,12 @@ const Talk = (props) => {
                   height="20px"
                   src="https://cdn.pixabay.com/photo/2013/07/12/17/39/star-152151_960_720.png"
                 ></Image>
-                <Text type="p" whiteSpace="nowrap">
+                <Text
+                  type="num"
+                  fontSize="9px"
+                  fontWeight="bold"
+                  whiteSpace="nowrap"
+                >
                   댓글{post.commentCount}
                 </Text>
               </Grid>

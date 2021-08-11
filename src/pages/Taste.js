@@ -50,10 +50,10 @@ const Taste = () => {
           />
         </ProgressArea>
         <TitleArea>
-          <Text type="title" fontSize="1.5rem" fontWeight={600}>
+          <Text type="h1" fontWeight="bold">
             취향을 알려주세요
           </Text>
-          <Text type="p" fontSize="0.875rem">
+          <Text>
             최대 {MAX_SELECT_COUNT}개를 골라주세요.
             <br />
             분석하여 취향에 딱 맞는 웹툰을 추천해드릴게요.

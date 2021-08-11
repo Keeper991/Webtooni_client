@@ -12,9 +12,10 @@ const Text = (props) => {
     color,
     bgColor,
     fontSize,
-    fontWeight,
     whiteSpace,
-    type,
+    fontWeight, // bold, medium, regular(default)
+    type, // num(fontSize 필요), h1, h2, body(default), caption, small
+    tag, // p, span(default)
   } = props;
 
   const styles = {
@@ -29,25 +30,45 @@ const Text = (props) => {
     whiteSpace: whiteSpace,
   };
 
-  if (type === "title") {
+  if (type === "num") {
     return (
       <React.Fragment>
-        <ElTitle {...styles}>{children}</ElTitle>
+        <ElNum {...styles}>{children}</ElNum>
       </React.Fragment>
     );
   }
 
-  if (type === "p") {
+  if (type === "h1") {
     return (
       <React.Fragment>
-        <ElP {...styles}>{children}</ElP>
+        <ElH1 {...styles}>{children}</ElH1>
+      </React.Fragment>
+    );
+  }
+
+  if (type === "h2") {
+    return (
+      <React.Fragment>
+        <ElH2 {...styles}>{children}</ElH2>
+      </React.Fragment>
+    );
+  }
+
+  if (tag === "p") {
+    return (
+      <React.Fragment>
+        <ElP {...styles} type={type}>
+          {children}
+        </ElP>
       </React.Fragment>
     );
   }
 
   return (
     <React.Fragment>
-      <ElSpan {...styles}>{children}</ElSpan>
+      <ElSpan {...styles} type={type}>
+        {children}
+      </ElSpan>
     </React.Fragment>
   );
 };
@@ -60,20 +81,59 @@ Text.defaultProps = {
   margin: 0,
   color: Color.black,
   bgColor: "transparent",
-  fontSize: "1rem",
-  fontWeight: "normal",
+  fontSize: "14px",
+  fontWeight: 400,
   whiteSpace: "nowrap",
 };
 
-const ElTitle = styled.h2`
+const ElNum = styled.span`
+  padding: ${(props) => props.padding};
+  margin: ${(props) => props.margin};
+  color: ${(props) => props.color};
+  background-color: ${(props) => props.bgColor};
+  font-size: ${(props) => props.fontSize};
+  font-weight: ${(props) =>
+    props.fontWeight === "bold"
+      ? 700
+      : props.fontWeight === "medium"
+      ? 500
+      : 400};
+
+  white-space: ${(props) => props.whiteSpace};
+`;
+
+const ElH1 = styled.h1`
   width: ${(props) => props.width};
   height: ${(props) => props.height};
   padding: ${(props) => props.padding};
   margin: ${(props) => props.margin};
   color: ${(props) => props.color};
   background-color: ${(props) => props.bgColor};
-  font-size: ${(props) => props.fontSize};
-  font-weight: ${(props) => props.fontWeight};
+  font-size: 20px;
+  font-weight: ${(props) =>
+    props.fontWeight === "bold"
+      ? 700
+      : props.fontWeight === "medium"
+      ? 500
+      : 400};
+
+  white-space: ${(props) => props.whiteSpace};
+`;
+
+const ElH2 = styled.h2`
+  width: ${(props) => props.width};
+  height: ${(props) => props.height};
+  padding: ${(props) => props.padding};
+  margin: ${(props) => props.margin};
+  color: ${(props) => props.color};
+  background-color: ${(props) => props.bgColor};
+  font-size: 16px;
+  font-weight: ${(props) =>
+    props.fontWeight === "bold"
+      ? 700
+      : props.fontWeight === "medium"
+      ? 500
+      : 400};
 
   white-space: ${(props) => props.whiteSpace};
 `;
@@ -85,8 +145,19 @@ const ElP = styled.p`
   margin: ${(props) => props.margin};
   color: ${(props) => props.color};
   background-color: ${(props) => props.bgColor};
-  font-size: ${(props) => props.fontSize};
-  font-weight: ${(props) => props.fontWeight};
+  font-size: ${(props) =>
+    props.type === "caption"
+      ? "12px"
+      : props.type === "small"
+      ? "10px"
+      : "14px"};
+  font-weight: ${(props) =>
+    props.fontWeight === "bold"
+      ? 700
+      : props.fontWeight === "medium"
+      ? 500
+      : 400};
+
   white-space: ${(props) => props.whiteSpace};
 `;
 
@@ -95,8 +166,18 @@ const ElSpan = styled.span`
   margin: ${(props) => props.margin};
   color: ${(props) => props.color};
   background-color: ${(props) => props.bgColor};
-  font-size: ${(props) => props.fontSize};
-  font-weight: ${(props) => props.fontWeight};
+  font-size: ${(props) =>
+    props.type === "caption"
+      ? "12px"
+      : props.type === "small"
+      ? "10px"
+      : "14px"};
+  font-weight: ${(props) =>
+    props.fontWeight === "bold"
+      ? 700
+      : props.fontWeight === "medium"
+      ? 500
+      : 400};
 
   white-space: ${(props) => props.whiteSpace};
 `;
