@@ -6,6 +6,10 @@ import { actionCreators as talkActions } from "../redux/modules/talk";
 import { actionCreators as talkCommentActions } from "../redux/modules/talkComment";
 import { TalkComment } from "../components";
 import { Color } from "../shared/common";
+import { ReactComponent as EmptyHeart } from "../images/EmptyHeart.svg";
+import { ReactComponent as FillHeart } from "../images/FillHeart.svg";
+import { ReactComponent as Comment } from "../images/Comment.svg";
+import { ReactComponent as Delete } from "../images/Delete.svg";
 
 const TalkDetail = (props) => {
   //톡 포스트 가져오기
@@ -35,10 +39,10 @@ const TalkDetail = (props) => {
   console.log(userName, "userName");
 
   //포스트 삭제하기
+  const [dltMsg, isDltMsg] = React.useState(false); //삭제 메세지
   const deletePost = () => {
-    if (window.confirm("정말 삭제하시려고요?")) {
-      dispatch(talkActions.deletePostServer(post_id));
-    } else return;
+    dispatch(talkActions.deletePostServer(post_id));
+    return;
   };
 
   //좋아요 토글
@@ -50,8 +54,9 @@ const TalkDetail = (props) => {
     }
   };
 
-  //댓글 입력하기
-  const [comment, setComment] = React.useState("");
+  //댓글
+  const [cmtInp, isCmtInp] = React.useState(false); //댓글 입력창 보이기
+  const [comment, setComment] = React.useState(""); //댓글 입력하기
   const writeComment = (e) => {
     setComment(e.target.value);
   };
@@ -59,110 +64,223 @@ const TalkDetail = (props) => {
   return (
     <>
       {post && (
-        <Grid bgColor={Color.gray200}>
-          {/* 게시글 내용 */}
-          <Grid bgColor={Color.white} padding="20px" width="100%">
-            <Grid borderBottom={`1px solid ${Color.gray200}`}>
-              <Text type="h2">{post.postTitle}</Text>
-              <Grid display="flex" justify="space-between" align="center">
-                <Grid display="flex">
-                  <Text
-                    color={Color.gray400}
-                    type="caption"
-                    whiteSpace="nowrap"
-                  >
-                    {post.userName}
-                  </Text>
-                  <Text
-                    color={Color.gray400}
-                    type="en"
-                    fontSize="12px"
-                    whiteSpace="nowrap"
-                  >
-                    작성시간{post.createDate}
-                  </Text>
-                </Grid>
-
-                {/* 클릭 시 좋아요 토글. 이미지도 구분해 넣기 */}
+        <>
+          <Grid bgColor={Color.gray200} position="relative">
+            {/* 게시글 내용 */}
+            <Grid bgColor={Color.white} width="100%">
+              <Grid
+                borderBottom={`1px solid ${Color.gray200}`}
+                padding="16px 20px"
+              >
+                <Text type="p">{post.postTitle}</Text>
                 <Grid
                   display="flex"
+                  margin="7px 0 0 0"
+                  justify="space-between"
                   align="center"
-                  bgColor={Color.white}
-                  margin="10px 0"
-                  onClick={toggleLike}
                 >
-                  {post.isLike ? (
+                  <Grid display="flex">
+                    <Text
+                      color={Color.gray400}
+                      type="p"
+                      whiteSpace="nowrap"
+                      padding="0 12px 0 0"
+                    >
+                      {post.userName}
+                    </Text>
+                    <Text
+                      color={Color.gray400}
+                      type="p"
+                      whiteSpace="nowrap"
+                      padding="0 12px 0 0"
+                    >
+                      {post.createDate.substr(5, 5)}
+                    </Text>
+                    <Text
+                      color={Color.lightGray5}
+                      type="p"
+                      whiteSpace="nowrap"
+                      padding="0 12px 0 0"
+                    >
+                      좋아요&nbsp;{post.likeCount}
+                    </Text>
+                  </Grid>
+
+                  {/* 클릭 시 좋아요 토글 */}
+                  <Grid
+                    display="flex"
+                    align="center"
+                    bgColor={Color.white}
+                    onClick={toggleLike}
+                    cursor
+                  >
+                    {post.isLike ? <FillHeart /> : <EmptyHeart />}{" "}
+                    <Text type="p" whiteSpace="nowrap" padding="0 0 0 6px">
+                      {post.likeCount}좋아요 수
+                    </Text>
+                  </Grid>
+                </Grid>
+              </Grid>
+              <Grid bgColor={Color.white} padding="28px 20px 24px" width="100%">
+                <Text type="p" padding="0 32px 55px 0">
+                  {post.postContent}
+                </Text>
+                <Grid display="flex" justify="space-between">
+                  {/* 유저가 게시글 작성자라면 수정/삭제 */}
+                  <Grid display="flex">
+                    <Text
+                      type="p"
+                      margin="0 24px 0 0"
+                      _onClick={() => {
+                        props.history.push(`/talk/write/${post_id}`);
+                      }}
+                      cursor
+                    >
+                      수정
+                    </Text>
+                    <Text type="p" _onClick={() => isDltMsg(true)} cursor>
+                      삭제
+                    </Text>
+                  </Grid>
+
+                  <Grid display="flex" cursor>
+                    <Comment />
+                    <Text
+                      type="p"
+                      whiteSpace="nowrap"
+                      margin="0 0 0 4px"
+                      _onClick={() => isCmtInp(true)}
+                    >
+                      댓글 작성
+                    </Text>
+                  </Grid>
+                </Grid>
+              </Grid>
+            </Grid>
+
+            {/* 댓글 */}
+            <Grid margin="10px 0" bgColor={Color.white} width="100%">
+              {/* 댓글 작성 */}
+              {cmtInp && (
+                <Grid
+                  display="flex"
+                  justify="space-between"
+                  align="center"
+                  width="100%"
+                  height="56px"
+                  padding="20px"
+                  borderTop={`1px solid ${Color.lightGray4}`}
+                  borderBottom={`1px solid ${Color.lightGray4}`}
+                >
+                  <Grid display="flex">
                     <Image
-                      width="20px"
-                      height="20px"
-                      src="https://cdn.pixabay.com/photo/2013/07/12/17/39/star-152151_960_720.png"
+                      size="28px"
+                      shape="circle"
+                      // src={userImg}
                     ></Image>
-                  ) : (
-                    <Image
-                      width="20px"
-                      height="20px"
-                      src="https://cdn.pixabay.com/photo/2013/07/12/17/39/star-152151_960_720.png"
-                    ></Image>
-                  )}{" "}
-                  <Text type="p" whiteSpace="nowrap">
-                    {post.likeCount}좋아요 수
+                    <Input
+                      width="100%"
+                      minWidth="260px" //입력창 사이즈 조정 필요...
+                      maxWidth="680px" //입력창 사이즈 조정 필요...
+                      margin="0 0 0 9px"
+                      padding="0"
+                      placeholder="내용을 입력해 주세요"
+                      border="none"
+                      // color={Color.lightGray5}
+                      placeHolderGray
+                      _onChange={writeComment}
+                      value={comment}
+                    ></Input>
+                  </Grid>
+                  <Text
+                    width="26px"
+                    type="p"
+                    _onClick={() => {
+                      dispatch(
+                        talkCommentActions.addCommentServer(
+                          post_id,
+                          comment,
+                          post.commentCount
+                        )
+                      );
+                      isCmtInp(false);
+                    }}
+                  >
+                    작성
+                  </Text>
+                </Grid>
+              )}
+              {/* 댓글 목록 */}
+              {comment_list.map((_, idx) => (
+                <TalkComment
+                  key={idx}
+                  comment_info={_}
+                  commentCount={post.commentCount}
+                ></TalkComment>
+              ))}
+            </Grid>
+          </Grid>
+          {/* 삭제메세지 띄우기 */}
+          {dltMsg && (
+            <Grid
+              position="fixed"
+              top="0"
+              left="0"
+              width="100vw"
+              height="100vh"
+              bgColor="rgba(0, 0, 0, 0.5);"
+            >
+              <Grid
+                position="relative"
+                top="296px"
+                width="260px"
+                height="161px"
+                borderRadius="8px"
+                bgColor={Color.white}
+                margin="0 auto"
+              >
+                <Grid zIndex="2" position="absolute" top="-28px" left="104px">
+                  <Delete />
+                </Grid>
+                <Text
+                  type="p"
+                  width="100%"
+                  height="117px"
+                  textAlign="center"
+                  lineHeight="117px"
+                >
+                  정말 삭제하시겠습니까?
+                </Text>
+                <Grid
+                  width="100%"
+                  display="flex"
+                  align="center"
+                  borderTop={`1px solid ${Color.lightGray4}`}
+                >
+                  <Text
+                    textAlign="center"
+                    type="p"
+                    width="50%"
+                    lineHeight="44px"
+                    _onClick={() => isDltMsg(false)}
+                  >
+                    취소
+                  </Text>
+                  <Text
+                    textAlign="center"
+                    type="p"
+                    width="50%"
+                    lineHeight="44px"
+                    _onClick={deletePost}
+                    color={Color.red2}
+                  >
+                    삭제
                   </Text>
                 </Grid>
               </Grid>
             </Grid>
-            <Grid bgColor={Color.white} margin="10px 0" width="100%">
-              <Text type="p">{post.postContent}</Text>
-            </Grid>
-            {/* 유저가 게시글 작성자라면 수정/삭제 */}
-            {userName === post.userName && (
-              <Grid display="flex">
-                <Button
-                  _onClick={() => {
-                    props.history.push(`/talk/write/${post_id}`);
-                  }}
-                >
-                  수정
-                </Button>
-                <Button _onClick={deletePost}>삭제</Button>
-              </Grid>
-            )}
-          </Grid>
-
-          {/* 댓글 */}
-          <Grid margin="10px 0" bgColor={Color.white} width="100%">
-            {/* 댓글 작성 */}
-            <Grid display="flex" justify="center" align="center" width="100%">
-              <Input
-                placeholder="내용을 입력해 주세요"
-                // color={Color.gray400}
-                placeHolderGray
-                _onChange={writeComment}
-                value={comment}
-              ></Input>
-              <Button
-                _onClick={() => {
-                  dispatch(
-                    talkCommentActions.addCommentServer(
-                      post_id,
-                      comment,
-                      post.commentCount
-                    )
-                  );
-                }}
-              >
-                등록
-              </Button>
-            </Grid>
-            {/* 댓글 목록 */}
-            {comment_list.map((_, idx) => (
-              <TalkComment
-                key={idx}
-                comment_info={_}
-                commentCount={post.commentCount}
-              ></TalkComment>
-            ))}
-          </Grid>
-        </Grid>
+          )}
+        </>
       )}
     </>
   );
@@ -177,7 +295,14 @@ const Grid = styled.div`
   margin: ${(props) => (props.margin ? props.margin : "")};
   padding: ${(props) => (props.padding ? props.padding : "")};
   position: ${(props) => props.position || ""};
+  z-index: ${(props) => props.zIndex || ""};
+  top: ${(props) => props.top || ""};
+  left: ${(props) => props.left || ""};
   background-color: ${(props) => props.bgColor || ""};
   border-bottom: ${(props) => props.borderBottom || ""};
+  border-top: ${(props) => props.borderTop || ""};
+  border-radius: ${(props) => props.borderRadius || ""};
+
+  ${(props) => (props.cursor ? "cursor: pointer" : "")};
 `;
 export default TalkDetail;
