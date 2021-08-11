@@ -7,6 +7,7 @@ import { Button, Image } from "../elements/index";
 import { withRouter } from "react-router";
 import { NavLink } from "react-router-dom";
 import { Color } from "./common";
+
 import {
   UserOutlined,
   SearchOutlined,
@@ -36,6 +37,7 @@ const Header = (props) => {
 
   const [hide, setHide] = React.useState(false);
   const [pageY, setPageY] = React.useState(0);
+
   const documentRef = React.useRef(document);
 
   const handleScroll = () => {
@@ -104,7 +106,11 @@ const Header = (props) => {
 
             <IconWrap>
               <LogoutOutlined></LogoutOutlined>
-              <SearchOutlined></SearchOutlined>
+              <SearchOutlined
+                onClick={() => {
+                  history.push("/search");
+                }}
+              ></SearchOutlined>
               <UserOutlined></UserOutlined>
             </IconWrap>
           </HeaderWrap>
@@ -175,7 +181,12 @@ const Header = (props) => {
                 history.push("/login");
               }}
             ></LoginOutlined>
-            <SearchOutlined style={{ margin: "0 15px" }}></SearchOutlined>
+            <SearchOutlined
+              style={{ margin: "0 15px" }}
+              onClick={() => {
+                history.push("/search");
+              }}
+            ></SearchOutlined>
           </IconWrap>
         </HeaderWrap>
 

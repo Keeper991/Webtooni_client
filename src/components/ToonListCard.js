@@ -24,7 +24,7 @@ const ToonListCard = (props) => {
         <InfoGrid>
           <FlexGrid flexStart>
             <Text fontSize="12px" color={Color.orange}>
-              {props.genre ? props.genre.genreType : null}
+              {props.genre ? props.genre.genreType : "뭐넣지"}
             </Text>
             <Text type="p" margin="0 15px" fontSize="12px" color={Color.gray}>
               {props.toonWeekday ? props.toonWeekday : "완결"}
@@ -43,7 +43,28 @@ const ToonListCard = (props) => {
               ></Image>
               <Text fontSize="12px">{props.toonAvgPoint}</Text>
             </FlexGrid>
-            <Text fontSize="10px">{props.toonWeekday}</Text>
+
+            {props.toonPlatform === "네이버" ? (
+              <FlexGrid>
+                <Image
+                  shape="square"
+                  size="12px"
+                  margin="0 3px"
+                  src="https://lh3.googleusercontent.com/pw/AM-JKLWCsjme2ZNKF3nOEAXrSzYgStfkJAcVZvk17v_KeIKxWNOMJIieajxO7a69mwuRMqSyzqmzCvs6Ltnu3UGFDH5WVOtg1LbHz1w5Pwnuh4utNPgkPm7inmkUX-5eDSRRwFa8HFQSfTb3Fngc2oY2cfyc=s12-no?authuser=0"
+                ></Image>
+                <Text fontSize="10px">네이버 웹툰</Text>
+              </FlexGrid>
+            ) : (
+              <FlexGrid>
+                <Image
+                  shape="square"
+                  size="12px"
+                  margin="0 3px"
+                  src="https://lh3.googleusercontent.com/pw/AM-JKLW7PImSbXv8cZ3MOmgkjwKdGNaPHtZ0VG72ZeEv9LZMl89iivlbAcUBLL6fZ836fZHed6gJQNUhMr-12eZgqqFOd-XGWU06ZftPdRGgQnVtbhNGidtMMByNP7a184KzHyKcXLpjUyHS4CFGd6NSctFf=s12-no?authuser=0"
+                ></Image>
+                <Text fontSize="10px">카카오 웹툰</Text>
+              </FlexGrid>
+            )}
           </FlexGrid>
         </InfoGrid>
       </FlexToonGrid>
@@ -63,7 +84,7 @@ const FlexToonGrid = styled.div`
   align-items: center;
   width: 100%;
   height: 90px;
-  padding: 0 15px;
+  padding: 0 16px;
   border-bottom: 1px solid ${Color.lightGray3};
 `;
 
@@ -76,7 +97,7 @@ const InfoGrid = styled.div`
   display: flex;
   justify-content: space-around;
   flex-direction: column;
-  width: 260px;
+  width: 80%;
   height: 64px;
   margin-left: 5px;
 `;
@@ -94,6 +115,5 @@ const AuthorText = styled.p`
   overflow: hidden;
   text-overflow: ellipsis;
   white-space: nowrap;
-
 `;
 export default ToonListCard;

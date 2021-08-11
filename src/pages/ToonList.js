@@ -18,11 +18,11 @@ const ToonList = (props) => {
   const end_toon_list = useSelector((state) => state.webtoon.end_toon);
 
   React.useEffect(() => {
-    if (webtooni_list.length === 0) {
+    if (toon_list === "webtooniverse_rank" && webtooni_list.length === 0) {
       dispatch(webtoonActions.getWebtooniRank());
     }
 
-    if (end_toon_list.length === 0) {
+    if (toon_list === "end_toon" && end_toon_list.length === 0) {
       dispatch(webtoonActions.getEndToonOffer());
     }
   }, []);
