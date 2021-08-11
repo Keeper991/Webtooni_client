@@ -26,9 +26,7 @@ const editCommentOne = createAction(
 const deleteCommentOne = createAction(DELETE_COMMENT_ONE, (commentId) => ({
   commentId,
 }));
-const resetComment = createAction(RESET_COMMENT, () => ({
-  
-}));
+const resetComment = createAction(RESET_COMMENT, () => ({}));
 
 const initialState = {
   list: [
@@ -37,12 +35,14 @@ const initialState = {
       commentId: "댓글 postId",
       userName: "닉네임",
       commentContent: "댓글 내용",
+      createDate: "1970-01-02T00:00:00",
     },
     {
       postId: "2",
       commentId: "댓글 postId",
       userName: "닉네임",
       commentContent: "댓글 내용",
+      createDate: "1970-01-02T00:00:00",
     },
   ],
 };
@@ -121,7 +121,6 @@ const deleteCommentServer = (postId, commentId, commentCount) => {
   };
 };
 
-
 export default handleActions(
   {
     [SET_COMMENT_ALL]: (state, action) =>
@@ -160,8 +159,7 @@ const actionCreators = {
   addCommentServer,
   editCommentServer,
   deleteCommentServer,
-resetComment,
-
+  resetComment,
 };
 
 export { actionCreators };
