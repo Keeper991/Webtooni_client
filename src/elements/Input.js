@@ -6,8 +6,6 @@ const Input = (props) => {
   const {
     _onChange,
     width,
-    minWidth,
-    maxWidth,
     height,
     padding,
     margin,
@@ -21,7 +19,6 @@ const Input = (props) => {
     value,
     multiLine,
     children,
-    rows,
   } = props;
 
   const styles = {
@@ -34,15 +31,12 @@ const Input = (props) => {
     fontSize: fontSize,
     fontWeight: fontWeight,
     border: border,
-    minWidth: minWidth,
-    maxWidth: maxWidth,
-    rows: rows,
   };
 
   if (multiLine) {
     return (
       <React.Fragment>
-        <ElLabel>
+        <ElLabel width={width}>
           <span>{children}</span>
           <ElTextArea
             {...styles}
@@ -57,7 +51,7 @@ const Input = (props) => {
 
   return (
     <React.Fragment>
-      <ElLabel>
+      <ElLabel width={width}>
         <span>{children}</span>
         <ElInput
           {...styles}
@@ -65,7 +59,6 @@ const Input = (props) => {
           placeholder={placeholder}
           onChange={_onChange}
           value={value}
-          minWidth={minWidth}
         ></ElInput>
       </ElLabel>
     </React.Fragment>
@@ -75,8 +68,6 @@ const Input = (props) => {
 Input.defaultProps = {
   _onChange: () => {},
   width: "auto",
-  minWidth: "auto",
-  maxWidth: "auto",
   height: "auto",
   padding: "13px 16px",
   margin: 0,
@@ -90,7 +81,6 @@ Input.defaultProps = {
   type: "text",
   value: "",
   children: "",
-  rows: "",
 };
 
 const ElLabel = styled.label`
@@ -99,12 +89,11 @@ const ElLabel = styled.label`
   & > span {
     margin-bottom: 4px;
   }
+  width: ${(props) => props.width};
 `;
 
 const ElInput = styled.input`
   width: ${(props) => props.width};
-  min-width: ${(props) => props.minWidth};
-  max-width: ${(props) => props.maxWidth};
   height: ${(props) => props.height};
   padding: ${(props) => props.padding};
   margin: ${(props) => props.margin};
@@ -135,7 +124,7 @@ const ElTextArea = styled.textarea`
   font-weight: ${(props) => props.fontWeight};
   border: ${(props) => props.border};
   border-radius: 4px;
-  rows: ${(props) => props.rows};
+  resize: none;
 
   &:focus,
   &:active {

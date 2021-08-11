@@ -19,7 +19,6 @@ const Text = (props) => {
     cursor,
     textAlign,
     lineHeight,
-    isSelect,
   } = props;
 
   const styles = {
@@ -34,7 +33,6 @@ const Text = (props) => {
     whiteSpace: whiteSpace,
     textAlign: textAlign,
     lineHeight: lineHeight,
-    isSelect: isSelect,
   };
 
   if (type === "title") {
@@ -81,7 +79,6 @@ Text.defaultProps = {
   cursor: false,
   textAlign: "",
   lineHeight: "",
-  isSelect: false,
 };
 
 const ElTitle = styled.h2`
@@ -112,7 +109,6 @@ const ElP = styled.p`
   text-align: ${(props) => props.textAlign};
   line-height: ${(props) => props.lineHeight};
   ${(props) => (props.cursor ? "cursor: pointer" : "")};
-  ${(props) => (props.isSelect ? `color: ${Color.red2}` : "")};
 `;
 
 const ElSpan = styled.span`
