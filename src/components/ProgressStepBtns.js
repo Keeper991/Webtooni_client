@@ -17,7 +17,7 @@ const ProgressStepBtns = ({ currentPageNum, clickHandlers, ...props }) => {
             _onClick={onClick}
           >
             <Text
-              type="en"
+              type="num"
               fontSize="12px"
               fontWeight="bold"
               color={Color.white}

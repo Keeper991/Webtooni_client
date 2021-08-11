@@ -46,7 +46,7 @@ const ToonListCard = (props) => {
                 src="https://lh3.googleusercontent.com/pw/AM-JKLXIrRX56QwruA9no5dsQDpzLmNNgGigp4H-mNbe8Zll_MgRc1OVhN8nKaqDwTOSKiNGUT6bQ6O7sYRBDsPhnj49j7ACDz5qWrSeebdROovTQKhnt8O2jbq6QpskSozPMpq02E2hUQqTjg3gfLZpx-xv=s12-no?authuser=0"
               ></Image>
               <Text
-                type="en"
+                type="num"
                 fontWeight="bold"
                 fontSize="12px"
                 color={Color.primary}
@@ -63,7 +63,7 @@ const ToonListCard = (props) => {
                   margin="0 3px"
                   src="https://lh3.googleusercontent.com/pw/AM-JKLWCsjme2ZNKF3nOEAXrSzYgStfkJAcVZvk17v_KeIKxWNOMJIieajxO7a69mwuRMqSyzqmzCvs6Ltnu3UGFDH5WVOtg1LbHz1w5Pwnuh4utNPgkPm7inmkUX-5eDSRRwFa8HFQSfTb3Fngc2oY2cfyc=s12-no?authuser=0"
                 ></Image>
-                <Text fontSize="10px">네이버 웹툰</Text>
+                <Text type="small">네이버 웹툰</Text>
               </FlexGrid>
             ) : (
               <FlexGrid>
@@ -73,7 +73,7 @@ const ToonListCard = (props) => {
                   margin="0 3px"
                   src="https://lh3.googleusercontent.com/pw/AM-JKLW7PImSbXv8cZ3MOmgkjwKdGNaPHtZ0VG72ZeEv9LZMl89iivlbAcUBLL6fZ836fZHed6gJQNUhMr-12eZgqqFOd-XGWU06ZftPdRGgQnVtbhNGidtMMByNP7a184KzHyKcXLpjUyHS4CFGd6NSctFf=s12-no?authuser=0"
                 ></Image>
-                <Text fontSize="10px">카카오 웹툰</Text>
+                <Text type="small">카카오 웹툰</Text>
               </FlexGrid>
             )}
           </FlexGrid>

@@ -75,7 +75,7 @@ const TalkDetail = (props) => {
                   </Text>
                   <Text
                     color={Color.gray400}
-                    type="en"
+                    type="num"
                     fontSize="12px"
                     whiteSpace="nowrap"
                   >
@@ -104,14 +104,14 @@ const TalkDetail = (props) => {
                       src="https://cdn.pixabay.com/photo/2013/07/12/17/39/star-152151_960_720.png"
                     ></Image>
                   )}{" "}
-                  <Text type="p" whiteSpace="nowrap">
+                  <Text type="caption" whiteSpace="nowrap">
                     {post.likeCount}좋아요 수
                   </Text>
                 </Grid>
               </Grid>
             </Grid>
             <Grid bgColor={Color.white} margin="10px 0" width="100%">
-              <Text type="p">{post.postContent}</Text>
+              <Text tag="p">{post.postContent}</Text>
             </Grid>
             {/* 유저가 게시글 작성자라면 수정/삭제 */}
             {userName === post.userName && (
