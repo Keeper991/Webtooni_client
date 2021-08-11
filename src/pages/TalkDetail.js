@@ -59,17 +59,26 @@ const TalkDetail = (props) => {
   return (
     <>
       {post && (
-        <Grid bgColor={Color.lightGray6}>
+        <Grid bgColor={Color.gray200}>
           {/* 게시글 내용 */}
           <Grid bgColor={Color.white} padding="20px" width="100%">
-            <Grid borderBottom={`1px solid ${Color.lightGray4}`}>
-              <Text type="p">{post.postTitle}</Text>
+            <Grid borderBottom={`1px solid ${Color.gray200}`}>
+              <Text type="h2">{post.postTitle}</Text>
               <Grid display="flex" justify="space-between" align="center">
                 <Grid display="flex">
-                  <Text color={Color.lightGray5} type="p" whiteSpace="nowrap">
+                  <Text
+                    color={Color.gray400}
+                    type="caption"
+                    whiteSpace="nowrap"
+                  >
                     {post.userName}
                   </Text>
-                  <Text color={Color.lightGray5} type="p" whiteSpace="nowrap">
+                  <Text
+                    color={Color.gray400}
+                    type="en"
+                    fontSize="12px"
+                    whiteSpace="nowrap"
+                  >
                     작성시간{post.createDate}
                   </Text>
                 </Grid>
@@ -125,7 +134,7 @@ const TalkDetail = (props) => {
             <Grid display="flex" justify="center" align="center" width="100%">
               <Input
                 placeholder="내용을 입력해 주세요"
-                // color={Color.lightGray5}
+                // color={Color.gray400}
                 placeHolderGray
                 _onChange={writeComment}
                 value={comment}

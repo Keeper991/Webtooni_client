@@ -1,7 +1,7 @@
 import React from "react";
 import { Color } from "../shared/common";
 import styled from "styled-components";
-import { Button } from "../elements";
+import { Button, Text } from "../elements";
 
 const ProgressStepBtns = ({ currentPageNum, clickHandlers, ...props }) => {
   return (
@@ -10,14 +10,20 @@ const ProgressStepBtns = ({ currentPageNum, clickHandlers, ...props }) => {
         <>
           <Button
             shape="circle"
-            color={currentPageNum === i + 1 ? Color.white : Color.darkGray}
-            bgColor={currentPageNum === i + 1 ? Color.black : Color.gray}
+            bgColor={currentPageNum === i + 1 ? Color.black : Color.gray200}
             border="none"
             size="24px"
             padding="0"
             _onClick={onClick}
           >
-            {i + 1}
+            <Text
+              type="en"
+              fontSize="12px"
+              fontWeight="bold"
+              color={Color.white}
+            >
+              {i + 1}
+            </Text>
           </Button>
           {i < clickHandlers.length - 1 && <Line />}
         </>
@@ -29,7 +35,7 @@ const ProgressStepBtns = ({ currentPageNum, clickHandlers, ...props }) => {
 const Line = styled.div`
   width: 1.5em;
   height: 0.5px;
-  background-color: ${Color.gray};
+  background-color: ${Color.gray200};
 `;
 
 export default ProgressStepBtns;

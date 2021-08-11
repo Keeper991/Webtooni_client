@@ -92,6 +92,7 @@ const Profile = () => {
                 height="auto"
                 padding="0"
                 border="none"
+                color={Color.gray400}
                 _onClick={() => {
                   setProfile(-1);
                 }}
