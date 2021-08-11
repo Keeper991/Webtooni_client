@@ -13,11 +13,13 @@ const Recommendation = () => {
   const dispatch = useDispatch();
 
   React.useEffect(() => {
-    dispatch(webtoonActions.getUserOffer());
-    dispatch(webtoonActions.getBestReviewerOffer());
-    dispatch(webtoonActions.getSimilarUserOffer());
-    dispatch(webtoonActions.getEndToonOffer());
-    dispatch(adminActions.getMdOffer());
+    if (md_offer_list.length === 0 || end_toon_list.length === 0) {
+      dispatch(webtoonActions.getUserOffer());
+      dispatch(webtoonActions.getBestReviewerOffer());
+      dispatch(webtoonActions.getSimilarUserOffer());
+      dispatch(webtoonActions.getEndToonOffer());
+      dispatch(adminActions.getMdOffer());
+    }
   }, []);
 
   const md_offer_list = useSelector((state) => state.admin.md_offer);
