@@ -140,7 +140,7 @@ const TalkWrite = (props) => {
         placeholder="내용을 입력하세요"
         _onChange={(e) => setPost({ ...post, postContent: e.target.value })}
         border="none"
-        rows="25"
+        height="400px"
         value={post.postContent}
       ></Input>
     </>
