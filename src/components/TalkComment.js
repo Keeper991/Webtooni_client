@@ -44,7 +44,7 @@ const TalkComment = (props) => {
 
   return (
     <Grid
-      margin="15px"
+      margin="0 20px"
       bgColor={Color.white}
       borderBottom={`1px solid ${Color.gray100}`}
       padding="20px 0"
@@ -64,18 +64,18 @@ const TalkComment = (props) => {
           {/* 기존 댓글 */}
           <Grid display="flex">
             <Image
-              size="35px"
+              size="40px"
               shape="circle"
               src={comment_info.userImg}
             ></Image>
-            <Grid padding="0 0 0 5px" width="100%">
-              <Grid display="flex" justify="space-between">
+            <Grid padding="0 0 0 7px" width="100%">
+              <Grid display="flex" justify="space-between" padding="0 0 8px 0">
                 <Text type="caption">{comment_info.userName}</Text>
                 <Text type="caption" color={Color.gray400}>
-                  작성시간{comment_info.createDate}
+                  {comment_info.createDate.substr(5, 5)}
                 </Text>
               </Grid>
-              <Text type="p">등급{comment_info.userGrade}</Text>
+              {/* <Text type="p">등급{comment_info.userGrade}</Text> */}
               <Text type="p">{comment_info.commentContent}</Text>
             </Grid>
           </Grid>
