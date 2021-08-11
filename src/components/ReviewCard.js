@@ -2,6 +2,8 @@ import React from "react";
 import styled from "styled-components";
 import { Text, Image, Button } from "../elements";
 import { Color } from "../shared/common";
+import profileImgList from "../images/profiles";
+
 const ReviewCard = (props) => {
   const [showMore, setShowMore] = React.useState(false);
 
@@ -20,43 +22,48 @@ const ReviewCard = (props) => {
   if (props.main) {
     return (
       <React.Fragment>
-        <Container>
+        <MainContainer>
           <FlexGrid>
-            <UserGrid>
-              <Image src={props.toonImg} shape="circle" size="40px"></Image>
-              <ColumnGrid>
+            <MainUserGrid>
+              <Image
+                src={profileImgList[props.userImg]}
+                shape="circle"
+                size="40px"
+              ></Image>
+              <MainColumnGrid>
                 <Text fontSize="12px">{props.userName}</Text>
                 <Text fontSize="10px">{props.userGrade}</Text>
-              </ColumnGrid>
-            </UserGrid>
+              </MainColumnGrid>
+            </MainUserGrid>
             <Button
-              bgColor="none"
+              bgColor="transparent"
               fontSize="12px"
               border="none"
+              color={Color.black}
               _onClick={handleTextToggle}
             >
               {showMore ? "줄이기" : "자세히보기"}
             </Button>
           </FlexGrid>
 
-          <ReviewGrid>
+          <MainReviewGrid>
             {showMore ? (
-              <ReivewTextMore>{props.reviewContent}</ReivewTextMore>
+              <MainReivewTextMore>{props.reviewContent}</MainReivewTextMore>
             ) : (
-              <ReivewText>{props.reviewContent}</ReivewText>
+              <MainReivewText>{props.reviewContent}</MainReivewText>
             )}
-          </ReviewGrid>
+          </MainReviewGrid>
 
           <hr />
 
-          <FlexToonGrid>
+          <MainFlexToonGrid>
             <Image
               margin="0 7px"
               src={props.toonImg}
               width="40px"
               height="52px"
             ></Image>
-            <InfoGrid>
+            <MainInfoGrid>
               <Text fontSize="14px">{props.toonTitle}</Text>
               <FlexGrid>
                 <Text fontSize="12px">{props.toonAuthor}</Text>
@@ -66,9 +73,9 @@ const ReviewCard = (props) => {
                 <Text fontSize="10px">{props.platform}</Text>
                 <Text fontSize="10px">{props.toonDay}</Text>
               </FlexGrid>
-            </InfoGrid>
-          </FlexToonGrid>
-        </Container>
+            </MainInfoGrid>
+          </MainFlexToonGrid>
+        </MainContainer>
       </React.Fragment>
     );
   }
@@ -154,6 +161,65 @@ const ReviewCard = (props) => {
     </React.Fragment>
   );
 };
+
+const MainContainer = styled.div`
+  width: 265px;
+  height: auto;
+  background: #f4f4f4;
+  display: inline-block;
+  padding: 10px;
+  margin: 0 10px;
+`;
+
+const MainFlexToonGrid = styled.div`
+  display: flex;
+  align-items: center;
+`;
+
+const MainInfoGrid = styled.div`
+  display: flex;
+  flex-direction: column;
+  width: 100%;
+`;
+
+const MainUserGrid = styled.div`
+  display: flex;
+  align-items: center;
+`;
+
+const MainReviewGrid = styled.div`
+  width: 245px;
+  min-height: 100px;
+  height: auto;
+  padding: 10px 0;
+`;
+
+const MainReivewText = styled.div`
+  width: 245px;
+  font-size: 12px;
+  white-space: normal;
+  display: -webkit-box;
+  -webkit-line-clamp: 5;
+  -webkit-box-orient: vertical;
+  overflow: hidden;
+  word-break: break-word;
+  line-height: 1.4em;
+  max-height: 7em;
+`;
+
+const MainReivewTextMore = styled.div`
+  width: 245px;
+  font-size: 12px;
+  white-space: normal;
+  word-break: break-word;
+  line-height: 1.4em;
+`;
+
+const MainColumnGrid = styled.div`
+  display: flex;
+  flex-direction: column;
+  margin: 0 10px;
+`;
 
 const Container = styled.div`
   width: 100%;
