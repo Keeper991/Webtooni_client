@@ -59,16 +59,16 @@ const getPageServer = (page_number) => {
       console.log(response, "getTalkAllOK");
       const _list = response.data.posts;
 
-      // const { userLikeId } = getState().user.user; //유저가 좋아요 한 톡 포스트. 변수명 나중에 수정
-      // // 로그인 유저의 좋아요 여부 추가
-      // const list = _list.map((item) => {
-      //   if (userLikeId.includes(item.postId)) {
-      //     item.isLike = true;
-      //   } else {
-      //     item.isLike = false;
-      //   }
-      //   return item;
-      // });
+      const { userLikePostID } = getState().user.user; //유저가 좋아요 한 톡 포스트. 변수명 나중에 수정
+      // 로그인 유저의 좋아요 여부 추가
+      const list = _list.map((item) => {
+        if (userLikePostID.includes(item.postId)) {
+          item.isLike = true;
+        } else {
+          item.isLike = false;
+        }
+        return item;
+      });
 
       dispatch(setPage(_list, page_number));
       dispatch(setPageNumber(page_number));
@@ -141,9 +141,9 @@ const getPostOneServer = (post_id) => {
       const response = await talkAPI.getOne(post_id);
       const post = response.data;
 
-      const { userLikeId } = getState().user.user; //유저가 좋아요 한 톡 포스트. 변수명 나중에 수정
+      const { userLikePostID } = getState().user.user; //유저가 좋아요 한 톡 포스트. 변수명 나중에 수정
       // 로그인 유저의 좋아요 여부 추가
-      if (userLikeId.includes(post.postId)) {
+      if (userLikePostID.includes(post.postId)) {
         post.isLike = true;
       } else {
         post.isLike = false;
