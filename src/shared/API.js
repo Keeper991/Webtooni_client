@@ -38,7 +38,8 @@ const offerAPI = {
 };
 
 const talkAPI = {
-  getAll: () => instance.get(`talk`),
+  getPage: (pageNumber) =>
+    instance.get(`talk`, { params: { page: pageNumber, size: 10 } }),
   getOne: (postId) => instance.get(`talk/${postId}`),
   getComments: (postId) => instance.get(`talk/${postId}/comment`),
   addPost: ({ postTitle, postContent }) =>

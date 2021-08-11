@@ -7,6 +7,7 @@ const SET_COMMENT_ALL = "SET_COMMENT_ALL";
 const ADD_COMMENT_ONE = "ADD_COMMENT_ONE";
 const EDIT_COMMENT_ONE = "EDIT_COMMENT_ONE";
 const DELETE_COMMENT_ONE = "DELETE_COMMENT_ONE";
+const RESET_COMMENT = "RESET_COMMENT";
 
 const setCommentAll = createAction(SET_COMMENT_ALL, (commentList) => ({
   commentList,
@@ -24,6 +25,9 @@ const editCommentOne = createAction(
 );
 const deleteCommentOne = createAction(DELETE_COMMENT_ONE, (commentId) => ({
   commentId,
+}));
+const resetComment = createAction(RESET_COMMENT, () => ({
+  
 }));
 
 const initialState = {
@@ -117,6 +121,7 @@ const deleteCommentServer = (postId, commentId, commentCount) => {
   };
 };
 
+
 export default handleActions(
   {
     [SET_COMMENT_ALL]: (state, action) =>
@@ -142,6 +147,10 @@ export default handleActions(
         );
         draft.list.splice(idx, 1);
       }),
+    [RESET_COMMENT]: (state) =>
+      produce(state, (draft) => {
+        draft.list = [];
+      }),
   },
   initialState
 );
@@ -151,6 +160,8 @@ const actionCreators = {
   addCommentServer,
   editCommentServer,
   deleteCommentServer,
+resetComment,
+
 };
 
 export { actionCreators };
