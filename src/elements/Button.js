@@ -72,14 +72,14 @@ Button.defaultProps = {
   children: null,
   width: "auto",
   height: "auto",
-  padding: "12px 16px",
+  padding: "15px 16px",
   margin: 0,
-  color: Color.black,
-  bgColor: Color.gray,
-  fontSize: "1rem",
-  borderRadius: "4px",
-  fontWeight: "normal",
-  border: `1px solid ${Color.darkGray}`,
+  color: Color.white,
+  bgColor: Color.black,
+  fontSize: "16px",
+  borderRadius: "8px",
+  fontWeight: "500",
+  border: `1px solid ${Color.black}`,
   shape: "",
   size: 0,
   disabled: false,
@@ -107,20 +107,22 @@ const ElCircleButton = styled.button`
   &:active {
     outline: none;
   }
+  &:hover {
+    opacity: 0.8;
+  }
 `;
 
 const ElPillButton = styled.button`
   width: ${(props) => props.width};
-  padding: ${(props) => props.padding};
+  height: 36px;
+  padding: 9px 12px;
   margin: ${(props) => props.margin};
-  color: ${(props) => props.color};
+  color: ${Color.gray700};
   background-color: ${(props) => props.bgColor};
-  font-size: ${(props) => props.fontSize};
-  font-weight: ${(props) => props.fontWeight};
-  border: ${(props) => props.border};
-  border-radius: calc(
-    ${(props) => parseInt(props.padding.split(" ")[0]) * 2}px + 1em
-  );
+  font-size: 14px;
+  font-weight: 500;
+  border: 1px solid ${Color.gray200};
+  border-radius: 36px;
 
   cursor: pointer;
   display: flex;
@@ -154,11 +156,19 @@ const ElButton = styled.button`
 
   ${(props) =>
     props.disabled &&
-    `background-color: ${Color.lightGray}; color: ${Color.gray}; border: 1px solid transparent; cursor: not-allowed;`}
+    `background-color: ${Color.gray200}; color: ${Color.white}; border: 1px solid ${Color.gray200}; cursor: not-allowed;`}
 
   &:focus,
   &:active {
     outline: none;
+  }
+
+  &:hover {
+    opacity: 0.8;
+  }
+
+  &:active {
+    opacity: 1;
   }
 `;
 

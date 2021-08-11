@@ -23,25 +23,36 @@ const ToonListCard = (props) => {
 
         <InfoGrid>
           <FlexGrid flexStart>
-            <Text fontSize="12px" color={Color.orange}>
-              {props.genre ? props.genre.genreType : "뭐넣지"}
+            <Text type="caption" color={Color.primary}>
+              {props.genre ? props.genre.genreType : null}
             </Text>
-            <Text type="p" margin="0 15px" fontSize="12px" color={Color.gray}>
+            <Text margin="0 15px" type="caption" color={Color.gray400}>
               {props.toonWeekday ? props.toonWeekday : "완결"}
             </Text>
           </FlexGrid>
-          <TitleText>{props.toonTitle}</TitleText>
+          <Text fontWeight="bold">{props.toonTitle}</Text>
 
           <FlexGrid>
             <FlexGrid>
-              <AuthorText>{props.toonAuthor}</AuthorText>
+              <AuthorWrap>
+                <Text type="caption" color={Color.gray400}>
+                  {props.toonAuthor}
+                </Text>
+              </AuthorWrap>
               <Image
                 shape="square"
                 margin="0 5px 0 5px"
                 size="12px"
                 src="https://lh3.googleusercontent.com/pw/AM-JKLXIrRX56QwruA9no5dsQDpzLmNNgGigp4H-mNbe8Zll_MgRc1OVhN8nKaqDwTOSKiNGUT6bQ6O7sYRBDsPhnj49j7ACDz5qWrSeebdROovTQKhnt8O2jbq6QpskSozPMpq02E2hUQqTjg3gfLZpx-xv=s12-no?authuser=0"
               ></Image>
-              <Text fontSize="12px">{props.toonAvgPoint}</Text>
+              <Text
+                type="en"
+                fontWeight="bold"
+                fontSize="12px"
+                color={Color.primary}
+              >
+                {props.toonAvgPoint}
+              </Text>
             </FlexGrid>
 
             {props.toonPlatform === "네이버" ? (
@@ -85,7 +96,7 @@ const FlexToonGrid = styled.div`
   width: 100%;
   height: 90px;
   padding: 0 16px;
-  border-bottom: 1px solid ${Color.lightGray3};
+  border-bottom: 1px solid ${Color.gray200};
 `;
 
 const ImageGrid = styled.div`
@@ -102,16 +113,8 @@ const InfoGrid = styled.div`
   margin-left: 5px;
 `;
 
-const TitleText = styled.p`
-  font-size: 14px;
-  color: ${Color.black};
-  font-weight: bold;
-`;
-
-const AuthorText = styled.p`
-  font-size: 12px;
+const AuthorWrap = styled.div`
   max-width: 130px;
-  color: ${Color.darkGray};
   overflow: hidden;
   text-overflow: ellipsis;
   white-space: nowrap;

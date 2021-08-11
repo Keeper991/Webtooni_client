@@ -46,7 +46,7 @@ const TalkComment = (props) => {
     <Grid
       margin="15px"
       bgColor={Color.white}
-      borderBottom={`1px solid ${Color.lightGray4}`}
+      borderBottom={`1px solid ${Color.gray100}`}
       padding="20px 0"
     >
       {edit ? (
@@ -70,8 +70,8 @@ const TalkComment = (props) => {
             ></Image>
             <Grid padding="0 0 0 5px" width="100%">
               <Grid display="flex" justify="space-between">
-                <Text type="p">{comment_info.userName}</Text>
-                <Text type="p" color={Color.lightGray5}>
+                <Text type="caption">{comment_info.userName}</Text>
+                <Text type="caption" color={Color.gray400}>
                   작성시간{comment_info.createDate}
                 </Text>
               </Grid>

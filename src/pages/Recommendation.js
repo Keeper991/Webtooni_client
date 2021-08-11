@@ -161,7 +161,7 @@ const Recommendation = () => {
       <MdBox>
         <BookMark></BookMark>
         <MdInfoBox>
-          <Text fontSize="10px" color={Color.orange} fontWeight="bold">
+          <Text type="small" color={Color.primary} fontWeight="bold">
             #MD추천
           </Text>
           <Text fontSize="20px" color={Color.white} fontWeight="bold">
@@ -349,7 +349,7 @@ const Recommendation = () => {
 const BannerBox = styled.div`
   width: 320px;
   height: 66px;
-  background-color: #eaeaea;
+  background-color: ${Color.gray200};
   margin: 30px auto;
   border-radius: 8px;
   display: flex;
@@ -366,7 +366,7 @@ const SliderBox = styled.div`
 const MdBox = styled.div`
   width: 100%;
   height: 200px;
-  background-color: #333333;
+  background-color: ${Color.gray800};
   margin: 20px 0;
   display: flex;
   flex-direction: column;
@@ -425,7 +425,7 @@ const InfoGrid = styled.div`
 const MdCommentBox = styled.div`
   width: 320px;
   padding: 13px 15px 70px;
-  background-color: ${Color.lightGray3};
+  background-color: ${Color.gray200};
   margin: 20px auto;
   border-radius: 8px;
   display: flex;

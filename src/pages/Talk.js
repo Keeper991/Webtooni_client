@@ -56,7 +56,7 @@ const Talk = (props) => {
   };
 
   return (
-    <Grid bgColor={Color.lightGray6}>
+    <Grid bgColor={Color.gray200}>
       {/* 포스트 작성 버튼 */}
       {is_login && (
         <Grid
@@ -73,7 +73,7 @@ const Talk = (props) => {
       <Grid bgColor={Color.white} padding="20px">
         {post_list.map((post, idx) => (
           <Grid
-            borderBottom={`1px solid ${Color.lightGray4}`}
+            borderBottom={`1px solid ${Color.gray200}`}
             padding="20px 0 10px"
             cursor
             onClick={() => history.push(`/talk/detail/${post.postId}`)}
@@ -81,10 +81,15 @@ const Talk = (props) => {
             <Text type="p">{post.postTitle}</Text>
             <Grid display="flex" justify="space-between" align="center">
               <Grid display="flex">
-                <Text color={Color.lightGray5} type="p" whiteSpace="nowrap">
+                <Text color={Color.gray400} type="caption" whiteSpace="nowrap">
                   {post.userName}
                 </Text>
-                <Text color={Color.lightGray5} type="p" whiteSpace="nowrap">
+                <Text
+                  color={Color.gray400}
+                  type="en"
+                  fontSize="12px"
+                  whiteSpace="nowrap"
+                >
                   작성시간{post.createDate}
                 </Text>
               </Grid>
