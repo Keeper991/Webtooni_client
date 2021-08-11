@@ -69,13 +69,13 @@ Input.defaultProps = {
   _onChange: () => {},
   width: "auto",
   height: "auto",
-  padding: "16px",
+  padding: "13px 16px",
   margin: 0,
   color: Color.black,
   bgColor: Color.white,
-  fontSize: "1rem",
-  fontWeight: "normal",
-  border: `1px solid ${Color.lightGray}`,
+  fontSize: "14px",
+  fontWeight: "400",
+  border: `1px solid ${Color.gray200}`,
   multiLine: false,
   placeholder: "텍스트를 입력해주세요.",
   type: "text",
@@ -101,23 +101,10 @@ const ElInput = styled.input`
   font-size: ${(props) => props.fontSize};
   font-weight: ${(props) => props.fontWeight};
   border: ${(props) => props.border};
-  border-radius: 4px;
-  /* 
-  플레이스 홀더 색상 입혀야 하는데...
-  ${(props) =>
-    props.placeHolderGray
-      ? `
+  border-radius: 8px;
   &::placeholder {
-	color: #fff;
-};
-&:-ms-input-placeholder {
-	color: #fff;
-};
-&::-ms-input-placeholder {
-	color: #fff;
-};
-}`
-      : ""} */
+    color: ${Color.gray300};
+  }
 
   &:focus,
   &:active {

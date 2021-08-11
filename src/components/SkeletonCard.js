@@ -39,15 +39,18 @@ const SkeletonCard = (props) => {
 
 const Gradient = keyframes`
    0% {
-        background-color: rgba(165, 165, 165, 0.1);
+        background-color: ${Color.gray400};
+        opacity: 0.3;
     }
 
     50% {
-        background-color: rgba(165, 165, 165, 0.3);
+      background-color: ${Color.gray400};
+        opacity: 0.5;
     }
 
     100% {
-        background-color: rgba(165, 165, 165, 0.1);
+      background-color: ${Color.gray400};
+        opacity: 0.3;
     }
 `;
 
@@ -72,7 +75,7 @@ const ContentsGrid = styled.div`
 const ImageGrid = styled.div`
   width: 150px;
   height: 140px;
-  background: ${Color.lightGray};
+  background: ${Color.gray200};
 `;
 
 const RankFlexToonGrid = styled.div`
@@ -85,7 +88,7 @@ const RankFlexToonGrid = styled.div`
 const RankImageGrid = styled.div`
   width: 55px;
   height: 55px;
-  background: ${Color.lightGray};
+  background: ${Color.gray200};
 `;
 
 const RankInfoGrid = styled.div`
@@ -124,13 +127,13 @@ const MoreFlexToonGrid = styled.div`
   width: 100%;
   height: 90px;
   padding: 0 15px;
-  border-bottom: 1px solid ${Color.lightGray3};
+  border-bottom: 1px solid ${Color.gray200};
 `;
 
 const MoreImageGrid = styled.div`
   width: 64px;
   height: 64px;
-  background: ${Color.gray};
+  background: ${Color.gray200};
 `;
 
 const MoreInfoGrid = styled.div`

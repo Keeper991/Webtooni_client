@@ -61,10 +61,10 @@ const Taste = () => {
         </TitleArea>
         <TasteArea>
           {genreList.map((genre, i) => (
-            <TasteBtnWrap includes={tastes.includes(genre)}>
+            <TasteBtnWrap active={tastes.includes(genre)}>
               <Button
                 shape="pill"
-                border={`1px solid ${Color.gray}`}
+                border={`1px solid ${Color.gray300}`}
                 _onClick={() => {
                   if (tastes.includes(genre)) {
                     setTastes(tastes.filter((t) => t !== genre));
@@ -152,10 +152,9 @@ const TasteArea = styled.section`
 const TasteBtnWrap = styled.div`
   & > button {
     background-color: ${(props) =>
-      props.includes ? Color.blueberry : "transparent"};
-    color: ${(props) => (props.includes ? Color.white : Color.darkGray)};
-    border: ${(props) =>
-      props.includes ? "1px solid transparent" : `1px solid ${Color.gray}`};
+      props.active ? Color.primary : "transparent"};
+    color: ${(props) => props.active && Color.white};
+    border: ${(props) => props.active && `1px solid ${Color.primary}`};
   }
 `;
 

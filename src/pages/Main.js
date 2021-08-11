@@ -157,8 +157,7 @@ const Main = () => {
 
   const BestReveiwerList = [
     {
-      userImg:
-        "https://openads-real.s3.amazonaws.com/openadsAdmin/ckeditor/images/14_%EC%9D%B4%EB%AA%A8%ED%8B%B0%EC%BD%98.png",
+      userImg: 1,
       userName: "김모씨",
       userGrade: "네이버웹툰덕후",
       totalReviews: "325",
@@ -166,8 +165,7 @@ const Main = () => {
     },
 
     {
-      userImg:
-        "https://openads-real.s3.amazonaws.com/openadsAdmin/ckeditor/images/14_%EC%9D%B4%EB%AA%A8%ED%8B%B0%EC%BD%98.png",
+      userImg: 1,
       userName: "이모씨",
       userGrade: "네이버웹툰덕후",
       totalReviews: "101",
@@ -175,8 +173,7 @@ const Main = () => {
     },
 
     {
-      userImg:
-        "https://openads-real.s3.amazonaws.com/openadsAdmin/ckeditor/images/14_%EC%9D%B4%EB%AA%A8%ED%8B%B0%EC%BD%98.png",
+      userImg: 1,
       userName: "박모씨",
       userGrade: "네이버웹툰덕후",
       totalReviews: "215",
@@ -184,8 +181,7 @@ const Main = () => {
     },
 
     {
-      userImg:
-        "https://openads-real.s3.amazonaws.com/openadsAdmin/ckeditor/images/14_%EC%9D%B4%EB%AA%A8%ED%8B%B0%EC%BD%98.png",
+      userImg: 1,
       userName: "박모씨",
       userGrade: "네이버웹툰덕후",
       totalReviews: "215",
@@ -193,8 +189,7 @@ const Main = () => {
     },
 
     {
-      userImg:
-        "https://openads-real.s3.amazonaws.com/openadsAdmin/ckeditor/images/14_%EC%9D%B4%EB%AA%A8%ED%8B%B0%EC%BD%98.png",
+      userImg: 1,
       userName: "박모씨",
       userGrade: "네이버웹툰덕후",
       totalReviews: "215",
@@ -202,8 +197,7 @@ const Main = () => {
     },
 
     {
-      userImg:
-        "https://openads-real.s3.amazonaws.com/openadsAdmin/ckeditor/images/14_%EC%9D%B4%EB%AA%A8%ED%8B%B0%EC%BD%98.png",
+      userImg: 1,
       userName: "박모씨",
       userGrade: "네이버웹툰덕후",
       totalReviews: "215",
@@ -334,7 +328,7 @@ const Main = () => {
           height="30px"
           border="none"
           fontWeight="bold"
-          color={is_best ? Color.black : Color.gray}
+          color={is_best ? Color.black : Color.gray400}
         >
           베스트 리뷰
         </Button>
@@ -347,7 +341,7 @@ const Main = () => {
           height="30px"
           border="none"
           fontWeight="bold"
-          color={!is_best ? Color.black : Color.gray}
+          color={!is_best ? Color.black : Color.gray400}
         >
           최신 리뷰
         </Button>
@@ -356,7 +350,7 @@ const Main = () => {
         <SliderBox>
           <Slick is_infinite>
             {ReviewList.map((_, idx) => {
-              return <ReviewCard key={idx} {..._}></ReviewCard>;
+              return <ReviewCard key={idx} {..._} main></ReviewCard>;
             })}
           </Slick>
         </SliderBox>
@@ -364,7 +358,7 @@ const Main = () => {
         <SliderBox>
           <Slick is_infinite>
             {ReviewList.map((_, idx) => {
-              return <ReviewCard key={idx} {..._}></ReviewCard>;
+              return <ReviewCard key={idx} {..._} main></ReviewCard>;
             })}
           </Slick>
         </SliderBox>
@@ -411,7 +405,8 @@ const HiddenBlurBox = styled.div`
     z-index: 1;
     width: 100%;
     height: 100%;
-    background-color: rgba(0, 0, 0, 0.5);
+    background-color: ${Color.black};
+    opacity: 0.5;
   }
 `;
 

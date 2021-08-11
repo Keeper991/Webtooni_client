@@ -55,12 +55,25 @@ const Container = styled.div`
 const BottomBox = styled.div`
   width: 100%;
   height: 32px;
-  background: rgba(0, 0, 0, 0.7);
   position: absolute;
   bottom: 0;
   display: flex;
   justify-content: center;
   align-items: center;
+  & > span {
+    z-index: 2;
+  }
+  &:before {
+    content: "";
+    width: 100%;
+    height: 100%;
+    position: absolute;
+    top: 0;
+    left: 0;
+    background-color: ${Color.black};
+    opacity: 0.5;
+    z-index: 1;
+  }
 `;
 
 const InfoGrid = styled.div`

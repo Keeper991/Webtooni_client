@@ -82,7 +82,7 @@ const TalkWrite = (props) => {
         display="flex"
         justify="space-between"
         align="center"
-        borderBottom={`1px solid ${Color.lightGray4}`}
+        borderBottom={`1px solid ${Color.gray200}`}
         padding="20px 30px 20px 5px"
       >
         {/* 뒤로가기 */}
@@ -104,7 +104,7 @@ const TalkWrite = (props) => {
           <Button
             border="none"
             color={Color.white}
-            bgColor={Color.black2}
+            bgColor={Color.gray900}
             width="80px"
             height="45px"
             fontSize="17px"
@@ -117,7 +117,7 @@ const TalkWrite = (props) => {
           <Button
             border="none"
             color={Color.white}
-            bgColor={Color.black2}
+            bgColor={Color.gray900}
             width="80px"
             height="45px"
             fontSize="17px"
@@ -128,7 +128,7 @@ const TalkWrite = (props) => {
           </Button>
         )}
       </Grid>
-      <Grid borderBottom={`1px solid ${Color.lightGray4}`}>
+      <Grid borderBottom={`1px solid ${Color.gray200}`}>
         <Input
           placeholder="제목을 입력하세요"
           _onChange={(e) => setPost({ ...post, postTitle: e.target.value })}

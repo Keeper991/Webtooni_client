@@ -1,30 +1,36 @@
 import React from "react";
 import styled from "styled-components";
-import { Text } from "../elements";
+import { Text, Image } from "../elements";
+import { Color } from "../shared/common";
+import profileImgList from "../images/profiles";
 
 const BestReveiwerCard = (props) => {
   return (
     <React.Fragment>
       <Container>
-        <ContentsBox>
-          <ImageCircle></ImageCircle>
-          <Text fontSize="12px">{props.userName}</Text>
-          <Text fontSize="10px">{props.userGrade}</Text>
-          <BottomGrid>
-            <FlexGrid>
-              <Text fontSize="12px">리뷰 수</Text>
-              <Text fontSize="14px" fontWeight="bold">
-                {props.totalReviews}
-              </Text>
-            </FlexGrid>
-            <FlexGrid>
-              <Text fontSize="12px">좋아요 수</Text>
-              <Text fontSize="14px" fontWeight="bold">
-                {props.totalLikes}
-              </Text>
-            </FlexGrid>
-          </BottomGrid>
-        </ContentsBox>
+        <Image
+          src={profileImgList[props.userImg]}
+          shape="circle"
+          size="64px"
+        ></Image>
+        <Text type="caption" fontWeight="bold">
+          {props.userName}
+        </Text>
+        <Text type="small">{props.userGrade}</Text>
+        <BottomGrid>
+          <FlexGrid>
+            <Text type="small">리뷰 수</Text>
+            <Text type="en" fontSize="14px" fontWeight="bold">
+              {props.totalReviews}
+            </Text>
+          </FlexGrid>
+          <FlexGrid>
+            <Text type="small">좋아요 수</Text>
+            <Text type="en" fontSize="14px" fontWeight="bold">
+              {props.totalLikes}
+            </Text>
+          </FlexGrid>
+        </BottomGrid>
       </Container>
     </React.Fragment>
   );
@@ -33,23 +39,20 @@ const BestReveiwerCard = (props) => {
 const Container = styled.div`
   width: 130px;
   height: 157px;
-  background: #f1f1f1;
-  display: inline-block;
-  padding: 5px;
-  margin: 0 10px;
-`;
-
-const ContentsBox = styled.div`
-  width: 100%;
-  display: flex;
+  background: ${Color.gray100};
+  display: inline-flex;
   flex-direction: column;
+  justify-content: space-between;
   align-items: center;
-  text-align: center;
+  padding: 12px;
+  margin: 0 10px;
+  border-radius: 5px;
 `;
 
 const BottomGrid = styled.div`
+  width: 80%;
   display: flex;
-  justify-content: space-around;
+  justify-content: space-between;
 `;
 
 const FlexGrid = styled.div`
@@ -57,15 +60,6 @@ const FlexGrid = styled.div`
   align-items: center;
   justify-content: space-between;
   flex-direction: column;
-`;
-
-const ImageCircle = styled.div`
-  width: 64px;
-  height: 64px;
-  border-radius: 64px;
-  background-image: url("https://openads-real.s3.amazonaws.com/openadsAdmin/ckeditor/images/14_%EC%9D%B4%EB%AA%A8%ED%8B%B0%EC%BD%98.png");
-  background-size: cover;
-  background-position: center;
 `;
 
 export default BestReveiwerCard;

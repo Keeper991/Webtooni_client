@@ -62,11 +62,11 @@ const ImageGrid = styled.div`
     position: absolute;
     width: 16px;
     height: 16px;
-    background-color: #666666;
+    background-color: ${Color.gray600};
     font-size: 9px;
     justify-content: center;
     align-items: center;
-    color: #fff;
+    color: ${Color.white};
   }
 `;
 
