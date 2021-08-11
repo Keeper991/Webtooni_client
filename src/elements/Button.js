@@ -20,6 +20,7 @@ const Button = (props) => {
     size,
     disabled,
     src,
+    isSelect,
   } = props;
 
   const styles = {
@@ -36,6 +37,7 @@ const Button = (props) => {
     size: size,
     disabled: disabled,
     src: src,
+    isSelect: isSelect,
   };
 
   if (shape === "circle") {
@@ -82,7 +84,9 @@ Button.defaultProps = {
   border: `1px solid ${Color.black}`,
   shape: "",
   size: 0,
+  src: "",
   disabled: false,
+  isSelect: false,
 };
 
 const ElCircleButton = styled.button`
@@ -102,6 +106,8 @@ const ElCircleButton = styled.button`
   justify-content: center;
   align-items: center;
   white-space: nowrap;
+
+  ${(props) => (props.isSelect ? `border: 1px solid ${Color.red2}` : "")};
 
   &:focus,
   &:active {

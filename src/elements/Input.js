@@ -6,6 +6,8 @@ const Input = (props) => {
   const {
     _onChange,
     width,
+    minWidth,
+    maxWidth,
     height,
     padding,
     margin,
@@ -19,6 +21,7 @@ const Input = (props) => {
     value,
     multiLine,
     children,
+    rows,
   } = props;
 
   const styles = {
@@ -31,6 +34,9 @@ const Input = (props) => {
     fontSize: fontSize,
     fontWeight: fontWeight,
     border: border,
+    minWidth: minWidth,
+    maxWidth: maxWidth,
+    rows: rows,
   };
 
   if (multiLine) {
@@ -59,6 +65,7 @@ const Input = (props) => {
           placeholder={placeholder}
           onChange={_onChange}
           value={value}
+          minWidth={minWidth}
         ></ElInput>
       </ElLabel>
     </React.Fragment>
@@ -68,6 +75,8 @@ const Input = (props) => {
 Input.defaultProps = {
   _onChange: () => {},
   width: "auto",
+  minWidth: "auto",
+  maxWidth: "auto",
   height: "auto",
   padding: "13px 16px",
   margin: 0,
@@ -81,6 +90,7 @@ Input.defaultProps = {
   type: "text",
   value: "",
   children: "",
+  rows: "",
 };
 
 const ElLabel = styled.label`
@@ -93,6 +103,8 @@ const ElLabel = styled.label`
 
 const ElInput = styled.input`
   width: ${(props) => props.width};
+  min-width: ${(props) => props.minWidth};
+  max-width: ${(props) => props.maxWidth};
   height: ${(props) => props.height};
   padding: ${(props) => props.padding};
   margin: ${(props) => props.margin};
@@ -123,6 +135,7 @@ const ElTextArea = styled.textarea`
   font-weight: ${(props) => props.fontWeight};
   border: ${(props) => props.border};
   border-radius: 4px;
+  rows: ${(props) => props.rows};
 
   &:focus,
   &:active {
