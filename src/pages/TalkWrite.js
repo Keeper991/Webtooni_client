@@ -5,6 +5,7 @@ import { Button, Input } from "../elements";
 import { actionCreators as talkActions } from "../redux/modules/talk";
 import { history } from "../redux/configureStore";
 import { Color } from "../shared/common";
+import { ReactComponent as BackButton } from "../images/BackButton.svg";
 
 const TalkWrite = (props) => {
   const dispatch = useDispatch();
@@ -92,21 +93,11 @@ const TalkWrite = (props) => {
             history.push("/talk");
           }}
         >
-          <svg
-            width="40"
-            height="40"
-            viewBox="0 0 28 28"
-            fill="none"
-            xmlns="http://www.w3.org/2000/svg"
+          <BackButton
             onClick={() => {
               history.go(-1);
             }}
-          >
-            <path
-              d="M17.1238 6L10.419 13.5093L10 14L10.419 14.4907L17.1238 22L18 21.0187L11.7333 14L18 6.98133L17.1238 6Z"
-              fill="black"
-            />
-          </svg>
+          ></BackButton>
         </Button>
         {/* 게시글 등록 */}
         {!prevPost ? (
