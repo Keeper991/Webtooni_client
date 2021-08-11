@@ -356,7 +356,7 @@ const Main = () => {
         <SliderBox>
           <Slick is_infinite>
             {ReviewList.map((_, idx) => {
-              return <ReviewCard key={idx} {..._}></ReviewCard>;
+              return <ReviewCard key={idx} {..._} main></ReviewCard>;
             })}
           </Slick>
         </SliderBox>
@@ -364,7 +364,7 @@ const Main = () => {
         <SliderBox>
           <Slick is_infinite>
             {ReviewList.map((_, idx) => {
-              return <ReviewCard key={idx} {..._}></ReviewCard>;
+              return <ReviewCard key={idx} {..._} main></ReviewCard>;
             })}
           </Slick>
         </SliderBox>
