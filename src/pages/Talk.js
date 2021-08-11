@@ -35,7 +35,7 @@ const Talk = (props) => {
 
   const [startPage, setStartPage] = React.useState(1); //페이지 번호 설정
 
-  const [select, isSelect] = React.useState(false); //선택한 페이지 표시
+  const [select, isSelect] = React.useState(0); //선택한 페이지 표시
 
   let post_list = []; //클릭한 페이지의 포스트 리스트
 
@@ -145,11 +145,9 @@ const Talk = (props) => {
                 bgColor={Color.white}
                 padding="0 0 0 6px"
               >
-                <Comment />
-                <Grid position="absolute" top="25%">
-                  <Text type="p" whiteSpace="nowrap">
-                    댓글{post.commentCount}
-                  </Text>
+                <Comment width="24px" height="24px" />
+                <Grid position="absolute" top="0" left="45%">
+                  <Text type="p">{post.commentCount}</Text>
                 </Grid>
               </Grid>
             </Grid>
@@ -157,8 +155,7 @@ const Talk = (props) => {
         ))}
         <Grid
           display="flex"
-          height="20px"
-          pading="32px 16px"
+          padding="32px 16px"
           justify="center"
           align="center"
         >
@@ -169,41 +166,35 @@ const Talk = (props) => {
                 setStartPage(startPage - 5);
                 getPagePosts(startPage);
               }}
-              margin="0 15px 0 0"
+              padding="0 15px 0 0"
             >
               이전
             </Grid>
           )}
           {/* 선택 가능한 페이지 번호 */}
-          {Array.from({ length: 5 }).map((_, idx) => {
-            const page_btn_no = startPage + idx;
-            if (page_btn_no <= last_page) {
+          <PageBtnGrid select={select}>
+            {Array.from({ length: 5 }).map((_, idx) => {
+              const page_btn_no = startPage + idx;
+              // if (page_btn_no <= last_page) {
               return (
                 <Button
                   shape="circle"
-                  isSelect={select}
                   size="32px"
                   margin="5px"
                   bgColor={Color.white}
+                  color={Color.black}
                   border={`1px solid ${Color.darkGray}`}
                   _onClick={() => {
                     getPagePosts(page_btn_no);
-                    isSelect(true);
+                    isSelect(idx % 5);
                   }}
                 >
-                  <Text
-                    type="p"
-                    textAlign="center"
-                    lineHeignt="32px"
-                    color={Color.darkGray}
-                    isSelect={select}
-                  >
-                    {page_btn_no}
-                  </Text>
+                  {page_btn_no}
                 </Button>
               );
-            }
-          })}
+              // }
+            })}
+          </PageBtnGrid>
           {/* 다음 페이지 목록 보여주기.  주석제거하기*/}
           {/* {startPage + 5 <= last_page && ( */}
           <Grid
@@ -211,7 +202,7 @@ const Talk = (props) => {
               setStartPage(startPage + 5);
               getPagePosts(startPage);
             }}
-            margin="0 0 0 15px"
+            padding="0 0 0 15px"
           >
             다음
           </Grid>
@@ -233,10 +224,21 @@ const Grid = styled.div`
   padding: ${(props) => (props.padding ? props.padding : "")};
   position: ${(props) => props.position || ""};
   bottom: ${(props) => props.bottom || ""};
+  top: ${(props) => props.top || ""};
+  left: ${(props) => props.left || ""};
   right: ${(props) => props.right || ""};
   background-color: ${(props) => props.bgColor || ""};
   ${(props) => (props.cursor ? "cursor: pointer" : "")};
   border-bottom: ${(props) => props.borderBottom || ""};
 `;
 
+const PageBtnGrid = styled.div`
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  & > button:nth-child(${(props) => props.select + 1}) {
+    border: 1px solid ${Color.primary};
+    color: ${Color.primary};
+  }
+`;
 export default Talk;
