@@ -1,7 +1,7 @@
 import React, { useEffect } from "react";
 import { useSelector, useDispatch } from "react-redux";
 import styled from "styled-components";
-import { Button, Input, Text, Image } from "../elements";
+import { Input, Text, Image } from "../elements";
 import { actionCreators as talkActions } from "../redux/modules/talk";
 import { actionCreators as talkCommentActions } from "../redux/modules/talkComment";
 import { TalkComment } from "../components";
@@ -17,7 +17,11 @@ const TalkDetail = (props) => {
   console.log(post_id, "postid");
   const post_list = useSelector((store) => store.talk.post_list);
   console.log(post_list, "postlist");
-  const post = post_list.filter((p) => p.postId === post_id)[0];
+  const post = post_list.filter((p) => {
+    return String(p.postId) === post_id;
+  })[0];
+  console.log(post, "post");
+
   //댓글 가져오기
   const comment_all = useSelector((store) => store.talkComment.list);
   console.log(comment_all, "commentall");
@@ -30,8 +34,9 @@ const TalkDetail = (props) => {
       dispatch(talkActions.getPostOneServer(post_id));
     }
     //서버에 댓글 요청(포스트의 댓글 수가 0이 아님에도 댓글리스트가 없을 때) //댓글 변수명 수정...
-    if (post?.commentCount !== 0 && !comment_list)
-      dispatch(talkCommentActions.getCommentAllServer(post_id));
+    // if (post?.talkCommentCount !== 0 && comment_list === []) {
+    dispatch(talkCommentActions.getCommentAllServer(post_id));
+    // }
   }, []);
 
   const is_login = useSelector((store) => store.user.is_login); //로그인 여부
@@ -102,7 +107,7 @@ const TalkDetail = (props) => {
                       whiteSpace="nowrap"
                       padding="0 12px 0 0"
                     >
-                      좋아요&nbsp;{post.likeCount}
+                      좋아요&nbsp;{post.likeNum}
                     </Text>
                   </Grid>
 
@@ -116,7 +121,7 @@ const TalkDetail = (props) => {
                   >
                     {post.isLike ? <FillHeart /> : <EmptyHeart />}{" "}
                     <Text type="p" whiteSpace="nowrap" padding="0 0 0 6px">
-                      {post.likeCount}좋아요 수
+                      {post.likeNum}좋아요 수
                     </Text>
                   </Grid>
                 </Grid>
@@ -196,7 +201,7 @@ const TalkDetail = (props) => {
                         talkCommentActions.addCommentServer(
                           post_id,
                           comment,
-                          post.commentCount
+                          post.talkCommentCount
                         )
                       );
                       isCmtInp(false);
@@ -211,7 +216,7 @@ const TalkDetail = (props) => {
                 <TalkComment
                   key={idx}
                   comment_info={_}
-                  commentCount={post.commentCount}
+                  commentCount={post.talkCommentCount}
                 ></TalkComment>
               ))}
             </Grid>
@@ -251,6 +256,7 @@ const TalkDetail = (props) => {
                 <Grid
                   width="100%"
                   display="flex"
+                  justify="space-between"
                   align="center"
                   borderTop={`1px solid ${Color.lightGray4}`}
                 >
