@@ -92,23 +92,29 @@ const ReviewCard = (props) => {
           <InfoGrid>
             <FlexGrid flexStart>
               <Text type="caption" color={Color.primary}>
-                {props.genre ? props.genre.genreType : "뭐넣지"}
+                {props.genre ? props.genre.genreType : "장르 필요"}
               </Text>
               <Text margin="0 10px" type="caption" color={Color.gray500}>
                 {props.finished ? "완결" : props.toonWeekday}
               </Text>
             </FlexGrid>
-            <Text>{props.toonTitle}</Text>
+            <Text fontWeight="medium" color={Color.gray800}>
+              {props.toonTitle}
+            </Text>
             <FlexGrid>
               <FlexGrid>
-                <Text type="caption">{props.toonAuthor}</Text>
+                <Text type="caption" color={Color.gray400}>
+                  {props.toonAuthor}
+                </Text>
                 <Image
                   shape="square"
                   margin="0 5px 0"
                   size="12px"
                   src="https://lh3.googleusercontent.com/pw/AM-JKLXIrRX56QwruA9no5dsQDpzLmNNgGigp4H-mNbe8Zll_MgRc1OVhN8nKaqDwTOSKiNGUT6bQ6O7sYRBDsPhnj49j7ACDz5qWrSeebdROovTQKhnt8O2jbq6QpskSozPMpq02E2hUQqTjg3gfLZpx-xv=s12-no?authuser=0"
                 ></Image>
-                <Text type="caption">{props.userPointNumber}</Text>
+                <Text type="num" fontWeight="bold" color={Color.primary}>
+                  웹툰 별점 필요
+                </Text>
               </FlexGrid>
               {props.toonPlatform === "네이버" ? (
                 <Image
@@ -131,10 +137,17 @@ const ReviewCard = (props) => {
 
         <FlexGrid>
           <UserGrid>
-            <Image src={props.toonImg} shape="circle" size="40px"></Image>
+            <Image
+              src={profileImgList[props.userImg]}
+              shape="circle"
+              size="40px"
+            ></Image>
             <ColumnGrid>
               <Text type="caption">{props.userName}</Text>
-              <Text type="small">{props.userGrade}</Text>
+              <FlexGrid>
+                <Text>{props.userPointNumber} (이미지로 표시)</Text>
+                <Text>{props.creatDate}</Text>
+              </FlexGrid>
             </ColumnGrid>
           </UserGrid>
         </FlexGrid>
@@ -156,7 +169,7 @@ const ReviewCard = (props) => {
             {showMore ? "줄이기" : "더보기"}
           </Button>
         </ReviewGrid>
-        <Text>❤</Text>
+        <Text>❤ 좋아요 수/ 여부 필요</Text>
       </Container>
     </React.Fragment>
   );
@@ -227,7 +240,7 @@ const Container = styled.div`
   background: #f4f4f4;
   display: inline-block;
   padding: 16px;
-  margin: 0 0 15px 0;
+  margin: 0 0 20px 0;
   border-radius: 15px;
   border: 1px solid #ccc;
 `;
