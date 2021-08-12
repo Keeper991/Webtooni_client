@@ -1,17 +1,33 @@
 import React from "react";
 import styled from "styled-components";
-import { Text } from "../elements";
+import { Button, Text, Image } from "../elements";
+import { getKakaoAddr, getNaverAddr } from "../shared/API";
+import { kakao_symbol, naver_symbol } from "../images/symbols";
+import { Color } from "../shared/common";
+import title from "../images/title.png";
 
 const Login = () => {
   return (
     <React.Fragment>
       <Container>
-        <Text type="title" fontSize="24px" fontWeight="bold">
-          로그인
-        </Text>
+        <ImageWrap>
+          <Image src={title} width="200px" height="27px" />
+        </ImageWrap>
         <BtnGrid>
-          <KakaoBtn></KakaoBtn>
-          <NaverBtn></NaverBtn>
+          <a href={getKakaoAddr()}>
+            <Button bgColor={Color.kakaoYellow} border="none">
+              <Image src={kakao_symbol} shape="square" size="24px" />
+              <Text fontWeight="medium">카카오 계정으로 로그인</Text>
+            </Button>
+          </a>
+          <a href={getNaverAddr()}>
+            <Button bgColor={Color.naverGreen} border="none">
+              <Image src={naver_symbol} shape="square" size="24px" />
+              <Text fontWeight="medium" color={Color.white}>
+                네이버 계정으로 로그인
+              </Text>
+            </Button>
+          </a>
         </BtnGrid>
       </Container>
     </React.Fragment>
@@ -26,27 +42,46 @@ const Container = styled.div`
   flex-direction: column;
   justify-content: space-evenly;
   align-items: center;
-  z-index: -1;
+  & a:link,
+  a:visited {
+    text-decoration: none;
+  }
+
+  & button {
+    width: 300px;
+    position: relative;
+    & > div {
+      position: absolute;
+      top: 10px;
+      left: 16px;
+    }
+  }
+`;
+
+const ImageWrap = styled.div`
+  & > div {
+    background-size: contain;
+    background-repeat: no-repeat;
+    background-position: center;
+  }
 `;
 
 const BtnGrid = styled.div`
   display: flex;
   flex-direction: column;
-`;
-const KakaoBtn = styled.button`
-  width: 300px;
-  height: 45px;
-  border: none;
-  cursor: pointer;
-  background-image: url("https://lh3.googleusercontent.com/pw/AM-JKLV8Hy5KFTHBB_lD5vpZVJLuKljFbcad_Vq9cL0i7AoE7NuRC5qYktOMTGQr2xgzTNhgV3ojbk8RezbSVolPLyzM1w57pltQ653Acfq3NvIbBnLZi7AL9iIspPnuSfFtt8w-r9RzwT-y-tQM7CNAMD91=w300-h45-no?authuser=0");
+  gap: 1em;
 `;
 
-const NaverBtn = styled.button`
-  width: 300px;
-  height: 45px;
-  border: none;
-  cursor: pointer;
-  margin-top: 20px;
-  background-image: url("https://lh3.googleusercontent.com/9LBwst47gdqtt8OVVnOUytRtw6TVv1Pvhttue6vz2GWlqLSSVunytPNw5lITe-ioVxbXOsSoiOD--GWjkNkB00KfJLlwKpNfsAnuR32zSi6xqN5MOS2JZ3bpwaAdwbIR_0VEwCbjQ0zO46Fws0nPFwLN9pvAbN8gvaFRpjiM4BCM3vrhWSNK-kvJZipiNcJmX1Af-4xSshaP7KqDuV3UxsmAE4RPUnlcOiEbGwY3BhOrJNydkGpSs1YT-4dcHvMKQjk-XPiJlO7osEguSCH3xC6Xg3E-zALkBb1AQWpn06VEV0qxJXLIixMhdXdzcaKfd94AFTfp_b6XO-IOsdek4L-CU63PgIC3NwguYcZoy_qmm7jJPdl1euwpfibe7oPbG2ORVrDMIUMm18grlBUl_L6u88_C6HMgfnDM8AsvjsdCw0LO56bq5RrvDf65J1-JPDy-iOvtSF51bv9NCr4wlHm4Hpv6YeZTyNDWHK7RI1W9eAa-pCdCyGOxY3HD7H4kht--D_P6wXTCiky6d0ips0l10YJUWyosZz9WnVfO1IJcOUEzCBtizwtuGs_mS8CFJ0zxFE5zYY5YZIXjdhYCc3pRSS6cGCugfwmndOQ0D5xVYCQ9QHJmXuLOXPitRlExzIoXTRSvqW70YEtZ_5CjnTG-BAzibxQKLab-ModuNSeZ-nLujB_WtdNTbFYH2S2h67qJy0Bu5shPKj2gVUBJiFg=w300-h45-no?authuser=0");
+const Test = styled.div`
+  &:first-child {
+    font-family: "NotoSansKR";
+  }
+  &:nth-child(2) {
+    font-weight: "regular";
+  }
+  &:nth-child(3) {
+    font-weight: "medium";
+  }
 `;
+
 export default Login;

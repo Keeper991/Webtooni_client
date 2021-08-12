@@ -11,6 +11,8 @@ import TalkDetail from "./TalkDetail";
 import Taste from "./Taste";
 import Profile from "./Profile";
 import ToonList from "./ToonList";
+import KakaoLogin from "./KakaoLogin";
+import NaverLogin from "./KakaoLogin";
 
 export {
   Main,
@@ -26,4 +28,6 @@ export {
   Taste,
   Profile,
   ToonList,
+  KakaoLogin,
+  NaverLogin,
 };
