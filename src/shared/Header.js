@@ -105,7 +105,6 @@ const Header = (props) => {
             </Button>
 
             <IconWrap>
-              <LogoutOutlined></LogoutOutlined>
               <SearchOutlined
                 onClick={() => {
                   history.push("/search");
