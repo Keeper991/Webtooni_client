@@ -3,7 +3,6 @@ import thunk from "redux-thunk";
 import { createBrowserHistory } from "history";
 import { connectRouter } from "connected-react-router";
 
-import Modal from "./modules/modal";
 import User from "./modules/user";
 import Webtoon from "./modules/webtoon";
 import Talk from "./modules/talk";
@@ -14,7 +13,6 @@ import Review from "./modules/review";
 export const history = createBrowserHistory();
 
 const rootReducer = combineReducers({
-  modal: Modal,
   user: User,
   webtoon: Webtoon,
   talk: Talk,
