@@ -34,17 +34,19 @@ const initialState = {
       postTitle: "게시글 제목",
       userName: "닉네임",
       postContent: "게시글 내용...",
-      commentCount: 3, //댓글 수 변수명은 임시로 지정
+      talkCommentCount: 3, //댓글 수 변수명은 임시로 지정
       createDate: "1970-01-02T00:00:00",
+      likeNum: 5,
     },
-    {
-      postId: "2",
-      postTitle: "게시글 제목",
-      userName: "닉네임",
-      postContent: "게시글 내용...",
-      commentCount: 4,
-      createDate: "1970-01-01T00:00:00",
-    },
+    // {
+    //   postId: "2",
+    //   postTitle: "게시글 제목",
+    //   userName: "닉네임",
+    //   postContent: "게시글 내용...",
+    //   talkCommentCount: 4,
+    //   createDate: "1970-01-01T00:00:00",
+    //  likeNum: 5,
+    // },
   ],
   page_number_list: [], //조회한 페이지 번호
   cur_page: 1,
@@ -58,17 +60,6 @@ const getPageServer = (page_number) => {
       const response = await talkAPI.getPage(page_number);
       console.log(response, "getTalkAllOK");
       const _list = response.data.posts;
-
-      const { userLikePostID } = getState().user.user; //유저가 좋아요 한 톡 포스트. 변수명 나중에 수정
-      // 로그인 유저의 좋아요 여부 추가
-      const list = _list.map((item) => {
-        if (userLikePostID.includes(item.postId)) {
-          item.isLike = true;
-        } else {
-          item.isLike = false;
-        }
-        return item;
-      });
 
       dispatch(setPage(_list, page_number));
       dispatch(setPageNumber(page_number));
@@ -143,11 +134,11 @@ const getPostOneServer = (post_id) => {
 
       const { userLikePostID } = getState().user.user; //유저가 좋아요 한 톡 포스트. 변수명 나중에 수정
       // 로그인 유저의 좋아요 여부 추가
-      if (userLikePostID.includes(post.postId)) {
-        post.isLike = true;
-      } else {
-        post.isLike = false;
-      }
+      // if (userLikePostID.includes(post.postId)) {
+      //   post.isLike = true;
+      // } else {
+      //   post.isLike = false;
+      // }
       const is_detail = true; //상세정보 여부(작성OR상세)
       dispatch(addPostOne(post, is_detail));
     } catch (err) {
