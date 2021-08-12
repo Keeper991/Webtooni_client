@@ -106,7 +106,7 @@ const Talk = (props) => {
             cursor
             onClick={() => history.push(`/talk/detail/${post.postId}`)}
           >
-            <Text type="p">{post.postTitle}</Text>
+            <Text>{post.postTitle}</Text>
             <Grid
               display="flex"
               margin="7px 0 0 0"
@@ -124,15 +124,15 @@ const Talk = (props) => {
                 </Text>
                 <Text
                   color={Color.gray400}
-                  type="p"
+                  type="caption"
                   whiteSpace="nowrap"
                   padding="0 12px 0 0"
                 >
                   {post.createDate.substr(5, 5)}
                 </Text>
                 <Text
-                  color={Color.lightGray5}
-                  type="p"
+                  color={Color.gray400}
+                  type="caption"
                   whiteSpace="nowrap"
                   padding="0 12px 0 0"
                 >
@@ -147,7 +147,14 @@ const Talk = (props) => {
               >
                 <Comment width="24px" height="24px" />
                 <Grid position="absolute" top="0" left="45%">
-                  <Text type="p">{post.commentCount}</Text>
+                  <Text
+                    type="num"
+                    fontSize="9px"
+                    fontWeight="bold"
+                    whiteSpace="nowrap"
+                  >
+                    {post.commentCount}
+                  </Text>
                 </Grid>
               </Grid>
             </Grid>

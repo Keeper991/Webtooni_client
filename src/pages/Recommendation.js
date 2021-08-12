@@ -128,16 +128,16 @@ const Recommendation = () => {
     <React.Fragment>
       <OfferCard {...webToonList}></OfferCard>
       <BannerBox>
-        <Text fontSize="10px" margin="0 0 5px 15px">
+        <Text type="small" margin="0 0 5px 15px">
           좋아하실만한 웹툰을 추천해 드릴게요.
         </Text>
-        <Text fontSize="14px" margin="0 0 0 15px" fontWeight="bold">
+        <Text margin="0 0 0 15px" fontWeight="bold">
           재밌게 본 웹툰의 리뷰를 등록해보세요! 🖍
         </Text>
       </BannerBox>
 
       <TitleGrid>
-        <Text fontSize="16px" fontWeight="bold">
+        <Text type="h2" fontWeight="bold">
           이번 주 웹툰 평론가의 추천
         </Text>
         <Button
@@ -163,13 +163,13 @@ const Recommendation = () => {
       <MdBox>
         <BookMark></BookMark>
         <MdInfoBox>
-          <Text type="small" color={Color.primary} fontWeight="bold">
+          <Text type="small" color={Color.primary}>
             #MD추천
           </Text>
-          <Text fontSize="20px" color={Color.white} fontWeight="bold">
+          <Text type="h1" color={Color.white} fontWeight="bold">
             네웹 대표 <br /> 글로벌 인기작!
           </Text>
-          <Text fontSize="12px" color={Color.white} fontWeight="bold">
+          <Text type="caption" color={Color.gray300}>
             두근두근 청춘 로맨스물을 찾고 있다면?
           </Text>
         </MdInfoBox>
@@ -190,11 +190,9 @@ const Recommendation = () => {
           size="64px"
         ></Image>
         <InfoGrid>
-          <Text fontSize="14px" fontWeight="bold">
-            {md_offer_list.toonTitle}
-          </Text>
+          <Text fontWeight="medium">{md_offer_list.toonTitle}</Text>
           <FlexGrid>
-            <Text fontSize="12px" color={Color.gray}>
+            <Text type="caption" color={Color.gray400}>
               {md_offer_list.toonAuthor}
             </Text>
             <Image
@@ -203,14 +201,19 @@ const Recommendation = () => {
               size="12px"
               src="https://lh3.googleusercontent.com/pw/AM-JKLXIrRX56QwruA9no5dsQDpzLmNNgGigp4H-mNbe8Zll_MgRc1OVhN8nKaqDwTOSKiNGUT6bQ6O7sYRBDsPhnj49j7ACDz5qWrSeebdROovTQKhnt8O2jbq6QpskSozPMpq02E2hUQqTjg3gfLZpx-xv=s12-no?authuser=0"
             ></Image>
-            <Text type="p" fontSize="12px" margin="0 10px 0 0">
+            <Text
+              type="num"
+              fontSize="12px"
+              fontWeight="bold"
+              margin="0 10px 0 0"
+            >
               {md_offer_list.toonAvgPoint}
             </Text>
-            <Text fontSize="10px" color={Color.gray}>
+            <Text type="caption" color={Color.gray400}>
               {md_offer_list.toonWeekday}
             </Text>
           </FlexGrid>
-          <Text fontSize="10px" color={Color.darkGray}>
+          <Text type="caption" color={Color.gray800}>
             여기 들어갈거 생각
           </Text>
           <Text></Text>
@@ -219,24 +222,18 @@ const Recommendation = () => {
       <MdCommentBox>
         <FlexGrid>
           <Image size="32px" shape="circle"></Image>
-          <Text type="p" margin="0 7px" fontSize="12px" fontWeight="bold">
+          <Text type="caption" margin="0 7px">
             김모씨
           </Text>
-          <Text fontSize="12px" color={Color.gray}>
+          <Text type="caption" color={Color.gray400}>
             08.02
           </Text>
         </FlexGrid>
 
-        <Text
-          type="p"
-          margin="10px 0 0 0"
-          fontSize="14px"
-          color={Color.darkGray}
-        >
+        <Text tag="p" margin="10px 0 0 0" color={Color.gray800}>
           기본적으로 재밌습니다. <br /> 이야기 전개도 빠르고 흡입력 있습니다.
         </Text>
       </MdCommentBox>
-
       <FlexToonGrid>
         <Image
           margin="0 7px"
@@ -245,11 +242,9 @@ const Recommendation = () => {
           size="64px"
         ></Image>
         <InfoGrid>
-          <Text fontSize="14px" fontWeight="bold">
-            {md_offer_list.toonTitle}
-          </Text>
+          <Text fontWeight="medium">{md_offer_list.toonTitle}</Text>
           <FlexGrid>
-            <Text fontSize="12px" color={Color.gray}>
+            <Text type="caption" color={Color.gray400}>
               {md_offer_list.toonAuthor}
             </Text>
             <Image
@@ -258,14 +253,19 @@ const Recommendation = () => {
               size="12px"
               src="https://lh3.googleusercontent.com/pw/AM-JKLXIrRX56QwruA9no5dsQDpzLmNNgGigp4H-mNbe8Zll_MgRc1OVhN8nKaqDwTOSKiNGUT6bQ6O7sYRBDsPhnj49j7ACDz5qWrSeebdROovTQKhnt8O2jbq6QpskSozPMpq02E2hUQqTjg3gfLZpx-xv=s12-no?authuser=0"
             ></Image>
-            <Text type="p" fontSize="12px" margin="0 10px 0 0">
+            <Text
+              type="num"
+              fontSize="12px"
+              fontWeight="bold"
+              margin="0 10px 0 0"
+            >
               {md_offer_list.toonAvgPoint}
             </Text>
-            <Text fontSize="10px" color={Color.gray}>
+            <Text type="caption" color={Color.gray400}>
               {md_offer_list.toonWeekday}
             </Text>
           </FlexGrid>
-          <Text fontSize="10px" color={Color.darkGray}>
+          <Text type="caption" color={Color.gray800}>
             여기 들어갈거 생각
           </Text>
           <Text></Text>
@@ -274,26 +274,21 @@ const Recommendation = () => {
       <MdCommentBox>
         <FlexGrid>
           <Image size="32px" shape="circle"></Image>
-          <Text type="p" margin="0 7px" fontSize="12px" fontWeight="bold">
+          <Text type="caption" margin="0 7px">
             김모씨
           </Text>
-          <Text fontSize="12px" color={Color.gray}>
+          <Text type="caption" color={Color.gray400}>
             08.02
           </Text>
         </FlexGrid>
 
-        <Text
-          type="p"
-          margin="10px 0 0 0"
-          fontSize="14px"
-          color={Color.darkGray}
-        >
+        <Text tag="p" margin="10px 0 0 0" color={Color.gray800}>
           기본적으로 재밌습니다. <br /> 이야기 전개도 빠르고 흡입력 있습니다.
         </Text>
       </MdCommentBox>
 
       <TitleGrid>
-        <Text fontSize="16px" fontWeight="bold">
+        <Text type="h2" fontWeight="bold">
           완결 작품 추천
         </Text>
         <Button
@@ -325,7 +320,7 @@ const Recommendation = () => {
       </SliderBox>
 
       <TitleGrid>
-        <Text fontSize="16px" fontWeight="bold">
+        <Text type="h2" fontWeight="bold">
           비슷한 취향의 사용자가 본 웹툰
         </Text>
         <Button

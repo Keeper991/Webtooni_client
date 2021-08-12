@@ -61,7 +61,7 @@ const Profile = () => {
           />
         </ProgressArea>
         <TitleArea>
-          <Text type="title" fontSize="1.5rem" fontWeight={600}>
+          <Text type="h1" fontWeight="bold">
             프로필을 선택해주세요
           </Text>
         </TitleArea>

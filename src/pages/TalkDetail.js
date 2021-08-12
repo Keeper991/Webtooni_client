@@ -72,7 +72,7 @@ const TalkDetail = (props) => {
                 borderBottom={`1px solid ${Color.gray200}`}
                 padding="16px 20px"
               >
-                <Text type="p">{post.postTitle}</Text>
+                <Text type="h2">{post.postTitle}</Text>
                 <Grid
                   display="flex"
                   margin="7px 0 0 0"
@@ -82,7 +82,7 @@ const TalkDetail = (props) => {
                   <Grid display="flex">
                     <Text
                       color={Color.gray400}
-                      type="p"
+                      type="caption"
                       whiteSpace="nowrap"
                       padding="0 12px 0 0"
                     >
@@ -90,15 +90,15 @@ const TalkDetail = (props) => {
                     </Text>
                     <Text
                       color={Color.gray400}
-                      type="p"
+                      type="caption"
                       whiteSpace="nowrap"
                       padding="0 12px 0 0"
                     >
                       {post.createDate.substr(5, 5)}
                     </Text>
                     <Text
-                      color={Color.lightGray5}
-                      type="p"
+                      color={Color.gray400}
+                      type="caption"
                       whiteSpace="nowrap"
                       padding="0 12px 0 0"
                     >
@@ -190,7 +190,7 @@ const TalkDetail = (props) => {
                   ></Input>
                   <Text
                     width="26px"
-                    type="p"
+                    fontWeight="medium"
                     _onClick={() => {
                       dispatch(
                         talkCommentActions.addCommentServer(
@@ -240,7 +240,7 @@ const TalkDetail = (props) => {
                   <Delete />
                 </Grid>
                 <Text
-                  type="p"
+                  type="h2"
                   width="100%"
                   height="117px"
                   textAlign="center"
@@ -256,7 +256,6 @@ const TalkDetail = (props) => {
                 >
                   <Text
                     textAlign="center"
-                    type="p"
                     width="50%"
                     lineHeight="44px"
                     _onClick={() => isDltMsg(false)}
@@ -265,11 +264,10 @@ const TalkDetail = (props) => {
                   </Text>
                   <Text
                     textAlign="center"
-                    type="p"
                     width="50%"
                     lineHeight="44px"
                     _onClick={deletePost}
-                    color={Color.red2}
+                    color={Color.primary}
                   >
                     삭제
                   </Text>
