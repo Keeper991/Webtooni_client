@@ -1,7 +1,7 @@
 import { createAction, handleActions } from "redux-actions";
 import { produce } from "immer";
 import { userAPI } from "../../shared/API";
-import { setToken, getToken } from "../../shared/PermitAuth";
+import { setToken, getToken, removeToken } from "../../shared/PermitAuth";
 
 const SET_USER = "SET_USER";
 const LOG_OUT = "LOG_OUT";
@@ -68,6 +68,7 @@ export default handleActions(
       }),
     [LOG_OUT]: (state, action) =>
       produce(state, (draft) => {
+        removeToken();
         draft.info = initialState.info;
         draft.is_login = false;
         draft.subscribeList = [];
