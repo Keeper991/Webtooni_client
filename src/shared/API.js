@@ -1,5 +1,21 @@
 import axios from "axios";
 
+const getKakaoAddr = () => {
+  const redirectURI =
+    process.env.NODE_ENV === "development"
+      ? "http://localhost:3000"
+      : "http://webtooniverse-host.s3-website.ap-northeast-2.amazonaws.com";
+  return `https://kauth.kakao.com/oauth/authorize?client_id=9bf8aff1cb1460ec63268cd09c603a1a&redirect_uri=${redirectURI}/user/kakao&response_type=code`;
+};
+
+const getNaverAddr = () => {
+  const redirectURI =
+    process.env.NODE_ENV === "development"
+      ? "http://localhost:3000"
+      : "http://webtooniverse-host.s3-website.ap-northeast-2.amazonaws.com";
+  return `https://nid.naver.com/oauth2.0/authorize?response_type=code&client_id=....&redirect_uri=${redirectURI}&state=....`;
+};
+
 const instance = axios.create({
   baseURL: "http://13.124.236.225/api/v1/",
 });
@@ -59,24 +75,30 @@ const talkAPI = {
 const userAPI = {
   addWebtoon: (id) => instance.post(`user/me/webtoons`, { id }),
   getWebtoon: () => instance.get(`user/me/webtoons`),
-  getNickname: () => instance.get(`user/me/nick`),
   getComment: () => instance.get(`user/me/comment`),
   getReviews: () => instance.get(`user/me/reviews`),
   getLevel: () => instance.get(`user/me/level`),
+  getInfo: () => instance.get(`user/info`),
   putUserInfo: ({ userName, userImg }) =>
     instance.put(`user/me`, { userName, userImg }),
-  register: ({ userEmail, userName, password, passwordChecker, userImg }) =>
-    instance.post(`user/register`, {
-      userEmail,
-      userName,
-      password,
-      passwordChecker,
-      userImg,
-    }),
-  login: ({ userEmail, password }) =>
-    instance.post(`user/login`, { userEmail, password }),
-  socialLogin: () => instance.post(`user/social/callback`),
-  search: (keyword) => instance.get(`search?keyword=${keyword}`),
+  kakaoLoginCallback: (code) =>
+    instance.get(`user/kakao/callback`, { params: { code } }),
+  naverLoginCallback: () => instance.get(`user/naver/callback`),
+  search: (keyword) => instance.get(`search`, { params: { keyword } }),
 };
 
-export { webtoonAPI, reviewAPI, reviewerAPI, offerAPI, talkAPI, userAPI };
+const setAuthorization = (token) => {
+  instance.defaults.headers.common["Authorization"] = token;
+};
+
+export {
+  webtoonAPI,
+  reviewAPI,
+  reviewerAPI,
+  offerAPI,
+  talkAPI,
+  userAPI,
+  getKakaoAddr,
+  getNaverAddr,
+  setAuthorization,
+};
