@@ -43,7 +43,7 @@ const ToonList = (props) => {
                   history.goBack();
                 }}
               ></LeftOutlined>
-              <Text type="p" fontWeight="bold">
+              <Text type="h2" fontWeight="bold">
                 이달의 웹투니버스 순위
               </Text>
             </FlexGrid>
@@ -62,7 +62,7 @@ const ToonList = (props) => {
                   history.goBack();
                 }}
               ></LeftOutlined>
-              <Text type="p" fontWeight="bold">
+              <Text type="h2" fontWeight="bold">
                 이달의 웹투니버스 순위
               </Text>
             </FlexGrid>
@@ -93,7 +93,7 @@ const ToonList = (props) => {
                   history.goBack();
                 }}
               ></LeftOutlined>
-              <Text type="p" fontWeight="bold">
+              <Text type="h2" fontWeight="bold">
                 완결 작품 추천
               </Text>
             </FlexGrid>
@@ -112,7 +112,7 @@ const ToonList = (props) => {
                   history.goBack();
                 }}
               ></LeftOutlined>
-              <Text type="p" fontWeight="bold">
+              <Text type="h2" fontWeight="bold">
                 완결 작품 추천
               </Text>
             </FlexGrid>

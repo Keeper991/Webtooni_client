@@ -75,8 +75,7 @@ const TalkComment = (props) => {
                   {comment_info.createDate.substr(5, 5)}
                 </Text>
               </Grid>
-              {/* <Text type="p">등급{comment_info.userGrade}</Text> */}
-              <Text type="p">{comment_info.commentContent}</Text>
+              <Text tag="p">{comment_info.commentContent}</Text>
             </Grid>
           </Grid>
           {userName === comment_info.userName && (

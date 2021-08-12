@@ -17,8 +17,14 @@ const WebToonMonth = (props) => {
         </ImageGrid>
 
         <InfoGrid>
-          <TitleText>{props.toonTitle}</TitleText>
-          <AuthorText>{props.toonAuthor}</AuthorText>
+          <TitleWrap>
+            <Text fontWeight="medium">{props.toonTitle}</Text>
+          </TitleWrap>
+          <AuthorWrap>
+            <Text type="caption" color={Color.gray500}>
+              {props.toonAuthor}
+            </Text>
+          </AuthorWrap>
           <FlexGrid>
             <FlexGrid>
               <Image
@@ -27,9 +33,9 @@ const WebToonMonth = (props) => {
                 size="12px"
                 src="https://lh3.googleusercontent.com/pw/AM-JKLXIrRX56QwruA9no5dsQDpzLmNNgGigp4H-mNbe8Zll_MgRc1OVhN8nKaqDwTOSKiNGUT6bQ6O7sYRBDsPhnj49j7ACDz5qWrSeebdROovTQKhnt8O2jbq6QpskSozPMpq02E2hUQqTjg3gfLZpx-xv=s12-no?authuser=0"
               ></Image>
-              <Text fontSize="12px">{props.toonAvgPoint}</Text>
+              <Text type="caption">{props.toonAvgPoint}</Text>
             </FlexGrid>
-            <Text fontSize="10px">
+            <Text type="small">
               {props.toonWeekday ? props.toonWeekday : "완결"}
             </Text>
           </FlexGrid>
@@ -77,20 +83,15 @@ const InfoGrid = styled.div`
   margin-left: 5px;
 `;
 
-const TitleText = styled.p`
-  font-size: 14px;
+const TitleWrap = styled.div`
   width: 90px;
-  color: ${Color.black};
-  font-weight: bold;
   overflow: hidden;
   text-overflow: ellipsis;
   white-space: nowrap;
 `;
 
-const AuthorText = styled.p`
-  font-size: 12px;
+const AuthorWrap = styled.div`
   width: 90px;
-  color: ${Color.darkGray};
   margin: 7px 0;
   overflow: hidden;
   text-overflow: ellipsis;

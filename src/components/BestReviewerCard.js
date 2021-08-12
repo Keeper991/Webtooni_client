@@ -20,13 +20,13 @@ const BestReveiwerCard = (props) => {
         <BottomGrid>
           <FlexGrid>
             <Text type="small">리뷰 수</Text>
-            <Text type="en" fontSize="14px" fontWeight="bold">
+            <Text type="num" fontSize="14px" fontWeight="bold">
               {props.reviewCount}
             </Text>
           </FlexGrid>
           <FlexGrid>
             <Text type="small">좋아요 수</Text>
-            <Text type="en" fontSize="14px" fontWeight="bold">
+            <Text type="num" fontSize="14px" fontWeight="bold">
               {props.likeCount}
             </Text>
           </FlexGrid>
