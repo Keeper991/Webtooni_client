@@ -12,7 +12,7 @@ import {
   Slick,
   SkeletonCard,
 } from "../components";
-import { Button, Text } from "../elements";
+import { Button, Text, Image } from "../elements";
 import { Color } from "../shared/common";
 
 const Main = () => {
@@ -165,6 +165,23 @@ const Main = () => {
         </HiddenBlurBox>
       )}
 
+      <BannerBox>
+        <Text margin="5px 0 0 0" type="small" color={Color.gray700}>
+          좋아하실만한 웹툰을 추천해 드릴게요.
+        </Text>
+        <FlexGrid>
+          <Text fontWeight="bold" color={Color.gray700}>
+            재밌게 본 웹툰의 리뷰를 등록해보세요!
+          </Text>
+          <Image
+            shape="square"
+            size="16px"
+            margin="0 5px"
+            src="https://lh3.googleusercontent.com/pw/AM-JKLWPhtnQViH6A2gkyW-RSm0DPzry9dNgxBNfUplfxinXpWyXDHotbccu1JiRG8NoxAgreYwSXnKylBkgJ2OUew1FEhCanaMevg_G-Prks9-3ooXIluMWS9n6q-j2m4PAe4IY9o6t5Vcg6F51UfY7x2ms=w16-h17-no?authuser=0"
+          ></Image>
+        </FlexGrid>
+      </BannerBox>
+
       <ReviewTabGrid>
         <Button
           _onClick={() => {
@@ -212,7 +229,9 @@ const Main = () => {
       )}
 
       <TitleGrid>
-        <Text fontWeight="bold">베스트 리뷰어</Text>
+        <Text type="h2" fontWeight="bold">
+          베스트 리뷰어
+        </Text>
       </TitleGrid>
       <SliderBox>
         <Slick>
@@ -236,7 +255,7 @@ const TitleGrid = styled.div`
 const SliderBox = styled.div`
   white-space: nowrap;
   overflow: hidden;
-  margin: 10px 0 50px 5px;
+  margin: 10px 0 10px 16px;
 `;
 
 const HiddenBlurBox = styled.div`
@@ -308,5 +327,23 @@ const ReviewTabGrid = styled.div`
   width: 100%;
   padding: 0 16px;
   display: flex;
+`;
+
+const BannerBox = styled.div`
+  width: 320px;
+  height: 66px;
+  background-color: ${Color.gray100};
+  padding: 0 16px;
+  margin: 30px auto;
+  border-radius: 8px;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+`;
+
+const FlexGrid = styled.div`
+  display: flex;
+  align-items: center;
+  margin: 5px 0;
 `;
 export default Main;

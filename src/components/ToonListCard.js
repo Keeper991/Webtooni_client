@@ -24,7 +24,7 @@ const ToonListCard = (props) => {
         <InfoGrid>
           <FlexGrid flexStart>
             <Text type="caption" color={Color.primary}>
-              {props.genre ? props.genre.genreType : "뭐넣지"}
+              {props.genres ? props.genres[1] : null}
             </Text>
             <Text margin="0 15px" type="caption" color={Color.gray400}>
               {props.toonWeekday ? props.toonWeekday : "완결"}
