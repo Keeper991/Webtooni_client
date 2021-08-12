@@ -136,7 +136,7 @@ const Talk = (props) => {
                   whiteSpace="nowrap"
                   padding="0 12px 0 0"
                 >
-                  좋아요&nbsp;{post.likeCount}
+                  좋아요&nbsp;{post.likeNum}
                 </Text>
               </Grid>
 
@@ -153,7 +153,7 @@ const Talk = (props) => {
                     fontWeight="bold"
                     whiteSpace="nowrap"
                   >
-                    {post.commentCount}
+                    {post.talkCommentCount}
                   </Text>
                 </Grid>
               </Grid>
@@ -182,38 +182,38 @@ const Talk = (props) => {
           <PageBtnGrid select={select}>
             {Array.from({ length: 5 }).map((_, idx) => {
               const page_btn_no = startPage + idx;
-              // if (page_btn_no <= last_page) {
-              return (
-                <Button
-                  shape="circle"
-                  size="32px"
-                  margin="5px"
-                  bgColor={Color.white}
-                  color={Color.black}
-                  border={`1px solid ${Color.darkGray}`}
-                  _onClick={() => {
-                    getPagePosts(page_btn_no);
-                    isSelect(idx % 5);
-                  }}
-                >
-                  {page_btn_no}
-                </Button>
-              );
-              // }
+              if (page_btn_no <= last_page) {
+                return (
+                  <Button
+                    shape="circle"
+                    size="32px"
+                    margin="5px"
+                    bgColor={Color.white}
+                    color={Color.black}
+                    border={`1px solid ${Color.darkGray}`}
+                    _onClick={() => {
+                      getPagePosts(page_btn_no);
+                      isSelect(idx % 5);
+                    }}
+                  >
+                    {page_btn_no}
+                  </Button>
+                );
+              }
             })}
           </PageBtnGrid>
-          {/* 다음 페이지 목록 보여주기.  주석제거하기*/}
-          {/* {startPage + 5 <= last_page && ( */}
-          <Grid
-            onClick={() => {
-              setStartPage(startPage + 5);
-              getPagePosts(startPage);
-            }}
-            padding="0 0 0 15px"
-          >
-            다음
-          </Grid>
-          {/* )} */}
+          {/* 다음 페이지 목록 보여주기 */}
+          {startPage + 5 <= last_page && (
+            <Grid
+              onClick={() => {
+                setStartPage(startPage + 5);
+                getPagePosts(startPage);
+              }}
+              padding="0 0 0 15px"
+            >
+              다음
+            </Grid>
+          )}
         </Grid>
       </Grid>
     </Grid>

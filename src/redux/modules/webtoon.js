@@ -13,7 +13,10 @@ const SET_SIMILAR_USER_OFFER = "SET_SIMILAR_USER_OFFER";
 const SET_END_TOON_OFFER = "SET_END_TOON_OFFER";
 const LOADING = "IS_LOADING";
 
-const setToonOne = createAction(SET_TOON_ONE, (toon) => ({ toon }));
+const setToonOne = createAction(SET_TOON_ONE, (toon, toon_id) => ({
+  toon,
+  toon_id,
+}));
 const setReviewId = createAction(SET_REVIEW_ID, (review_id) => ({ review_id }));
 const setWebtooniRank = createAction(SET_WEBTOONI_RANK, (webtooni_rank) => ({
   webtooni_rank,
@@ -46,27 +49,36 @@ const setEndToonOffer = createAction(SET_END_TOON_OFFER, (end_toon) => ({
 const Loading = createAction(LOADING, (is_loading) => ({ is_loading }));
 
 const initialState = {
+  toon_list: [],
   toon_one: {
+    userLikeReviewList: [616],
     toonImg:
-      "https://cdn.pixabay.com/photo/2018/01/10/23/53/rabbit-3075088_640.png",
-    toonTitle: "여신강림",
-    toonAuthor: "야옹이",
-    webtoonGenre: ["스토리", "로맨스"],
-    toonAge: "12세 이용가",
-    realUrl:
-      "https://comic.naver.com/webtoon/detail?titleId=703846&no=171&weekday=true",
-    toonAvgPoint: 4.8,
-    toonPointCount: 30,
-    toonContent:
-      "네웹 대표 글로벌 인기작! 주경, 수호, 서준. 세 청춘의 두근두근 눈호강 로맨스~♡",
-    toonWeekday: "월",
-    toonFlatform: "네이버",
-    reviewCount: 14,
-    finished: 0,
+      "https://shared-comic.pstatic.net/thumb/webtoon/654138/thumbnail/thumbnail_IMAG06_c68850e6-bfa1-4dc8-b6bf-c04ecb8cc69e.jpg",
+    toonTitle: "은주의 방 2~3부",
+    toonAuthor: "노란구미",
+    toonGenre: ["스토리", "드라마"],
+    toonAge: "전체연령가",
+    realUrl: "https://comic.naver.com/webtoon/list?titleId=654138&weekday=tue",
+    toonAvgPoint: 3.5,
+    totalPointCount: 1,
+    toonContent: "인테리어에서 연애까지, 은주의 라이프 체인지 스토리",
+    toonWeekday: "화",
+    toonPlatform: "네이버",
+    reviewCount: 1,
+    finished: false,
     reviews: [
-      { id: 1, reviewContent: "리뷰내용", userPointNumber: 2, likeCount: 20 },
-      { id: 1, reviewContent: "리뷰내용", userPointNumber: 2, likeCount: 20 },
+      {
+        userName: "wonhee",
+        userImg: 4,
+        reviewId: 500,
+        userGrade: "FIRST",
+        reviewContent: "수정 테스트2",
+        userPointNumber: 3.5,
+        likeCount: 0,
+        createDate: "2021-08-11T17:41:05",
+      },
     ],
+    myListOrNot: true,
   },
   my_list: [],
   similar_list: [
@@ -216,11 +228,11 @@ const getToonOneServer = (id) => {
     try {
       const response = await webtoonAPI.getOne(id);
       console.log(response, "getToonOneOK");
-      dispatch(setToonOne(response.data));
+      dispatch(setToonOne(response.data, id));
     } catch (err) {
       console.log(err, "getToonOneError");
       alert("게시글 정보가 없어요");
-      history.replace("/");
+      // history.replace("/");
     }
   };
 };
@@ -305,16 +317,21 @@ export default handleActions(
   {
     [SET_TOON_ONE]: (state, action) =>
       produce(state, (draft) => {
-        draft.toon_one = action.payload.toon;
+        //웹툰 id 추가해 넣기
+        const _list = draft.toon_list;
+        draft.toon_one = _list.map((_) => {
+          _.toonId = action.payload.toon_id;
+          return _;
+        });
       }),
     [SET_REVIEW_ID]: (state, action) =>
       produce(state, (draft) => {
         draft.review_id = action.payload.review_id;
       }),
+
     [SET_WEBTOONI_RANK]: (state, action) =>
       produce(state, (draft) => {
         draft.webtooni_rank = action.payload.webtooni_rank;
-        draft.is_loading = false;
       }),
     [SET_NAVER_RANK]: (state, action) =>
       produce(state, (draft) => {

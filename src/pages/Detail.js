@@ -44,7 +44,7 @@ const Detail = (props) => {
   )[0];
 
   // const review_id = useSelector((store) => store.webtoon.review_id);  //별점 주고 받아온 리뷰 아이디. 얘는 필요없을 듯~ 리렌더링 해서 상세페이지 정보를 새로 받아오면 추가된 리뷰 아이디 가져오기..
-  const review_id = prev_review.id; //리뷰 아이디
+  const review_id = prev_review?.reviewId; //리뷰 아이디
 
   //리뷰 작성하기
   const [review, setReview] = React.useState("");
@@ -95,9 +95,7 @@ const Detail = (props) => {
                   <Text>{toon.toonAuthor}</Text>
                 </Grid>
                 <Grid display="flex" flexDir="column">
-                  <Text>
-                    {toon.webtoonGenre.map((item) => "#" + item + " ")}
-                  </Text>
+                  <Text>{toon.toonGenre.map((item) => "#" + item + " ")}</Text>
                   <Text>{toon.toonAge}</Text>
 
                   <Grid display="flex" align="center">
@@ -107,7 +105,7 @@ const Detail = (props) => {
                       src="https://cdn.pixabay.com/photo/2013/07/12/17/39/star-152151_960_720.png"
                     ></Image>
                     <Text>&nbsp;{toon.toonAvgPoint}</Text>
-                    <Text>({toon.toonPointCount})</Text>
+                    <Text>({toon.totalPointCount})</Text>
                   </Grid>
 
                   {toon.finished ? (

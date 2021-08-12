@@ -1,4 +1,5 @@
 import axios from "axios";
+import { getToken } from "./PermitAuth";
 
 const getKakaoAddr = () => {
   const redirectURI =
@@ -18,6 +19,13 @@ const getNaverAddr = () => {
 
 const instance = axios.create({
   baseURL: "http://13.124.236.225/api/v1/",
+});
+
+// 매 요청 전에 token 유무를 확인해서 header에 Authorization 추가.
+instance.interceptors.request.use((config) => {
+  const token = getToken();
+  if (token) config.headers.common["Authorization"] = `${token}`;
+  return config;
 });
 
 const webtoonAPI = {
@@ -87,10 +95,6 @@ const userAPI = {
   search: (keyword) => instance.get(`search`, { params: { keyword } }),
 };
 
-const setAuthorization = (token) => {
-  instance.defaults.headers.common["Authorization"] = token;
-};
-
 export {
   webtoonAPI,
   reviewAPI,
@@ -100,5 +104,4 @@ export {
   userAPI,
   getKakaoAddr,
   getNaverAddr,
-  setAuthorization,
 };
