@@ -18,6 +18,8 @@ import {
   Taste,
   Profile,
   ToonList,
+  KakaoLogin,
+  NaverLogin,
 } from "../pages/index";
 import Header from "./Header";
 import GlobalStyle from "./GlobalStyle";
@@ -25,12 +27,8 @@ import GlobalStyle from "./GlobalStyle";
 function App() {
   const dispatch = useDispatch();
 
-  const is_Token = document.cookie.match("USER_TOKEN") ? true : false;
-
   React.useEffect(() => {
-    if (is_Token) {
-      dispatch(userActions.loginCheck());
-    }
+    dispatch(userActions.loginCheck());
   }, []);
 
   return (
@@ -51,6 +49,8 @@ function App() {
       <Route path="/talk/write" exact component={TalkWrite} />
       <Route path="/talk/write/:id" exact component={TalkWrite} />
       <Route path="/talk/detail/:id" exact component={TalkDetail} />
+      <Route path="/user/kakao" exact component={KakaoLogin} />
+      <Route path="/user/naver" exact component={NaverLogin} />
     </ConnectedRouter>
   );
 }
