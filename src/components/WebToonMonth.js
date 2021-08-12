@@ -18,10 +18,12 @@ const WebToonMonth = (props) => {
 
         <InfoGrid>
           <TitleWrap>
-            <Text fontWeight="medium">{props.toonTitle}</Text>
+            <Text tag="p" fontWeight="medium">
+              {props.toonTitle}
+            </Text>
           </TitleWrap>
           <AuthorWrap>
-            <Text type="caption" color={Color.gray500}>
+            <Text tag="p" type="caption" color={Color.gray500}>
               {props.toonAuthor}
             </Text>
           </AuthorWrap>
@@ -33,7 +35,9 @@ const WebToonMonth = (props) => {
                 size="12px"
                 src="https://lh3.googleusercontent.com/pw/AM-JKLXIrRX56QwruA9no5dsQDpzLmNNgGigp4H-mNbe8Zll_MgRc1OVhN8nKaqDwTOSKiNGUT6bQ6O7sYRBDsPhnj49j7ACDz5qWrSeebdROovTQKhnt8O2jbq6QpskSozPMpq02E2hUQqTjg3gfLZpx-xv=s12-no?authuser=0"
               ></Image>
-              <Text type="caption">{props.toonAvgPoint}</Text>
+              <Text type="num" fontSize="12px">
+                {props.toonAvgPoint}
+              </Text>
             </FlexGrid>
             <Text type="small">
               {props.toonWeekday ? props.toonWeekday : "완결"}
@@ -80,21 +84,28 @@ const InfoGrid = styled.div`
   display: flex;
   flex-direction: column;
   width: 60%;
+  height: 55px;
   margin-left: 5px;
+  justify-content: space-between;
 `;
 
 const TitleWrap = styled.div`
   width: 90px;
-  overflow: hidden;
-  text-overflow: ellipsis;
-  white-space: nowrap;
+
+  & > p {
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+  }
 `;
 
 const AuthorWrap = styled.div`
   width: 90px;
-  margin: 7px 0;
-  overflow: hidden;
-  text-overflow: ellipsis;
-  white-space: nowrap;
+  padding-bottom: 3px;
+  & > p {
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+  }
 `;
 export default WebToonMonth;

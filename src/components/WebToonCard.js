@@ -1,9 +1,9 @@
 import React from "react";
-import { Link } from "react-router-dom";
 import styled from "styled-components";
 import { Text, Image } from "../elements";
 import { history } from "../redux/configureStore";
 import { Color } from "../shared/common";
+
 const WebToonCard = (props) => {
   return (
     <React.Fragment>
@@ -25,7 +25,8 @@ const WebToonCard = (props) => {
           <FlexGrid>
             <FlexGrid>
               <Text color={Color.primary} type="caption">
-                {props.genre ? props.genre.genreType : null}
+                {props.genre && props.genre.genreType}
+                {props.genres && props.genres[1]}
               </Text>
               <Text color={Color.gray400} type="caption" margin="0 0 0 10px">
                 {props.toonWeekday ? props.toonWeekday : "완결"}
@@ -39,7 +40,7 @@ const WebToonCard = (props) => {
                 src="https://lh3.googleusercontent.com/pw/AM-JKLXIrRX56QwruA9no5dsQDpzLmNNgGigp4H-mNbe8Zll_MgRc1OVhN8nKaqDwTOSKiNGUT6bQ6O7sYRBDsPhnj49j7ACDz5qWrSeebdROovTQKhnt8O2jbq6QpskSozPMpq02E2hUQqTjg3gfLZpx-xv=s12-no?authuser=0"
               ></Image>
               <Text
-                type="en"
+                type="num"
                 fontSize="12px"
                 fontWeight="bold"
                 color={Color.gray700}
@@ -49,13 +50,13 @@ const WebToonCard = (props) => {
             </FlexGrid>
           </FlexGrid>
           <TitleWrap>
-            <Text fontWeight="medium" color={Color.gray800}>
+            <Text tag="p" fontWeight="medium" color={Color.gray800}>
               {props.toonTitle}
             </Text>
           </TitleWrap>
           <FlexGrid>
             <AuthorWrap>
-              <Text type="small" color={Color.gray400}>
+              <Text tag="p" type="small" color={Color.gray400}>
                 {props.toonAuthor}
               </Text>
             </AuthorWrap>
@@ -84,16 +85,18 @@ const Container = styled.div`
   height: 220px;
   background: ${Color.white};
   display: inline-block;
-  margin: 10px 10px;
+  margin: 0 10px;
 `;
 
 const FlexGrid = styled.div`
   display: flex;
   justify-content: space-between;
+  align-items: center;
+  padding: 3px 0;
 `;
 
 const ContentsGrid = styled.div`
-  padding: 5px;
+  padding: 0 5px;
   width: 100%;
   height: 80px;
   display: flex;
@@ -108,15 +111,21 @@ const ImageGrid = styled.div`
 
 const AuthorWrap = styled.div`
   width: 120px;
-  overflow: hidden;
-  text-overflow: ellipsis;
-  white-space: nowrap;
+
+  & > p {
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+  }
 `;
 
 const TitleWrap = styled.div`
   width: 140px;
-  overflow: hidden;
-  text-overflow: ellipsis;
-  white-space: nowrap;
+
+  & > p {
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+  }
 `;
 export default WebToonCard;
