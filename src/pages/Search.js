@@ -44,16 +44,18 @@ const Search = () => {
           placeholder="검색어를 입력해주세요."
         ></Input>
 
-        <Text type="p" margin="20px 0 0 0">
+        <Text tag="p" margin="20px 0 0 0">
           검색 결과
         </Text>
+        {search_result?.map((_, idx) => {
+          return <ToonListCard key={idx} {..._}></ToonListCard>;
+        })}
+        {search_result.length === 0 ? (
+          <TitleGrid>
+            <Text>검색 결과가 없습니다</Text>
+          </TitleGrid>
+        ) : null}
       </Container>
-      {search_result?.map((_, idx) => {
-        return <ToonListCard key={idx} {..._}></ToonListCard>;
-      })}
-      {search_result.length === 0 ? (
-        <TitleGrid>검색 결과가 없습니다</TitleGrid>
-      ) : null}
     </React.Fragment>
   );
 };

@@ -13,7 +13,11 @@ const Recommendation = () => {
   const dispatch = useDispatch();
 
   React.useEffect(() => {
-    if (md_offer_list.length === 0 || end_toon_list.length === 0) {
+    if (
+      md_offer_list.length === 0 ||
+      end_toon_list.length === 0 ||
+      best_reviewer_list.length === 0
+    ) {
       dispatch(webtoonActions.getUserOffer());
       dispatch(webtoonActions.getBestReviewerOffer());
       dispatch(webtoonActions.getSimilarUserOffer());
@@ -24,6 +28,9 @@ const Recommendation = () => {
 
   const md_offer_list = useSelector((state) => state.admin.md_offer);
   const end_toon_list = useSelector((state) => state.webtoon.end_toon);
+  const best_reviewer_list = useSelector(
+    (state) => state.webtoon.best_reviewer_offer.webtoonAndGenreResponseDtos
+  );
   const is_loading = useSelector((state) => state.webtoon.is_loading);
 
   const webToonList = [
@@ -128,21 +135,30 @@ const Recommendation = () => {
     <React.Fragment>
       <OfferCard {...webToonList}></OfferCard>
       <BannerBox>
-        <Text type="small" margin="0 0 5px 15px">
+        <Text margin="5px 0 0 0" type="small" color={Color.gray700}>
           좋아하실만한 웹툰을 추천해 드릴게요.
         </Text>
-        <Text margin="0 0 0 15px" fontWeight="bold">
-          재밌게 본 웹툰의 리뷰를 등록해보세요! 🖍
-        </Text>
+        <FlexGrid>
+          <Text fontWeight="bold" color={Color.gray700}>
+            재밌게 본 웹툰의 리뷰를 등록해보세요!
+          </Text>
+          <Image
+            shape="square"
+            size="16px"
+            margin="0 5px"
+            src="https://lh3.googleusercontent.com/pw/AM-JKLWPhtnQViH6A2gkyW-RSm0DPzry9dNgxBNfUplfxinXpWyXDHotbccu1JiRG8NoxAgreYwSXnKylBkgJ2OUew1FEhCanaMevg_G-Prks9-3ooXIluMWS9n6q-j2m4PAe4IY9o6t5Vcg6F51UfY7x2ms=w16-h17-no?authuser=0"
+          ></Image>
+        </FlexGrid>
       </BannerBox>
 
       <TitleGrid>
-        <Text type="h2" fontWeight="bold">
+        <Text type="h2" fontWeight="bold" color={Color.gray800}>
           이번 주 웹툰 평론가의 추천
         </Text>
         <Button
           border="none"
           bgColor={Color.white}
+          color={Color.gray700}
           fontSize="12px"
           width="50px"
           _onClick={() => {
@@ -154,7 +170,7 @@ const Recommendation = () => {
       </TitleGrid>
       <SliderBox>
         <Slick is_infinite>
-          {webToonList.map((_, idx) => {
+          {best_reviewer_list?.map((_, idx) => {
             return <WebToonCard key={idx} {..._}></WebToonCard>;
           })}
         </Slick>
@@ -234,66 +250,15 @@ const Recommendation = () => {
           기본적으로 재밌습니다. <br /> 이야기 전개도 빠르고 흡입력 있습니다.
         </Text>
       </MdCommentBox>
-      <FlexToonGrid>
-        <Image
-          margin="0 7px"
-          src={md_offer_list.toonImg}
-          shape="circle"
-          size="64px"
-        ></Image>
-        <InfoGrid>
-          <Text fontWeight="medium">{md_offer_list.toonTitle}</Text>
-          <FlexGrid>
-            <Text type="caption" color={Color.gray400}>
-              {md_offer_list.toonAuthor}
-            </Text>
-            <Image
-              shape="square"
-              margin="0 5px 0 7px"
-              size="12px"
-              src="https://lh3.googleusercontent.com/pw/AM-JKLXIrRX56QwruA9no5dsQDpzLmNNgGigp4H-mNbe8Zll_MgRc1OVhN8nKaqDwTOSKiNGUT6bQ6O7sYRBDsPhnj49j7ACDz5qWrSeebdROovTQKhnt8O2jbq6QpskSozPMpq02E2hUQqTjg3gfLZpx-xv=s12-no?authuser=0"
-            ></Image>
-            <Text
-              type="num"
-              fontSize="12px"
-              fontWeight="bold"
-              margin="0 10px 0 0"
-            >
-              {md_offer_list.toonAvgPoint}
-            </Text>
-            <Text type="caption" color={Color.gray400}>
-              {md_offer_list.toonWeekday}
-            </Text>
-          </FlexGrid>
-          <Text type="caption" color={Color.gray800}>
-            여기 들어갈거 생각
-          </Text>
-          <Text></Text>
-        </InfoGrid>
-      </FlexToonGrid>
-      <MdCommentBox>
-        <FlexGrid>
-          <Image size="32px" shape="circle"></Image>
-          <Text type="caption" margin="0 7px">
-            김모씨
-          </Text>
-          <Text type="caption" color={Color.gray400}>
-            08.02
-          </Text>
-        </FlexGrid>
-
-        <Text tag="p" margin="10px 0 0 0" color={Color.gray800}>
-          기본적으로 재밌습니다. <br /> 이야기 전개도 빠르고 흡입력 있습니다.
-        </Text>
-      </MdCommentBox>
 
       <TitleGrid>
-        <Text type="h2" fontWeight="bold">
+        <Text type="h2" fontWeight="bold" color={Color.gray800}>
           완결 작품 추천
         </Text>
         <Button
           border="none"
           bgColor={Color.white}
+          color={Color.gray700}
           fontSize="12px"
           width="50px"
           _onClick={() => {
@@ -320,12 +285,13 @@ const Recommendation = () => {
       </SliderBox>
 
       <TitleGrid>
-        <Text type="h2" fontWeight="bold">
+        <Text type="h2" fontWeight="bold" color={Color.gray800}>
           비슷한 취향의 사용자가 본 웹툰
         </Text>
         <Button
           border="none"
           bgColor={Color.white}
+          color={Color.gray700}
           fontSize="12px"
           width="50px"
         >
@@ -346,7 +312,8 @@ const Recommendation = () => {
 const BannerBox = styled.div`
   width: 320px;
   height: 66px;
-  background-color: ${Color.gray200};
+  background-color: ${Color.gray100};
+  padding: 0 16px;
   margin: 30px auto;
   border-radius: 8px;
   display: flex;

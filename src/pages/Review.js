@@ -1,62 +1,37 @@
 import React from "react";
-import { ReviewCard, Slick } from "../components";
-import { Text, Button } from "../elements";
+import { ReviewCard } from "../components";
+import { Text } from "../elements";
+import { useDispatch, useSelector } from "react-redux";
+import { actionCreators as reviewAction } from "../redux/modules/review";
 import styled from "styled-components";
+import { Color } from "../shared/common";
 
 const Review = () => {
-  const review_list = [
-    {
-      userId: 1,
-      userImg: "유저 이미지 번호",
-      userName: "홍길동",
-      userPointNumber: 4.5,
-      reviewContent: "리뷰입니다아아아아아아앙",
-      toonTitle: "여신강림",
-      userGrade: "유저등급",
-      toonImg: "https://img-cf.kurly.com/shop/data/goods/1618379552204l0.jpg",
-      toonAuthor: "야옹이",
-      toonPlatform: "네이버",
-      toonWeekday: "월",
-      finished: false,
-    },
-    {
-      userId: 1,
-      userImg: "유저 이미지 번호",
-      userName: "홍길동",
-      userPointNumber: 4.5,
-      reviewContent: "리뷰입니다아아아아아아앙",
-      toonTitle: "여신강림",
-      userGrade: "유저등급",
-      toonImg: "https://img-cf.kurly.com/shop/data/goods/1618379552204l0.jpg",
-      toonAuthor: "야옹이",
-      toonPlatform: "카카오",
-      toonWeekday: "월",
-      finished: true,
-    },
-    {
-      userId: 1,
-      userImg: "유저 이미지 번호",
-      userName: "홍길동",
-      userPointNumber: 4.5,
-      reviewContent:
-        "리뷰입니다아아아아아아앙리뷰입니다아아아아아아앙리뷰입니다아아아아아아앙리뷰입니다아아아아아아앙리뷰입니다아아아아아아앙리뷰입니다아아아아아아앙리뷰입니다아아아아아아앙리뷰입니다아아아아아아앙리뷰입니다아아아아아아앙리뷰입니다아아아아아아앙",
-      toonTitle: "여신강림",
-      userGrade: "유저등급",
-      toonImg: "https://img-cf.kurly.com/shop/data/goods/1618379552204l0.jpg",
-      toonAuthor: "야옹이",
-      toonPlatform: "네이버",
-      toonWeekday: "월",
-      finished: false,
-    },
-  ];
+  const dispatch = useDispatch();
+
+  React.useEffect(() => {
+    if (review_list.length === 0) {
+      dispatch(reviewAction.getReviewList());
+    }
+  }, []);
+
+  const review_list = useSelector((state) => state.review.review_list);
 
   return (
     <React.Fragment>
       <FlexGrid>
-        <Text>리뷰 목록</Text>
+        <Text type="h2" fontWeight="bold" color={Color.gray800}>
+          리뷰 목록
+        </Text>
       </FlexGrid>
+      <FlexGrid>
+        <Text type="caption" color={Color.gray800}>
+          전체
+        </Text>
+      </FlexGrid>
+
       <Container>
-        {review_list.map((_, idx) => {
+        {review_list?.map((_, idx) => {
           return <ReviewCard key={idx} {..._}></ReviewCard>;
         })}
       </Container>

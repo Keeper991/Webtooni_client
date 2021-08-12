@@ -9,6 +9,7 @@ import Webtoon from "./modules/webtoon";
 import Talk from "./modules/talk";
 import TalkComment from "./modules/talkComment";
 import Admin from "./modules/admin";
+import Review from "./modules/review";
 
 export const history = createBrowserHistory();
 
@@ -19,6 +20,7 @@ const rootReducer = combineReducers({
   talk: Talk,
   talkComment: TalkComment,
   admin: Admin,
+  review: Review,
   router: connectRouter(history),
 });
 
