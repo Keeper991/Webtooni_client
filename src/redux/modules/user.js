@@ -1,6 +1,6 @@
 import { createAction, handleActions } from "redux-actions";
 import { produce } from "immer";
-import { setAuthorization, userAPI } from "../../shared/API";
+import { userAPI } from "../../shared/API";
 import { setToken, getToken } from "../../shared/PermitAuth";
 
 const SET_USER = "SET_USER";
@@ -15,7 +15,6 @@ const kakaoLoginServer =
     try {
       const res = await userAPI.kakaoLoginCallback(code);
       setToken(res.data);
-      setAuthorization(res.data);
       const infoRes = await userAPI.getInfo();
       dispatch(setUser(infoRes.data));
       // 선호하는 장르나 프로필 이미지와 닉네임이 없을 경우,
@@ -33,7 +32,6 @@ const loginCheck =
     const token = getToken();
     if (token) {
       try {
-        setAuthorization(token);
         const res = await userAPI.getInfo();
         dispatch(setUser(res.data));
         // 선호하는 장르나 프로필 이미지와 닉네임이 없을 경우,
