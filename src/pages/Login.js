@@ -5,11 +5,23 @@ import { getKakaoAddr, getNaverAddr } from "../shared/API";
 import { kakao_symbol, naver_symbol } from "../images/symbols";
 import { Color } from "../shared/common";
 import title from "../images/title.png";
+import { ReactComponent as BackButton } from "../images/BackButton.svg";
+import { history } from "../redux/configureStore";
 
 const Login = () => {
   return (
     <React.Fragment>
       <Container>
+        <BackButtonWrap>
+          <Button
+            bgColor="transparent"
+            border="none"
+            padding={0}
+            _onClick={() => history.goBack()}
+          >
+            <BackButton />
+          </Button>
+        </BackButtonWrap>
         <ImageWrap>
           <Image src={title} width="200px" height="27px" />
         </ImageWrap>
@@ -37,32 +49,27 @@ const Login = () => {
 const Container = styled.div`
   width: 100%;
   height: 400px;
-  position: relative;
+  margin-top: 100px;
   display: flex;
   flex-direction: column;
-  justify-content: space-evenly;
+  justify-content: space-between;
   align-items: center;
   & a:link,
   a:visited {
     text-decoration: none;
   }
+`;
 
-  & button {
-    width: 300px;
-    position: relative;
-    & > div {
-      position: absolute;
-      top: 10px;
-      left: 16px;
-    }
-  }
+const BackButtonWrap = styled.div`
+  position: absolute;
+  top: 85px;
+  left: 20px;
 `;
 
 const ImageWrap = styled.div`
   & > div {
     background-size: contain;
     background-repeat: no-repeat;
-    background-position: center;
   }
 `;
 
@@ -70,17 +77,16 @@ const BtnGrid = styled.div`
   display: flex;
   flex-direction: column;
   gap: 1em;
-`;
 
-const Test = styled.div`
-  &:first-child {
-    font-family: "NotoSansKR";
-  }
-  &:nth-child(2) {
-    font-weight: "regular";
-  }
-  &:nth-child(3) {
-    font-weight: "medium";
+  & button {
+    width: 300px;
+    position: relative;
+    box-shadow: rgba(0, 0, 0, 0.15) 0px 3px 3px 0px;
+    & > div {
+      position: absolute;
+      top: 10px;
+      left: 16px;
+    }
   }
 `;
 
