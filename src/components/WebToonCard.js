@@ -25,8 +25,7 @@ const WebToonCard = (props) => {
           <FlexGrid>
             <FlexGrid>
               <Text color={Color.primary} type="caption">
-                {props.genre && props.genre.genreType}
-                {props.genres && props.genres[1]}
+                {props.genres ? props.genres[1] : null}
               </Text>
               <Text color={Color.gray400} type="caption" margin="0 0 0 10px">
                 {props.toonWeekday ? props.toonWeekday : "완결"}
@@ -85,7 +84,7 @@ const Container = styled.div`
   height: 220px;
   background: ${Color.white};
   display: inline-block;
-  margin: 0 10px;
+  margin-right: 10px;
 `;
 
 const FlexGrid = styled.div`
