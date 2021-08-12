@@ -4,6 +4,9 @@ import { useSelector, useDispatch } from "react-redux";
 import styled from "styled-components";
 import { Text, Image, Button, Input } from "../elements";
 import { actionCreators as webtoonActions } from "../redux/modules/webtoon";
+import { ReactComponent as EmptyStar } from "../images/EmptyStar.svg";
+import { ReactComponent as FillStar } from "../images/FillStar.svg";
+// EmptyStar
 
 const DetailStar = (props) => {
   const { putStarServer } = webtoonActions;
@@ -16,7 +19,7 @@ const DetailStar = (props) => {
   const starWidth = 40;
   const [starLocation, setStarLocation] = React.useState(0);
   useEffect(() => {
-    !prev_review && setStarLocation(prev_review.userPointNumber); //기존 별점 가져오기
+    !prev_review && setStarLocation(prev_review?.userPointNumber); //기존 별점 가져오기
   }, []);
   const hideEmptyStar = starWidth * starLocation; //선택한 별 보이기(빈 별 감추기)
   const dispatch = useDispatch();
@@ -28,49 +31,42 @@ const DetailStar = (props) => {
   return (
     <>
       <StarContainer>
-        <FillStar>
+        <FillStarGrid>
           {Array.from({ length: 5 }).map((_) => (
-            <Image
-              width="40px"
-              height="40px"
-              src="https://cdn.pixabay.com/photo/2013/07/12/17/39/star-152151_960_720.png"
-            />
+            <FillStar width="40px" height="40px" />
           ))}
-        </FillStar>
+        </FillStarGrid>
 
-        <EmptyStar hideEmptyStar={hideEmptyStar}>
+        <EmptyStarGrid hideEmptyStar={hideEmptyStar}>
           {starScores.map((score) => (
-            <Image
-              display="flex"
-              width="40px"
-              height="40px"
-              src="https://cdn.pixabay.com/photo/2017/02/01/00/29/lone-star-2028578_640.png"
-            >
-              <StarPart
+            <StarPartGrid>
+              <EmptyStar width="40px" height="40px" />
+
+              <StarPart1
                 star={starLocation}
                 onClick={() => {
-                  if (is_login) {
-                    setStarLocation(score - 0.5);
-                    putStar();
-                  } else {
-                    alert("로그인하세요~");
-                  }
+                  // if (is_login) {
+                  setStarLocation(score - 0.5);
+                  putStar();
+                  // } else {
+                  // alert("로그인하세요~");
+                  // }
                 }}
-              ></StarPart>
-              <StarPart
+              ></StarPart1>
+              <StarPart2
                 star={starLocation}
                 onClick={() => {
-                  if (is_login) {
-                    setStarLocation(score);
-                    putStar();
-                  } else {
-                    alert("로그인하세요~");
-                  }
+                  // if (is_login) {
+                  setStarLocation(score);
+                  putStar();
+                  // } else {
+                  // alert("로그인하세요~");
+                  // }
                 }}
-              ></StarPart>
-            </Image>
+              ></StarPart2>
+            </StarPartGrid>
           ))}
-        </EmptyStar>
+        </EmptyStarGrid>
       </StarContainer>
     </>
   );
@@ -82,11 +78,11 @@ const StarContainer = styled.div`
   height: 40px;
 `;
 
-const FillStar = styled.div`
+const FillStarGrid = styled.div`
   display: flex;
 `;
 
-const EmptyStar = styled.div`
+const EmptyStarGrid = styled.div`
   position: absolute;
   top: 0;
   left: 0;
@@ -97,10 +93,26 @@ const EmptyStar = styled.div`
       ? `clip: rect(0px, 200px, 40px, ${props.hideEmptyStar}px )`
       : `clip: auto`};
 `;
+const StarPartGrid = styled.div`
+  position: relative;
+  width: 40px;
+  height: 40px;
+`;
 
-const StarPart = styled.div`
-  width: 50%;
-  height: 100%;
+const StarPart1 = styled.div`
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 20px;
+  height: 40px;
+  background-color: transparent;
+`;
+const StarPart2 = styled.div`
+  position: absolute;
+  top: 0;
+  left: 20px;
+  width: 20px;
+  height: 40px;
   background-color: transparent;
 `;
 
