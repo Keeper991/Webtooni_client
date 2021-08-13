@@ -4,6 +4,7 @@ import { history } from "../redux/configureStore";
 import { useDispatch, useSelector } from "react-redux";
 import { actionCreators as webtoonActions } from "../redux/modules/webtoon";
 import { actionCreators as adminActions } from "../redux/modules/admin";
+import { actionCreators as modalActions } from "../redux/modules/modal";
 import {
   WebToonCard,
   ReviewCard,
@@ -52,6 +53,14 @@ const Main = () => {
   const [is_best, setIsBest] = React.useState(true);
 
   const is_login = useSelector((state) => state.user.is_login);
+  const isShownWelcomeModal = useSelector(
+    (state) => state.user.isShownWelcomeModal
+  );
+
+  React.useEffect(() => {
+    if (is_login && !isShownWelcomeModal)
+      dispatch(modalActions.activeModal("welcome"));
+  }, []);
 
   return (
     <React.Fragment>

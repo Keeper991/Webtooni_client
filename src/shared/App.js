@@ -25,6 +25,7 @@ import {
 } from "../pages/index";
 import Header from "./Header";
 import GlobalStyle from "./GlobalStyle";
+import Modal from "./Modals/Modal";
 
 function App() {
   const dispatch = useDispatch();

@@ -11,6 +11,10 @@ const setToken = (token) => {
   localStorage.setItem(TOKEN_LS, token);
 };
 
+const removeToken = () => {
+  localStorage.removeItem(TOKEN_LS);
+};
+
 const Permit = ({ children }) => {
   const is_login = useSelector((state) => state.user.is_login);
 
@@ -22,4 +26,4 @@ const PermitStrict = ({ authorName, children }) => {
   return <>{loginedUserName === authorName && children}</>;
 };
 
-export { getToken, setToken, Permit, PermitStrict };
+export { getToken, setToken, removeToken, Permit, PermitStrict };

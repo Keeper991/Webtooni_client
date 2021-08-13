@@ -82,14 +82,15 @@ const talkAPI = {
 };
 
 const userAPI = {
-  addWebtoon: (id) => instance.post(`user/me/webtoons`, { id }),
+  subscribe: ({ webtoonId, myListOrNot }) =>
+    instance.post(`user/subscribe`, { webtoonId, myListOrNot }),
   getWebtoon: () => instance.get(`user/me/webtoons`),
   getComment: () => instance.get(`user/me/comment`),
   getReviews: () => instance.get(`user/me/reviews`),
   getLevel: () => instance.get(`user/me/level`),
   getInfo: () => instance.get(`user/info`),
-  putUserInfo: ({ userName, userImg }) =>
-    instance.put(`user/me`, { userName, userImg }),
+  putUserInfo: ({ genres, userName, userImg }) =>
+    instance.post(`user/onBoarding`, { genres, userName, userImg }),
   kakaoLoginCallback: (code) =>
     instance.get(`user/kakao/callback`, { params: { code } }),
   naverLoginCallback: () => instance.get(`user/naver/callback`),
