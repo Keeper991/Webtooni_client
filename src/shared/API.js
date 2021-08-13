@@ -43,7 +43,8 @@ const reviewAPI = {
   putReview: ({ reviewId, reviewContent }) =>
     instance.put(`reviews/${reviewId}`, { reviewContent }),
   deleteReview: (reviewId) => instance.delete(`reviews/${reviewId}`),
-  getOrderByCreatedAt: () => instance.get(`reviews/new`),
+  getOrderByCreatedAt: (pageNumber) =>
+    instance.get(`reviews/new`, { params: { page: pageNumber, size: 10 } }),
   getUnwritten: () => instance.get(`reviews/suggestion`),
 };
 

@@ -11,6 +11,7 @@ const SET_USER_OFFER = "SET_USER_OFFER";
 const SET_BEST_REVIEWER_OFFER = "SET_BEST_REVIEWER_OFFER";
 const SET_SIMILAR_USER_OFFER = "SET_SIMILAR_USER_OFFER";
 const SET_END_TOON_OFFER = "SET_END_TOON_OFFER";
+const SET_UNWRITTEN_OFFER = "SET_UNWRITTEN_OFFER";
 const LOADING = "IS_LOADING";
 
 const setToonOne = createAction(SET_TOON_ONE, (toon, toon_id) => ({
@@ -46,6 +47,14 @@ const setSimilarUserOffer = createAction(
 const setEndToonOffer = createAction(SET_END_TOON_OFFER, (end_toon) => ({
   end_toon,
 }));
+
+const setUnwrittenOffer = createAction(
+  SET_UNWRITTEN_OFFER,
+  (unwritten_offer) => ({
+    unwritten_offer,
+  })
+);
+
 const Loading = createAction(LOADING, (is_loading) => ({ is_loading }));
 
 const initialState = {
@@ -131,6 +140,7 @@ const initialState = {
   review_id: "", //별점 준 후 받아온 리뷰 아이디
   similar_user_offer: [],
   end_toon: [],
+  unwritten_offer: [],
   is_loading: false,
 };
 
@@ -262,10 +272,10 @@ const similarToonServer = (id) => {
 };
 
 //리뷰 작성
-const uploadReviewServer = (rewviewId, reviewContent) => {
+const uploadReviewServer = (reviewId, reviewContent) => {
   return async function (dispatch) {
     try {
-      const response = await reviewAPI.putReview({ rewviewId, reviewContent });
+      const response = await reviewAPI.putReview({ reviewId, reviewContent });
       console.log(response, "uploadReviewOK");
     } catch (err) {
       console.log(err, "uploadReviewError");
@@ -313,6 +323,18 @@ const likeReviewServer = (reviewId) => {
   };
 };
 
+//리뷰가 미작성된 웹툰 받아오기
+const getUnwrittenOffer = () => {
+  return async function (dispatch) {
+    try {
+      const response = await reviewAPI.getUnwritten();
+      dispatch(setUnwrittenOffer(response.data));
+    } catch (err) {
+      console.log(err);
+    }
+  };
+};
+
 export default handleActions(
   {
     [SET_TOON_ONE]: (state, action) =>
@@ -332,6 +354,7 @@ export default handleActions(
     [SET_WEBTOONI_RANK]: (state, action) =>
       produce(state, (draft) => {
         draft.webtooni_rank = action.payload.webtooni_rank;
+        draft.is_loading = false;
       }),
     [SET_NAVER_RANK]: (state, action) =>
       produce(state, (draft) => {
@@ -357,6 +380,10 @@ export default handleActions(
       produce(state, (draft) => {
         draft.end_toon = action.payload.end_toon;
       }),
+    [SET_UNWRITTEN_OFFER]: (state, action) =>
+      produce(state, (draft) => {
+        draft.unwritten_offer = action.payload.unwritten_offer;
+      }),
     [LOADING]: (state, action) =>
       produce(state, (draft) => {
         draft.is_loading = action.payload.is_loading;
@@ -380,6 +407,7 @@ const actionCreators = {
   getBestReviewerOffer,
   getSimilarUserOffer,
   getEndToonOffer,
+  getUnwrittenOffer,
 };
 
 export { actionCreators };
