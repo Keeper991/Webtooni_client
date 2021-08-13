@@ -9,7 +9,9 @@ const ToonListCard = (props) => {
     <React.Fragment>
       <FlexToonGrid
         onClick={() => {
-          history.push(`/detail/${props.id}`);
+          props.review
+            ? history.push(`/review/write/${props.id}`)
+            : history.push(`/detail/${props.id}`);
         }}
       >
         <ImageGrid>
@@ -23,10 +25,11 @@ const ToonListCard = (props) => {
 
         <InfoGrid>
           <FlexGrid flexStart>
-            <Text type="caption" color={Color.primary}>
-              {props.genres ? props.genres[1] : null}
+            <Text type="caption" color={Color.primary} margin="0 7px 0 0">
+              {props.genres[1] ? props.genres[1] : props.genres[0]}
+              {props.genres.length === 0 && "미분류"}
             </Text>
-            <Text margin="0 15px" type="caption" color={Color.gray400}>
+            <Text type="caption" color={Color.gray400}>
               {props.toonWeekday ? props.toonWeekday : "완결"}
             </Text>
           </FlexGrid>
@@ -35,7 +38,7 @@ const ToonListCard = (props) => {
           <FlexGrid>
             <FlexGrid>
               <AuthorWrap>
-                <Text type="caption" color={Color.gray400}>
+                <Text tag="p" type="caption" color={Color.gray400}>
                   {props.toonAuthor}
                 </Text>
               </AuthorWrap>
@@ -90,6 +93,11 @@ const FlexGrid = styled.div`
   ${(props) => props.flexStart && `justify-content: start;`};
 `;
 
+const InlineGrid = styled.div`
+  display: inline-flex;
+  justify-content: left;
+`;
+
 const FlexToonGrid = styled.div`
   display: flex;
   align-items: center;
@@ -115,8 +123,11 @@ const InfoGrid = styled.div`
 
 const AuthorWrap = styled.div`
   max-width: 130px;
-  overflow: hidden;
-  text-overflow: ellipsis;
-  white-space: nowrap;
+
+  & > p {
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+  }
 `;
 export default ToonListCard;

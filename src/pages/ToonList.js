@@ -16,6 +16,9 @@ const ToonList = (props) => {
 
   const webtooni_list = useSelector((state) => state.webtoon.webtooni_rank);
   const end_toon_list = useSelector((state) => state.webtoon.end_toon);
+  const best_reviewer_list = useSelector(
+    (state) => state.webtoon.best_reviewer_offer.webtoonAndGenreResponseDtos
+  );
 
   React.useEffect(() => {
     if (toon_list === "webtooniverse_rank" && webtooni_list.length === 0) {
@@ -24,6 +27,10 @@ const ToonList = (props) => {
 
     if (toon_list === "end_toon" && end_toon_list.length === 0) {
       dispatch(webtoonActions.getEndToonOffer());
+    }
+
+    if (toon_list === "best_reviewer" && best_reviewer_list.length === 0) {
+      dispatch(webtoonActions.getBestReviewerOffer());
     }
   }, []);
 
@@ -118,6 +125,56 @@ const ToonList = (props) => {
             </FlexGrid>
             <SliderBox>
               {end_toon_list?.map((_, idx) => {
+                return <ToonListCard toon_list key={idx} {..._}></ToonListCard>;
+              })}
+            </SliderBox>
+          </Container>
+        )}
+      </React.Fragment>
+    );
+  }
+
+  if (toon_list === "best_reviewer") {
+    return (
+      <React.Fragment>
+        {is_loading || end_toon_list.length === 0 ? (
+          <Container
+            onClick={() => {
+              history.push(`/detail/${props.id}`);
+            }}
+          >
+            <FlexGrid>
+              <LeftOutlined
+                style={{ margin: "0 5px" }}
+                onClick={() => {
+                  history.goBack();
+                }}
+              ></LeftOutlined>
+              <Text type="h2" fontWeight="bold">
+                이번 주 웹툰 평론가의 추천
+              </Text>
+            </FlexGrid>
+            <SliderBox>
+              {Array.from({ length: 10 }).map(() => {
+                return <SkeletonCard more></SkeletonCard>;
+              })}
+            </SliderBox>
+          </Container>
+        ) : (
+          <Container>
+            <FlexGrid>
+              <LeftOutlined
+                style={{ margin: "0 5px" }}
+                onClick={() => {
+                  history.goBack();
+                }}
+              ></LeftOutlined>
+              <Text type="h2" fontWeight="bold">
+                이번 주 웹툰 평론가의 추천
+              </Text>
+            </FlexGrid>
+            <SliderBox>
+              {best_reviewer_list?.map((_, idx) => {
                 return <ToonListCard toon_list key={idx} {..._}></ToonListCard>;
               })}
             </SliderBox>

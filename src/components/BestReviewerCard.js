@@ -14,9 +14,11 @@ const BestReveiwerCard = (props) => {
           size="64px"
         ></Image>
         <Text type="caption" fontWeight="bold">
-          {props.user.userName}
+          {props.user.userName ? props.user.userName : "null"}
         </Text>
-        <Text type="small">{props.user.userGrade}</Text>
+        <Text type="small">
+          {props.user.userGrade ? props.user.userGrade : "null"}
+        </Text>
         <BottomGrid>
           <FlexGrid>
             <Text type="small">리뷰 수</Text>
@@ -37,14 +39,13 @@ const BestReveiwerCard = (props) => {
 };
 
 const Container = styled.div`
-  width: 110px;
-  height: auto;
-  background: ${Color.gray100};
+  width: 100px;
+  height: 160px;
   display: inline-flex;
   flex-direction: column;
   justify-content: space-between;
   align-items: center;
-  margin: 0 10px;
+  margin: 20px 20px 30px 0;
   border-radius: 5px;
 `;
 

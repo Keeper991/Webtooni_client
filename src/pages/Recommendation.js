@@ -162,7 +162,7 @@ const Recommendation = () => {
           fontSize="12px"
           width="50px"
           _onClick={() => {
-            history.push("/toonlist/list2");
+            history.push("/toonlist/best_reviewer");
           }}
         >
           더보기
@@ -239,7 +239,7 @@ const Recommendation = () => {
         <FlexGrid>
           <Image size="32px" shape="circle"></Image>
           <Text type="caption" margin="0 7px">
-            김모씨
+            김투니
           </Text>
           <Text type="caption" color={Color.gray400}>
             08.02
@@ -324,7 +324,8 @@ const BannerBox = styled.div`
 const SliderBox = styled.div`
   white-space: nowrap;
   overflow: hidden;
-  margin: 20px 0 50px 5px;
+  margin: 20px 0 50px 0;
+  padding-left: 16px;
 `;
 
 const MdBox = styled.div`
@@ -389,7 +390,7 @@ const InfoGrid = styled.div`
 const MdCommentBox = styled.div`
   width: 320px;
   padding: 13px 15px 70px;
-  background-color: ${Color.gray200};
+  background-color: ${Color.gray100};
   margin: 20px auto;
   border-radius: 8px;
   display: flex;

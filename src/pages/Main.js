@@ -137,6 +137,24 @@ const Main = () => {
         </MonthBox>
       </Slick>
 
+      <TitleGrid>
+        <Text fontSize="16px" fontWeight="bold">
+          김투니님을 위한 추천 웹툰
+        </Text>
+        <Button
+          border="none"
+          bgColor={Color.white}
+          color={Color.gray700}
+          fontSize="12px"
+          width="50px"
+          _onClick={() => {
+            history.push("/toonlist/webtooniverse_rank");
+          }}
+        >
+          더보기
+        </Button>
+      </TitleGrid>
+
       {is_login ? (
         <SliderBox>
           {is_loading || webtooni_list.length === 0 ? (
@@ -310,7 +328,7 @@ const MonthBox = styled.div`
   flex-direction: column;
   align-items: center;
   justify-content: center;
-  margin: 10px 0 50px 0;
+  margin: 30px 0 10px 0;
 `;
 
 const TextGrid = styled.div`
