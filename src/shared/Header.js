@@ -2,6 +2,7 @@ import React, { useState } from "react";
 import styled from "styled-components";
 import { history } from "../redux/configureStore";
 import { actionCreators as userActions } from "../redux/modules/user";
+import { actionCreators as modalActions } from "../redux/modules/modal";
 import { useDispatch, useSelector } from "react-redux";
 import { Button, Image } from "../elements/index";
 import { withRouter } from "react-router";
@@ -10,19 +11,11 @@ import { Color } from "./common";
 import title from "../images/title.png";
 
 import { UserOutlined, SearchOutlined } from "@ant-design/icons";
-import Modal from "./Modals/Modal";
-import LogoutModal from "./Modals/LogoutModal";
 
 const Header = (props) => {
   const dispatch = useDispatch();
 
   const is_login = useSelector((state) => state.user.is_login);
-
-  const [isActiveModal, setIsActiveModal] = useState(false);
-
-  const handleLogOut = () => {
-    dispatch(userActions.logOut());
-  };
 
   const throttle = function (callback, waitTime) {
     let timerId = null;
@@ -79,7 +72,9 @@ const Header = (props) => {
               }}
             />
             {is_login ? (
-              <UserOutlined onClick={() => setIsActiveModal(true)} />
+              <UserOutlined
+                onClick={() => dispatch(modalActions.activeModal("logout"))}
+              />
             ) : (
               <Button
                 bgColor="transparent"
@@ -115,12 +110,6 @@ const Header = (props) => {
           </PageBtnBox>
         )}
       </Container>
-      <Modal isActive={isActiveModal} setIsActive={setIsActiveModal}>
-        <LogoutModal
-          setIsActive={setIsActiveModal}
-          handleLogout={handleLogOut}
-        />
-      </Modal>
     </React.Fragment>
   );
 };

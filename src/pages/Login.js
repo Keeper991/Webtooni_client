@@ -32,7 +32,8 @@ const Login = () => {
               <Text fontWeight="medium">카카오 계정으로 로그인</Text>
             </Button>
           </a>
-          <a href={getNaverAddr()}>
+          <a href="#">
+            {/* <a href={getNaverAddr()}> */}
             <Button bgColor={Color.naverGreen} border="none">
               <Image src={naver_symbol} shape="square" size="24px" />
               <Text fontWeight="medium" color={Color.white}>

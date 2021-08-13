@@ -23,6 +23,7 @@ import {
 } from "../pages/index";
 import Header from "./Header";
 import GlobalStyle from "./GlobalStyle";
+import Modal from "./Modals/Modal";
 
 function App() {
   const dispatch = useDispatch();
@@ -32,26 +33,29 @@ function App() {
   }, []);
 
   return (
-    <ConnectedRouter history={history}>
-      <GlobalStyle></GlobalStyle>
-      <Header></Header>
-      <Route path="/" exact component={Main} />
-      <Route path="/detail/:id" exact component={Detail} />
-      <Route path="/toonlist/:id" exact component={ToonList} />
-      <Route path="/login" exact component={Login} />
-      <Route path="/taste" exact component={Taste} />
-      <Route path="/profile" exact component={Profile} />
-      <Route path="/recommendation" exact component={Recommendation} />
-      <Route path="/review" exact component={Review} />
-      <Route path="/search" exact component={Search} />
-      <Route path="/mypage" exact component={MyPage} />
-      <Route path="/talk" exact component={Talk} />
-      <Route path="/talk/write" exact component={TalkWrite} />
-      <Route path="/talk/write/:id" exact component={TalkWrite} />
-      <Route path="/talk/detail/:id" exact component={TalkDetail} />
-      <Route path="/user/kakao" exact component={KakaoLogin} />
-      <Route path="/user/naver" exact component={NaverLogin} />
-    </ConnectedRouter>
+    <>
+      <ConnectedRouter history={history}>
+        <GlobalStyle></GlobalStyle>
+        <Header></Header>
+        <Route path="/" exact component={Main} />
+        <Route path="/detail/:id" exact component={Detail} />
+        <Route path="/toonlist/:id" exact component={ToonList} />
+        <Route path="/login" exact component={Login} />
+        <Route path="/taste" exact component={Taste} />
+        <Route path="/profile" exact component={Profile} />
+        <Route path="/recommendation" exact component={Recommendation} />
+        <Route path="/review" exact component={Review} />
+        <Route path="/search" exact component={Search} />
+        <Route path="/mypage" exact component={MyPage} />
+        <Route path="/talk" exact component={Talk} />
+        <Route path="/talk/write" exact component={TalkWrite} />
+        <Route path="/talk/write/:id" exact component={TalkWrite} />
+        <Route path="/talk/detail/:id" exact component={TalkDetail} />
+        <Route path="/user/kakao" exact component={KakaoLogin} />
+        <Route path="/user/naver" exact component={NaverLogin} />
+      </ConnectedRouter>
+      <Modal />
+    </>
   );
 }
 

@@ -9,6 +9,7 @@ import Talk from "./modules/talk";
 import TalkComment from "./modules/talkComment";
 import Admin from "./modules/admin";
 import Review from "./modules/review";
+import Modal from "./modules/modal";
 
 export const history = createBrowserHistory();
 
@@ -19,6 +20,7 @@ const rootReducer = combineReducers({
   talkComment: TalkComment,
   admin: Admin,
   review: Review,
+  modal: Modal,
   router: connectRouter(history),
 });
 
