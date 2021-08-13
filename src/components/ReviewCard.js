@@ -3,9 +3,12 @@ import styled from "styled-components";
 import { Text, Image, Button } from "../elements";
 import { Color } from "../shared/common";
 import profileImgList from "../images/profiles";
+import { HeartFilled } from "@ant-design/icons";
 
 const ReviewCard = (props) => {
   const [showMore, setShowMore] = React.useState(false);
+
+  const like_list = props.like_list;
 
   React.useEffect(() => {
     setShowMore(false);
@@ -32,7 +35,8 @@ const ReviewCard = (props) => {
           <InfoGrid>
             <FlexGrid flexStart>
               <Text type="caption" color={Color.primary}>
-                {props.genre ? props.genre.genreType : "장르 필요"}
+                {props.genres[1] ? props.genres[1] : props.genres[0]}
+                {props.genres.length === 0 && "미분류"}
               </Text>
               <Text margin="0 10px" type="caption" color={Color.gray500}>
                 {props.finished ? "완결" : props.toonWeekday}
@@ -53,7 +57,7 @@ const ReviewCard = (props) => {
                   src="https://lh3.googleusercontent.com/pw/AM-JKLXIrRX56QwruA9no5dsQDpzLmNNgGigp4H-mNbe8Zll_MgRc1OVhN8nKaqDwTOSKiNGUT6bQ6O7sYRBDsPhnj49j7ACDz5qWrSeebdROovTQKhnt8O2jbq6QpskSozPMpq02E2hUQqTjg3gfLZpx-xv=s12-no?authuser=0"
                 ></Image>
                 <Text type="num" fontWeight="bold" color={Color.primary}>
-                  웹툰 별점 필요
+                  {props.toonAvgPoint}
                 </Text>
               </FlexGrid>
               {props.toonPlatform === "네이버" ? (
@@ -85,7 +89,9 @@ const ReviewCard = (props) => {
             <ColumnGrid>
               <Text type="caption">{props.userName}</Text>
               <FlexGrid>
-                <Text>{props.userPointNumber} (이미지로 표시)</Text>
+                <Text tag="p" margin="0 10px 0 0">
+                  {props.userPointNumber}
+                </Text>
                 <Text>{props.creatDate}</Text>
               </FlexGrid>
             </ColumnGrid>
@@ -100,6 +106,7 @@ const ReviewCard = (props) => {
           )}
           <Button
             bgColor="transparent"
+            color={Color.gray400}
             padding="0"
             margin="5px 0 0 0"
             fontSize="12px"
@@ -109,7 +116,34 @@ const ReviewCard = (props) => {
             {showMore ? "줄이기" : "더보기"}
           </Button>
         </ReviewGrid>
-        <Text>❤ 좋아요 수/ 여부 필요</Text>
+
+        {like_list?.indexOf(props.reviewId) === -1 ? (
+          <FlexGrid flexStart>
+            <HeartFilled
+              style={{
+                fontSize: "18px",
+                color: ` ${Color.gray200}`,
+                marginRight: "5px",
+              }}
+            ></HeartFilled>
+            <Text type="num" fontSize="12px" color={Color.gray800}>
+              {props.likeCount}
+            </Text>
+          </FlexGrid>
+        ) : (
+          <FlexGrid flexStart>
+            <HeartFilled
+              style={{
+                fontSize: "18px",
+                color: ` ${Color.gray200}`,
+                marginRight: "5px",
+              }}
+            ></HeartFilled>
+            <Text type="num" fontSize="12px" color={Color.primary}>
+              {props.likeCount}
+            </Text>
+          </FlexGrid>
+        )}
       </Container>
     </React.Fragment>
   );

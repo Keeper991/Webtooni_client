@@ -4,6 +4,7 @@ import { history } from "../redux/configureStore";
 import { useDispatch, useSelector } from "react-redux";
 import { actionCreators as webtoonActions } from "../redux/modules/webtoon";
 import { actionCreators as adminActions } from "../redux/modules/admin";
+import { actionCreators as modalActions } from "../redux/modules/modal";
 import {
   WebToonCard,
   ReviewCard,
@@ -52,6 +53,14 @@ const Main = () => {
   const [is_best, setIsBest] = React.useState(true);
 
   const is_login = useSelector((state) => state.user.is_login);
+  const isShownWelcomeModal = useSelector(
+    (state) => state.user.isShownWelcomeModal
+  );
+
+  React.useEffect(() => {
+    if (is_login && !isShownWelcomeModal)
+      dispatch(modalActions.activeModal("welcome"));
+  }, []);
 
   return (
     <React.Fragment>
@@ -127,6 +136,24 @@ const Main = () => {
           )}
         </MonthBox>
       </Slick>
+
+      <TitleGrid>
+        <Text fontSize="16px" fontWeight="bold">
+          김투니님을 위한 추천 웹툰
+        </Text>
+        <Button
+          border="none"
+          bgColor={Color.white}
+          color={Color.gray700}
+          fontSize="12px"
+          width="50px"
+          _onClick={() => {
+            history.push("/toonlist/webtooniverse_rank");
+          }}
+        >
+          더보기
+        </Button>
+      </TitleGrid>
 
       {is_login ? (
         <SliderBox>
@@ -301,7 +328,7 @@ const MonthBox = styled.div`
   flex-direction: column;
   align-items: center;
   justify-content: center;
-  margin: 10px 0 50px 0;
+  margin: 30px 0 10px 0;
 `;
 
 const TextGrid = styled.div`

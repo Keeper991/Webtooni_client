@@ -1,15 +1,12 @@
 import React, { useEffect, useState } from "react";
 import styled from "styled-components";
-
 import { Button, Image, Input, Text } from "../elements";
 import { Color } from "../shared/common";
-
 import { history } from "../redux/configureStore";
-
 import profileImgList from "../images/profiles";
 import { ProgressStepBtns } from "../components";
 import { useDispatch } from "react-redux";
-import { userAPI } from "../shared/API";
+import { actionCreators as userActions } from "../redux/modules/user";
 
 const TASTE_LS = "TASTE_LIST";
 const PROFILE_LS = "PROFILE";
@@ -43,12 +40,15 @@ const Profile = () => {
 
   const submitUserInfo = () => {
     const data = {
-      toonGenre: localStorage.getItem(TASTE_LS).split(","),
-      userProfile: profile,
+      genres: localStorage.getItem(TASTE_LS).split(","),
+      userImg: profile,
       userName: userName,
+      isShownWelcomeModal: false,
     };
-    alert("로그인되었습니다.");
-    history.replace("/");
+    localStorage.removeItem(TASTE_LS);
+    localStorage.removeItem(PROFILE_LS);
+    localStorage.removeItem(USERNAME_LS);
+    dispatch(userActions.setUserServer(data));
   };
 
   return (
@@ -75,8 +75,8 @@ const Profile = () => {
                 padding="0"
                 bgColor="transparent"
                 _onClick={() => {
-                  setProfile(i + 1);
-                  localStorage.setItem(PROFILE_LS, profile);
+                  setProfile(i);
+                  localStorage.setItem(PROFILE_LS, i);
                 }}
               >
                 <Image shape="circle" size="4em" src={profileImg} />
@@ -101,11 +101,7 @@ const Profile = () => {
               </Button>
             </ReSelectBtnArea>
             <SelectedProfileArea>
-              <Image
-                shape="circle"
-                size="90px"
-                src={profileImgList[profile - 1]}
-              />
+              <Image shape="circle" size="90px" src={profileImgList[profile]} />
             </SelectedProfileArea>
             <UserNameArea>
               <Input

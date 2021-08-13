@@ -9,6 +9,8 @@ import {
   Detail,
   Recommendation,
   Review,
+  ReviewSearch,
+  ReviewSearchWrite,
   Search,
   MyPage,
   Login,
@@ -23,6 +25,7 @@ import {
 } from "../pages/index";
 import Header from "./Header";
 import GlobalStyle from "./GlobalStyle";
+import Modal from "./Modals/Modal";
 
 function App() {
   const dispatch = useDispatch();
@@ -43,6 +46,8 @@ function App() {
       <Route path="/profile" exact component={Profile} />
       <Route path="/recommendation" exact component={Recommendation} />
       <Route path="/review" exact component={Review} />
+      <Route path="/review/search" exact component={ReviewSearch} />
+      <Route path="/review/write/:id" exact component={ReviewSearchWrite} />
       <Route path="/search" exact component={Search} />
       <Route path="/mypage" exact component={MyPage} />
       <Route path="/talk" exact component={Talk} />
