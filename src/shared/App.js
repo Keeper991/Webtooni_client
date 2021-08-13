@@ -9,6 +9,8 @@ import {
   Detail,
   Recommendation,
   Review,
+  ReviewSearch,
+  ReviewSearchWrite,
   Search,
   MyPage,
   Login,
@@ -43,6 +45,8 @@ function App() {
       <Route path="/profile" exact component={Profile} />
       <Route path="/recommendation" exact component={Recommendation} />
       <Route path="/review" exact component={Review} />
+      <Route path="/review/search" exact component={ReviewSearch} />
+      <Route path="/review/write/:id" exact component={ReviewSearchWrite} />
       <Route path="/search" exact component={Search} />
       <Route path="/mypage" exact component={MyPage} />
       <Route path="/talk" exact component={Talk} />
