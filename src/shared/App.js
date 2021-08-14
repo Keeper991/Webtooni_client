@@ -20,6 +20,7 @@ import {
   ToonList,
   KakaoLogin,
   NaverLogin,
+  ReviewWrite,
 } from "../pages/index";
 import Header from "./Header";
 import GlobalStyle from "./GlobalStyle";
@@ -43,6 +44,12 @@ function App() {
       <Route path="/profile" exact component={Profile} />
       <Route path="/recommendation" exact component={Recommendation} />
       <Route path="/review" exact component={Review} />
+      <Route path="/review/write/:webtoon_id" exact component={ReviewWrite} />
+      <Route
+        path="/review/write/:webtoon_id/:review_id"
+        exact
+        component={ReviewWrite}
+      />
       <Route path="/search" exact component={Search} />
       <Route path="/mypage" exact component={MyPage} />
       <Route path="/talk" exact component={Talk} />
