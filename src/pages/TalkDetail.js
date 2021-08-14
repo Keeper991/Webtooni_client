@@ -10,6 +10,7 @@ import { ReactComponent as EmptyHeart } from "../images/EmptyHeart.svg";
 import { ReactComponent as FillHeart } from "../images/FillHeart.svg";
 import { ReactComponent as Comment } from "../images/Comment.svg";
 import { ReactComponent as Delete } from "../images/Delete.svg";
+import { Permit, PermitStrict } from "../shared/PermitAuth";
 
 const TalkDetail = (props) => {
   //톡 포스트 가져오기
@@ -25,35 +26,45 @@ const TalkDetail = (props) => {
   //댓글 가져오기
   const comment_all = useSelector((store) => store.talkComment.list);
   console.log(comment_all, "commentall");
-  const comment_list = comment_all.filter((item) => item.postId === post_id);
+  const comment_list = comment_all.filter(
+    (item) => item.postId === parseInt(post_id)
+  );
   console.log(comment_list, "comment_list");
   const dispatch = useDispatch();
   useEffect(() => {
     //서버에 포스트 요청
-    if (!post) {
+    // if (!post?.ilikeList) {  //변수명 수정...
+    if (!post || post?.is_main === true) {
+      console.log(post?.is_main, "ismain");
       dispatch(talkActions.getPostOneServer(post_id));
     }
     //서버에 댓글 요청(포스트의 댓글 수가 0이 아님에도 댓글리스트가 없을 때) //댓글 변수명 수정...
-    // if (post?.talkCommentCount !== 0 && comment_list === []) {
-    dispatch(talkCommentActions.getCommentAllServer(post_id));
-    // }
+    if (post?.talkCommentCount !== 0 && comment_list.length === 0) {
+      console.log(
+        post?.talkCommentCount,
+        comment_list,
+        "talkcommentcount,comentlist,서버에코멘트요청시"
+      );
+      dispatch(talkCommentActions.getCommentAllServer(parseInt(post_id)));
+    }
   }, []);
 
   const is_login = useSelector((store) => store.user.is_login); //로그인 여부
-  const userName = useSelector((store) => store.user.user?.userName); //로그인 유저 정보
+  const userName = useSelector((store) => store.user.info?.userName); //로그인 유저 정보
+  const authorName = userName;
   console.log(userName, "userName");
 
   //포스트 삭제하기
   const [dltMsg, isDltMsg] = React.useState(false); //삭제 메세지
   const deletePost = () => {
-    dispatch(talkActions.deletePostServer(post_id));
+    dispatch(talkActions.deletePostServer(parseInt(post_id)));
     return;
   };
 
   //좋아요 토글
   const toggleLike = () => {
     if (is_login) {
-      talkActions.likePostServer(post_id);
+      dispatch(talkActions.likePostServer(post_id));
     } else {
       alert("로그인하세요~");
     }
@@ -64,6 +75,14 @@ const TalkDetail = (props) => {
   const [comment, setComment] = React.useState(""); //댓글 입력하기
   const writeComment = (e) => {
     setComment(e.target.value);
+  };
+
+  const writeCmt = () => {
+    if (is_login) {
+      isCmtInp(true);
+    } else {
+      alert("로그인하세요~");
+    }
   };
 
   return (
@@ -119,9 +138,9 @@ const TalkDetail = (props) => {
                     onClick={toggleLike}
                     cursor
                   >
-                    {post.isLike ? <FillHeart /> : <EmptyHeart />}{" "}
+                    {post.ilike ? <FillHeart /> : <EmptyHeart />}{" "}
                     <Text type="p" whiteSpace="nowrap" padding="0 0 0 6px">
-                      {post.likeNum}좋아요 수
+                      {post.likeNum}
                     </Text>
                   </Grid>
                 </Grid>
@@ -130,22 +149,30 @@ const TalkDetail = (props) => {
                 <Text type="p" padding="0 32px 55px 0">
                   {post.postContent}
                 </Text>
-                <Grid display="flex" justify="space-between">
-                  {/* 유저가 게시글 작성자라면 수정/삭제 */}
-                  <Grid display="flex">
-                    <Text
-                      type="p"
-                      margin="0 24px 0 0"
-                      _onClick={() => {
-                        props.history.push(`/talk/write/${post_id}`);
-                      }}
-                      cursor
-                    >
-                      수정
-                    </Text>
-                    <Text type="p" _onClick={() => isDltMsg(true)} cursor>
-                      삭제
-                    </Text>
+                <Grid
+                  padding="20px 0 0 0"
+                  display="flex"
+                  justify="space-between"
+                >
+                  <Grid>
+                    {/* 유저가 게시글 작성자라면 수정/삭제 */}
+                    {userName === post.userName && (
+                      <Grid display="flex">
+                        <Text
+                          type="p"
+                          margin="0 24px 0 0"
+                          _onClick={() => {
+                            props.history.push(`/talk/write/${post_id}`);
+                          }}
+                          cursor
+                        >
+                          수정
+                        </Text>
+                        <Text type="p" _onClick={() => isDltMsg(true)} cursor>
+                          삭제
+                        </Text>
+                      </Grid>
+                    )}
                   </Grid>
 
                   <Grid display="flex" cursor>
@@ -154,7 +181,7 @@ const TalkDetail = (props) => {
                       type="p"
                       whiteSpace="nowrap"
                       margin="0 0 0 4px"
-                      _onClick={() => isCmtInp(true)}
+                      _onClick={writeCmt}
                     >
                       댓글 작성
                     </Text>
@@ -199,12 +226,13 @@ const TalkDetail = (props) => {
                     _onClick={() => {
                       dispatch(
                         talkCommentActions.addCommentServer(
-                          post_id,
+                          parseInt(post_id),
                           comment,
                           post.talkCommentCount
                         )
                       );
                       isCmtInp(false);
+                      setComment("");
                     }}
                   >
                     작성
@@ -256,13 +284,14 @@ const TalkDetail = (props) => {
                 <Grid
                   width="100%"
                   display="flex"
-                  justify="space-between"
                   align="center"
+                  justify="center"
                   borderTop={`1px solid ${Color.lightGray4}`}
                 >
                   <Text
                     textAlign="center"
                     width="50%"
+                    padding="0 50px"
                     lineHeight="44px"
                     _onClick={() => isDltMsg(false)}
                   >
@@ -271,6 +300,7 @@ const TalkDetail = (props) => {
                   <Text
                     textAlign="center"
                     width="50%"
+                    padding="0 50px"
                     lineHeight="44px"
                     _onClick={deletePost}
                     color={Color.primary}
