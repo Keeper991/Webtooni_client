@@ -3,12 +3,18 @@ import styled from "styled-components";
 import { Text, Image, Button } from "../elements";
 import { Color } from "../shared/common";
 import profileImgList from "../images/profiles";
+import { actionCreators as webtoonActions } from "../redux/modules/webtoon";
+import { useDispatch, useSelector } from "react-redux";
 import { HeartFilled } from "@ant-design/icons";
+import { history } from "../redux/configureStore";
+import { actionCreators as reviewActions } from "../redux/modules/review";
 
 const ReviewCard = (props) => {
+  const dispatch = useDispatch();
+  const is_main = props.main;
   const [showMore, setShowMore] = React.useState(false);
 
-  const like_list = props.like_list;
+  const like_list = useSelector((state) => state.review.user_like_review_list);
 
   React.useEffect(() => {
     setShowMore(false);
@@ -22,10 +28,22 @@ const ReviewCard = (props) => {
     }
   };
 
+  const handleLike = () => {
+    if (is_main) {
+      return;
+    }
+    dispatch(webtoonActions.likeReviewServer(props.reviewId));
+    dispatch(reviewActions.setLikeList());
+  };
+
   return (
     <React.Fragment>
       <Container main={props.main}>
-        <FlexToonGrid>
+        <FlexToonGrid
+          onClick={() => {
+            history.push(`/detail/${props.toonId}`);
+          }}
+        >
           <Image
             src={props.toonImg}
             width="64px"
@@ -120,6 +138,7 @@ const ReviewCard = (props) => {
         {like_list?.indexOf(props.reviewId) === -1 ? (
           <FlexGrid flexStart>
             <HeartFilled
+              onClick={handleLike}
               style={{
                 fontSize: "18px",
                 color: ` ${Color.gray200}`,
@@ -133,9 +152,10 @@ const ReviewCard = (props) => {
         ) : (
           <FlexGrid flexStart>
             <HeartFilled
+              onClick={handleLike}
               style={{
                 fontSize: "18px",
-                color: ` ${Color.gray200}`,
+                color: ` ${Color.primary}`,
                 marginRight: "5px",
               }}
             ></HeartFilled>
@@ -179,7 +199,7 @@ const InfoGrid = styled.div`
   display: flex;
   flex-direction: column;
   justify-content: space-around;
-  width: 235px;
+  width: 220px;
   height: 64px;
   margin-left: 10px;
 `;

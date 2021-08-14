@@ -6,6 +6,7 @@ import { actionCreators as adminActions } from "../redux/modules/admin";
 import { OfferCard } from "../components";
 import { Text, Image, Button } from "../elements";
 import { Slick, WebToonCard, SkeletonCard } from "../components";
+import profileImgList from "../images/profiles";
 import { Color } from "../shared/common";
 import { history } from "../redux/configureStore";
 
@@ -16,7 +17,8 @@ const Recommendation = () => {
     if (
       md_offer_list.length === 0 ||
       end_toon_list.length === 0 ||
-      best_reviewer_list.length === 0
+      best_reviewer_list.length === 0 ||
+      similar_user_list.length === 0
     ) {
       dispatch(webtoonActions.getUserOffer());
       dispatch(webtoonActions.getBestReviewerOffer());
@@ -31,8 +33,11 @@ const Recommendation = () => {
   const best_reviewer_list = useSelector(
     (state) => state.webtoon.best_reviewer_offer.webtoonAndGenreResponseDtos
   );
+  const similar_user_list = useSelector(
+    (state) => state.webtoon.similar_user_offer
+  );
   const is_loading = useSelector((state) => state.webtoon.is_loading);
-
+  const is_login = useSelector((state) => state.user.is_login);
   const webToonList = [
     {
       toonImg:
@@ -229,15 +234,18 @@ const Recommendation = () => {
               {md_offer_list.toonWeekday}
             </Text>
           </FlexGrid>
-          <Text type="caption" color={Color.gray800}>
-            여기 들어갈거 생각
-          </Text>
+          <TextGrid>
+            <Text tag="p" type="caption" color={Color.gray800}>
+              {md_offer_list.toonContent}
+            </Text>
+          </TextGrid>
+
           <Text></Text>
         </InfoGrid>
       </FlexToonGrid>
       <MdCommentBox>
         <FlexGrid>
-          <Image size="32px" shape="circle"></Image>
+          <Image size="32px" shape="circle" src={profileImgList[0]}></Image>
           <Text type="caption" margin="0 7px">
             김투니
           </Text>
@@ -247,7 +255,8 @@ const Recommendation = () => {
         </FlexGrid>
 
         <Text tag="p" margin="10px 0 0 0" color={Color.gray800}>
-          기본적으로 재밌습니다. <br /> 이야기 전개도 빠르고 흡입력 있습니다.
+          기본적으로 재밌습니다. <br /> <br />
+          이야기 전개도 빠르고 흡입력 있습니다.
         </Text>
       </MdCommentBox>
 
@@ -288,23 +297,58 @@ const Recommendation = () => {
         <Text type="h2" fontWeight="bold" color={Color.gray800}>
           비슷한 취향의 사용자가 본 웹툰
         </Text>
-        <Button
-          border="none"
-          bgColor={Color.white}
-          color={Color.gray700}
-          fontSize="12px"
-          width="50px"
-        >
-          더보기
-        </Button>
+        {is_login ? (
+          <Button
+            border="none"
+            bgColor={Color.white}
+            color={Color.gray700}
+            fontSize="12px"
+            width="50px"
+            _onClick={() => {
+              history.push("/toonlist/similar_toon");
+            }}
+          >
+            더보기
+          </Button>
+        ) : null}
       </TitleGrid>
-      <SliderBox>
-        <Slick is_infinite>
-          {webToonList.map((_, idx) => {
-            return <WebToonCard key={idx} {..._}></WebToonCard>;
-          })}
-        </Slick>
-      </SliderBox>
+
+      {is_login ? (
+        <SliderBox>
+          {is_loading || similar_user_list.length === 0 ? (
+            <Slick is_infinite>
+              {Array.from({ length: 10 }).map(() => {
+                return <SkeletonCard></SkeletonCard>;
+              })}
+            </Slick>
+          ) : (
+            <Slick is_infinite>
+              {similar_user_list?.map((_, idx) => {
+                return <WebToonCard key={idx} {..._}></WebToonCard>;
+              })}
+            </Slick>
+          )}
+        </SliderBox>
+      ) : (
+        <HiddenBlurBox>
+          <BlurText>지금 로그인하고 맞춤 웹툰 추천 받기!</BlurText>
+          <BlurBox>
+            {is_loading || similar_user_list.length === 0 ? (
+              <Slick is_infinite>
+                {Array.from({ length: 10 }).map(() => {
+                  return <SkeletonCard></SkeletonCard>;
+                })}
+              </Slick>
+            ) : (
+              <Slick is_infinite>
+                {similar_user_list?.map((_, idx) => {
+                  return <WebToonCard key={idx} {..._}></WebToonCard>;
+                })}
+              </Slick>
+            )}
+          </BlurBox>
+        </HiddenBlurBox>
+      )}
     </React.Fragment>
   );
 };
@@ -367,6 +411,8 @@ const FlexGrid = styled.div`
 const TitleGrid = styled.div`
   display: flex;
   width: 100%;
+  height: 35px;
+  margin-top: 10px;
   padding: 0 16px;
   align-items: center;
   justify-content: space-between;
@@ -406,5 +452,50 @@ const MdInfoBox = styled.div`
   flex-direction: column;
   justify-content: space-between;
   padding: 0 0 0 20px;
+`;
+
+const HiddenBlurBox = styled.div`
+  position: relative;
+  white-space: nowrap;
+  overflow: hidden;
+  margin: 10px 0 50px 0;
+
+  &:before {
+    content: "";
+    display: block;
+    position: absolute;
+    z-index: 1;
+    width: 100%;
+    height: 100%;
+    background-color: ${Color.black};
+    opacity: 0.5;
+  }
+`;
+
+const BlurBox = styled.div`
+  filter: blur(1.5px);
+`;
+
+const TextGrid = styled.div`
+  width: 100%;
+
+  & > p {
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+  }
+`;
+
+const BlurText = styled.p`
+  width: 100%;
+  height: 100%;
+  display: flex;
+  position: absolute;
+  justify-content: center;
+  align-items: center;
+  font-size: 16px;
+  font-weight: bold;
+  color: #fff;
+  z-index: 5;
 `;
 export default Recommendation;
