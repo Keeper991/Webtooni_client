@@ -3,9 +3,18 @@ import styled from "styled-components";
 import { Text, Image, Button } from "../elements";
 import { Color } from "../shared/common";
 import profileImgList from "../images/profiles";
+import { actionCreators as webtoonActions } from "../redux/modules/webtoon";
+import { useDispatch, useSelector } from "react-redux";
+import { HeartFilled } from "@ant-design/icons";
+import { history } from "../redux/configureStore";
+import { actionCreators as reviewActions } from "../redux/modules/review";
 
 const ReviewCard = (props) => {
+  const dispatch = useDispatch();
+  const is_main = props.main;
   const [showMore, setShowMore] = React.useState(false);
+
+  const like_list = useSelector((state) => state.review.user_like_review_list);
 
   React.useEffect(() => {
     setShowMore(false);
@@ -19,70 +28,22 @@ const ReviewCard = (props) => {
     }
   };
 
-  if (props.main) {
-    return (
-      <React.Fragment>
-        <MainContainer>
-          <FlexGrid>
-            <MainUserGrid>
-              <Image
-                src={profileImgList[props.userImg]}
-                shape="circle"
-                size="40px"
-              ></Image>
-              <MainColumnGrid>
-                <Text type="caption">{props.userName}</Text>
-                <Text type="caption">{props.userGrade}</Text>
-              </MainColumnGrid>
-            </MainUserGrid>
-            <Button
-              bgColor="transparent"
-              fontSize="12px"
-              border="none"
-              color={Color.black}
-              _onClick={handleTextToggle}
-            >
-              {showMore ? "줄이기" : "자세히보기"}
-            </Button>
-          </FlexGrid>
+  const handleLike = () => {
+    if (is_main) {
+      return;
+    }
+    dispatch(webtoonActions.likeReviewServer(props.reviewId));
+    dispatch(reviewActions.setLikeList());
+  };
 
-          <MainReviewGrid>
-            {showMore ? (
-              <MainReivewTextMore>{props.reviewContent}</MainReivewTextMore>
-            ) : (
-              <MainReivewText>{props.reviewContent}</MainReivewText>
-            )}
-          </MainReviewGrid>
-
-          <hr />
-
-          <MainFlexToonGrid>
-            <Image
-              margin="0 7px"
-              src={props.toonImg}
-              width="40px"
-              height="52px"
-            ></Image>
-            <MainInfoGrid>
-              <Text>{props.toonTitle}</Text>
-              <FlexGrid>
-                <Text type="caption">{props.toonAuthor}</Text>
-                <Text tyep="caption">★{props.toonPointTotalNumber}</Text>
-              </FlexGrid>
-              <FlexGrid>
-                <Text type="small">{props.platform}</Text>
-                <Text type="small">{props.toonDay}</Text>
-              </FlexGrid>
-            </MainInfoGrid>
-          </MainFlexToonGrid>
-        </MainContainer>
-      </React.Fragment>
-    );
-  }
   return (
     <React.Fragment>
-      <Container>
-        <FlexToonGrid>
+      <Container main={props.main}>
+        <FlexToonGrid
+          onClick={() => {
+            history.push(`/detail/${props.toonId}`);
+          }}
+        >
           <Image
             src={props.toonImg}
             width="64px"
@@ -92,7 +53,8 @@ const ReviewCard = (props) => {
           <InfoGrid>
             <FlexGrid flexStart>
               <Text type="caption" color={Color.primary}>
-                {props.genre ? props.genre.genreType : "장르 필요"}
+                {props.genres[1] ? props.genres[1] : props.genres[0]}
+                {props.genres.length === 0 && "미분류"}
               </Text>
               <Text margin="0 10px" type="caption" color={Color.gray500}>
                 {props.finished ? "완결" : props.toonWeekday}
@@ -113,7 +75,7 @@ const ReviewCard = (props) => {
                   src="https://lh3.googleusercontent.com/pw/AM-JKLXIrRX56QwruA9no5dsQDpzLmNNgGigp4H-mNbe8Zll_MgRc1OVhN8nKaqDwTOSKiNGUT6bQ6O7sYRBDsPhnj49j7ACDz5qWrSeebdROovTQKhnt8O2jbq6QpskSozPMpq02E2hUQqTjg3gfLZpx-xv=s12-no?authuser=0"
                 ></Image>
                 <Text type="num" fontWeight="bold" color={Color.primary}>
-                  웹툰 별점 필요
+                  {props.toonAvgPoint}
                 </Text>
               </FlexGrid>
               {props.toonPlatform === "네이버" ? (
@@ -145,7 +107,9 @@ const ReviewCard = (props) => {
             <ColumnGrid>
               <Text type="caption">{props.userName}</Text>
               <FlexGrid>
-                <Text>{props.userPointNumber} (이미지로 표시)</Text>
+                <Text tag="p" margin="0 10px 0 0">
+                  {props.userPointNumber}
+                </Text>
                 <Text>{props.creatDate}</Text>
               </FlexGrid>
             </ColumnGrid>
@@ -160,6 +124,7 @@ const ReviewCard = (props) => {
           )}
           <Button
             bgColor="transparent"
+            color={Color.gray400}
             padding="0"
             margin="5px 0 0 0"
             fontSize="12px"
@@ -169,80 +134,51 @@ const ReviewCard = (props) => {
             {showMore ? "줄이기" : "더보기"}
           </Button>
         </ReviewGrid>
-        <Text>❤ 좋아요 수/ 여부 필요</Text>
+
+        {like_list?.indexOf(props.reviewId) === -1 ? (
+          <FlexGrid flexStart>
+            <HeartFilled
+              onClick={handleLike}
+              style={{
+                fontSize: "18px",
+                color: ` ${Color.gray200}`,
+                marginRight: "5px",
+              }}
+            ></HeartFilled>
+            <Text type="num" fontSize="12px" color={Color.gray800}>
+              {props.likeCount}
+            </Text>
+          </FlexGrid>
+        ) : (
+          <FlexGrid flexStart>
+            <HeartFilled
+              onClick={handleLike}
+              style={{
+                fontSize: "18px",
+                color: ` ${Color.primary}`,
+                marginRight: "5px",
+              }}
+            ></HeartFilled>
+            <Text type="num" fontSize="12px" color={Color.primary}>
+              {props.likeCount}
+            </Text>
+          </FlexGrid>
+        )}
       </Container>
     </React.Fragment>
   );
 };
 
-const MainContainer = styled.div`
-  width: 265px;
-  height: auto;
-  background: #f4f4f4;
-  display: inline-block;
-  padding: 10px;
-  margin: 0 10px;
-`;
-
-const MainFlexToonGrid = styled.div`
-  display: flex;
-  align-items: center;
-`;
-
-const MainInfoGrid = styled.div`
-  display: flex;
-  flex-direction: column;
-  width: 100%;
-`;
-
-const MainUserGrid = styled.div`
-  display: flex;
-  align-items: center;
-`;
-
-const MainReviewGrid = styled.div`
-  width: 245px;
-  min-height: 100px;
-  height: auto;
-  padding: 10px 0;
-`;
-
-const MainReivewText = styled.div`
-  width: 245px;
-  font-size: 12px;
-  white-space: normal;
-  display: -webkit-box;
-  -webkit-line-clamp: 5;
-  -webkit-box-orient: vertical;
-  overflow: hidden;
-  word-break: break-word;
-  line-height: 1.4em;
-  max-height: 7em;
-`;
-
-const MainReivewTextMore = styled.div`
-  width: 245px;
-  font-size: 12px;
-  white-space: normal;
-  word-break: break-word;
-  line-height: 1.4em;
-`;
-
-const MainColumnGrid = styled.div`
-  display: flex;
-  flex-direction: column;
-  margin: 0 10px;
-`;
-
 const Container = styled.div`
-  width: 100%;
+  width: 328px;
   height: auto;
-  background: #f4f4f4;
+  background: ${Color.gray100};
   display: inline-block;
   padding: 16px;
-  margin: 0 0 20px 0;
   border-radius: 15px;
   border: 1px solid #ccc;
+  ${(props) =>
+    props.main ? `margin: 10px 20px 40px 0` : `margin: 0 0 20px 0`};
 `;
 
 const FlexGrid = styled.div`
@@ -263,7 +199,7 @@ const InfoGrid = styled.div`
   display: flex;
   flex-direction: column;
   justify-content: space-around;
-  width: 235px;
+  width: 220px;
   height: 64px;
   margin-left: 10px;
 `;

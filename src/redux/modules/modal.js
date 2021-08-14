@@ -1,26 +1,31 @@
 import { createAction, handleActions } from "redux-actions";
 import { produce } from "immer";
 
-const MODAL_TOGGLE = "MODAL_TOGGLE";
+const ACTIVE_MODAL = "modal/ACTIVE_MODAL";
+const INACTIVE_MODAL = "modal/INACTIVE_MODAL";
 
-const modalToggle = createAction(MODAL_TOGGLE, ( is_modal ) => ({ is_modal }));
+const activeModal = createAction(ACTIVE_MODAL, (modalKind) => ({ modalKind }));
+const inactiveModal = createAction(INACTIVE_MODAL, () => ({}));
 
 const initialState = {
-  is_modal: false,
-}
+  isActiveModal: false,
+  modalKind: "",
+};
 
 export default handleActions(
   {
-    [MODAL_TOGGLE]: (state, action) =>
+    [ACTIVE_MODAL]: (state, action) =>
       produce(state, (draft) => {
-        draft.is_modal = action.payload.is_modal;
+        draft.modalKind = action.payload.modalKind;
+        draft.isActiveModal = true;
+      }),
+    [INACTIVE_MODAL]: (state, action) =>
+      produce(state, (draft) => {
+        draft.modalKind = "";
+        draft.isActiveModal = false;
       }),
   },
-    initialState
+  initialState
 );
 
-const actionCreators = {
-  modalToggle,
-}
-
-export { actionCreators };
+export const actionCreators = { activeModal, inactiveModal };

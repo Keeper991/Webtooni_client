@@ -13,19 +13,43 @@ const BestReveiwerCard = (props) => {
           shape="circle"
           size="64px"
         ></Image>
-        <Text type="caption" fontWeight="bold">
-          {props.user.userName}
+        <Text
+          tag="p"
+          padding="0 0 5px 0"
+          type="medium"
+          fontWeight="bold"
+          color={Color.gray800}
+        >
+          {props.user.userName ? props.user.userName : "null"}
         </Text>
-        <Text type="small">{props.user.userGrade}</Text>
+        <Text tag="p" padding="0 0 5px 0" type="caption" color={Color.gray600}>
+          {props.user.userGrade ? props.user.userGrade : "null"}
+        </Text>
         <BottomGrid>
           <FlexGrid>
-            <Text type="small">리뷰 수</Text>
+            <Text
+              tag="p"
+              padding="3px 0"
+              type="small"
+              fontWeight="bold"
+              color={Color.gray400}
+            >
+              리뷰 수
+            </Text>
             <Text type="num" fontSize="14px" fontWeight="bold">
               {props.reviewCount}
             </Text>
           </FlexGrid>
           <FlexGrid>
-            <Text type="small">좋아요 수</Text>
+            <Text
+              tag="p"
+              padding="3px 0"
+              type="small"
+              fontWeight="bold"
+              color={Color.gray400}
+            >
+              좋아요 수
+            </Text>
             <Text type="num" fontSize="14px" fontWeight="bold">
               {props.likeCount}
             </Text>
@@ -37,14 +61,13 @@ const BestReveiwerCard = (props) => {
 };
 
 const Container = styled.div`
-  width: 110px;
-  height: auto;
-  background: ${Color.gray100};
+  width: 100px;
+  height: 160px;
   display: inline-flex;
   flex-direction: column;
   justify-content: space-between;
   align-items: center;
-  margin: 0 10px;
+  margin: 20px 20px 30px 0;
   border-radius: 5px;
 `;
 
@@ -59,6 +82,7 @@ const FlexGrid = styled.div`
   align-items: center;
   justify-content: space-between;
   flex-direction: column;
+  padding: 5px 10px;
 `;
 
 export default BestReveiwerCard;

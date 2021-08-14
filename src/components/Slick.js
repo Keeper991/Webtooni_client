@@ -22,11 +22,11 @@ const Slick = ({
         style={{
           ...style,
           display: "flex",
-          width: "30px",
-          height: "30px",
+          width: "16px",
+          height: "16px",
           position: "absolute",
           right: "5%",
-          top: "24px",
+          top: "45px",
           zIndex: 1,
         }}
         onClick={onClick}
@@ -42,11 +42,11 @@ const Slick = ({
         style={{
           ...style,
           display: "flex",
-          width: "30px",
-          height: "30px",
+          width: "16px",
+          height: "16px",
           position: "absolute",
           left: "5%",
-          top: "24px",
+          top: "45px",
           zIndex: 1,
         }}
         onClick={onClick}
@@ -103,7 +103,7 @@ const LeftArrow = styled.div`
     display: flex !important;
     align-items: center !important;
     justify-content: center !important;
-    font-size: 23px !important;
+    font-size: 16px !important;
     color: ${Color.black} !important;
     font-weight: bold;
   }
@@ -118,7 +118,7 @@ const RightArrow = styled.div`
     display: flex !important;
     align-items: center !important;
     justify-content: center !important;
-    font-size: 23px !important;
+    font-size: 16px !important;
     color: ${Color.black} !important;
     font-weight: bold;
   }

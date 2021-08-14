@@ -1,39 +1,35 @@
-import React, { useEffect } from "react";
-import { useSelector, useDispatch } from "react-redux";
+import React from "react";
 
 import styled from "styled-components";
-import { Text, Image, Button, Input } from "../elements";
-import { actionCreators as webtoonActions } from "../redux/modules/webtoon";
 import { ReactComponent as EmptyStar } from "../images/EmptyStar.svg";
 import { ReactComponent as FillStar } from "../images/FillStar.svg";
 // EmptyStar
 
-const DetailStar = (props) => {
-  const { putStarServer } = webtoonActions;
-
-  const { webtoon_id, is_login, prev_review } = props;
-
+const DetailStar = ({ onStarClick, starPoint }) => {
   //별점 주기
   const starScores = [1, 2, 3, 4, 5];
-
   const starWidth = 40;
-  const [starLocation, setStarLocation] = React.useState(0);
-  useEffect(() => {
-    !prev_review && setStarLocation(prev_review?.userPointNumber); //기존 별점 가져오기
-  }, []);
-  const hideEmptyStar = starWidth * starLocation; //선택한 별 보이기(빈 별 감추기)
-  const dispatch = useDispatch();
-  const putStar = () => {
-    dispatch(putStarServer(webtoon_id, starLocation)); //별점 등록
-    alert("별점이 등록되었어요!");
-  };
+  const hideEmptyStar = (starWidth + 8) * starPoint; //선택한 별 보이기(빈 별 감추기)
 
   return (
     <>
       <StarContainer>
         <FillStarGrid>
-          {Array.from({ length: 5 }).map((_) => (
-            <FillStar width="40px" height="40px" />
+          {starScores.map((score) => (
+            <StarPartGrid>
+              <FillStar width="40px" height="40px" />
+
+              <StarPart1
+                onClick={() => {
+                  onStarClick(score - 0.5);
+                }}
+              ></StarPart1>
+              <StarPart2
+                onClick={() => {
+                  onStarClick(score);
+                }}
+              ></StarPart2>
+            </StarPartGrid>
           ))}
         </FillStarGrid>
 
@@ -43,25 +39,13 @@ const DetailStar = (props) => {
               <EmptyStar width="40px" height="40px" />
 
               <StarPart1
-                star={starLocation}
                 onClick={() => {
-                  // if (is_login) {
-                  setStarLocation(score - 0.5);
-                  putStar();
-                  // } else {
-                  // alert("로그인하세요~");
-                  // }
+                  onStarClick(score - 0.5);
                 }}
               ></StarPart1>
               <StarPart2
-                star={starLocation}
                 onClick={() => {
-                  // if (is_login) {
-                  setStarLocation(score);
-                  putStar();
-                  // } else {
-                  // alert("로그인하세요~");
-                  // }
+                  onStarClick(score);
                 }}
               ></StarPart2>
             </StarPartGrid>
@@ -74,12 +58,14 @@ const DetailStar = (props) => {
 
 const StarContainer = styled.div`
   position: relative;
-  width: 200px;
+  width: 240px;
   height: 40px;
 `;
 
 const FillStarGrid = styled.div`
   display: flex;
+  width: 240px;
+  justify-content: space-around;
 `;
 
 const EmptyStarGrid = styled.div`
@@ -88,11 +74,14 @@ const EmptyStarGrid = styled.div`
   left: 0;
   z-index: 1;
   display: flex;
-  ${(props) =>
-    props.hideEmptyStar !== 0
-      ? `clip: rect(0px, 200px, 40px, ${props.hideEmptyStar}px )`
-      : `clip: auto`};
+  clip: ${(props) =>
+    props.hideEmptyStar
+      ? `rect(0px, 240px, 40px, ${props.hideEmptyStar}px)`
+      : `auto`};
+  width: 240px;
+  justify-content: space-around;
 `;
+
 const StarPartGrid = styled.div`
   position: relative;
   width: 40px;

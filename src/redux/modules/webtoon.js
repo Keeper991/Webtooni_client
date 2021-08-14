@@ -1,23 +1,27 @@
 import { createAction, handleActions } from "redux-actions";
 import { produce } from "immer";
 import { webtoonAPI, userAPI, offerAPI, reviewAPI } from "../../shared/API";
+import { actionCreators as userActions } from "./user";
 
-const SET_TOON_ONE = "SET_TOON_ONE";
-const SET_REVIEW_ID = "SET_REVIEW_ID";
-const SET_WEBTOONI_RANK = "SET_WEBTOONI_RANK";
-const SET_NAVER_RANK = "SET_NAVER_RANK";
-const SET_KAKAO_RANK = "SET_KAKAO_RANK";
-const SET_USER_OFFER = "SET_USER_OFFER";
-const SET_BEST_REVIEWER_OFFER = "SET_BEST_REVIEWER_OFFER";
-const SET_SIMILAR_USER_OFFER = "SET_SIMILAR_USER_OFFER";
-const SET_END_TOON_OFFER = "SET_END_TOON_OFFER";
-const LOADING = "IS_LOADING";
+const SET_TOON_ONE = "webtoon/SET_TOON_ONE";
+const SET_WEBTOONI_RANK = "webtoon/SET_WEBTOONI_RANK";
+const SET_NAVER_RANK = "webtoon/SET_NAVER_RANK";
+const SET_KAKAO_RANK = "webtoon/SET_KAKAO_RANK";
+const SET_USER_OFFER = "webtoon/SET_USER_OFFER";
+const SET_BEST_REVIEWER_OFFER = "webtoon/SET_BEST_REVIEWER_OFFER";
+const SET_SIMILAR_USER_OFFER = "webtoon/SET_SIMILAR_USER_OFFER";
+const SET_END_TOON_OFFER = "webtoon/SET_END_TOON_OFFER";
+const SET_UNWRITTEN_OFFER = "webtoon/SET_UNWRITTEN_OFFER";
+const ADD_STAR = "webtoon/ADD_STAR";
+const UPDATE_STAR = "webtoon/UPDATE_STAR";
+const SET_MY_REVIEW = "webtoon/SET_MY_REVIEW";
+const START_LOADING = "webtoon/START_LOADING";
+const END_LOADING = "webtoon/END_LOADING";
 
 const setToonOne = createAction(SET_TOON_ONE, (toon, toon_id) => ({
   toon,
   toon_id,
 }));
-const setReviewId = createAction(SET_REVIEW_ID, (review_id) => ({ review_id }));
 const setWebtooniRank = createAction(SET_WEBTOONI_RANK, (webtooni_rank) => ({
   webtooni_rank,
 }));
@@ -42,103 +46,41 @@ const setSimilarUserOffer = createAction(
     similar_user_offer,
   })
 );
-
 const setEndToonOffer = createAction(SET_END_TOON_OFFER, (end_toon) => ({
   end_toon,
 }));
-const Loading = createAction(LOADING, (is_loading) => ({ is_loading }));
+const setUnwrittenOffer = createAction(
+  SET_UNWRITTEN_OFFER,
+  (unwritten_offer) => ({
+    unwritten_offer,
+  })
+);
 
-const initialState = {
-  toon_list: [],
-  toon_one: {
-    userLikeReviewList: [616],
-    toonImg:
-      "https://shared-comic.pstatic.net/thumb/webtoon/654138/thumbnail/thumbnail_IMAG06_c68850e6-bfa1-4dc8-b6bf-c04ecb8cc69e.jpg",
-    toonTitle: "은주의 방 2~3부",
-    toonAuthor: "노란구미",
-    toonGenre: ["스토리", "드라마"],
-    toonAge: "전체연령가",
-    realUrl: "https://comic.naver.com/webtoon/list?titleId=654138&weekday=tue",
-    toonAvgPoint: 3.5,
-    totalPointCount: 1,
-    toonContent: "인테리어에서 연애까지, 은주의 라이프 체인지 스토리",
-    toonWeekday: "화",
-    toonPlatform: "네이버",
-    reviewCount: 1,
-    finished: false,
-    reviews: [
-      {
-        userName: "wonhee",
-        userImg: 4,
-        reviewId: 500,
-        userGrade: "FIRST",
-        reviewContent: "수정 테스트2",
-        userPointNumber: 3.5,
-        likeCount: 0,
-        createDate: "2021-08-11T17:41:05",
-      },
-    ],
-    myListOrNot: true,
-  },
-  my_list: [],
-  similar_list: [
-    {
-      toonImg:
-        "https://cdn.pixabay.com/photo/2018/01/10/23/53/rabbit-3075088_640.png",
-      toonTitle: "1여신강림",
-      toonAuthor: "야옹이",
-      toonFlatform: "네이버",
-      toonWeekday: ["월", "목"],
-      toonAvgPoint: 4.8,
-      totalPointCount: 20,
-    },
-    {
-      toonImg:
-        "https://cdn.pixabay.com/photo/2018/01/10/23/53/rabbit-3075088_640.png",
-      toonTitle: "2여신강림",
-      toonAuthor: "야옹이",
-      toonFlatform: "네이버",
-      toonWeekday: ["월", "목"],
-      toonAvgPoint: 4.8,
-      totalPointCount: 20,
-    },
-    {
-      toonImg:
-        "https://cdn.pixabay.com/photo/2018/01/10/23/53/rabbit-3075088_640.png",
-      toonTitle: "3여신강림",
-      toonAuthor: "야옹이",
-      toonFlatform: "네이버",
-      toonWeekday: ["월", "목"],
-      toonAvgPoint: 4.8,
-      totalPointCount: 20,
-    },
-    {
-      toonImg:
-        "https://cdn.pixabay.com/photo/2018/01/10/23/53/rabbit-3075088_640.png",
-      toonTitle: "4여신강림",
-      toonAuthor: "야옹이",
-      toonFlatform: "네이버",
-      toonWeekday: ["월", "목"],
-      toonAvgPoint: 4.8,
-      totalPointCount: 20,
-    },
-  ],
-  webtooni_rank: [],
-  naver_rank: [],
-  kakao_rank: [],
-  user_offer: [],
-  best_reviewer_offer: [],
-  review_id: "", //별점 준 후 받아온 리뷰 아이디
-  similar_user_offer: [],
-  end_toon: [],
-  is_loading: false,
-};
+const addStar = createAction(
+  ADD_STAR,
+  (toonIdx, userPointNumber, reviewId, webtoonId) => ({
+    toonIdx,
+    userPointNumber,
+    reviewId,
+    webtoonId,
+  })
+);
+const updateStar = createAction(UPDATE_STAR, (userPointNumber, reviewIdx) => ({
+  userPointNumber,
+  reviewIdx,
+}));
+const setMyReview = createAction(SET_MY_REVIEW, (reviewId, reviewInfo) => ({
+  reviewId,
+  reviewInfo,
+}));
+const startLoading = createAction(START_LOADING, () => ({}));
+const endLoading = createAction(END_LOADING, () => ({}));
 
 //이번 달 웹투니버스 순위 받아오기
 const getWebtooniRank = () => {
   return async function (dispatch, getState, { history }) {
     try {
-      dispatch(Loading(true));
+      dispatch(startLoading());
       const response = await webtoonAPI.getRank();
       dispatch(setWebtooniRank(response.data));
     } catch (err) {
@@ -226,12 +168,20 @@ const getEndToonOffer = () => {
 const getToonOneServer = (id) => {
   return async function (dispatch, getState, { history }) {
     try {
-      const response = await webtoonAPI.getOne(id);
-      console.log(response, "getToonOneOK");
-      dispatch(setToonOne(response.data, id));
+      const resOne = await webtoonAPI.getOne(id);
+      const resSimilarGenre = await offerAPI.getSimilarGenre(id);
+      resOne.data.similarList = resSimilarGenre.data;
+      resOne.data.myListOrNot && dispatch(userActions.subscribeOne(id));
+      const myReviewIdx = resOne.data.reviews.findIndex(
+        (review) => review.userName === getState().user.info.userName
+      );
+      if (getState().user.is_login && myReviewIdx !== -1) {
+        resOne.data.myReview = resOne.data.reviews[myReviewIdx];
+      }
+      dispatch(setToonOne(resOne.data, id));
     } catch (err) {
       console.log(err, "getToonOneError");
-      alert("게시글 정보가 없어요");
+      // alert("게시글 정보가 없어요");
       // history.replace("/");
     }
   };
@@ -262,10 +212,10 @@ const similarToonServer = (id) => {
 };
 
 //리뷰 작성
-const uploadReviewServer = (rewviewId, reviewContent) => {
+const uploadReviewServer = (reviewId, reviewContent) => {
   return async function (dispatch) {
     try {
-      const response = await reviewAPI.putReview({ rewviewId, reviewContent });
+      const response = await reviewAPI.putReview({ reviewId, reviewContent });
       console.log(response, "uploadReviewOK");
     } catch (err) {
       console.log(err, "uploadReviewError");
@@ -288,13 +238,31 @@ const deleteReviewServer = (reviewId) => {
   };
 };
 
-//웹툰 별점 주기
-const putStarServer = (webtoonId, userPointNumber) => {
-  return async function (dispatch) {
+// 웹툰 별점 주기 및 수정
+const putStarServer = (webtoonId, userPointNumber, webtoonInfo) => {
+  return async function (dispatch, getState) {
     try {
       const response = await reviewAPI.putStar({ webtoonId, userPointNumber });
-      console.log(response, "putStarOK");
-      dispatch(setReviewId(response.data.reviewId)); //리뷰 아이디 생성
+      const targetToonIdx = getState().webtoon.detail_list.findIndex(
+        (detail) => detail.toonId === webtoonId
+      );
+      const reviewIdx = getState().webtoon.detail_list[
+        targetToonIdx
+      ].reviews.findIndex(
+        (review) => review.reviewId === response.data.reviewId
+      );
+
+      dispatch(
+        reviewIdx !== -1
+          ? updateStar(userPointNumber, reviewIdx)
+          : addStar(
+              targetToonIdx,
+              userPointNumber,
+              response.data.reviewId,
+              webtoonId
+            )
+      );
+      console.log(response.data, reviewIdx);
     } catch (err) {
       console.log(err, "putStarError");
     }
@@ -313,25 +281,45 @@ const likeReviewServer = (reviewId) => {
   };
 };
 
+//리뷰가 미작성된 웹툰 받아오기
+const getUnwrittenOffer = () => {
+  return async function (dispatch) {
+    try {
+      const response = await reviewAPI.getUnwritten();
+      dispatch(setUnwrittenOffer(response.data));
+    } catch (err) {
+      console.log(err);
+    }
+  };
+};
+
+const initialState = {
+  toon_list: [],
+  detail_list: [],
+  webtooni_rank: [],
+  naver_rank: [],
+  kakao_rank: [],
+  user_offer: [],
+  best_reviewer_offer: [],
+  similar_user_offer: [],
+  end_toon: [],
+  is_loading: false,
+};
+
 export default handleActions(
   {
     [SET_TOON_ONE]: (state, action) =>
       produce(state, (draft) => {
         //웹툰 id 추가해 넣기
-        const _list = draft.toon_list;
-        draft.toon_one = _list.map((_) => {
-          _.toonId = action.payload.toon_id;
-          return _;
-        });
-      }),
-    [SET_REVIEW_ID]: (state, action) =>
-      produce(state, (draft) => {
-        draft.review_id = action.payload.review_id;
+        let _toon = action.payload.toon;
+        _toon.toonId = action.payload.toon_id;
+        draft.detail_list.push(_toon);
       }),
 
     [SET_WEBTOONI_RANK]: (state, action) =>
       produce(state, (draft) => {
         draft.webtooni_rank = action.payload.webtooni_rank;
+        draft.is_loading = false;
       }),
     [SET_NAVER_RANK]: (state, action) =>
       produce(state, (draft) => {
@@ -357,9 +345,33 @@ export default handleActions(
       produce(state, (draft) => {
         draft.end_toon = action.payload.end_toon;
       }),
-    [LOADING]: (state, action) =>
+    [SET_UNWRITTEN_OFFER]: (state, action) =>
       produce(state, (draft) => {
-        draft.is_loading = action.payload.is_loading;
+        draft.unwritten_offer = action.payload.unwritten_offer;
+      }),
+    [ADD_STAR]: (state, action) =>
+      produce(state, (draft) => {
+        const {
+          payload: { toonIdx, reviewId, userPointNumber, webtoonId },
+        } = action;
+        draft.detail_list[toonIdx].reviews.unshift({
+          reviewId,
+          userPointNumber,
+        });
+      }),
+    [UPDATE_STAR]: (state, action) =>
+      produce(state, (draft) => {
+        draft.detail_list[action.payload.reveiwIdx].userPointNumber =
+          action.payload.userPointNumber;
+      }),
+    [SET_MY_REVIEW]: (state, action) => produce(state, (draft) => {}),
+    [START_LOADING]: (state, action) =>
+      produce(state, (draft) => {
+        draft.is_loading = true;
+      }),
+    [END_LOADING]: (state, action) =>
+      produce(state, (draft) => {
+        draft.is_loading = false;
       }),
   },
   initialState
@@ -380,6 +392,7 @@ const actionCreators = {
   getBestReviewerOffer,
   getSimilarUserOffer,
   getEndToonOffer,
+  getUnwrittenOffer,
 };
 
 export { actionCreators };

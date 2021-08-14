@@ -4,6 +4,7 @@ import { history } from "../redux/configureStore";
 import { useDispatch, useSelector } from "react-redux";
 import { actionCreators as webtoonActions } from "../redux/modules/webtoon";
 import { actionCreators as adminActions } from "../redux/modules/admin";
+import { actionCreators as modalActions } from "../redux/modules/modal";
 import {
   WebToonCard,
   ReviewCard,
@@ -12,7 +13,7 @@ import {
   Slick,
   SkeletonCard,
 } from "../components";
-import { Button, Text } from "../elements";
+import { Button, Text, Image } from "../elements";
 import { Color } from "../shared/common";
 
 const Main = () => {
@@ -37,9 +38,12 @@ const Main = () => {
   }, []);
 
   const is_loading = useSelector((state) => state.webtoon.is_loading);
+  const user_info = useSelector((state) => state.user.info);
   const webtooni_list = useSelector((state) => state.webtoon.webtooni_rank);
   const naver_list = useSelector((state) => state.webtoon.naver_rank);
   const kakao_list = useSelector((state) => state.webtoon.kakao_rank);
+  const for_user_list = useSelector((state) => state.webtoon.user_offer);
+
   const best_review_list = useSelector(
     (state) => state.admin.main_review.bestReview
   );
@@ -52,6 +56,14 @@ const Main = () => {
   const [is_best, setIsBest] = React.useState(true);
 
   const is_login = useSelector((state) => state.user.is_login);
+  const isShownWelcomeModal = useSelector(
+    (state) => state.user.isShownWelcomeModal
+  );
+
+  React.useEffect(() => {
+    if (is_login && !isShownWelcomeModal)
+      dispatch(modalActions.activeModal("welcome"));
+  }, []);
 
   return (
     <React.Fragment>
@@ -128,9 +140,31 @@ const Main = () => {
         </MonthBox>
       </Slick>
 
+      <TitleGrid>
+        <Text fontSize="16px" fontWeight="bold">
+          {user_info?.userName
+            ? `${user_info.userName}님만을 위한 웹툰 추천`
+            : "유저 맞춤 웹툰 추천"}
+        </Text>
+        {is_login ? (
+          <Button
+            border="none"
+            bgColor={Color.white}
+            color={Color.gray700}
+            fontSize="12px"
+            width="50px"
+            _onClick={() => {
+              history.push("/toonlist/user_offer");
+            }}
+          >
+            더보기
+          </Button>
+        ) : null}
+      </TitleGrid>
+
       {is_login ? (
         <SliderBox>
-          {is_loading || webtooni_list.length === 0 ? (
+          {is_loading || for_user_list.length === 0 ? (
             <Slick is_infinite>
               {Array.from({ length: 10 }).map(() => {
                 return <SkeletonCard></SkeletonCard>;
@@ -138,7 +172,7 @@ const Main = () => {
             </Slick>
           ) : (
             <Slick is_infinite>
-              {webtooni_list?.map((_, idx) => {
+              {for_user_list?.map((_, idx) => {
                 return <WebToonCard key={idx} {..._}></WebToonCard>;
               })}
             </Slick>
@@ -148,7 +182,7 @@ const Main = () => {
         <HiddenBlurBox>
           <BlurText>지금 로그인하고 맞춤 웹툰 추천 받기!</BlurText>
           <BlurBox>
-            {is_loading || webtooni_list.length === 0 ? (
+            {is_loading || for_user_list.length === 0 ? (
               <Slick is_infinite>
                 {Array.from({ length: 10 }).map(() => {
                   return <SkeletonCard></SkeletonCard>;
@@ -156,7 +190,7 @@ const Main = () => {
               </Slick>
             ) : (
               <Slick is_infinite>
-                {webtooni_list?.map((_, idx) => {
+                {for_user_list?.map((_, idx) => {
                   return <WebToonCard key={idx} {..._}></WebToonCard>;
                 })}
               </Slick>
@@ -164,6 +198,23 @@ const Main = () => {
           </BlurBox>
         </HiddenBlurBox>
       )}
+
+      <BannerBox>
+        <Text margin="5px 0 0 0" type="small" color={Color.gray700}>
+          좋아하실만한 웹툰을 추천해 드릴게요.
+        </Text>
+        <FlexGrid>
+          <Text fontWeight="bold" color={Color.gray700}>
+            재밌게 본 웹툰의 리뷰를 등록해보세요!
+          </Text>
+          <Image
+            shape="square"
+            size="16px"
+            margin="0 5px"
+            src="https://lh3.googleusercontent.com/pw/AM-JKLWPhtnQViH6A2gkyW-RSm0DPzry9dNgxBNfUplfxinXpWyXDHotbccu1JiRG8NoxAgreYwSXnKylBkgJ2OUew1FEhCanaMevg_G-Prks9-3ooXIluMWS9n6q-j2m4PAe4IY9o6t5Vcg6F51UfY7x2ms=w16-h17-no?authuser=0"
+          ></Image>
+        </FlexGrid>
+      </BannerBox>
 
       <ReviewTabGrid>
         <Button
@@ -212,7 +263,9 @@ const Main = () => {
       )}
 
       <TitleGrid>
-        <Text fontWeight="bold">베스트 리뷰어</Text>
+        <Text type="h2" fontWeight="bold">
+          베스트 리뷰어
+        </Text>
       </TitleGrid>
       <SliderBox>
         <Slick>
@@ -228,6 +281,8 @@ const Main = () => {
 const TitleGrid = styled.div`
   display: flex;
   width: 100%;
+  height: 35px;
+  margin-top: 10px;
   padding: 0 16px;
   align-items: center;
   justify-content: space-between;
@@ -236,7 +291,7 @@ const TitleGrid = styled.div`
 const SliderBox = styled.div`
   white-space: nowrap;
   overflow: hidden;
-  margin: 10px 0 50px 5px;
+  margin: 10px 0 10px 16px;
 `;
 
 const HiddenBlurBox = styled.div`
@@ -282,7 +337,7 @@ const MonthBox = styled.div`
   flex-direction: column;
   align-items: center;
   justify-content: center;
-  margin: 10px 0 50px 0;
+  margin: 30px 0 10px 0;
 `;
 
 const TextGrid = styled.div`
@@ -308,5 +363,23 @@ const ReviewTabGrid = styled.div`
   width: 100%;
   padding: 0 16px;
   display: flex;
+`;
+
+const BannerBox = styled.div`
+  width: 320px;
+  height: 66px;
+  background-color: ${Color.gray100};
+  padding: 0 16px;
+  margin: 30px auto;
+  border-radius: 8px;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+`;
+
+const FlexGrid = styled.div`
+  display: flex;
+  align-items: center;
+  margin: 5px 0;
 `;
 export default Main;
