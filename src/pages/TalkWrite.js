@@ -15,11 +15,11 @@ const TalkWrite = (props) => {
   const post_id = props.match.params.id;
   console.log(post_id, "postid");
   const post_list = useSelector((store) => store.talk.post_list);
-  const prevPost = post_list.filter((p) => p.postId === post_id)[0];
+  const prevPost = post_list.filter((p) => String(p.postId) === post_id)[0];
   console.log(prevPost, "prevPost");
 
   //로그인 유저 정보
-  const userName = useSelector((store) => store.user.user?.userName);
+  const userName = useSelector((store) => store.user.info?.userName);
   console.log(userName, "userName");
 
   //톡 포스트 작성하기
@@ -31,19 +31,19 @@ const TalkWrite = (props) => {
   //상황 별 분기
   useEffect(() => {
     //로그인 안 했으면 메인으로 이동
-    // if (!is_login) {
-    //   alert("로그인 후 이용하세요~");
-    //   history.replace("/talk");
-    //   return;
-    // }
-    // //유저가 포스트 작성자가 아닐 때 메인으로 이동 . 얘가 실행 안 되어야 하는데 실행됨...
+    if (!is_login) {
+      alert("로그인 후 이용하세요~");
+      history.replace("/talk");
+      return;
+    }
+    //유저가 포스트 작성자가 아닐 때 메인으로 이동 . 얘가 실행 안 되어야 하는데 실행됨...
     // if (userName && userName !== prevPost.userName) {
     //   alert("다른 사람의 글이에요");
     //   history.replace("/talk");
     //   return;
     // }
     //기존 포스트 상세 정보가 없으면 서버에 요청
-    if (prevPost && !prevPost.postContent) {
+    if (post_id && !prevPost) {
       dispatch(talkActions.getPostOneServer(post_id));
       return;
     }
@@ -55,11 +55,11 @@ const TalkWrite = (props) => {
       alert("빠진 항목이 있어요");
       return;
     }
-    // if (is_login) {
-    dispatch(talkActions.addPostServer(post.postTitle, post.postContent));
-    // } else {
-    //   alert("로그인하세요~");
-    // }
+    if (is_login) {
+      dispatch(talkActions.addPostServer(post.postTitle, post.postContent));
+    } else {
+      alert("로그인하세요~");
+    }
   };
   //포스트 수정
   const editPost = () => {
@@ -67,9 +67,15 @@ const TalkWrite = (props) => {
       alert("빠진 항목이 있어요");
       return;
     }
+    console.log(
+      parseInt(prevPost.postId),
+      post.postTitle,
+      post.postContent,
+      "톡에딧확인"
+    );
     dispatch(
       talkActions.editPostServer(
-        prevPost.postId,
+        parseInt(prevPost.postId),
         post.postTitle,
         post.postContent
       )

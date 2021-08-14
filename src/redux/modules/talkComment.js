@@ -17,8 +17,7 @@ const addCommentOne = createAction(ADD_COMMENT_ONE, (comment) => ({
 }));
 const editCommentOne = createAction(
   EDIT_COMMENT_ONE,
-  (postId, commentId, commentContent) => ({
-    postId,
+  (commentId, commentContent) => ({
     commentId,
     commentContent,
   })
@@ -30,20 +29,20 @@ const resetComment = createAction(RESET_COMMENT, () => ({}));
 
 const initialState = {
   list: [
-    {
-      postId: "1",
-      commentId: "댓글 postId",
-      userName: "닉네임",
-      commentContent: "댓글 내용",
-      createDate: "1970-01-02T00:00:00",
-    },
-    {
-      postId: "2",
-      commentId: "댓글 postId",
-      userName: "닉네임",
-      commentContent: "댓글 내용",
-      createDate: "1970-01-02T00:00:00",
-    },
+    // {
+    //   postId: "1",
+    //   commentId: "댓글 postId",
+    //   userName: "닉네임",
+    //   commentContent: "댓글 내용",
+    //   createDate: "1970-01-02T00:00:00",
+    // },
+    // {
+    //   postId: "2",
+    //   commentId: "댓글 postId",
+    //   userName: "닉네임",
+    //   commentContent: "댓글 내용",
+    //   createDate: "1970-01-02T00:00:00",
+    // },
   ],
 };
 
@@ -67,7 +66,7 @@ const addCommentServer = (postId, commentContent, commentCount) => {
       const response = await talkAPI.addComment({ postId, commentContent });
       console.log(response, "addCommentOK");
 
-      const { userImg, userName, userGrade } = getState().user.user; //유저 정보 가져오기
+      const { userImg, userName, userGrade } = getState().user.info; //유저 정보 가져오기
       dispatch(
         addCommentOne({ ...response.data, userImg, userName, userGrade })
       );
@@ -77,6 +76,7 @@ const addCommentServer = (postId, commentContent, commentCount) => {
       dispatch(
         talkActions.editPostOne({ ...post, commentCount: commentCount + 1 }) //댓글수 변수명 나중에 수정
       );
+      console.log(post, "post,addComment");
     } catch (err) {
       console.log(postId, commentContent, commentCount, "addComment변수");
       console.log(err, "addCommentError");
@@ -85,16 +85,15 @@ const addCommentServer = (postId, commentContent, commentCount) => {
 };
 
 //댓글 수정
-const editCommentServer = (postId, commentId, commentContent) => {
+const editCommentServer = (commentId, commentContent) => {
   return async function (dispatch, getState) {
     try {
-      const response = await talkAPI.editCommentOne({
-        postId,
+      const response = await talkAPI.editComment({
         commentId,
         commentContent,
       });
       console.log(response, "editCommentOK");
-      dispatch(editCommentOne(postId, commentId, commentContent));
+      dispatch(editCommentOne(commentId, commentContent));
     } catch (err) {
       console.log(err, "editCommentError");
     }
@@ -105,7 +104,7 @@ const editCommentServer = (postId, commentId, commentContent) => {
 const deleteCommentServer = (postId, commentId, commentCount) => {
   return async function (dispatch, getState, { history }) {
     try {
-      const response = await talkAPI.deleteComment({ postId, commentId });
+      const response = await talkAPI.deleteComment({ commentId });
       console.log(response, "deleteCommentOK");
       dispatch(deleteCommentOne(commentId));
       //톡 리듀서에서 포스트 댓글 수 수정

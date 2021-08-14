@@ -9,6 +9,7 @@ const EDIT_POST_ONE = "EDIT_POST_ONE";
 const DELETE_POST_ONE = "DELETE_POST_ONE";
 const SET_PAGE_NUMBER = "SET_PAGE_NUMBER";
 const SET_POST_COUNT = "SET_POST_COUNT";
+const TOGGLE_LIKE = "TOGGLE_LIKE";
 
 const setPage = createAction(SET_PAGE, (post_list, page_number) => ({
   post_list,
@@ -25,6 +26,9 @@ const setPageNumber = createAction(SET_PAGE_NUMBER, (page_number) => ({
 }));
 const sePostCount = createAction(SET_POST_COUNT, (post_count) => ({
   post_count,
+}));
+const toggleLike = createAction(TOGGLE_LIKE, (post_id) => ({
+  post_id,
 }));
 
 const initialState = {
@@ -50,7 +54,7 @@ const initialState = {
   ],
   page_number_list: [], //조회한 페이지 번호
   cur_page: 1,
-  post_count: 6, //전체 포스트 수
+  post_count: 1, //전체 포스트 수
 };
 
 //페이지 별 리스트 불러오기
@@ -59,9 +63,8 @@ const getPageServer = (page_number) => {
     try {
       const response = await talkAPI.getPage(page_number);
       console.log(response, "getTalkAllOK");
-      const _list = response.data.posts;
 
-      dispatch(setPage(_list, page_number));
+      dispatch(setPage(response.data.posts, page_number));
       dispatch(setPageNumber(page_number));
       dispatch(sePostCount(response.data.postCount)); //전체 게시글 수
     } catch (err) {
@@ -72,11 +75,11 @@ const getPageServer = (page_number) => {
 
 //포스트 작성. 서버에 요청 후 포스트아이디도 받아와서 같이 저장해야 함...
 const addPostServer = (postTitle, postContent) => {
-  return async function (dispatch, getState) {
+  return async function (dispatch, getState, { history }) {
     try {
       const response = await talkAPI.addPost({ postTitle, postContent });
       console.log(response, "addTalkOK");
-      const { userImg, userName, userGrade } = getState().user.user;
+      const { userImg, userName, userGrade } = getState().user.info;
       const is_detail = false; //상세정보 여부(작성OR상세)
       dispatch(
         addPostOne(
@@ -85,6 +88,7 @@ const addPostServer = (postTitle, postContent) => {
         )
       );
       dispatch(talkCommentActions.resetComment()); //코멘트 리셋
+      history.push("/talk");
     } catch (err) {
       console.log(err, "addTalkError");
     }
@@ -92,15 +96,17 @@ const addPostServer = (postTitle, postContent) => {
 };
 //포스트 수정
 const editPostServer = (postId, postTitle, postContent) => {
-  return async function (dispatch, getState) {
+  return async function (dispatch, getState, { history }) {
     try {
       const response = await talkAPI.editPost({
         postId,
         postTitle,
         postContent,
       });
+      const post_one = { postId, postTitle, postContent };
       console.log(response, "editTalkOK");
-      dispatch(editPostOne({ postId, postTitle, postContent }));
+      dispatch(editPostOne(post_one));
+      history.replace("/talk");
     } catch (err) {
       console.log(err, "editTalkError");
     }
@@ -114,6 +120,7 @@ const deletePostServer = (postId) => {
       const response = await talkAPI.deletePost(postId);
       console.log(response, "deletePostOK");
       dispatch(deletePostOne(postId));
+      console.log(postId, "delete poste");
       history.replace("/talk");
 
       dispatch(talkCommentActions.resetComment()); //코멘트 리셋
@@ -132,7 +139,7 @@ const getPostOneServer = (post_id) => {
       const response = await talkAPI.getOne(post_id);
       const post = response.data;
 
-      const { userLikePostID } = getState().user.user; //유저가 좋아요 한 톡 포스트. 변수명 나중에 수정
+      // const { userLikePostID } = getState().user.user; //유저가 좋아요 한 톡 포스트. 변수명 나중에 수정
       // 로그인 유저의 좋아요 여부 추가
       // if (userLikePostID.includes(post.postId)) {
       //   post.isLike = true;
@@ -155,19 +162,8 @@ const likePostServer = (post_id) => {
     try {
       const response = await talkAPI.likePost(post_id);
       console.log(response, "likePostwOK");
-      const post_list = getState().talk.post_list;
-      const post = post_list.filter((p) => p.postId === post_id)[0];
 
-      //좋아요 여부, 좋아요 수 변경
-      if (post.isLike) {
-        post.isLike = false;
-        post.likeCount -= 1; //변수명 나중에 수정
-      } else {
-        post.isLike = true;
-        post.likeCount += 1;
-      }
-
-      dispatch(editPostOne(post));
+      dispatch(toggleLike(post_id));
     } catch (err) {
       console.log(err, "likePostwError");
     }
@@ -178,7 +174,14 @@ export default handleActions(
   {
     [SET_PAGE]: (state, action) =>
       produce(state, (draft) => {
-        draft.post_list.push(...action.payload.post_list);
+        const _list = action.payload.post_list;
+        // 메인/상세 데이터 구분 -> 좋아요 데이터 여부 판별
+        const __list = _list.map((_) => {
+          _.is_main = true;
+          return _;
+        });
+
+        draft.post_list.push(...__list);
         //최신 순 정렬
         draft.post_list.sort(function (a, b) {
           return a.createDate > b.createDate
@@ -199,21 +202,65 @@ export default handleActions(
       }),
     [ADD_POST_ONE]: (state, action) =>
       produce(state, (draft) => {
-        draft.post_list.push(action.payload.post_one);
+        let idx = draft.post_list.findIndex(
+          (p) => p.postId === parseInt(action.payload.post_one.postId)
+        );
+        // 상세페이지 url로 접속 or 포스트 작성 시
+        if (idx === -1) {
+          draft.post_list.push(action.payload.post_one);
+        } else {
+          // 메인 -> 상세 이동 시
+          draft.post_list[idx] = {
+            ...action.payload.post_one,
+          };
+        }
+
+        //게시글 작성 후 데이터 초기화
         if (action.payload.is_detail === false) {
-          //게시글 작성 후 데이터 초기화
           draft.post_list = [];
           draft.page_number_list = [];
           draft.cur_page = 1;
         }
       }),
+    [TOGGLE_LIKE]: (state, action) =>
+      produce(state, (draft) => {
+        let post = draft.post_list.filter(
+          (p) => p.postId === parseInt(action.payload.post_id)
+        )[0];
+        //좋아요 여부, 좋아요 수 변경
+        if (post.ilike === true) {
+          console.log(post.ilike, "post.ilike ㅁ=왜....");
+          post.ilike = false;
+          post.likeNum -= 1; //변수명 나중에 수정
+        } else if (post.ilike === false) {
+          post.ilike = true;
+          post.likeNum += 1;
+        }
+        console.log(post, "post바뀐것.좋아요후");
+
+        let idx = draft.post_list.findIndex(
+          (p) => p.postId === parseInt(action.payload.post_id)
+        );
+
+        draft.post_list[idx] = {
+          ...post,
+        };
+      }),
+
     [EDIT_POST_ONE]: (state, action) =>
       produce(state, (draft) => {
         let idx = draft.post_list.findIndex(
-          (p) => p.postId === action.payload.post_one.postId
+          (p) => p.postId === parseInt(action.payload.post_one.postId)
         );
-        draft.list[idx] = { ...draft.list[idx], ...action.payload.post_one };
+
+        const postId = parseInt(action.payload.post_one.postId);
+        draft.post_list[idx] = {
+          ...draft.post_list[idx],
+          ...action.payload.post_one,
+          postId,
+        };
       }),
+
     [DELETE_POST_ONE]: (state, action) =>
       produce(state, (draft) => {
         let idx = draft.post_list.findIndex(

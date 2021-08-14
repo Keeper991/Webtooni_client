@@ -64,8 +64,8 @@ const Talk = (props) => {
       {is_login && (
         <Grid
           position="fixed"
-          bottom="50px"
-          right="20px"
+          bottom="10px"
+          right="10px"
           cursor
           onClick={() => history.push("/talk/write")}
         >
@@ -75,7 +75,7 @@ const Talk = (props) => {
       <Grid
         padding="16px"
         bgColor={Color.white}
-        borderBottom={`1px solid ${Color.lightGray4}`}
+        borderBottom={`1px solid ${Color.gray200}`}
         display="flex"
         justify="flex-end"
       >
@@ -84,7 +84,7 @@ const Talk = (props) => {
           height="36px"
           shape="pill"
           bgColor={Color.white}
-          border={`1px solid ${Color.lightGray4}`}
+          border={`1px solid ${Color.gray200}`}
           padding="9px 16px"
         >
           <Text
@@ -106,7 +106,7 @@ const Talk = (props) => {
             cursor
             onClick={() => history.push(`/talk/detail/${post.postId}`)}
           >
-            <Text>{post.postTitle}</Text>
+            <Text>{post?.postTitle}</Text>
             <Grid
               display="flex"
               margin="7px 0 0 0"
