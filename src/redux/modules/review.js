@@ -93,6 +93,7 @@ export default handleActions(
 
 const actionCreators = {
   getReviewList,
+  setLikeList,
 };
 
 export { actionCreators };

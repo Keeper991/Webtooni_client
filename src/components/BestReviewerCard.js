@@ -13,21 +13,43 @@ const BestReveiwerCard = (props) => {
           shape="circle"
           size="64px"
         ></Image>
-        <Text type="caption" fontWeight="bold">
+        <Text
+          tag="p"
+          padding="0 0 5px 0"
+          type="medium"
+          fontWeight="bold"
+          color={Color.gray800}
+        >
           {props.user.userName ? props.user.userName : "null"}
         </Text>
-        <Text type="small">
+        <Text tag="p" padding="0 0 5px 0" type="caption" color={Color.gray600}>
           {props.user.userGrade ? props.user.userGrade : "null"}
         </Text>
         <BottomGrid>
           <FlexGrid>
-            <Text type="small">리뷰 수</Text>
+            <Text
+              tag="p"
+              padding="3px 0"
+              type="small"
+              fontWeight="bold"
+              color={Color.gray400}
+            >
+              리뷰 수
+            </Text>
             <Text type="num" fontSize="14px" fontWeight="bold">
               {props.reviewCount}
             </Text>
           </FlexGrid>
           <FlexGrid>
-            <Text type="small">좋아요 수</Text>
+            <Text
+              tag="p"
+              padding="3px 0"
+              type="small"
+              fontWeight="bold"
+              color={Color.gray400}
+            >
+              좋아요 수
+            </Text>
             <Text type="num" fontSize="14px" fontWeight="bold">
               {props.likeCount}
             </Text>
@@ -60,6 +82,7 @@ const FlexGrid = styled.div`
   align-items: center;
   justify-content: space-between;
   flex-direction: column;
+  padding: 5px 10px;
 `;
 
 export default BestReveiwerCard;

@@ -10,6 +10,8 @@ import { Color } from "../shared/common";
 const ReviewSearchWrite = (props) => {
   const dispatch = useDispatch();
 
+  const toonTitle = props.location.state.toonTitle;
+
   const review_id = props.match.params.id;
   console.log(review_id);
 
@@ -40,12 +42,11 @@ const ReviewSearchWrite = (props) => {
       <Container>
         <Button
           shape="pill"
-          width="120px"
           height="30px"
           bgColor="transparent"
           // color={Color.}
         >
-          킬러방
+          {toonTitle}
         </Button>
         <Text>⭐⭐⭐⭐⭐</Text>
         <Input
