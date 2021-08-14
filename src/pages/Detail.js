@@ -162,7 +162,7 @@ const Detail = (props) => {
                 </Button>
               )}
               <Button
-                _onClick={() => history.push("/review/write/")}
+                _onClick={() => history.push(`/review/write/${webtoon_id}`)}
                 shape="pill"
               >
                 리뷰등록
@@ -235,7 +235,7 @@ const Detail = (props) => {
             <Slick>
               {toonOne.similarList.map((item) => (
                 <SimContainer>
-                  <WebToonCard {...item} />
+                  <WebToonCard {...item} id={item.toonId} />
                 </SimContainer>
               ))}
             </Slick>

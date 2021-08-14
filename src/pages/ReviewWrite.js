@@ -37,11 +37,11 @@ const ReviewWrite = (props) => {
       return;
     }
     //유저가 포스트 작성자가 아닐 때 메인으로 이동
-    if (userName && userName !== prev_review.userName) {
-      alert("다른 사람의 리뷰예요");
-      history.go(-1);
-      return;
-    }
+    // if (userName && userName !== prev_review.userName) {
+    //   alert("다른 사람의 리뷰예요");
+    //   history.go(-1);
+    //   return;
+    // }
   }, []);
 
   //리뷰 등록
