@@ -148,6 +148,7 @@ const actionCreators = {
   setSubscribeList,
   subscribeServer,
   setUserServer,
+  subscribeOne,
   // 아래는 테스트용.
   setUser,
   shownWelcomeModal,
