@@ -65,10 +65,14 @@ const addStar = createAction(
     webtoonId,
   })
 );
-const updateStar = createAction(UPDATE_STAR, (userPointNumber, reviewIdx) => ({
-  userPointNumber,
-  reviewIdx,
-}));
+const updateStar = createAction(
+  UPDATE_STAR,
+  (userPointNumber, reviewIdx, targetToonIdx) => ({
+    userPointNumber,
+    reviewIdx,
+    targetToonIdx,
+  })
+);
 const setMyReview = createAction(SET_MY_REVIEW, (reviewId, reviewInfo) => ({
   reviewId,
   reviewInfo,
@@ -249,12 +253,12 @@ const putStarServer = (webtoonId, userPointNumber, webtoonInfo) => {
       const reviewIdx = getState().webtoon.detail_list[
         targetToonIdx
       ].reviews.findIndex(
-        (review) => review.reviewId === response.data.reviewId
+        (review) => review.userName === getState().user.info.userName
       );
 
       dispatch(
         reviewIdx !== -1
-          ? updateStar(userPointNumber, reviewIdx)
+          ? updateStar(userPointNumber, reviewIdx, targetToonIdx)
           : addStar(
               targetToonIdx,
               userPointNumber,
@@ -357,12 +361,14 @@ export default handleActions(
         draft.detail_list[toonIdx].reviews.unshift({
           reviewId,
           userPointNumber,
+          webtoonId,
         });
       }),
     [UPDATE_STAR]: (state, action) =>
       produce(state, (draft) => {
-        draft.detail_list[action.payload.reveiwIdx].userPointNumber =
-          action.payload.userPointNumber;
+        draft.detail_list[action.payload.targetToonIdx].reviews[
+          action.payload.reviewIdx
+        ].userPointNumber = action.payload.userPointNumber;
       }),
     [SET_MY_REVIEW]: (state, action) => produce(state, (draft) => {}),
     [START_LOADING]: (state, action) =>
