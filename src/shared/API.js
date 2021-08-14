@@ -74,14 +74,14 @@ const talkAPI = {
   likePost: (postId) => instance.post(`talk/${postId}/like`),
   addComment: ({ postId, commentContent }) =>
     instance.post(`talk/${postId}/comment`, { commentContent }),
-  editComment: ({ postId, commentpostId, commentContent }) =>
-    instance.put(`talk/${postId}/comment`, { commentpostId, commentContent }),
-  deleteComment: ({ postId, commentpostId }) =>
-    instance.delete(`talk/${postId}/comment`, { commentpostId }),
+  editComment: ({ commentId, commentContent }) =>
+    instance.put(`talk/${commentId}/comment`, { commentContent }),
+  deleteComment: ({ commentId }) =>
+    instance.delete(`talk/${commentId}/comment`),
 };
 
 const userAPI = {
-  addWebtoon: (id) => instance.post(`user/me/webtoons`, { id }),
+  addWebtoon: (webtoonId) => instance.post(`user/subscribe`, { webtoonId }),
   getWebtoon: () => instance.get(`user/me/webtoons`),
   getComment: () => instance.get(`user/me/comment`),
   getReviews: () => instance.get(`user/me/reviews`),
