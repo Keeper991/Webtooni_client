@@ -6,6 +6,7 @@ import { ToonListCard } from "../components";
 import { actionCreators as webtoonActions } from "../redux/modules/webtoon";
 import styled from "styled-components";
 import { useDispatch, useSelector } from "react-redux";
+import { Color } from "../shared/common";
 
 const ReviewSearch = () => {
   const dispatch = useDispatch();
@@ -13,7 +14,8 @@ const ReviewSearch = () => {
   const [search_value, setSearchValue] = React.useState("");
   const [search_result, setSearchResult] = React.useState([]);
 
-  // const unwritten_list = useSelector((state) => state.webtoon.unwritten_offer);
+  const unwritten_list = useSelector((state) => state.webtoon.unwritten_offer);
+  const is_login = useSelector((state) => state.user.is_login);
   const user_name = useSelector((state) => state.user.info.userName);
 
   const test_list = [
@@ -73,27 +75,33 @@ const ReviewSearch = () => {
           type="text"
           _onChange={handleSearch}
           value={search_value}
-          placeholder="검색어를 입력해주세요."
+          placeholder="웹툰명을 검색해주세요"
         ></Input>
 
-        <Text tag="p" margin="20px 0 0 0">
+        <Text tag="p" fontWeight="bold" margin="30px 0 0 0">
           검색 결과
         </Text>
-        {search_result?.map((_, idx) => {
-          return <ToonListCard key={idx} {..._} review></ToonListCard>;
-        })}
-        {search_result.length === 0 ? (
-          <TitleGrid>
-            <Text>검색 결과가 없습니다</Text>
-          </TitleGrid>
-        ) : null}
+      </Container>
 
-        <Text tag="p" margin="50px 0 0 0">
-          {user_name}님의 리뷰를 기다리는 웹툰
+      {search_result?.map((_, idx) => {
+        return <ToonListCard key={idx} {..._} review></ToonListCard>;
+      })}
+      {search_result.length === 0 ? (
+        <TitleGrid>
+          <Text tag="p" margin="30px 0 30px 0" color={Color.gray400}>
+            검색 결과가 없습니다
+          </Text>
+        </TitleGrid>
+      ) : null}
+      <Container>
+        <Text tag="p" type="h2" fontWeight="bold" margin="50px 0 0 0">
+          {is_login
+            ? `${user_name}님의 리뷰를 기다리는 웹툰`
+            : "리뷰 작성을 기다리는 웹툰"}
         </Text>
       </Container>
-      {test_list.map((_, idx) => {
-        return <ToonListCard key={idx} {..._}></ToonListCard>;
+      {unwritten_list?.map((_, idx) => {
+        return <ToonListCard key={idx} {..._} search></ToonListCard>;
       })}
     </React.Fragment>
   );
