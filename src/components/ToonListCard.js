@@ -97,7 +97,7 @@ const ToonListCard = (props) => {
         onClick={() => {
           if (props.review) {
             return history.push({
-              pathname: `/review/write/${props.id}`,
+              pathname: `/detail/${props.id}`,
               state: { toonTitle: toonTitle },
             });
           }

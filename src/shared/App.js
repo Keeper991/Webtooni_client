@@ -49,13 +49,13 @@ function App() {
         <Route path="/recommendation" exact component={Recommendation} />
         <Route path="/review/write/:webtoon_id" exact component={ReviewWrite} />
         <Route
-        path="/review/write/:webtoon_id/:review_id"
-        exact
-        component={ReviewWrite}
-         />
+          path="/review/write/:webtoon_id/:review_id"
+          exact
+          component={ReviewWrite}
+        />
         <Route path="/review" exact component={Review} />
         <Route path="/review/search" exact component={ReviewSearch} />
-        <Route path="/review/write/:id" exact component={ReviewSearchWrite} />
+        {/* <Route path="/review/write/:id" exact component={ReviewSearchWrite} /> */}
         <Route path="/search" exact component={Search} />
         <Route path="/mypage" exact component={MyPage} />
         <Route path="/talk" exact component={Talk} />
