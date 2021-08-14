@@ -74,12 +74,12 @@ Button.defaultProps = {
   height: "auto",
   padding: "15px 16px",
   margin: 0,
-  color: Color.white,
-  bgColor: Color.black,
+  color: Color.gray700,
+  bgColor: Color.white,
   fontSize: "16px",
   borderRadius: "8px",
   fontWeight: "500",
-  border: `1px solid ${Color.black}`,
+  border: `1px solid ${Color.gray200}`,
   shape: "",
   size: 0,
   src: "",
@@ -116,13 +116,13 @@ const ElCircleButton = styled.button`
 const ElPillButton = styled.button`
   width: ${(props) => props.width};
   height: 36px;
-  padding: 9px 12px;
+  padding: ${(props) => (props.padding ? props.padding : "9px 12px")};
   margin: ${(props) => props.margin};
-  color: ${Color.gray700};
+  color: ${(props) => props.color};
   background-color: ${(props) => props.bgColor};
   font-size: 14px;
   font-weight: 500;
-  border: 1px solid ${Color.gray200};
+  border: ${(props) => props.border};
   border-radius: 36px;
 
   cursor: pointer;
