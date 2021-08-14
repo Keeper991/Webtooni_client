@@ -42,8 +42,10 @@ const Detail = (props) => {
     const reviewIdx = toonOne?.reviews.findIndex(
       (item) => item.userName === userName //로그인한 유저의 리뷰 찾기
     );
-    if (reviewIdx && reviewIdx !== -1) setMyReview(toonOne?.reviews[reviewIdx]);
-  }, [myReview]);
+    console.log(reviewIdx);
+    if (myReview.reviewId === -1 && reviewIdx && reviewIdx !== -1)
+      setMyReview(toonOne?.reviews[reviewIdx]);
+  }, [toonOne, myReview]);
 
   //내 리스트에 추가하기(구독하기)
   const handleSubscribe = (webtoon_id, bool) => {
@@ -162,7 +164,7 @@ const Detail = (props) => {
                 </Button>
               )}
               <Button
-                _onClick={() => history.push("/review/write/")}
+                _onClick={() => history.push(`/review/write/${webtoon_id}`)}
                 shape="pill"
               >
                 리뷰등록
@@ -235,7 +237,7 @@ const Detail = (props) => {
             <Slick>
               {toonOne.similarList.map((item) => (
                 <SimContainer>
-                  <WebToonCard {...item} />
+                  <WebToonCard {...item} id={item.toonId} />
                 </SimContainer>
               ))}
             </Slick>
