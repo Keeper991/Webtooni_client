@@ -1,6 +1,6 @@
 <svg
-  width="135"
-  height="135"
+  width="95px"
+  height="95px"
   viewBox="0 0 95 95"
   fill="none"
   xmlns="http://www.w3.org/2000/svg"
@@ -20,8 +20,8 @@
       id="filter0_d"
       x="0"
       y="0"
-      width="135"
-      height="135"
+      width="95px"
+      height="95px"
       filterUnits="userSpaceOnUse"
       color-interpolation-filters="sRGB"
     >
