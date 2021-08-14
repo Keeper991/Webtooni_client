@@ -1,56 +1,94 @@
 import React from "react";
 import styled from "styled-components";
 import { useSelector, useDispatch } from "react-redux";
-import { Image, Text } from "../elements";
+import { Image, Text, Button } from "../elements";
+import { Color } from "../shared/common";
+import { history } from "../redux/configureStore";
 import { actionCreators as webtoonActions } from "../redux/modules/webtoon";
+import { ReactComponent as FillStar } from "../images/FillStar.svg";
+import { ReactComponent as EmptyHeart } from "../images/EmptyHeart.svg";
+import { ReactComponent as FillHeart } from "../images/FillHeart.svg";
+import { Permit, PermitStrict } from "../shared/PermitAuth";
 
 const DetailReview = (props) => {
-  const { id, reviewContent, userPointNumber, likeCount } = props.review;
+  const {
+    reviewId,
+    userGrade,
+    userImg,
+    userName,
+    createDate,
+    reviewContent,
+    userPointNumber,
+    likeCount,
+  } = props.review;
   console.log(props, "detailReview");
   const is_login = useSelector((store) => store.user.is_login);
 
   //좋아요 토글
   const toggleLike = () => {
     if (is_login) {
-      webtoonActions.likeReviewServer(id);
+      webtoonActions.likeReviewServer(reviewId);
     } else {
       alert("로그인하세요~");
     }
   };
   return (
-    <ItemContainer>
-      <Grid display="flex" justify="space-between">
-        <Grid display="flex">
-          <Image size="35px" shape="circle"></Image>
-          <Grid padding="0 0 0 5px">
-            <Text type="p">유저네임{props.userName}</Text>
-            <Text type="p">등급{props.userGrade}</Text>
+    <Grid
+      padding="20px 16px"
+      margin="10px 0"
+      bgColor={Color.gray100}
+      border={`1px solid ${Color.gray200}`}
+      borderRadius="12px"
+    >
+      <Grid display="flex">
+        <Image size="40px" shape="circle" src={userImg}></Image>
+        <Grid padding="0 0 0 7px" width="100%">
+          <Text type="num" fontSize="12px">
+            {userName}
+          </Text>
+          <Grid display="flex" padding="0 0 8px 0">
+            <FillStar width="12px" height="12px" />
+            <Text
+              margin="0 8px"
+              type="num"
+              fontSize="12px"
+              color={Color.gray700}
+            >
+              &nbsp;{userPointNumber}
+            </Text>
+            <Text type="small" color={Color.gray500}>
+              {createDate?.substr(5, 5)}
+            </Text>
           </Grid>
         </Grid>
-
-        {/* 클릭 시 좋아요 토글. 로그인한 유저의 좋아요 여부 알아야함 -> 그 때 토글을 위한 이미지도 구분해 넣기 */}
-        <Grid position="relative" onClick={toggleLike}>
-          <Image
-            width="20px"
-            height="20px"
-            src="https://cdn.pixabay.com/photo/2013/07/12/17/39/star-152151_960_720.png"
-          ></Image>
-          <LikeText>{likeCount}</LikeText>
-        </Grid>
       </Grid>
+      <Text tag="p" margin="16px 0 28px 0">
+        {reviewContent}
+      </Text>
+      {/* 클릭 시 좋아요 토글. 로그인한 유저의 좋아요 여부 알아야함 -> 그 때 토글을 위한 이미지도 구분해 넣기 */}
 
-      <Grid display="flex" align="center">
-        <Grid display="flex" align="center">
-          <Image
-            width="20px"
-            height="20px"
-            src="https://cdn.pixabay.com/photo/2013/07/12/17/39/star-152151_960_720.png"
-          ></Image>
-          <Text>&nbsp;{userPointNumber}</Text>
+      <Grid display="flex" justify="space-between">
+        <Grid display="flex" align="center" onClick={toggleLike} cursor>
+          {/* {post.isLike ? 
+                             <FillHeart /> 
+                             : */}
+          <EmptyHeart />
+          {/* }{" "} */}
+          <Text type="p" whiteSpace="nowrap" padding="0 0 0 6px">
+            {likeCount}
+          </Text>
         </Grid>
-        <Text padding="0 0 0 20px">{reviewContent}</Text>
+        {/* {PermitStrict(
+          userName, */}
+        <Text
+          type="p"
+          _onClick={() => webtoonActions.deleteReviewServer(reviewId)}
+        >
+          삭제
+        </Text>
+        {/* )} */}
       </Grid>
-    </ItemContainer>
+    </Grid>
   );
 };
 
@@ -72,6 +110,16 @@ const Grid = styled.div`
   margin: ${(props) => (props.margin ? props.margin : "")};
   padding: ${(props) => (props.padding ? props.padding : "")};
   position: ${(props) => props.position || ""};
+  z-index: ${(props) => props.zIndex || ""};
+  top: ${(props) => props.top || ""};
+  left: ${(props) => props.left || ""};
+  background-color: ${(props) => props.bgColor || ""};
+  border-bottom: ${(props) => props.borderBottom || ""};
+  border-top: ${(props) => props.borderTop || ""};
+  border: ${(props) => props.border || ""};
+  border-radius: ${(props) => props.borderRadius || ""};
+
+  ${(props) => (props.cursor ? "cursor: pointer" : "")};
 `;
 
 const ItemContainer = styled.div`

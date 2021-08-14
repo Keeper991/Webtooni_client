@@ -8,7 +8,7 @@ import { Color } from "../shared/common";
 const TalkComment = (props) => {
   const dispatch = useDispatch();
   const is_login = useSelector((store) => store.user.is_login);
-  const userName = useSelector((store) => store.user.user?.userName);
+  const userName = useSelector((store) => store.user.info?.userName);
 
   const { comment_info, commentCount } = props;
   //댓글 수정 여부
@@ -21,20 +21,21 @@ const TalkComment = (props) => {
 
   //댓글 수정하기
   const editComment = () => {
+    console.log(comment_info.commentId, comment, "editcomment확인..");
     dispatch(
       talkCommentActions.editCommentServer(
-        comment_info.postId,
-        comment_info.commentId,
-        comment_info.commentContent
+        parseInt(comment_info.commentId),
+        comment
       )
     );
+    isEdit(false);
   };
   //댓글 삭제하기
   const deleteComment = () => {
     if (window.confirm("정말 삭제하시려고요?")) {
       dispatch(
         talkCommentActions.deleteCommentServer(
-          comment_info.postId,
+          parseInt(comment_info.postId),
           comment_info.commentId,
           commentCount
         )
@@ -52,12 +53,37 @@ const TalkComment = (props) => {
       {edit ? (
         <>
           {/* 댓글 수정 */}
-          <Input
-            placeholder="댓글을 작성해 주세요"
-            _onChange={writeComment}
-            value={comment}
-          ></Input>
-          <Button _onClick={editComment}>등록</Button>
+
+          <Grid
+            display="flex"
+            justify="flex-start"
+            align="center"
+            width="100%"
+            height="56px"
+            padding="20px"
+            borderTop={`1px solid ${Color.gray200}`}
+            borderBottom={`1px solid ${Color.gray200}`}
+          >
+            <Image
+              size="28px"
+              shape="circle"
+              // src={userImg}
+            ></Image>
+            <Input
+              width="95%"
+              margin="0 0 0 9px"
+              padding="0"
+              placeholder="내용을 입력해 주세요"
+              border="none"
+              // color={Color.lightGray5}
+              placeHolderGray
+              _onChange={writeComment}
+              value={comment}
+            ></Input>
+            <Text width="26px" fontWeight="medium" _onClick={editComment}>
+              작성
+            </Text>
+          </Grid>
         </>
       ) : (
         <>
@@ -79,9 +105,20 @@ const TalkComment = (props) => {
             </Grid>
           </Grid>
           {userName === comment_info.userName && (
-            <Grid display="flex">
-              <Button _onClick={() => isEdit(true)}>수정</Button>
-              <Button _onClick={deleteComment}>삭제</Button>
+            <Grid display="flex" justify="flex-end">
+              <Text
+                type="p"
+                margin="0 24px 0 0"
+                _onClick={() => {
+                  isEdit(true);
+                }}
+                cursor
+              >
+                수정
+              </Text>
+              <Text type="p" _onClick={deleteComment} cursor>
+                삭제
+              </Text>
             </Grid>
           )}
         </>

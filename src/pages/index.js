@@ -15,6 +15,7 @@ import Profile from "./Profile";
 import ToonList from "./ToonList";
 import KakaoLogin from "./KakaoLogin";
 import NaverLogin from "./KakaoLogin";
+import ReviewWrite from "./ReviewWrite";
 
 export {
   Main,
@@ -32,6 +33,7 @@ export {
   ToonList,
   KakaoLogin,
   NaverLogin,
+  ReviewWrite,
   ReviewSearch,
   ReviewSearchWrite,
 };
