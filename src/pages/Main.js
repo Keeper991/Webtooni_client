@@ -68,7 +68,7 @@ const Main = () => {
   return (
     <React.Fragment>
       <TitleGrid>
-        <Text fontSize="16px" fontWeight="bold">
+        <Text type="h2" fontWeight="bold">
           이달의 웹투니버스 순위
         </Text>
         <Button
@@ -141,7 +141,7 @@ const Main = () => {
       </Slick>
 
       <TitleGrid>
-        <Text fontSize="16px" fontWeight="bold">
+        <Text type="h2" fontWeight="bold">
           {user_info?.userName
             ? `${user_info.userName}님만을 위한 웹툰 추천`
             : "유저 맞춤 웹툰 추천"}
@@ -282,7 +282,7 @@ const TitleGrid = styled.div`
   display: flex;
   width: 100%;
   height: 35px;
-  margin-top: 10px;
+  margin-top: 30px;
   padding: 0 16px;
   align-items: center;
   justify-content: space-between;
@@ -378,6 +378,7 @@ const RankGrid = styled.div`
 
 const ReviewTabGrid = styled.div`
   width: 100%;
+  margin-top: 40px;
   padding: 0 16px;
   display: flex;
 `;
