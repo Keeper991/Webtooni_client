@@ -12,6 +12,7 @@ const Slick = ({
   is_arrow,
   is_variableWidth,
   is_infinite,
+  is_center,
   ...props
 }) => {
   const CustomNextArrows = (props) => {
@@ -54,6 +55,16 @@ const Slick = ({
     );
   };
 
+  const centerMode = {
+    className: "center",
+    centerMode: true,
+    infinite: true,
+    centerPadding: "0px",
+    slidesToShow: 3,
+    speed: 800,
+    arrows: false,
+  };
+
   if (is_arrow) {
     return (
       <SliderWrap
@@ -68,6 +79,10 @@ const Slick = ({
         {children}
       </SliderWrap>
     );
+  }
+
+  if (is_center) {
+    return <CenterSliderWrap {...centerMode}>{children}</CenterSliderWrap>;
   }
 
   return (
@@ -92,6 +107,34 @@ Slick.defaultProps = {
 const SliderWrap = styled(Slider)`
   width: ${({ width }) => width};
   margin: 0 auto;
+`;
+
+const CenterSliderWrap = styled(Slider)`
+  width: 100% !important;
+  height: 300px !important;
+
+  .slick-track {
+    display: flex;
+    width: 100%;
+    height: 220px;
+    z-index: 10;
+  }
+  .slick-track .slick-slide {
+    display: flex;
+    height: auto;
+    align-items: center;
+    justify-content: center;
+  }
+  .slick-center {
+    -webkit-transform: scale(1.25);
+    -moz-transform: scale(1.25);
+    transform: scale(1.25);
+    transition: all 0.2s;
+  }
+
+  .slick-list {
+    margin: 0 -60px;
+  }
 `;
 
 const LeftArrow = styled.div`

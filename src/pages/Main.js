@@ -267,13 +267,13 @@ const Main = () => {
           베스트 리뷰어
         </Text>
       </TitleGrid>
-      <SliderBox>
-        <Slick>
+      <CenterSliderBox>
+        <Slick is_center>
           {reviewer_list.map((_, idx) => {
             return <BestReveiwerCard key={idx} {..._}></BestReveiwerCard>;
           })}
         </Slick>
-      </SliderBox>
+      </CenterSliderBox>
     </React.Fragment>
   );
 };
@@ -289,9 +289,26 @@ const TitleGrid = styled.div`
 `;
 
 const SliderBox = styled.div`
+  width: 100%;
+  height: auto;
   white-space: nowrap;
   overflow: hidden;
   margin: 10px 0 10px 16px;
+`;
+
+const CenterSliderBox = styled.div`
+  width: 100%;
+  height: 300px;
+  padding-top: 10px;
+  overflow: hidden;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  flex-direction: column;
+  background-image: url("https://lh3.googleusercontent.com/pw/AM-JKLURqrwtXPaJylOjAgW0GC_NFW7bwZg6PTmw7c_MTAfrn6mxU3rOLythCMjgdGSFi1WJ4KmcUqViPL_wmxJq_YiMTzp3ZlVwAUlrprH7G6xnZjvmFbUms5av9Xwak5qcWGKQsD7emBC4S0dZeCZUX1lS=w375-h300-no?authuser=0");
+  background-position: bottom;
+  background-repeat: no-repeat;
+  background-size: contain;
 `;
 
 const HiddenBlurBox = styled.div`
