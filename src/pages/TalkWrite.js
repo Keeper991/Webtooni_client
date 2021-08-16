@@ -1,7 +1,7 @@
 import React, { useEffect } from "react";
 import { useSelector, useDispatch } from "react-redux";
 import styled from "styled-components";
-import { Button, Input } from "../elements";
+import { Button, Input, Text } from "../elements";
 import { actionCreators as talkActions } from "../redux/modules/talk";
 import { history } from "../redux/configureStore";
 import { Color } from "../shared/common";
@@ -28,6 +28,8 @@ const TalkWrite = (props) => {
     postContent: prevPost?.postContent,
   });
 
+  const [contentAlert, isContentAlert] = React.useState(false);
+
   //상황 별 분기
   useEffect(() => {
     //로그인 안 했으면 메인으로 이동
@@ -36,12 +38,12 @@ const TalkWrite = (props) => {
       history.replace("/talk");
       return;
     }
-    //유저가 포스트 작성자가 아닐 때 메인으로 이동 . 얘가 실행 안 되어야 하는데 실행됨...
-    // if (userName && userName !== prevPost.userName) {
-    //   alert("다른 사람의 글이에요");
-    //   history.replace("/talk");
-    //   return;
-    // }
+    //유저가 포스트 작성자가 아닐 때 메인으로 이동
+    if (post_id && userName !== prevPost.userName) {
+      alert("다른 사람의 글이에요");
+      history.replace("/talk");
+      return;
+    }
     //기존 포스트 상세 정보가 없으면 서버에 요청
     if (post_id && !prevPost) {
       dispatch(talkActions.getPostOneServer(post_id));
@@ -52,7 +54,10 @@ const TalkWrite = (props) => {
   //포스트 등록
   const addPost = () => {
     if (!post.postTitle || !post.postContent) {
-      alert("빠진 항목이 있어요");
+      isContentAlert(true);
+      setTimeout(function () {
+        isContentAlert(false);
+      }, 2000);
       return;
     }
     if (is_login) {
@@ -64,7 +69,10 @@ const TalkWrite = (props) => {
   //포스트 수정
   const editPost = () => {
     if (!post.postTitle || !post.postContent) {
-      alert("빠진 항목이 있어요");
+      isContentAlert(true);
+      setTimeout(function () {
+        isContentAlert(false);
+      }, 2000);
       return;
     }
     console.log(
@@ -105,28 +113,26 @@ const TalkWrite = (props) => {
         {!prevPost ? (
           <Button
             border="none"
-            color={Color.white}
             bgColor={Color.gray900}
-            width="80px"
-            height="45px"
-            fontSize="17px"
-            fontWeight="bold"
+            width="66px"
+            height="32px"
             _onClick={addPost}
           >
-            작성
+            <Text color={Color.white} fontWeight="medium">
+              작성
+            </Text>
           </Button>
         ) : (
           <Button
             border="none"
-            color={Color.white}
             bgColor={Color.gray900}
-            width="80px"
-            height="45px"
-            fontSize="17px"
-            fontWeight="bold"
+            width="66px"
+            height="32px"
             _onClick={editPost}
           >
-            수정
+            <Text color={Color.white} fontWeight="medium">
+              수정
+            </Text>
           </Button>
         )}
       </Grid>
@@ -134,21 +140,38 @@ const TalkWrite = (props) => {
       <Grid borderBottom={`1px solid ${Color.gray200}`} padding="15px 20px">
         <Input
           placeholder="제목을 입력하세요"
+          color={Color.gray800}
+          fontSize="16px"
+          fontWeight={400}
           _onChange={(e) => setPost({ ...post, postTitle: e.target.value })}
           border="none"
           value={post.postTitle}
           padding="0"
         ></Input>
       </Grid>
-      <Input
-        padding="15px 20px"
-        multiLine
-        placeholder="내용을 입력하세요"
-        _onChange={(e) => setPost({ ...post, postContent: e.target.value })}
-        border="none"
-        height="400px"
-        value={post.postContent}
-      ></Input>
+      <Grid
+        position="relative"
+        display="flex"
+        flexDir="column"
+        justify="center"
+        align="center"
+      >
+        <Input
+          width="100%"
+          padding="15px 20px"
+          multiLine
+          placeholder="내용을 입력하세요"
+          color={Color.gray800}
+          fontSize="16px"
+          fontWeight={400}
+          _onChange={(e) => setPost({ ...post, postContent: e.target.value })}
+          border="none"
+          height="400px"
+          value={post.postContent}
+        ></Input>
+
+        <CntAlertStyle fadeOut={!contentAlert}>내용을 입력하세요</CntAlertStyle>
+      </Grid>
     </>
   );
 };
@@ -165,6 +188,28 @@ const Grid = styled.div`
   background-color: ${(props) => props.bgColor || ""};
   border-bottom: ${(props) => props.borderBottom || ""};
   ${(props) => (props.cursor ? "cursor: pointer" : "")};
+`;
+
+const CntAlertStyle = styled.div`
+  width: 296px;
+  height: 32px;
+  border-radius: 99px;
+  background-color: rgba(0, 0, 0, 0.6);
+  position: absolute;
+  bottom: 32px;
+  line-height: 32px;
+  text-align: center;
+  font-size: 12px;
+  font-weight: 400;
+  color: ${Color.white};
+  animation-duration: 2s;
+  animation-timing-function: ease-out;
+  animation-fill-mode: forwards;
+  transition: all 0.5s;
+  ${(props) =>
+    props.fadeOut &&
+    ` opacity: 0;
+    `}
 `;
 
 export default TalkWrite;
