@@ -4,11 +4,10 @@ import styled from "styled-components";
 import { Button, Input, Text, Image } from "../elements";
 import { actionCreators as talkCommentActions } from "../redux/modules/talkComment";
 import { Color } from "../shared/common";
+import { Permit, PermitStrict } from "../shared/PermitAuth";
 
 const TalkComment = (props) => {
   const dispatch = useDispatch();
-  const is_login = useSelector((store) => store.user.is_login);
-  const userName = useSelector((store) => store.user.info?.userName);
 
   const { comment_info, commentCount } = props;
   //댓글 수정 여부
@@ -43,6 +42,13 @@ const TalkComment = (props) => {
     } else return;
   };
 
+  //오늘 날짜
+  const date = new Date();
+  const year = date.getFullYear();
+  const month = ("0" + (1 + date.getMonth())).slice(-2);
+  const day = ("0" + date.getDate()).slice(-2);
+  const today = year + "-" + month + "-" + day;
+
   return (
     <Grid
       margin="0 20px"
@@ -67,7 +73,7 @@ const TalkComment = (props) => {
             <Image
               size="28px"
               shape="circle"
-              // src={userImg}
+              src={comment_info.userImg}
             ></Image>
             <Input
               width="95%"
@@ -75,12 +81,18 @@ const TalkComment = (props) => {
               padding="0"
               placeholder="내용을 입력해 주세요"
               border="none"
-              // color={Color.lightGray5}
-              placeHolderGray
+              color={Color.gray800}
+              fontSize="14px"
+              fontWeight={400}
               _onChange={writeComment}
               value={comment}
             ></Input>
-            <Text width="26px" fontWeight="medium" _onClick={editComment}>
+            <Text
+              width="26px"
+              type="p"
+              fontWeight="bold"
+              _onClick={editComment}
+            >
               작성
             </Text>
           </Grid>
@@ -96,18 +108,23 @@ const TalkComment = (props) => {
             ></Image>
             <Grid padding="0 0 0 7px" width="100%">
               <Grid display="flex" justify="space-between" padding="0 0 8px 0">
-                <Text type="caption">{comment_info.userName}</Text>
-                <Text type="caption" color={Color.gray400}>
-                  {comment_info.createDate.substr(5, 5)}
+                <Text color={Color.gray800} type="num" fontSize="12px">
+                  {comment_info.userName}
+                </Text>
+                <Text type="num" fontSize="12px" color={Color.gray400}>
+                  {/* 작성일 오늘인지에 따라 날짜만/시간만 표기 */}
+                  {today === comment_info.createDate.substr(0, 10)
+                    ? comment_info.createDate.substr(11, 5)
+                    : comment_info.createDate.substr(5, 5)}
                 </Text>
               </Grid>
-              <Text tag="p">{comment_info.commentContent}</Text>
+              <Text color={Color.gray800}>{comment_info.commentContent}</Text>
             </Grid>
           </Grid>
-          {userName === comment_info.userName && (
+          <PermitStrict authorName={comment_info.userName}>
             <Grid display="flex" justify="flex-end">
               <Text
-                type="p"
+                color={Color.gray600}
                 margin="0 24px 0 0"
                 _onClick={() => {
                   isEdit(true);
@@ -116,11 +133,11 @@ const TalkComment = (props) => {
               >
                 수정
               </Text>
-              <Text type="p" _onClick={deleteComment} cursor>
+              <Text color={Color.gray600} _onClick={deleteComment} cursor>
                 삭제
               </Text>
             </Grid>
-          )}
+          </PermitStrict>
         </>
       )}
     </Grid>
