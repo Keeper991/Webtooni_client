@@ -10,7 +10,7 @@ import { NavLink } from "react-router-dom";
 import { Color } from "./common";
 import title from "../images/title.png";
 
-import { UserOutlined, SearchOutlined } from "@ant-design/icons";
+import { UserOutlined, SearchOutlined, LeftOutlined } from "@ant-design/icons";
 
 const Header = (props) => {
   const dispatch = useDispatch();
@@ -31,7 +31,7 @@ const Header = (props) => {
   const [hide, setHide] = React.useState(false);
   const [pageY, setPageY] = React.useState(0);
 
-  // const documentRef = React.useRef(document);
+  const documentRef = React.useRef(document);
 
   const handleScroll = () => {
     const { pageYOffset } = window;
@@ -44,9 +44,102 @@ const Header = (props) => {
   const throttleScroll = throttle(handleScroll, 50);
 
   React.useEffect(() => {
-    document.addEventListener("scroll", throttleScroll);
-    return () => document.removeEventListener("scroll", throttleScroll);
+    documentRef.current.addEventListener("scroll", throttleScroll);
+    return () =>
+      documentRef.current.removeEventListener("scroll", throttleScroll);
   }, [pageY]);
+
+  if (
+    props.location.pathname === "/talk/write" ||
+    props.location.pathname === "/review/search" ||
+    props.location.pathname === `/review/write/${props.location.state?.id}`
+  ) {
+    return null;
+  }
+
+  if (props.location.pathname === `/detail/${props.location.state?.id}`) {
+    return (
+      <React.Fragment>
+        <SimpleContainer>
+          <HeaderWrap is_simple>
+            <LeftOutlined
+              style={{ fontSize: "18px", margin: "25px 0" }}
+              onClick={() => {
+                history.goBack();
+              }}
+            ></LeftOutlined>
+            <IconWrap>
+              <SearchOutlined
+                onClick={() => {
+                  history.push("/search");
+                }}
+              />
+              {is_login ? (
+                <UserOutlined
+                  onClick={() => dispatch(modalActions.activeModal("logout"))}
+                />
+              ) : (
+                <Button
+                  bgColor="transparent"
+                  color={Color.black}
+                  fontSize="12px"
+                  border={`1px solid ${Color.gray200}`}
+                  padding="7px 16px"
+                  _onClick={() => {
+                    history.push("/login");
+                  }}
+                >
+                  로그인
+                </Button>
+              )}
+            </IconWrap>
+          </HeaderWrap>
+        </SimpleContainer>
+      </React.Fragment>
+    );
+  }
+
+  if (props.location.pathname === `/review/write/${props.location.state?.id}`) {
+    return (
+      <React.Fragment>
+        <SimpleContainer>
+          <HeaderWrap is_simple>
+            <LeftOutlined
+              style={{ fontSize: "18px", margin: "25px 0" }}
+              onClick={() => {
+                history.goBack();
+              }}
+            ></LeftOutlined>
+            <IconWrap>
+              <SearchOutlined
+                onClick={() => {
+                  history.push("/search");
+                }}
+              />
+              {is_login ? (
+                <UserOutlined
+                  onClick={() => dispatch(modalActions.activeModal("logout"))}
+                />
+              ) : (
+                <Button
+                  bgColor="transparent"
+                  color={Color.black}
+                  fontSize="12px"
+                  border={`1px solid ${Color.gray200}`}
+                  padding="7px 16px"
+                  _onClick={() => {
+                    history.push("/login");
+                  }}
+                >
+                  로그인
+                </Button>
+              )}
+            </IconWrap>
+          </HeaderWrap>
+        </SimpleContainer>
+      </React.Fragment>
+    );
+  }
 
   return (
     <React.Fragment>
@@ -169,7 +262,8 @@ const HeaderWrap = styled.div`
   display: flex;
   align-items: center;
   justify-content: space-between;
-  border-bottom: 1px solid rgba(0, 0, 0, 0.08);
+  ${(props) =>
+    props.is_simple ? null : "border-bottom: 1px solid rgba(0, 0, 0, 0.08);"}
   & > button > div {
     background-size: contain;
     background-repeat: no-repeat;
@@ -184,4 +278,14 @@ const IconWrap = styled.div`
   gap: 16px;
 `;
 
+const SimpleContainer = styled.div`
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 72px;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+`;
 export default withRouter(Header);

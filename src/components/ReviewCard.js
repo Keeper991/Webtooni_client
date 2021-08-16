@@ -41,7 +41,10 @@ const ReviewCard = (props) => {
       <Container main={props.main}>
         <FlexToonGrid
           onClick={() => {
-            history.push(`/detail/${props.toonId}`);
+            history.push({
+              pathname: `/detail/${props.toonId}`,
+              state: { id: props.toonId },
+            });
           }}
         >
           <Image

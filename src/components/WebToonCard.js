@@ -9,7 +9,10 @@ const WebToonCard = (props) => {
     <React.Fragment>
       <Container
         onClick={() => {
-          history.push(`/detail/${props.id}`);
+          history.push({
+            pathname: `/detail/${props.id}`,
+            state: { id: props.id },
+          });
         }}
       >
         <ImageGrid>

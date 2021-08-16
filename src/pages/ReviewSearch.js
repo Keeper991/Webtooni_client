@@ -7,6 +7,8 @@ import { actionCreators as webtoonActions } from "../redux/modules/webtoon";
 import styled from "styled-components";
 import { useDispatch, useSelector } from "react-redux";
 import { Color } from "../shared/common";
+import { LeftOutlined } from "@ant-design/icons";
+import { history } from "../redux/configureStore";
 
 const ReviewSearch = () => {
   const dispatch = useDispatch();
@@ -17,27 +19,6 @@ const ReviewSearch = () => {
   const unwritten_list = useSelector((state) => state.webtoon.unwritten_offer);
   const is_login = useSelector((state) => state.user.is_login);
   const user_name = useSelector((state) => state.user.info.userName);
-
-  const test_list = [
-    {
-      finished: false,
-      id: 1,
-      realUrl:
-        "https://comic.naver.com/webtoon/list?titleId=771718&weekday=wed",
-      reviewCount: 0,
-      toonAge: "15세 이용가",
-      toonAuthor: "이경민 / 송준혁",
-      toonAvgPoint: 0,
-      toonContent:
-        "평소 웹툰을 즐겨보는 고등학생 나강림.\n어느날 그의 눈앞에 웹툰 속에서 봤던 여주인공이 나타나는 기이한 일이 펼쳐진다.\n심지어 웹툰에서와 똑같은 사건이 그녀를 위기로 몰아넣는데,\n문제는 그 사건으로부터 그녀를 구해줄 주인공이 현실에는 없다는 것!\n결국 나강림은 주인공 역할을 대신하여 그녀들을 구하기 위해 시간을 반복하며 구른다.",
-      toonImg:
-        "https://shared-comic.pstatic.net/thumb/webtoon/771718/thumbnail/thumbnail_IMAG06_0b93ce68-4a8e-4d95-bad7-09ad47865856.jpg",
-      toonPlatform: "네이버",
-      toonTitle: "수요웹툰의 나강림",
-      toonWeekday: "수",
-      genres: ["", "로맨스"],
-    },
-  ];
 
   React.useEffect(() => {
     dispatch(webtoonActions.getUnwrittenOffer());
@@ -70,15 +51,23 @@ const ReviewSearch = () => {
 
   return (
     <React.Fragment>
-      <Container>
+      <HeaderGrid>
+        <LeftOutlined
+          style={{ fontSize: "18px", margin: "25px 0" }}
+          onClick={() => {
+            history.goBack();
+          }}
+        ></LeftOutlined>
         <Input
           type="text"
           _onChange={handleSearch}
           value={search_value}
           placeholder="웹툰명을 검색해주세요"
+          height="48px"
         ></Input>
-
-        <Text tag="p" fontWeight="bold" margin="30px 0 0 0">
+      </HeaderGrid>
+      <Container>
+        <Text tag="p" fontWeight="bold" margin="30px 0">
           검색 결과
         </Text>
       </Container>
@@ -88,7 +77,7 @@ const ReviewSearch = () => {
       })}
       {search_result.length === 0 ? (
         <TitleGrid>
-          <Text tag="p" margin="30px 0 30px 0" color={Color.gray400}>
+          <Text tag="p" margin="10px 0 30px 0" color={Color.gray400}>
             검색 결과가 없습니다
           </Text>
         </TitleGrid>
@@ -109,6 +98,16 @@ const ReviewSearch = () => {
 
 const Container = styled.div`
   padding: 16px;
+`;
+
+const HeaderGrid = styled.div`
+  position: absolute;
+  width: 100%;
+  top: 0;
+  left: 0;
+  padding: 0 16px 30px;
+
+  border-bottom: 1px solid ${Color.gray100};
 `;
 
 const TitleGrid = styled.div`

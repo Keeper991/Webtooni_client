@@ -164,7 +164,12 @@ const Detail = (props) => {
                 </Button>
               )}
               <Button
-                _onClick={() => history.push(`/review/write/${webtoon_id}`)}
+                _onClick={() => {
+                  history.push({
+                    pathname: `/review/write/${props.id}`,
+                    state: { id: props.id, toonTitle: props.toonTitle },
+                  });
+                }}
                 shape="pill"
               >
                 리뷰등록
