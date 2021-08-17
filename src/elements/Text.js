@@ -91,7 +91,7 @@ Text.defaultProps = {
   fontSize: "14px",
   fontWeight: 400,
   whiteSpace: "nowrap",
-  cursor: false,
+  cursor: "",
   textAlign: "",
   lineHeight: "",
 };

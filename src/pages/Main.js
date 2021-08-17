@@ -3,7 +3,8 @@ import styled from "styled-components";
 import { history } from "../redux/configureStore";
 import { useDispatch, useSelector } from "react-redux";
 import { actionCreators as webtoonActions } from "../redux/modules/webtoon";
-import { actionCreators as adminActions } from "../redux/modules/admin";
+import { actionCreators as reviewActions } from "../redux/modules/review";
+import { actionCreators as reviewerActions } from "../redux/modules/reviewer";
 import { actionCreators as modalActions } from "../redux/modules/modal";
 import {
   WebToonCard,
@@ -19,46 +20,58 @@ import { Color } from "../shared/common";
 const Main = () => {
   const dispatch = useDispatch();
 
-  React.useEffect(() => {
-    if (
-      webtooni_list.length === 0 ||
-      naver_list.length === 0 ||
-      kakao_list.length === 0 ||
-      best_review_list.length === 0 ||
-      recent_review_list.length === 0 ||
-      reviewer_list.length === 0
-    ) {
-      dispatch(webtoonActions.getWebtooniRank());
-      dispatch(webtoonActions.getNaverRank());
-      dispatch(webtoonActions.getKakaoRank());
-      dispatch(webtoonActions.getUserOffer());
-      dispatch(adminActions.getMainReview());
-      dispatch(adminActions.getMainBestReviewer());
-    }
-  }, []);
-
-  const is_loading = useSelector((state) => state.webtoon.is_loading);
-  const user_info = useSelector((state) => state.user.info);
-  const webtooni_list = useSelector((state) => state.webtoon.webtooni_rank);
-  const naver_list = useSelector((state) => state.webtoon.naver_rank);
-  const kakao_list = useSelector((state) => state.webtoon.kakao_rank);
-  const for_user_list = useSelector((state) => state.webtoon.user_offer);
-
-  const best_review_list = useSelector(
-    (state) => state.admin.main_review.bestReview
-  );
-  const recent_review_list = useSelector(
-    (state) => state.admin.main_review.newReview
-  );
-
-  const reviewer_list = useSelector((state) => state.admin.main_best_reviewer);
-
+  // states
   const [is_best, setIsBest] = React.useState(true);
 
+  // selectors
+  const toon_list = useSelector((state) => state.webtoon.toon_list);
+  const is_loading = useSelector((state) => state.webtoon.is_loading);
   const is_login = useSelector((state) => state.user.is_login);
+  const user_info = useSelector((state) => state.user.info);
+  const reviewer_list = useSelector((state) => state.reviewer.best_reviewer);
+  const review_list = useSelector((state) => state.review.review_list);
   const isShownWelcomeModal = useSelector(
-    (state) => state.user.isShownWelcomeModal
+    (state) => state.user.info.isShownWelcomeModal
   );
+  // review lists
+
+  const best_review_list = review_list.filter((review) =>
+    review.filterConditions.includes("bestReview")
+  );
+  const recent_review_list = review_list.filter((review) =>
+    review.filterConditions.includes("newReview")
+  );
+
+  // webtoon lists
+  const webtooni_list = toon_list.filter((toon) =>
+    toon.filterConditions.includes("webtooni")
+  );
+  const naver_list = toon_list.filter((toon) =>
+    toon.filterConditions.includes("naver")
+  );
+  const kakao_list = toon_list.filter((toon) =>
+    toon.filterConditions.includes("kakao")
+  );
+  const for_user_list = toon_list.filter((toon) =>
+    toon.filterConditions?.includes("forUser")
+  );
+
+  // effects
+  React.useEffect(() => {
+    if (
+      !webtooni_list.length ||
+      !naver_list.length ||
+      !kakao_list.length ||
+      !reviewer_list.length
+    ) {
+      dispatch(webtoonActions.getRankWebtoonList());
+      dispatch(reviewerActions.getBestReviewer());
+    }
+
+    if (!best_review_list.length || !recent_review_list.length) {
+      dispatch(reviewActions.getMainReviewList());
+    }
+  }, []);
 
   const naver_list_1 = naver_list.slice(0, 5);
   const naver_list_2 = naver_list.slice(5, 10);
@@ -67,9 +80,14 @@ const Main = () => {
   const kakao_list_2 = kakao_list.slice(5, 10);
 
   React.useEffect(() => {
-    if (is_login && !isShownWelcomeModal)
+    if (is_login && !for_user_list.length) {
+      dispatch(webtoonActions.getForUserWebtoonList());
+    }
+
+    if (is_login && !isShownWelcomeModal) {
       dispatch(modalActions.activeModal("welcome"));
-  }, []);
+    }
+  }, [is_login]);
 
   return (
     <React.Fragment>
@@ -94,8 +112,8 @@ const Main = () => {
       <SliderBox>
         {is_loading || webtooni_list.length === 0 ? (
           <Slick is_infinite>
-            {Array.from({ length: 10 }).map(() => {
-              return <SkeletonCard></SkeletonCard>;
+            {Array.from({ length: 10 }).map((_, idx) => {
+              return <SkeletonCard key={idx}></SkeletonCard>;
             })}
           </Slick>
         ) : (
@@ -128,8 +146,8 @@ const Main = () => {
           </TextGrid>
           {/* {is_loading || naver_list.length === 0 ? (
             <RankGrid>
-              {Array.from({ length: 10 }).map(() => {
-                return <SkeletonCard rank></SkeletonCard>;
+              {Array.from({ length: 10 }).map((_, idx) => {
+                return <SkeletonCard key={idx} rank></SkeletonCard>;
               })}
             </RankGrid>
           ) : ( */}
@@ -195,8 +213,8 @@ const Main = () => {
           </TextGrid>
           {/* {is_loading || kakao_list.length === 0 ? (
             <RankGrid>
-              {Array.from({ length: 10 }).map(() => {
-                return <SkeletonCard rank></SkeletonCard>;
+              {Array.from({ length: 10 }).map((_, idx) => {
+                return <SkeletonCard key={idx} rank></SkeletonCard>;
               })}
             </RankGrid>
           ) : ( */}
@@ -269,8 +287,8 @@ const Main = () => {
         <SliderBox>
           {is_loading || for_user_list.length === 0 ? (
             <Slick is_infinite>
-              {Array.from({ length: 10 }).map(() => {
-                return <SkeletonCard></SkeletonCard>;
+              {Array.from({ length: 10 }).map((_, idx) => {
+                return <SkeletonCard key={idx}></SkeletonCard>;
               })}
             </Slick>
           ) : (
@@ -287,8 +305,8 @@ const Main = () => {
           <BlurBox>
             {is_loading || for_user_list.length === 0 ? (
               <Slick is_infinite>
-                {Array.from({ length: 10 }).map(() => {
-                  return <SkeletonCard></SkeletonCard>;
+                {Array.from({ length: 10 }).map((_, idx) => {
+                  return <SkeletonCard key={idx}></SkeletonCard>;
                 })}
               </Slick>
             ) : (

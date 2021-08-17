@@ -5,10 +5,12 @@ import { Image, Text, Button } from "../elements";
 import { Color } from "../shared/common";
 import { history } from "../redux/configureStore";
 import { actionCreators as webtoonActions } from "../redux/modules/webtoon";
+import { actionCreators as reviewActions } from "../redux/modules/review";
 import { ReactComponent as FillStar } from "../images/FillStar.svg";
 import { ReactComponent as EmptyHeart } from "../images/EmptyHeart.svg";
 import { ReactComponent as FillHeart } from "../images/FillHeart.svg";
 import { Permit, PermitStrict } from "../shared/PermitAuth";
+import time from "../shared/time";
 
 const DetailReview = (props) => {
   const {
@@ -21,17 +23,27 @@ const DetailReview = (props) => {
     userPointNumber,
     likeCount,
   } = props.review;
-  console.log(props, "detailReview");
+  const dispatch = useDispatch();
   const is_login = useSelector((store) => store.user.is_login);
+  const reviewLikeList = useSelector((store) => store.user.reviewLikeList);
 
   //좋아요 토글
   const toggleLike = () => {
     if (is_login) {
-      webtoonActions.likeReviewServer(reviewId);
+      dispatch(
+        reviewActions.likeReviewServer(
+          reviewId,
+          !reviewLikeList.includes(reviewId)
+        )
+      );
     } else {
       alert("로그인하세요~");
     }
   };
+
+  if (!reviewContent) {
+    return <></>;
+  }
   return (
     <Grid
       padding="20px 16px"
@@ -57,7 +69,7 @@ const DetailReview = (props) => {
               &nbsp;{userPointNumber}
             </Text>
             <Text type="small" color={Color.gray500}>
-              {createDate?.substr(5, 5)}
+              {time(createDate)}
             </Text>
           </Grid>
         </Grid>
@@ -68,25 +80,22 @@ const DetailReview = (props) => {
       {/* 클릭 시 좋아요 토글. 로그인한 유저의 좋아요 여부 알아야함 -> 그 때 토글을 위한 이미지도 구분해 넣기 */}
 
       <Grid display="flex" justify="space-between">
-        <Grid display="flex" align="center" onClick={toggleLike} cursor>
-          {/* {post.isLike ? 
-                             <FillHeart /> 
-                             : */}
-          <EmptyHeart />
-          {/* }{" "} */}
-          <Text type="p" whiteSpace="nowrap" padding="0 0 0 6px">
+        <Grid display="flex" align="center" onClick={toggleLike} cursor="true">
+          {reviewLikeList.includes(reviewId) ? <FillHeart /> : <EmptyHeart />}
+          <Text whiteSpace="nowrap" padding="0 0 0 6px">
             {likeCount}
           </Text>
         </Grid>
-        {/* {PermitStrict(
-          userName, */}
-        <Text
-          type="p"
-          _onClick={() => webtoonActions.deleteReviewServer(reviewId)}
-        >
-          삭제
-        </Text>
-        {/* )} */}
+        <PermitStrict authorName={userName}>
+          <Text
+            _onClick={() =>
+              dispatch(reviewActions.removeReviewContentServer(reviewId))
+            }
+            cursor="true"
+          >
+            삭제
+          </Text>
+        </PermitStrict>
       </Grid>
     </Grid>
   );

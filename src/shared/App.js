@@ -29,10 +29,7 @@ import Modal from "./Modals/Modal";
 
 function App() {
   const dispatch = useDispatch();
-
-  React.useEffect(() => {
-    dispatch(userActions.loginCheck());
-  }, []);
+  dispatch(userActions.loginCheck());
 
   return (
     <>
@@ -47,11 +44,6 @@ function App() {
         <Route path="/profile" exact component={Profile} />
         <Route path="/recommendation" exact component={Recommendation} />
         <Route path="/review/write/:webtoon_id" exact component={ReviewWrite} />
-        {/* <Route
-        path="/review/write/:webtoon_id/:review_id"
-        exact
-        component={ReviewWrite}
-         /> */}
         <Route path="/review" exact component={Review} />
         <Route path="/review/search" exact component={ReviewSearch} />
         <Route path="/search" exact component={Search} />

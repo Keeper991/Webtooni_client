@@ -3,25 +3,64 @@ import { produce } from "immer";
 import { userAPI } from "../../shared/API";
 import { setToken, getToken, removeToken } from "../../shared/PermitAuth";
 
+const ADD_REVIEW_LIKE_LIST = "user/ADD_REVIEW_LIKE_LIST";
+const ADD_REVIEW_LIKE = "user/ADD_REVIEW_LIKE";
+const REMOVE_REVIEW_LIKE = "user/REMOVE_REVIEW_LIKE";
+//
 const SET_USER = "user/SET_USER";
 const LOG_OUT = "user/LOG_OUT";
 const SET_SUBSCRIBE_LIST = "user/SET_SUBSCRIBE";
-const SUBSCRIBE_ONE = "user/SUBSCRIBE_ONE";
-const UNSUBSCRIBE_ONE = "user/UNSUBSCRIBE_ONE";
+const SUBSCRIBE = "user/SUBSCRIBE";
+const UNSUBSCRIBE = "user/UNSUBSCRIBE";
 const SHOWN_WELCOME_MODAL = "user/SHOWN_WELCOME_MODAL";
+const ADD_STAR_POINT = "user/ADD_STAR_POINT";
+const EDIT_STAR_POINT = "user/EDIT_STAR_POINT";
+const EDIT_REVIEW = "user/EDIT_REVIEW";
 
+const addReviewLikeList = createAction(ADD_REVIEW_LIKE_LIST, (reviewList) => ({
+  reviewList,
+}));
+const addReviewLike = createAction(ADD_REVIEW_LIKE, (reviewId) => ({
+  reviewId,
+}));
+const removeReviewLike = createAction(REMOVE_REVIEW_LIKE, (reviewId) => ({
+  reviewId,
+}));
+//
 const setUser = createAction(SET_USER, (info) => ({ info }));
 const logOut = createAction(LOG_OUT, () => ({}));
 const setSubscribeList = createAction(SET_SUBSCRIBE_LIST, (webtoonIdList) => ({
   webtoonIdList,
 }));
-const subscribeOne = createAction(SUBSCRIBE_ONE, (webtoonId) => ({
+const subscribe = createAction(SUBSCRIBE, (webtoonId) => ({
   webtoonId,
 }));
-const unsubscribeOne = createAction(UNSUBSCRIBE_ONE, (webtoonId) => ({
+const unsubscribe = createAction(UNSUBSCRIBE, (webtoonId) => ({
   webtoonId,
 }));
 const shownWelcomeModal = createAction(SHOWN_WELCOME_MODAL, () => ({}));
+
+const addStarPoint = createAction(
+  ADD_STAR_POINT,
+  (reviewId, webtoonId, userName, userPointNumber) => ({
+    reviewId,
+    webtoonId,
+    userName,
+    userPointNumber,
+  })
+);
+const editStarPoint = createAction(
+  EDIT_STAR_POINT,
+  (reviewId, userPointNumber) => ({ reviewId, userPointNumber })
+);
+const editReview = createAction(EDIT_REVIEW, (reviewId, reviewContent) => ({
+  reviewId,
+  reviewContent,
+}));
+
+///////////////////////////////////////////////////////////
+// thunks
+///////////////////////////////////////////////////////////
 
 const kakaoLoginServer =
   (code) =>
@@ -49,7 +88,7 @@ const loginCheck =
         const res = await userAPI.getInfo();
         res.data.isShownWelcomeModal = Boolean(res.data.userName);
         dispatch(setUser(res.data));
-        res.data.userName ? history.push("/") : history.push("/taste");
+        !res.data.userName && history.push("/taste");
       } catch (e) {
         console.log(e);
       }
@@ -60,8 +99,8 @@ const loginCheck =
 
 const subscribeServer = (webtoonId, bool) => async (dispatch, getState) => {
   try {
-    await userAPI.subscribe({ webtoonId, myListOrNot: bool });
-    dispatch(bool ? subscribeOne(webtoonId) : unsubscribeOne(webtoonId));
+    await userAPI.subscribe({ toonId: webtoonId, myListOrNot: bool });
+    dispatch(bool ? subscribe(webtoonId) : unsubscribe(webtoonId));
   } catch (e) {
     console.log(e);
   }
@@ -98,6 +137,24 @@ const initialState = {
 
 export default handleActions(
   {
+    [ADD_REVIEW_LIKE_LIST]: (state, action) =>
+      produce(state, (draft) => {
+        draft.reviewLikeList.push(...action.payload.reviewList);
+        draft.reviewLikeList = draft.reviewLikeList.filter(
+          (review, idx) => draft.reviewLikeList.indexOf(review) === idx
+        );
+      }),
+    [ADD_REVIEW_LIKE]: (state, action) =>
+      produce(state, (draft) => {
+        draft.reviewLikeList.push(action.payload.reviewId);
+      }),
+    [REMOVE_REVIEW_LIKE]: (state, action) =>
+      produce(state, (draft) => {
+        draft.reviewLikeList = draft.reviewLikeList.filter(
+          (reviewId) => reviewId !== action.payload.reviewId
+        );
+      }),
+
     [SET_USER]: (state, action) =>
       produce(state, (draft) => {
         draft.info = action.payload.info;
@@ -120,11 +177,11 @@ export default handleActions(
         draft.subscribeList.push(...action.payload.webtoonIdList);
         draft.subscribeList = Array.from(new Set(draft.subscribeList));
       }),
-    [SUBSCRIBE_ONE]: (state, action) =>
+    [SUBSCRIBE]: (state, action) =>
       produce(state, (draft) => {
         draft.subscribeList.push(action.payload.webtoonId);
       }),
-    [UNSUBSCRIBE_ONE]: (state, action) =>
+    [UNSUBSCRIBE]: (state, action) =>
       produce(state, (draft) => {
         const {
           payload: { webtoonId },
@@ -137,18 +194,27 @@ export default handleActions(
       produce(state, (draft) => {
         draft.info.isShownWelcomeModal = true;
       }),
+    [ADD_STAR_POINT]: (state, action) =>
+      produce(state, (draft) => {
+        const { reviewId, webtoonId, userName, userPointNumber } =
+          action.payload;
+        draft.reviewList.push();
+      }),
   },
   initialState
 );
 
 const actionCreators = {
+  addReviewLikeList,
+  addReviewLike,
+  removeReviewLike,
   logOut,
   loginCheck,
   kakaoLoginServer,
   setSubscribeList,
   subscribeServer,
   setUserServer,
-  subscribeOne,
+  subscribe,
   // 아래는 테스트용.
   setUser,
   shownWelcomeModal,

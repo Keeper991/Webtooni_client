@@ -3,18 +3,20 @@ import styled from "styled-components";
 import { Text, Image, Button } from "../elements";
 import { Color } from "../shared/common";
 import profileImgList from "../images/profiles";
-import { actionCreators as webtoonActions } from "../redux/modules/webtoon";
 import { useDispatch, useSelector } from "react-redux";
 import { HeartFilled } from "@ant-design/icons";
 import { history } from "../redux/configureStore";
 import { actionCreators as reviewActions } from "../redux/modules/review";
+import time from "../shared/time";
 
 const ReviewCard = (props) => {
   const dispatch = useDispatch();
   const is_main = props.main;
   const [showMore, setShowMore] = React.useState(false);
 
-  const like_list = useSelector((state) => state.review.user_like_review_list);
+  const is_login = useSelector((state) => state.user.is_login);
+  const toon_list = useSelector((state) => state.webtoon.toon_list);
+  const toonInfo = toon_list.find((toon) => toon.toonId === props.toonId);
 
   React.useEffect(() => {
     setShowMore(false);
@@ -32,9 +34,22 @@ const ReviewCard = (props) => {
     if (is_main) {
       return;
     }
-    dispatch(webtoonActions.likeReviewServer(props.reviewId));
-    dispatch(reviewActions.setLikeList());
+    if (is_login) {
+      dispatch(
+        reviewActions.likeReviewServer(
+          props.reviewId,
+          !props.like_list.includes(props.reviewId)
+        )
+      );
+    } else {
+      alert("로그인이 필요한 서비스입니다.");
+    }
   };
+
+  // 별점만 있는 리뷰면 보이지 않음.
+  if (!props.reviewContent) {
+    return <></>;
+  }
 
   if (props.main) {
     return (
@@ -138,7 +153,7 @@ const ReviewCard = (props) => {
           }}
         >
           <Image
-            src={props.toonImg}
+            src={toonInfo.toonImg}
             width="64px"
             height="64px"
             radius="5px"
@@ -146,20 +161,20 @@ const ReviewCard = (props) => {
           <InfoGrid>
             <FlexGrid flexStart>
               <Text type="caption" color={Color.primary}>
-                {props.genres[1] ? props.genres[1] : props.genres[0]}
-                {props.genres.length === 0 && "미분류"}
+                {toonInfo.genres[1] ? toonInfo.genres[1] : toonInfo.genres[0]}
+                {toonInfo.genres.length === 0 && "미분류"}
               </Text>
               <Text margin="0 10px" type="caption" color={Color.gray500}>
-                {props.finished ? "완결" : props.toonWeekday}
+                {toonInfo.finished ? "완결" : toonInfo.toonWeekday}
               </Text>
             </FlexGrid>
             <Text fontWeight="medium" color={Color.gray800}>
-              {props.toonTitle}
+              {toonInfo.toonTitle}
             </Text>
             <FlexGrid>
               <FlexGrid>
                 <Text type="caption" color={Color.gray400}>
-                  {props.toonAuthor}
+                  {toonInfo.toonAuthor}
                 </Text>
                 <Image
                   shape="square"
@@ -168,10 +183,10 @@ const ReviewCard = (props) => {
                   src="https://lh3.googleusercontent.com/pw/AM-JKLXIrRX56QwruA9no5dsQDpzLmNNgGigp4H-mNbe8Zll_MgRc1OVhN8nKaqDwTOSKiNGUT6bQ6O7sYRBDsPhnj49j7ACDz5qWrSeebdROovTQKhnt8O2jbq6QpskSozPMpq02E2hUQqTjg3gfLZpx-xv=s12-no?authuser=0"
                 ></Image>
                 <Text type="num" fontWeight="bold" color={Color.primary}>
-                  {props.toonAvgPoint}
+                  {toonInfo.toonAvgPoint}
                 </Text>
               </FlexGrid>
-              {props.toonPlatform === "네이버" ? (
+              {toonInfo.toonPlatform === "네이버" ? (
                 <Image
                   shape="square"
                   size="12px"
@@ -203,7 +218,7 @@ const ReviewCard = (props) => {
                 <Text tag="p" margin="0 10px 0 0">
                   {props.userPointNumber}
                 </Text>
-                <Text>{props.creatDate}</Text>
+                <Text>{time(props.createDate)}</Text>
               </FlexGrid>
             </ColumnGrid>
           </UserGrid>
@@ -228,7 +243,7 @@ const ReviewCard = (props) => {
           </Button>
         </ReviewGrid>
 
-        {like_list?.indexOf(props.reviewId) === -1 ? (
+        {props.like_list?.indexOf(props.reviewId) === -1 ? (
           <FlexGrid flexStart>
             <HeartFilled
               onClick={handleLike}

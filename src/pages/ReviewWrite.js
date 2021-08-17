@@ -3,7 +3,8 @@ import { useSelector, useDispatch } from "react-redux";
 import styled from "styled-components";
 import { Button, Input, Text } from "../elements";
 import { DetailStar } from "../components";
-import { actionCreators as webtoonActions } from "../redux/modules/talk";
+import { actionCreators as reviewActions } from "../redux/modules/review";
+import { actionCreators as webtoonActions } from "../redux/modules/webtoon";
 import { history } from "../redux/configureStore";
 import { Color } from "../shared/common";
 import { ReactComponent as BackButton } from "../images/BackButton.svg";
@@ -13,22 +14,37 @@ const ReviewWrite = (props) => {
   const is_login = useSelector((store) => store.user.is_login); //로그인 여부 판별
 
   //로그인 유저 네임
-  const userName = useSelector((store) => store.user.info?.userName);
-  console.log(userName, "userName");
+  const userName = useSelector((store) => store.user.info.userName);
 
   //별점 이력이 있으면 기존 별점 가져오기
-  const webtoon_id = props.match.params.webtoon_id;
-  const review_id = props.match.params.review_id;
-  const detail_list = useSelector((store) => store.webtoon.detail_list);
-  const toon = detail_list.filter((t) => t.toon_id === webtoon_id)[0];
-  const prev_review = toon?.reviews.filter(
-    (item) => item.userName === userName
-  )[0];
+  const webtoon_id = parseInt(props.match.params.webtoon_id);
+  const toon_list = useSelector((store) => store.webtoon.toon_list);
+  const toonOne = toon_list.find((toon) => toon.toonId === webtoon_id);
+  const toonTitle = props.location.state.toonTitle;
+  const review_list = useSelector((store) => store.review.review_list);
+  const prev_review = review_list.find(
+    (review) => review.userName === userName && review.toonId === webtoon_id
+  );
 
   //리뷰 작성하기
   const [review, setReview] = React.useState("");
+  const [starPoint, setStarPoint] = React.useState(0);
+  //내용 미입력시 메세지 띄우기
+  const [contentAlert, isContentAlert] = React.useState(false);
 
   //상황 별 분기
+  useEffect(() => {
+    if (prev_review) {
+      if(prev_review.reviewContent) {
+        setReview(prev_review.reviewContent);
+      }
+      setStarPoint(prev_review.userPointNumber);
+    }
+    if (!toonOne || !toonOne.filterConditions.includes("detail")) {
+      dispatch(webtoonActions.getToonOneServer(webtoon_id));
+    }
+  }, [prev_review]);
+
   useEffect(() => {
     //로그인 안 했으면 메인으로 이동
     if (!is_login) {
@@ -36,13 +52,7 @@ const ReviewWrite = (props) => {
       history.go(-1);
       return;
     }
-    //유저가 포스트 작성자가 아닐 때 메인으로 이동
-    // if (userName && userName !== prev_review.userName) {
-    //   alert("다른 사람의 리뷰예요");
-    //   history.go(-1);
-    //   return;
-    // }
-  }, []);
+  }, [is_login]);
 
   //리뷰 등록
   const uploadReview = () => {
@@ -54,14 +64,11 @@ const ReviewWrite = (props) => {
       return;
     }
     if (is_login) {
-      dispatch(webtoonActions.uploadReviewServer(review_id, review));
+      dispatch(reviewActions.updateReviewServer(prev_review.reviewId, review));
     } else {
       alert("로그인하세요~");
     }
   };
-
-  //내용 미입력시 메세지 띄우기
-  const [contentAlert, isContentAlert] = React.useState(false);
 
   return (
     <>
@@ -74,7 +81,7 @@ const ReviewWrite = (props) => {
       >
         {/* 뒤로가기 */}
         <Grid
-          cursor
+          cursor="true"
           onClick={() => {
             history.go(-1);
           }}
@@ -119,16 +126,18 @@ const ReviewWrite = (props) => {
             textAlign="justify"
             width="auto"
           >
-            웹툰제목
+            {toonTitle}
           </Text>
         </Grid>
       </Grid>
 
       <Grid padding="20px 20px 15px">
         <DetailStar
-          webtoon_id={webtoon_id}
-          is_login={is_login}
-          prev_review={prev_review}
+          onStarClick={(starPoint) => {
+            setStarPoint(starPoint);
+            dispatch(reviewActions.putStarServer(webtoon_id, starPoint));
+          }}
+          starPoint={starPoint}
         />
       </Grid>
       <Input
