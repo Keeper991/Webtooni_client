@@ -111,13 +111,13 @@ const Main = () => {
 
       <SliderBox>
         {is_loading || webtooni_list.length === 0 ? (
-          <Slick is_infinite>
+          <Slick>
             {Array.from({ length: 10 }).map((_, idx) => {
               return <SkeletonCard key={idx}></SkeletonCard>;
             })}
           </Slick>
         ) : (
-          <Slick is_infinite>
+          <Slick>
             {webtooni_list?.map((_, idx) => {
               return <WebToonCard key={idx} {..._}></WebToonCard>;
             })}
@@ -144,19 +144,19 @@ const Main = () => {
               Top 10
             </Button>
           </TextGrid>
-          {/* {is_loading || naver_list.length === 0 ? (
+          {is_loading || naver_list.length === 0 ? (
             <RankGrid>
-              {Array.from({ length: 10 }).map((_, idx) => {
+              {Array.from({ length: 5 }).map((_, idx) => {
                 return <SkeletonCard key={idx} rank></SkeletonCard>;
               })}
             </RankGrid>
-          ) : ( */}
-          <RankGrid>
-            {naver_list_1?.map((_, idx) => {
-              return <WebToonMonth key={idx} {..._} idx={idx}></WebToonMonth>;
-            })}
-          </RankGrid>
-          {/* )} */}
+          ) : (
+            <RankGrid>
+              {naver_list_1?.map((_, idx) => {
+                return <WebToonMonth key={idx} {..._} idx={idx}></WebToonMonth>;
+              })}
+            </RankGrid>
+          )}
         </MonthBox>
         <MonthBox>
           <TextGrid>
@@ -176,21 +176,21 @@ const Main = () => {
               Top 10
             </Button>
           </TextGrid>
-          {/* {is_loading || naver_list.length === 0 ? (
+          {is_loading || naver_list.length === 0 ? (
             <RankGrid>
-              {Array.from({ length: 10 }).map(() => {
+              {Array.from({ length: 5 }).map(() => {
                 return <SkeletonCard rank></SkeletonCard>;
               })}
             </RankGrid>
-          ) : ( */}
-          <RankGrid>
-            {naver_list_2?.map((_, idx) => {
-              return (
-                <WebToonMonth key={idx} {..._} idx={idx + 5}></WebToonMonth>
-              );
-            })}
-          </RankGrid>
-          {/* )} */}
+          ) : (
+            <RankGrid>
+              {naver_list_2?.map((_, idx) => {
+                return (
+                  <WebToonMonth key={idx} {..._} idx={idx + 5}></WebToonMonth>
+                );
+              })}
+            </RankGrid>
+          )}
         </MonthBox>
 
         <MonthBox>
@@ -211,19 +211,19 @@ const Main = () => {
               Top 10
             </Button>
           </TextGrid>
-          {/* {is_loading || kakao_list.length === 0 ? (
+          {is_loading || kakao_list.length === 0 ? (
             <RankGrid>
-              {Array.from({ length: 10 }).map((_, idx) => {
+              {Array.from({ length: 5 }).map((_, idx) => {
                 return <SkeletonCard key={idx} rank></SkeletonCard>;
               })}
             </RankGrid>
-          ) : ( */}
-          <RankGrid>
-            {kakao_list_1?.map((_, idx) => {
-              return <WebToonMonth key={idx} {..._} idx={idx}></WebToonMonth>;
-            })}
-          </RankGrid>
-          {/* )} */}
+          ) : (
+            <RankGrid>
+              {kakao_list_1?.map((_, idx) => {
+                return <WebToonMonth key={idx} {..._} idx={idx}></WebToonMonth>;
+              })}
+            </RankGrid>
+          )}
         </MonthBox>
         <MonthBox>
           <TextGrid>
@@ -243,21 +243,21 @@ const Main = () => {
               Top 10
             </Button>
           </TextGrid>
-          {/* {is_loading || kakao_list.length === 0 ? (
+          {is_loading || kakao_list.length === 0 ? (
             <RankGrid>
-              {Array.from({ length: 10 }).map(() => {
+              {Array.from({ length: 5 }).map(() => {
                 return <SkeletonCard rank></SkeletonCard>;
               })}
             </RankGrid>
-          ) : ( */}
-          <RankGrid>
-            {kakao_list_2?.map((_, idx) => {
-              return (
-                <WebToonMonth key={idx} {..._} idx={idx + 5}></WebToonMonth>
-              );
-            })}
-          </RankGrid>
-          {/* )} */}
+          ) : (
+            <RankGrid>
+              {kakao_list_2?.map((_, idx) => {
+                return (
+                  <WebToonMonth key={idx} {..._} idx={idx + 5}></WebToonMonth>
+                );
+              })}
+            </RankGrid>
+          )}
         </MonthBox>
       </Slick>
 
@@ -415,7 +415,7 @@ const SliderBox = styled.div`
   white-space: nowrap;
   overflow: hidden;
   margin: 10px 0 10px 0;
-  padding-left: 16px;
+  padding: 0 16px;
 `;
 
 const CenterSliderBox = styled.div`

@@ -35,7 +35,7 @@ const ReviewWrite = (props) => {
   //상황 별 분기
   useEffect(() => {
     if (prev_review) {
-      if(prev_review.reviewContent) {
+      if (prev_review.reviewContent) {
         setReview(prev_review.reviewContent);
       }
       setStarPoint(prev_review.userPointNumber);
@@ -78,6 +78,7 @@ const ReviewWrite = (props) => {
         align="flex-start"
         borderBottom={`1px solid ${Color.gray200}`}
         padding="20px"
+        margin="-130px 0 0 0"
       >
         {/* 뒤로가기 */}
         <Grid

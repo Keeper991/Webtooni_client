@@ -33,23 +33,14 @@ const toggleLike = createAction(TOGGLE_LIKE, (post_id) => ({
 
 const initialState = {
   post_list: [
-    {
-      postId: "1",
-      postTitle: "게시글 제목",
-      userName: "닉네임",
-      postContent: "게시글 내용...",
-      talkCommentCount: 3, //댓글 수 변수명은 임시로 지정
-      createDate: "1970-01-02T00:00:00",
-      likeNum: 5,
-    },
     // {
-    //   postId: "2",
+    //   postId: "1",
     //   postTitle: "게시글 제목",
     //   userName: "닉네임",
     //   postContent: "게시글 내용...",
-    //   talkCommentCount: 4,
-    //   createDate: "1970-01-01T00:00:00",
-    //  likeNum: 5,
+    //   talkCommentCount: 3, //댓글 수 변수명은 임시로 지정
+    //   createDate: "1970-01-02T00:00:00",
+    //   likeNum: 5,
     // },
   ],
   page_number_list: [], //조회한 페이지 번호
@@ -62,7 +53,6 @@ const getPageServer = (page_number) => {
   return async function (dispatch, getState) {
     try {
       const response = await talkAPI.getPage(page_number);
-      console.log(response, "getTalkAllOK");
 
       dispatch(setPage(response.data.posts, page_number));
       dispatch(setPageNumber(page_number));
@@ -78,7 +68,6 @@ const addPostServer = (postTitle, postContent) => {
   return async function (dispatch, getState, { history }) {
     try {
       const response = await talkAPI.addPost({ postTitle, postContent });
-      console.log(response, "addTalkOK");
       const { userImg, userName, userGrade } = getState().user.info;
       const is_detail = false; //상세정보 여부(작성OR상세)
       dispatch(
@@ -98,13 +87,12 @@ const addPostServer = (postTitle, postContent) => {
 const editPostServer = (postId, postTitle, postContent) => {
   return async function (dispatch, getState, { history }) {
     try {
-      const response = await talkAPI.editPost({
+      await talkAPI.editPost({
         postId,
         postTitle,
         postContent,
       });
       const post_one = { postId, postTitle, postContent };
-      console.log(response, "editTalkOK");
       dispatch(editPostOne(post_one));
       history.replace("/talk");
     } catch (err) {
@@ -117,10 +105,8 @@ const editPostServer = (postId, postTitle, postContent) => {
 const deletePostServer = (postId) => {
   return async function (dispatch, getState, { history }) {
     try {
-      const response = await talkAPI.deletePost(postId);
-      console.log(response, "deletePostOK");
+      await talkAPI.deletePost(postId);
       dispatch(deletePostOne(postId));
-      console.log(postId, "delete poste");
       history.replace("/talk");
 
       dispatch(talkCommentActions.resetComment()); //코멘트 리셋
@@ -138,14 +124,6 @@ const getPostOneServer = (post_id) => {
     try {
       const response = await talkAPI.getOne(post_id);
       const post = response.data;
-
-      // const { userLikePostID } = getState().user.user; //유저가 좋아요 한 톡 포스트. 변수명 나중에 수정
-      // 로그인 유저의 좋아요 여부 추가
-      // if (userLikePostID.includes(post.postId)) {
-      //   post.isLike = true;
-      // } else {
-      //   post.isLike = false;
-      // }
       const is_detail = true; //상세정보 여부(작성OR상세)
       dispatch(addPostOne(post, is_detail));
     } catch (err) {
@@ -160,9 +138,7 @@ const getPostOneServer = (post_id) => {
 const likePostServer = (post_id) => {
   return async function (dispatch, getState) {
     try {
-      const response = await talkAPI.likePost(post_id);
-      console.log(response, "likePostwOK");
-
+      await talkAPI.likePost(post_id);
       dispatch(toggleLike(post_id));
     } catch (err) {
       console.log(err, "likePostwError");
@@ -229,14 +205,12 @@ export default handleActions(
         )[0];
         //좋아요 여부, 좋아요 수 변경
         if (post.ilike === true) {
-          console.log(post.ilike, "post.ilike ㅁ=왜....");
           post.ilike = false;
           post.likeNum -= 1; //변수명 나중에 수정
         } else if (post.ilike === false) {
           post.ilike = true;
           post.likeNum += 1;
         }
-        console.log(post, "post바뀐것.좋아요후");
 
         let idx = draft.post_list.findIndex(
           (p) => p.postId === parseInt(action.payload.post_id)

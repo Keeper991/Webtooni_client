@@ -80,7 +80,7 @@ const Detail = (props) => {
     <React.Fragment>
       {toonOne && (
         <>
-          <Grid padding="20px">
+          <Grid padding="20px" margin="-70px 0 0 0">
             {/* 웹툰 정보 */}
             <Grid
               borderBottom={`1px solid ${Color.gray100}`}

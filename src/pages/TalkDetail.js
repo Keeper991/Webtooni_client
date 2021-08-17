@@ -15,21 +15,16 @@ import { Permit, PermitStrict } from "../shared/PermitAuth";
 const TalkDetail = (props) => {
   //톡 포스트 가져오기
   const post_id = props.match.params.id;
-  console.log(post_id, "postid");
   const post_list = useSelector((store) => store.talk.post_list);
-  console.log(post_list, "postlist");
   const post = post_list.filter((p) => {
     return String(p.postId) === post_id;
   })[0];
-  console.log(post, "post");
 
   //댓글 가져오기
   const comment_all = useSelector((store) => store.talkComment.list);
-  console.log(comment_all, "commentall");
   const comment_list = comment_all.filter(
     (item) => item.postId === parseInt(post_id)
   );
-  console.log(comment_list, "comment_list");
   const dispatch = useDispatch();
   useEffect(() => {
     //서버에 포스트 요청
@@ -40,11 +35,9 @@ const TalkDetail = (props) => {
     if (post?.talkCommentCount !== 0 && comment_list.length === 0) {
       dispatch(talkCommentActions.getCommentAllServer(parseInt(post_id)));
     }
-    console.log(post?.is_main, "ismain확인");
   }, []);
 
   const is_login = useSelector((store) => store.user.is_login);
-  const userName = useSelector((store) => store.user.info?.userName);
 
   //포스트 삭제하기
   const [dltMsg, isDltMsg] = React.useState(false); //삭제 메세지
@@ -63,15 +56,24 @@ const TalkDetail = (props) => {
   };
 
   //댓글
-  const [cmtInp, isCmtInp] = React.useState(false); //댓글 입력창 보이기
+  // const [cmtInp, isCmtInp] = React.useState(false); //댓글 입력창 보이기
   const [comment, setComment] = React.useState(""); //댓글 입력하기
   const writeComment = (e) => {
     setComment(e.target.value);
   };
 
-  const writeCmt = () => {
+  const uploadCmt = () => {
     if (is_login) {
-      isCmtInp(true);
+      // isCmtInp(true);
+      dispatch(
+        talkCommentActions.addCommentServer(
+          parseInt(post_id),
+          comment,
+          post.talkCommentCount
+        )
+      );
+      setComment("");
+      // isCmtInp(false);
     } else {
       alert("로그인하세요~");
     }
@@ -90,7 +92,12 @@ const TalkDetail = (props) => {
         <>
           <Grid bgColor={Color.gray100} position="relative">
             {/* 게시글 내용 */}
-            <Grid bgColor={Color.white} width="100%">
+            <Grid
+              bgColor={Color.white}
+              width="100%"
+              height="auto"
+              borderBottom={`10px solid ${Color.gray100}`}
+            >
               <Grid
                 borderBottom={`1px solid ${Color.gray200}`}
                 padding="16px 20px"
@@ -167,6 +174,19 @@ const TalkDetail = (props) => {
                   display="flex"
                   justify="space-between"
                 >
+                  <Grid display="flex">
+                    <Comment width="16px" height="16px" />
+                    <Text
+                      fontSize="12px"
+                      color={Color.gray700}
+                      whiteSpace="nowrap"
+                      margin="0 0 0 4px"
+                      // _onClick={()=>isCmtInp(true)}
+                    >
+                      댓글
+                    </Text>
+                  </Grid>
+
                   <PermitStrict authorName={post.userName}>
                     <Grid>
                       <Grid display="flex">
@@ -190,28 +210,15 @@ const TalkDetail = (props) => {
                       </Grid>
                     </Grid>
                   </PermitStrict>
-
-                  <Grid display="flex" cursor>
-                    <Comment width="16px" height="16px" />
-                    <Text
-                      fontSize="12px"
-                      color={Color.gray700}
-                      whiteSpace="nowrap"
-                      margin="0 0 0 4px"
-                      _onClick={writeCmt}
-                    >
-                      댓글 작성
-                    </Text>
-                  </Grid>
                 </Grid>
               </Grid>
             </Grid>
 
             {/* 댓글 */}
             <Grid
-              margin="10px 0"
               bgColor={Color.white}
               width="100%"
+              padding="0 0 56px 0"
               position="relative"
             >
               {/* 댓글 목록 */}
@@ -253,21 +260,7 @@ const TalkDetail = (props) => {
                   _onChange={writeComment}
                   value={comment}
                 ></Input>
-                <Text
-                  width="26px"
-                  fontWeight="medium"
-                  _onClick={() => {
-                    dispatch(
-                      talkCommentActions.addCommentServer(
-                        parseInt(post_id),
-                        comment,
-                        post.talkCommentCount
-                      )
-                    );
-                    isCmtInp(false);
-                    setComment("");
-                  }}
-                >
+                <Text fontWeight="medium" _onClick={uploadCmt}>
                   작성
                 </Text>
               </Grid>

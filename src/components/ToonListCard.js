@@ -187,11 +187,6 @@ const FlexGrid = styled.div`
   ${(props) => props.flexStart && `justify-content: start;`};
 `;
 
-const InlineGrid = styled.div`
-  display: inline-flex;
-  justify-content: left;
-`;
-
 const FlexToonGrid = styled.div`
   display: flex;
   align-items: center;
