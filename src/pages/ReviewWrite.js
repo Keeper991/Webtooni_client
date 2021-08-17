@@ -1,7 +1,7 @@
 import React, { useEffect } from "react";
 import { useSelector, useDispatch } from "react-redux";
 import styled from "styled-components";
-import { Button, Input } from "../elements";
+import { Button, Input, Text } from "../elements";
 import { DetailStar } from "../components";
 import { actionCreators as webtoonActions } from "../redux/modules/talk";
 import { history } from "../redux/configureStore";
@@ -47,7 +47,10 @@ const ReviewWrite = (props) => {
   //리뷰 등록
   const uploadReview = () => {
     if (!review) {
-      alert("빠진 항목이 있어요");
+      isContentAlert(true);
+      setTimeout(function () {
+        isContentAlert(false);
+      }, 2000);
       return;
     }
     if (is_login) {
@@ -56,6 +59,9 @@ const ReviewWrite = (props) => {
       alert("로그인하세요~");
     }
   };
+
+  //내용 미입력시 메세지 띄우기
+  const [contentAlert, isContentAlert] = React.useState(false);
 
   return (
     <>
@@ -79,19 +85,46 @@ const ReviewWrite = (props) => {
         {/* 게시글 등록 */}
         <Button
           border="none"
-          color={Color.white}
           bgColor={Color.gray900}
-          width="80px"
-          height="45px"
-          fontSize="17px"
-          fontWeight="bold"
+          width="66px"
+          height="32px"
           _onClick={uploadReview}
         >
-          작성
+          <Text color={Color.white} fontWeight="medium">
+            작성
+          </Text>
         </Button>
       </Grid>
+      <Grid
+        padding="32px 20px 0"
+        bgColor={Color.white}
+        display="flex"
+        justify="flex-start"
+      >
+        <Grid
+          width="128px"
+          height="36px"
+          display="flex"
+          justify="center"
+          align="center"
+          bgColor={Color.white}
+          border={`1px solid ${Color.gray200}`}
+          borderRadius="27px"
+          padding="9px 12px"
+        >
+          <Text
+            type="p"
+            fontWeight="medium"
+            color={Color.gray700}
+            textAlign="justify"
+            width="auto"
+          >
+            웹툰제목
+          </Text>
+        </Grid>
+      </Grid>
 
-      <Grid borderBottom={`1px solid ${Color.gray200}`} padding="15px 20px">
+      <Grid padding="20px 20px 15px">
         <DetailStar
           webtoon_id={webtoon_id}
           is_login={is_login}
@@ -99,7 +132,7 @@ const ReviewWrite = (props) => {
         />
       </Grid>
       <Input
-        padding="15px 20px"
+        padding="30px 20px 0"
         multiLine
         placeholder="내용을 입력하세요"
         _onChange={(e) => setReview(e.target.value)}
@@ -107,6 +140,8 @@ const ReviewWrite = (props) => {
         height="400px"
         value={review}
       ></Input>
+
+      <CntAlertStyle fadeOut={!contentAlert}>내용을 입력하세요</CntAlertStyle>
     </>
   );
 };
@@ -122,8 +157,31 @@ const Grid = styled.div`
   padding: ${(props) => (props.padding ? props.padding : "")};
   position: ${(props) => props.position || ""};
   background-color: ${(props) => props.bgColor || ""};
+  border: ${(props) => props.border || ""};
+  border-radius: ${(props) => props.borderRadius || ""};
   border-bottom: ${(props) => props.borderBottom || ""};
   ${(props) => (props.cursor ? "cursor: pointer" : "")};
 `;
 
+const CntAlertStyle = styled.div`
+  width: 296px;
+  height: 32px;
+  border-radius: 99px;
+  background-color: rgba(0, 0, 0, 0.5);
+  position: absolute;
+  bottom: 32px;
+  line-height: 32px;
+  text-align: center;
+  font-size: 12px;
+  font-weight: 400;
+  color: ${Color.gray900};
+  animation-duration: 2s;
+  animation-timing-function: ease-out;
+  animation-fill-mode: forwards;
+  transition: all 0.5s;
+  ${(props) =>
+    props.fadeOut &&
+    ` opacity: 0;
+    `}
+`;
 export default ReviewWrite;
