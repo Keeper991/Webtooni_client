@@ -36,7 +36,7 @@ const WebToonMonth = (props) => {
             <FlexGrid>
               <Image
                 shape="square"
-                margin="0 5px 0 0"
+                margin="0 5px"
                 size="12px"
                 src="https://lh3.googleusercontent.com/pw/AM-JKLXIrRX56QwruA9no5dsQDpzLmNNgGigp4H-mNbe8Zll_MgRc1OVhN8nKaqDwTOSKiNGUT6bQ6O7sYRBDsPhnj49j7ACDz5qWrSeebdROovTQKhnt8O2jbq6QpskSozPMpq02E2hUQqTjg3gfLZpx-xv=s12-no?authuser=0"
               ></Image>
@@ -73,9 +73,9 @@ const ImageGrid = styled.div`
 const InfoGrid = styled.div`
   display: flex;
   flex-direction: column;
-  height: 40px;
+  height: 36px;
   margin-left: 5px;
-  justify-content: space-around;
+  justify-content: space-between;
 `;
 
 export default WebToonMonth;

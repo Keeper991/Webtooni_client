@@ -9,7 +9,6 @@ const SkeletonCard = (props) => {
         <RankImageGrid></RankImageGrid>
         <RankInfoGrid>
           <RankTitleGrid></RankTitleGrid>
-          <RankAuthorGrid></RankAuthorGrid>
           <RankPointGrid></RankPointGrid>
         </RankInfoGrid>
       </RankFlexToonGrid>
@@ -29,6 +28,10 @@ const SkeletonCard = (props) => {
       </MoreFlexToonGrid>
     );
   }
+
+  if (props.main_review) {
+    return <MainReviewContainer></MainReviewContainer>;
+  }
   return (
     <Container>
       <ImageGrid></ImageGrid>
@@ -39,17 +42,17 @@ const SkeletonCard = (props) => {
 
 const Gradient = keyframes`
    0% {
-        background-color: ${Color.gray400};
+        background-color: ${Color.gray200};
         opacity: 0.3;
     }
 
     50% {
-      background-color: ${Color.gray400};
+      background-color: ${Color.gray200};
         opacity: 0.5;
     }
 
     100% {
-      background-color: ${Color.gray400};
+      background-color: ${Color.gray200};
         opacity: 0.3;
     }
 `;
@@ -58,9 +61,8 @@ const Container = styled.div`
   width: 150px;
   height: 220px;
   display: inline-block;
-  margin: 10px 10px;
+  margin-right: 10px;
   box-shadow: rgba(0, 0, 0, 0.05) 0px 1px 2px 0px;
-  animation: ${Gradient} 2s infinite ease-in-out;
 `;
 
 const ContentsGrid = styled.div`
@@ -70,54 +72,49 @@ const ContentsGrid = styled.div`
   display: flex;
   flex-direction: column;
   justify-content: space-around;
+  background: ${Color.gray200};
+  animation: ${Gradient} 2s infinite ease-in-out;
 `;
 
 const ImageGrid = styled.div`
   width: 150px;
   height: 140px;
-  background: ${Color.gray200};
+  background: ${Color.gray300};
+  border-radius: 5px;
 `;
 
 const RankFlexToonGrid = styled.div`
-  width: 40%;
-  margin: 5px 0;
   display: flex;
   align-items: center;
+  width: 100%;
+  margin: 10px 0;
 `;
 
 const RankImageGrid = styled.div`
-  width: 55px;
-  height: 55px;
-  background: ${Color.gray200};
+  width: 40px;
+  height: 40px;
+  background: ${Color.gray400};
+  margin-left: 22px;
+  border-radius: 4px;
 `;
 
 const RankInfoGrid = styled.div`
-  width: 60%;
-  height: 100%;
-  margin-left: 5px;
   display: flex;
   flex-direction: column;
-  justify-content: space-around;
+  height: 36px;
+  margin-left: 5px;
+  justify-content: space-between;
 `;
 
 const RankTitleGrid = styled.div`
-  width: 60px;
+  width: 130px;
   height: 12px;
-
-  animation: ${Gradient} 2s infinite ease-in-out;
-`;
-
-const RankAuthorGrid = styled.div`
-  width: 40px;
-  height: 12px;
-
   animation: ${Gradient} 2s infinite ease-in-out;
 `;
 
 const RankPointGrid = styled.div`
-  width: 80px;
+  width: 100px;
   height: 12px;
-
   animation: ${Gradient} 2s infinite ease-in-out;
 `;
 
@@ -126,7 +123,7 @@ const MoreFlexToonGrid = styled.div`
   align-items: center;
   width: 100%;
   height: 90px;
-  padding: 0 15px;
+  padding: 0 16px;
   border-bottom: 1px solid ${Color.gray200};
 `;
 
@@ -166,4 +163,11 @@ const MorePointText = styled.p`
   animation: ${Gradient} 2s infinite ease-in-out;
 `;
 
+const MainReviewContainer = styled.div`
+  width: 150px;
+  height: 220px;
+  background: ${Color.white};
+  display: inline-block;
+  margin-right: 10px;
+`;
 export default SkeletonCard;
