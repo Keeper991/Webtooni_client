@@ -9,10 +9,7 @@ const WebToonMonth = (props) => {
     <React.Fragment>
       <FlexToonGrid
         onClick={() => {
-          history.push({
-            pathname: `/detail/${props.toonId}`,
-            state: { id: props.toonId },
-          });
+          history.push(`/detail/${props.toonId}`);
         }}
       >
         <Text type="num" fontSize="12px" fontWeight="bold" margin="0 16px 0 0">

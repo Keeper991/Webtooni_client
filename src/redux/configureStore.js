@@ -7,7 +7,7 @@ import User from "./modules/user";
 import Webtoon from "./modules/webtoon";
 import Talk from "./modules/talk";
 import TalkComment from "./modules/talkComment";
-import Admin from "./modules/admin";
+import Reviewer from "./modules/reviewer";
 import Review from "./modules/review";
 import Modal from "./modules/modal";
 
@@ -18,7 +18,7 @@ const rootReducer = combineReducers({
   webtoon: Webtoon,
   talk: Talk,
   talkComment: TalkComment,
-  admin: Admin,
+  reviewer: Reviewer,
   review: Review,
   modal: Modal,
   router: connectRouter(history),

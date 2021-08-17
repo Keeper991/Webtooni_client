@@ -29,7 +29,7 @@ instance.interceptors.request.use((config) => {
 });
 
 const webtoonAPI = {
-  getRank: () => instance.get(`rank/total`),
+  getWebtooniRank: () => instance.get(`rank/total`),
   getNaverRank: () => instance.get(`rank/naver`),
   getKakaoRank: () => instance.get(`rank/kakao`),
   getOne: (id) => instance.get(`webtoon/${id}`),
@@ -37,8 +37,8 @@ const webtoonAPI = {
 
 const reviewAPI = {
   getMain: () => instance.get(`rank/reviews`),
-  putStar: ({ webtoonId, userPointNumber }) =>
-    instance.put(`reviews/star`, { webtoonId, userPointNumber }),
+  putStar: ({ toonId, userPointNumber }) =>
+    instance.put(`reviews/star`, { toonId, userPointNumber }),
   likeReview: (reviewId) => instance.post(`/reviews/${reviewId}/like`),
   putReview: ({ reviewId, reviewContent }) =>
     instance.put(`reviews/${reviewId}`, { reviewContent }),
@@ -49,7 +49,7 @@ const reviewAPI = {
 };
 
 const reviewerAPI = {
-  getBest: () => instance.get(`rank/reviewers`),
+  getBestReviewer: () => instance.get(`rank/reviewers`),
 };
 
 const offerAPI = {
@@ -82,8 +82,8 @@ const talkAPI = {
 };
 
 const userAPI = {
-  subscribe: ({ webtoonId, myListOrNot }) =>
-    instance.post(`user/subscribe`, { webtoonId, myListOrNot }),
+  subscribe: ({ toonId, myListOrNot }) =>
+    instance.post(`user/subscribe`, { toonId, myListOrNot }),
   getWebtoon: () => instance.get(`user/me/webtoons`),
   getComment: () => instance.get(`user/me/comment`),
   getReviews: () => instance.get(`user/me/reviews`),

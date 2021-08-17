@@ -1,27 +1,32 @@
 import React from "react";
 import { Input, Text } from "../elements";
 import _ from "lodash";
-import { userAPI } from "../shared/API";
+import { userAPI, reviewAPI } from "../shared/API";
 import { ToonListCard } from "../components";
-import { actionCreators as webtoonActions } from "../redux/modules/webtoon";
 import styled from "styled-components";
-import { useDispatch, useSelector } from "react-redux";
+import { useSelector } from "react-redux";
 import { Color } from "../shared/common";
 import { LeftOutlined } from "@ant-design/icons";
 import { history } from "../redux/configureStore";
 
 const ReviewSearch = () => {
-  const dispatch = useDispatch();
-
   const [search_value, setSearchValue] = React.useState("");
   const [search_result, setSearchResult] = React.useState([]);
+  const [unwritten_list, set_unwritten_list] = React.useState([]);
 
-  const unwritten_list = useSelector((state) => state.webtoon.unwritten_offer);
   const is_login = useSelector((state) => state.user.is_login);
   const user_name = useSelector((state) => state.user.info.userName);
 
   React.useEffect(() => {
-    dispatch(webtoonActions.getUnwrittenOffer());
+    const callUnwrittenList = async () => {
+      try {
+        const { data: unwrittenToons } = await reviewAPI.getUnwritten();
+        set_unwritten_list(unwrittenToons);
+      } catch (e) {
+        console.log(e);
+      }
+    };
+    callUnwrittenList();
   }, []);
 
   const getSearchResult = async (keyword) => {
@@ -73,7 +78,7 @@ const ReviewSearch = () => {
       </Container>
 
       {search_result?.map((_, idx) => {
-        return <ToonListCard key={idx} {..._} review></ToonListCard>;
+        return <ToonListCard key={idx} {..._} review search></ToonListCard>;
       })}
       {search_result.length === 0 ? (
         <TitleGrid>

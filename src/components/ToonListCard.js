@@ -15,13 +15,10 @@ const ToonListCard = (props) => {
             if (props.review) {
               return history.push({
                 pathname: `/review/write/${props.toonId}`,
-                state: { id: props.toonId, toonTitle: props.toonTitle },
+                state: { toonTitle: props.toonTitle },
               });
             }
-            return history.push({
-              pathname: `/detail/${props.toonId}`,
-              state: { id: props.toonId },
-            });
+            return history.push(`/detail/${props.toonId}`);
           }}
         >
           <ImageGrid>
@@ -98,14 +95,11 @@ const ToonListCard = (props) => {
         onClick={() => {
           if (props.review) {
             return history.push({
-              pathname: `/review/write/${props.toonId}`,
-              state: { id: props.toonId, toonTitle: props.toonTitle },
+              pathname: `/detail/${props.toonId}`,
+              state: { toonTitle: props.toonTitle },
             });
           }
-          return history.push({
-            pathname: `/detail/${props.toonId}`,
-            state: { id: props.toonId },
-          });
+          return history.push(`/detail/${props.toonId}`);
         }}
       >
         <ImageGrid>

@@ -18,16 +18,18 @@ const Review = () => {
     (state) => state.review.is_loading_review
   );
 
-  const review_list = useSelector((state) => state.review.review_list);
+  let review_list = useSelector((state) => state.review.review_list);
+  review_list = [...review_list];
+  review_list.sort((a, b) => a.createDate - b.createDate);
 
-  const like_list = useSelector((state) => state.review.user_like_review_list);
+  const like_list = useSelector((state) => state.user.reviewLikeList);
 
   const page_num = useSelector((state) => state.review.page_num);
 
   const is_last = useSelector((state) => state.review.is_last);
 
   React.useEffect(() => {
-    if (review_list.length === 0) {
+    if (page_num === 1) {
       dispatch(reviewAction.getReviewList(page_num));
     }
   }, []);
