@@ -1,15 +1,15 @@
 import React, { useEffect } from "react";
 import { useSelector, useDispatch } from "react-redux";
 import styled from "styled-components";
-import { Text, Image, Button, Input } from "../elements";
+import { Text, Button } from "../elements";
 import { ReactComponent as WriteButton } from "../images/WriteButton.svg";
 import { actionCreators as talkActions } from "../redux/modules/talk";
 import { history } from "../redux/configureStore";
 import { Color } from "../shared/common";
 import { ReactComponent as Comment } from "../images/Comment.svg";
-import { Permit, PermitStrict } from "../shared/PermitAuth";
+import { Permit } from "../shared/PermitAuth";
 
-const Talk = (props) => {
+const Talk = () => {
   const all_post_list = useSelector((store) => store.talk.post_list); //조회한 페이지의 전체 포스트 목록
   const all_page_number = useSelector((store) => store.talk.page_number_list); //클릭한 페이지 목록
   let cur_page = useSelector((store) => store.talk.cur_page); //현재 페이지 번호
@@ -18,9 +18,9 @@ const Talk = (props) => {
   let last_page = 1; //마지막 페이지 번호
 
   const dispatch = useDispatch();
-  //처음 페이지 진입 시
+
   useEffect(() => {
-    if (all_page_number.length === 0) dispatch(talkActions.getPageServer(1)); //1번 페이지 포스트 요청
+    if (all_page_number.length === 0) dispatch(talkActions.getPageServer(1)); //처음 페이지 진입 시 1번 페이지 포스트 요청
   }, []);
 
   //마지막 페이지 번호 구하기
@@ -35,12 +35,10 @@ const Talk = (props) => {
 
   const [select, isSelect] = React.useState(0); //선택한 페이지 표시
 
-  let post_list = []; //클릭한 페이지의 포스트 리스트
-
   let page_order = all_page_number.indexOf(cur_page) + 1; //클릭한 페이지 중 현재 페이지 순서
 
   //현재 페이지의 포스트 리스트
-  post_list = all_post_list.filter(
+  let post_list = all_post_list.filter(
     (_, idx) =>
       (page_order - 1) * post_per_page <= idx &&
       idx < page_order * post_per_page
@@ -48,9 +46,8 @@ const Talk = (props) => {
 
   //클릭한 페이지의 포스트 목록 가져오기
   const getPagePosts = (page_number) => {
-    //새로운 페이지번호를 클릭한 경우 서버에서 포스트 받아오기
     if (!all_page_number.includes(page_number)) {
-      dispatch(talkActions.getPageServer(page_number));
+      dispatch(talkActions.getPageServer(page_number)); //새로운 페이지번호를 클릭한 경우
     } else {
       dispatch(talkActions.setPageNumber(page_number)); //기 조회한 페이지 번호를 클릭한 경우
     }

@@ -51,7 +51,6 @@ const getCommentAllServer = (postId) => {
   return async function (dispatch) {
     try {
       const response = await talkAPI.getComments(postId);
-      console.log(response, "getCommetAllOK");
       dispatch(setCommentAll(response.data));
     } catch (err) {
       console.log(err, "getCommetAllError");
@@ -64,7 +63,6 @@ const addCommentServer = (postId, commentContent, commentCount) => {
   return async function (dispatch, getState) {
     try {
       const response = await talkAPI.addComment({ postId, commentContent });
-      console.log(response, "addCommentOK");
 
       const { userImg, userName, userGrade } = getState().user.info; //유저 정보 가져오기
       dispatch(
@@ -76,9 +74,7 @@ const addCommentServer = (postId, commentContent, commentCount) => {
       dispatch(
         talkActions.editPostOne({ ...post, commentCount: commentCount + 1 }) //댓글수 변수명 나중에 수정
       );
-      console.log(post, "post,addComment");
     } catch (err) {
-      console.log(postId, commentContent, commentCount, "addComment변수");
       console.log(err, "addCommentError");
     }
   };
@@ -92,7 +88,6 @@ const editCommentServer = (commentId, commentContent) => {
         commentId,
         commentContent,
       });
-      console.log(response, "editCommentOK");
       dispatch(editCommentOne(commentId, commentContent));
     } catch (err) {
       console.log(err, "editCommentError");
@@ -105,7 +100,6 @@ const deleteCommentServer = (postId, commentId, commentCount) => {
   return async function (dispatch, getState, { history }) {
     try {
       const response = await talkAPI.deleteComment({ commentId });
-      console.log(response, "deleteCommentOK");
       dispatch(deleteCommentOne(commentId));
       //톡 리듀서에서 포스트 댓글 수 수정
       const post_list = getState().talk.post_list;
