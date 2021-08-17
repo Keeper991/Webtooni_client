@@ -5,8 +5,6 @@ import { Image, Text } from "../elements";
 import { Color } from "../shared/common";
 
 const ToonListCard = (props) => {
-  const toonTitle = props.toonTitle;
-  const is_user = props.is_user;
   const is_search = props.search;
 
   if (is_search) {
@@ -16,11 +14,11 @@ const ToonListCard = (props) => {
           onClick={() => {
             if (props.review) {
               return history.push({
-                pathname: `/review/write/${props.id}`,
-                state: { toonTitle: toonTitle },
+                pathname: `/review/write/${props.toonId}`,
+                state: { toonTitle: props.toonTitle },
               });
             }
-            return history.push(`/detail/${props.id}`);
+            return history.push(`/detail/${props.toonId}`);
           }}
         >
           <ImageGrid>
@@ -97,11 +95,11 @@ const ToonListCard = (props) => {
         onClick={() => {
           if (props.review) {
             return history.push({
-              pathname: `/detail/${props.id}`,
-              state: { toonTitle: toonTitle },
+              pathname: `/detail/${props.toonId}`,
+              state: { toonTitle: props.toonTitle },
             });
           }
-          return history.push(`/detail/${props.id}`);
+          return history.push(`/detail/${props.toonId}`);
         }}
       >
         <ImageGrid>
@@ -115,7 +113,7 @@ const ToonListCard = (props) => {
 
         <InfoGrid>
           <FlexGrid flexStart>
-            {is_user ? (
+            {props.is_user ? (
               <Text type="caption" color={Color.primary} margin="0 7px 0 0">
                 추천!
               </Text>

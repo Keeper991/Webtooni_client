@@ -2,7 +2,6 @@ import Main from "./Main";
 import Recommendation from "./Recommendation";
 import Review from "./Review";
 import ReviewSearch from "./ReviewSearch";
-import ReviewSearchWrite from "./ReviewSearchWrite";
 import Detail from "./Detail";
 import Search from "./Search";
 import MyPage from "./MyPage";
@@ -35,5 +34,4 @@ export {
   NaverLogin,
   ReviewWrite,
   ReviewSearch,
-  ReviewSearchWrite,
 };

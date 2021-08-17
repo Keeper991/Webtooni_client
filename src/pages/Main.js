@@ -3,7 +3,8 @@ import styled from "styled-components";
 import { history } from "../redux/configureStore";
 import { useDispatch, useSelector } from "react-redux";
 import { actionCreators as webtoonActions } from "../redux/modules/webtoon";
-import { actionCreators as adminActions } from "../redux/modules/admin";
+import { actionCreators as reviewActions } from "../redux/modules/review";
+import { actionCreators as reviewerActions } from "../redux/modules/reviewer";
 import { actionCreators as modalActions } from "../redux/modules/modal";
 import {
   WebToonCard,
@@ -19,56 +20,79 @@ import { Color } from "../shared/common";
 const Main = () => {
   const dispatch = useDispatch();
 
+  // states
+  const [is_best, setIsBest] = React.useState(true);
+
+  // selectors
+  const toon_list = useSelector((state) => state.webtoon.toon_list);
+  const is_loading = useSelector((state) => state.webtoon.is_loading);
+  const is_login = useSelector((state) => state.user.is_login);
+  const user_info = useSelector((state) => state.user.info);
+  const reviewer_list = useSelector((state) => state.reviewer.best_reviewer);
+  const review_list = useSelector((state) => state.review.review_list);
+  const isShownWelcomeModal = useSelector(
+    (state) => state.user.info.isShownWelcomeModal
+  );
+  // review lists
+
+  const best_review_list = review_list.filter((review) =>
+    review.filterConditions.includes("bestReview")
+  );
+  const recent_review_list = review_list.filter((review) =>
+    review.filterConditions.includes("newReview")
+  );
+
+  // webtoon lists
+  const webtooni_list = toon_list.filter((toon) =>
+    toon.filterConditions.includes("webtooni")
+  );
+  const naver_list = toon_list.filter((toon) =>
+    toon.filterConditions.includes("naver")
+  );
+  const kakao_list = toon_list.filter((toon) =>
+    toon.filterConditions.includes("kakao")
+  );
+  const for_user_list = toon_list.filter((toon) =>
+    toon.filterConditions?.includes("forUser")
+  );
+
+  // effects
   React.useEffect(() => {
     if (
-      webtooni_list.length === 0 ||
-      naver_list.length === 0 ||
-      kakao_list.length === 0 ||
-      best_review_list.length === 0 ||
-      recent_review_list.length === 0 ||
-      reviewer_list.length === 0
+      !webtooni_list.length ||
+      !naver_list.length ||
+      !kakao_list.length ||
+      !reviewer_list.length
     ) {
-      dispatch(webtoonActions.getWebtooniRank());
-      dispatch(webtoonActions.getNaverRank());
-      dispatch(webtoonActions.getKakaoRank());
-      dispatch(webtoonActions.getUserOffer());
-      dispatch(adminActions.getMainReview());
-      dispatch(adminActions.getMainBestReviewer());
+      dispatch(webtoonActions.getRankWebtoonList());
+      dispatch(reviewerActions.getBestReviewer());
+    }
+
+    if (!best_review_list.length || !recent_review_list.length) {
+      dispatch(reviewActions.getMainReviewList());
     }
   }, []);
 
-  const is_loading = useSelector((state) => state.webtoon.is_loading);
-  const user_info = useSelector((state) => state.user.info);
-  const webtooni_list = useSelector((state) => state.webtoon.webtooni_rank);
-  const naver_list = useSelector((state) => state.webtoon.naver_rank);
-  const kakao_list = useSelector((state) => state.webtoon.kakao_rank);
-  const for_user_list = useSelector((state) => state.webtoon.user_offer);
+  const naver_list_1 = naver_list.slice(0, 5);
+  const naver_list_2 = naver_list.slice(5, 10);
 
-  const best_review_list = useSelector(
-    (state) => state.admin.main_review.bestReview
-  );
-  const recent_review_list = useSelector(
-    (state) => state.admin.main_review.newReview
-  );
-
-  const reviewer_list = useSelector((state) => state.admin.main_best_reviewer);
-
-  const [is_best, setIsBest] = React.useState(true);
-
-  const is_login = useSelector((state) => state.user.is_login);
-  const isShownWelcomeModal = useSelector(
-    (state) => state.user.isShownWelcomeModal
-  );
+  const kakao_list_1 = kakao_list.slice(0, 5);
+  const kakao_list_2 = kakao_list.slice(5, 10);
 
   React.useEffect(() => {
-    if (is_login && !isShownWelcomeModal)
+    if (is_login && !for_user_list.length) {
+      dispatch(webtoonActions.getForUserWebtoonList());
+    }
+
+    if (is_login && !isShownWelcomeModal) {
       dispatch(modalActions.activeModal("welcome"));
-  }, []);
+    }
+  }, [is_login]);
 
   return (
     <React.Fragment>
       <TitleGrid>
-        <Text fontSize="16px" fontWeight="bold">
+        <Text type="h2" fontWeight="bold">
           이달의 웹투니버스 순위
         </Text>
         <Button
@@ -88,8 +112,8 @@ const Main = () => {
       <SliderBox>
         {is_loading || webtooni_list.length === 0 ? (
           <Slick is_infinite>
-            {Array.from({ length: 10 }).map(() => {
-              return <SkeletonCard></SkeletonCard>;
+            {Array.from({ length: 10 }).map((_, idx) => {
+              return <SkeletonCard key={idx}></SkeletonCard>;
             })}
           </Slick>
         ) : (
@@ -100,48 +124,145 @@ const Main = () => {
           </Slick>
         )}
       </SliderBox>
-      <Slick is_arrow is_variableWidth={false} is_infinite>
+
+      <Slick custom_arrows is_variableWidth={false} is_infinite>
         <MonthBox>
           <TextGrid>
-            <Text fontWeight="bold">이번 달 네이버 웹툰 TOP 10</Text>
+            <Text fontWeight="bold">네이버 웹툰</Text>
+            <Button
+              width="40px"
+              height="20px"
+              fontSize="10px"
+              fontWeight="bold"
+              borderRadius="27px"
+              padding="0px"
+              color={Color.white}
+              bgColor={Color.naverGreen}
+              border="none"
+              margin="0 0 0 5px"
+            >
+              Top 10
+            </Button>
           </TextGrid>
-          {is_loading || naver_list.length === 0 ? (
+          {/* {is_loading || naver_list.length === 0 ? (
+            <RankGrid>
+              {Array.from({ length: 10 }).map((_, idx) => {
+                return <SkeletonCard key={idx} rank></SkeletonCard>;
+              })}
+            </RankGrid>
+          ) : ( */}
+          <RankGrid>
+            {naver_list_1?.map((_, idx) => {
+              return <WebToonMonth key={idx} {..._} idx={idx}></WebToonMonth>;
+            })}
+          </RankGrid>
+          {/* )} */}
+        </MonthBox>
+        <MonthBox>
+          <TextGrid>
+            <Text fontWeight="bold">네이버 웹툰</Text>
+            <Button
+              width="40px"
+              height="20px"
+              fontSize="10px"
+              fontWeight="bold"
+              borderRadius="27px"
+              padding="0px"
+              color={Color.white}
+              bgColor={Color.naverGreen}
+              border="none"
+              margin="0 0 0 5px"
+            >
+              Top 10
+            </Button>
+          </TextGrid>
+          {/* {is_loading || naver_list.length === 0 ? (
             <RankGrid>
               {Array.from({ length: 10 }).map(() => {
                 return <SkeletonCard rank></SkeletonCard>;
               })}
             </RankGrid>
-          ) : (
-            <RankGrid>
-              {naver_list?.map((_, idx) => {
-                return <WebToonMonth key={idx} {..._} idx={idx}></WebToonMonth>;
-              })}
-            </RankGrid>
-          )}
+          ) : ( */}
+          <RankGrid>
+            {naver_list_2?.map((_, idx) => {
+              return (
+                <WebToonMonth key={idx} {..._} idx={idx + 5}></WebToonMonth>
+              );
+            })}
+          </RankGrid>
+          {/* )} */}
         </MonthBox>
 
         <MonthBox>
           <TextGrid>
-            <Text fontWeight="bold">이번 달 카카오 웹툰 TOP 10</Text>
+            <Text fontWeight="bold">카카오 웹툰</Text>
+            <Button
+              width="40px"
+              height="20px"
+              fontSize="10px"
+              fontWeight="bold"
+              borderRadius="27px"
+              padding="0px"
+              color={Color.white}
+              bgColor={Color.kakaoYellow}
+              border="none"
+              margin="0 0 0 5px"
+            >
+              Top 10
+            </Button>
           </TextGrid>
-          {is_loading || kakao_list.length === 0 ? (
+          {/* {is_loading || kakao_list.length === 0 ? (
+            <RankGrid>
+              {Array.from({ length: 10 }).map((_, idx) => {
+                return <SkeletonCard key={idx} rank></SkeletonCard>;
+              })}
+            </RankGrid>
+          ) : ( */}
+          <RankGrid>
+            {kakao_list_1?.map((_, idx) => {
+              return <WebToonMonth key={idx} {..._} idx={idx}></WebToonMonth>;
+            })}
+          </RankGrid>
+          {/* )} */}
+        </MonthBox>
+        <MonthBox>
+          <TextGrid>
+            <Text fontWeight="bold">카카오 웹툰</Text>
+            <Button
+              width="40px"
+              height="20px"
+              fontSize="10px"
+              fontWeight="bold"
+              borderRadius="27px"
+              padding="0px"
+              color={Color.white}
+              bgColor={Color.kakaoYellow}
+              border="none"
+              margin="0 0 0 5px"
+            >
+              Top 10
+            </Button>
+          </TextGrid>
+          {/* {is_loading || kakao_list.length === 0 ? (
             <RankGrid>
               {Array.from({ length: 10 }).map(() => {
                 return <SkeletonCard rank></SkeletonCard>;
               })}
             </RankGrid>
-          ) : (
-            <RankGrid>
-              {kakao_list?.map((_, idx) => {
-                return <WebToonMonth key={idx} {..._} idx={idx}></WebToonMonth>;
-              })}
-            </RankGrid>
-          )}
+          ) : ( */}
+          <RankGrid>
+            {kakao_list_2?.map((_, idx) => {
+              return (
+                <WebToonMonth key={idx} {..._} idx={idx + 5}></WebToonMonth>
+              );
+            })}
+          </RankGrid>
+          {/* )} */}
         </MonthBox>
       </Slick>
 
       <TitleGrid>
-        <Text fontSize="16px" fontWeight="bold">
+        <Text type="h2" fontWeight="bold">
           {user_info?.userName
             ? `${user_info.userName}님만을 위한 웹툰 추천`
             : "유저 맞춤 웹툰 추천"}
@@ -166,8 +287,8 @@ const Main = () => {
         <SliderBox>
           {is_loading || for_user_list.length === 0 ? (
             <Slick is_infinite>
-              {Array.from({ length: 10 }).map(() => {
-                return <SkeletonCard></SkeletonCard>;
+              {Array.from({ length: 10 }).map((_, idx) => {
+                return <SkeletonCard key={idx}></SkeletonCard>;
               })}
             </Slick>
           ) : (
@@ -184,8 +305,8 @@ const Main = () => {
           <BlurBox>
             {is_loading || for_user_list.length === 0 ? (
               <Slick is_infinite>
-                {Array.from({ length: 10 }).map(() => {
-                  return <SkeletonCard></SkeletonCard>;
+                {Array.from({ length: 10 }).map((_, idx) => {
+                  return <SkeletonCard key={idx}></SkeletonCard>;
                 })}
               </Slick>
             ) : (
@@ -267,13 +388,13 @@ const Main = () => {
           베스트 리뷰어
         </Text>
       </TitleGrid>
-      <SliderBox>
-        <Slick>
+      <CenterSliderBox>
+        <Slick is_center>
           {reviewer_list.map((_, idx) => {
             return <BestReveiwerCard key={idx} {..._}></BestReveiwerCard>;
           })}
         </Slick>
-      </SliderBox>
+      </CenterSliderBox>
     </React.Fragment>
   );
 };
@@ -282,16 +403,34 @@ const TitleGrid = styled.div`
   display: flex;
   width: 100%;
   height: 35px;
-  margin-top: 10px;
+  margin-top: 30px;
   padding: 0 16px;
   align-items: center;
   justify-content: space-between;
 `;
 
 const SliderBox = styled.div`
+  width: 100%;
+  height: auto;
   white-space: nowrap;
   overflow: hidden;
-  margin: 10px 0 10px 16px;
+  margin: 10px 0 10px 0;
+  padding-left: 16px;
+`;
+
+const CenterSliderBox = styled.div`
+  width: 100%;
+  height: 300px;
+  padding-top: 10px;
+  overflow: hidden;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  flex-direction: column;
+  background-image: url("https://lh3.googleusercontent.com/pw/AM-JKLURqrwtXPaJylOjAgW0GC_NFW7bwZg6PTmw7c_MTAfrn6mxU3rOLythCMjgdGSFi1WJ4KmcUqViPL_wmxJq_YiMTzp3ZlVwAUlrprH7G6xnZjvmFbUms5av9Xwak5qcWGKQsD7emBC4S0dZeCZUX1lS=w375-h300-no?authuser=0");
+  background-position: bottom;
+  background-repeat: no-repeat;
+  background-size: contain;
 `;
 
 const HiddenBlurBox = styled.div`
@@ -330,8 +469,8 @@ const BlurText = styled.p`
 `;
 
 const MonthBox = styled.div`
-  width: 100vw !important;
-  height: 390px !important;
+  width: 100%;
+  height: auto;
   display: flex;
   flex-wrap: wrap;
   flex-direction: column;
@@ -342,7 +481,8 @@ const MonthBox = styled.div`
 
 const TextGrid = styled.div`
   width: 100%;
-  height: 30px;
+  height: 36px;
+  background-color: ${Color.gray100};
   display: flex;
   align-items: center;
   justify-content: center;
@@ -351,16 +491,18 @@ const TextGrid = styled.div`
 
 const RankGrid = styled.div`
   width: 100%;
-  height: 90%;
   display: flex;
   flex-wrap: wrap;
   flex-direction: column;
   align-items: center;
   justify-content: center;
+  padding: 0 16px;
+  margin: 15px 0;
 `;
 
 const ReviewTabGrid = styled.div`
   width: 100%;
+  margin-top: 40px;
   padding: 0 16px;
   display: flex;
 `;

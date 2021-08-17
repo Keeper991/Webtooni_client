@@ -7,11 +7,9 @@ import { actionCreators as talkActions } from "../redux/modules/talk";
 import { history } from "../redux/configureStore";
 import { Color } from "../shared/common";
 import { ReactComponent as Comment } from "../images/Comment.svg";
+import { Permit, PermitStrict } from "../shared/PermitAuth";
 
 const Talk = (props) => {
-  // const is_login = useSelector((store) => store.user.is_login);   //로그인 여부 알기
-  const is_login = true; //나중에 지우기
-
   const all_post_list = useSelector((store) => store.talk.post_list); //조회한 페이지의 전체 포스트 목록
   const all_page_number = useSelector((store) => store.talk.page_number_list); //클릭한 페이지 목록
   let cur_page = useSelector((store) => store.talk.cur_page); //현재 페이지 번호
@@ -58,20 +56,27 @@ const Talk = (props) => {
     }
   };
 
+  //오늘 날짜
+  const date = new Date();
+  const year = date.getFullYear();
+  const month = ("0" + (1 + date.getMonth())).slice(-2);
+  const day = ("0" + date.getDate()).slice(-2);
+  const today = year + "-" + month + "-" + day;
   return (
-    <Grid bgColor={Color.gray200}>
+    <Grid bgColor={Color.gray100}>
       {/* 포스트 작성 버튼 */}
-      {is_login && (
+      <Permit>
         <Grid
           position="fixed"
           bottom="10px"
           right="10px"
           cursor
+          zIndex="2"
           onClick={() => history.push("/talk/write")}
         >
           <WriteButton />
         </Grid>
-      )}
+      </Permit>
       <Grid
         padding="16px"
         bgColor={Color.white}
@@ -79,23 +84,27 @@ const Talk = (props) => {
         display="flex"
         justify="flex-end"
       >
-        <Button
+        <Grid
           width="128px"
           height="36px"
-          shape="pill"
+          display="flex"
+          justify="center"
+          align="center"
           bgColor={Color.white}
           border={`1px solid ${Color.gray200}`}
-          padding="9px 16px"
+          borderRadius="27px"
+          padding="9px 12px"
         >
           <Text
-            type="p"
-            color={Color.darkGray}
+            type="caption"
+            fontWeight="medium"
+            color={Color.gray600}
             textAlign="justify"
             width="auto"
           >
             최신순
           </Text>
-        </Button>
+        </Grid>
       </Grid>
       {/* 포스트 리스트 */}
       <Grid bgColor={Color.white} padding="20px">
@@ -106,7 +115,7 @@ const Talk = (props) => {
             cursor
             onClick={() => history.push(`/talk/detail/${post.postId}`)}
           >
-            <Text>{post?.postTitle}</Text>
+            <Text color={Color.gray800}>{post?.postTitle}</Text>
             <Grid
               display="flex"
               margin="7px 0 0 0"
@@ -116,7 +125,8 @@ const Talk = (props) => {
               <Grid display="flex">
                 <Text
                   color={Color.gray400}
-                  type="p"
+                  type="num"
+                  fontSize="12px"
                   whiteSpace="nowrap"
                   padding="0 12px 0 0"
                 >
@@ -124,17 +134,22 @@ const Talk = (props) => {
                 </Text>
                 <Text
                   color={Color.gray400}
-                  type="caption"
+                  type="num"
+                  fontSize="12px"
                   whiteSpace="nowrap"
                   padding="0 12px 0 0"
                 >
-                  {post.createDate.substr(5, 5)}
+                  {/* 작성일 오늘인지에 따라 날짜만/시간만 표기 */}
+                  {today === post.createDate.substr(0, 10)
+                    ? post.createDate.substr(11, 5)
+                    : post.createDate.substr(5, 5)}
                 </Text>
                 <Text
                   color={Color.gray400}
-                  type="caption"
                   whiteSpace="nowrap"
                   padding="0 12px 0 0"
+                  type="num"
+                  fontSize="12px"
                 >
                   좋아요&nbsp;{post.likeNum}
                 </Text>
@@ -146,16 +161,31 @@ const Talk = (props) => {
                 padding="0 0 0 6px"
               >
                 <Comment width="24px" height="24px" />
-                <Grid position="absolute" top="0" left="45%">
-                  <Text
-                    type="num"
-                    fontSize="9px"
-                    fontWeight="bold"
-                    whiteSpace="nowrap"
-                  >
-                    {post.talkCommentCount}
-                  </Text>
-                </Grid>
+                {String(post.talkCommentCount).length === 1 ? (
+                  <Grid position="absolute" top="-1px" left="52%">
+                    <Text
+                      type="num"
+                      fontSize="9px"
+                      fontWeight="bold"
+                      whiteSpace="nowrap"
+                      color={Color.primary}
+                    >
+                      {post.talkCommentCount}
+                    </Text>
+                  </Grid>
+                ) : (
+                  <Grid position="absolute" top="-1px" left="42%">
+                    <Text
+                      type="num"
+                      fontSize="9px"
+                      fontWeight="bold"
+                      whiteSpace="nowrap"
+                      color={Color.primary}
+                    >
+                      {post.talkCommentCount}
+                    </Text>
+                  </Grid>
+                )}
               </Grid>
             </Grid>
           </Grid>
@@ -175,7 +205,9 @@ const Talk = (props) => {
               }}
               padding="0 15px 0 0"
             >
-              이전
+              <Text type="caption" color={Color.gray700}>
+                이전
+              </Text>
             </Grid>
           )}
           {/* 선택 가능한 페이지 번호 */}
@@ -189,8 +221,9 @@ const Talk = (props) => {
                     size="32px"
                     margin="5px"
                     bgColor={Color.white}
-                    color={Color.black}
-                    border={`1px solid ${Color.darkGray}`}
+                    border={`1px solid ${Color.gray300}`}
+                    fontSize="12px"
+                    color={Color.gray400}
                     _onClick={() => {
                       getPagePosts(page_btn_no);
                       isSelect(idx % 5);
@@ -211,7 +244,9 @@ const Talk = (props) => {
               }}
               padding="0 0 0 15px"
             >
-              다음
+              <Text type="caption" color={Color.gray700}>
+                다음
+              </Text>
             </Grid>
           )}
         </Grid>
@@ -234,9 +269,12 @@ const Grid = styled.div`
   top: ${(props) => props.top || ""};
   left: ${(props) => props.left || ""};
   right: ${(props) => props.right || ""};
+  z-index: ${(props) => props.zIndex || ""};
   background-color: ${(props) => props.bgColor || ""};
   ${(props) => (props.cursor ? "cursor: pointer" : "")};
   border-bottom: ${(props) => props.borderBottom || ""};
+  border: ${(props) => props.border || ""};
+  border-radius: ${(props) => props.borderRadius || ""};
 `;
 
 const PageBtnGrid = styled.div`

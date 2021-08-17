@@ -5,47 +5,57 @@ import { Text, Image, Button, Input } from "../elements";
 import { WebToonCard, DetailReview, Slick, DetailStar } from "../components";
 import { actionCreators as webtoonActions } from "../redux/modules/webtoon";
 import { actionCreators as userActions } from "../redux/modules/user";
+import { actionCreators as reviewActions } from "../redux/modules/review";
 import { Color } from "../shared/common";
 import { ReactComponent as FillStar } from "../images/FillStar.svg";
 import { history } from "../redux/configureStore";
+// import shootingStar from "../images/shootingStar.png";
+import { ReactComponent as ShootingStar } from "../images/ShootingStar.svg";
 
 const Detail = (props) => {
-  // 로그인 유무와 로그인한 유저정보 가져오기
-  const is_login = useSelector((store) => store.user.is_login);
-  const userName = useSelector((store) => store.user.info.userName);
-  const subscribeList = useSelector((store) => store.user.subscribeList);
-
-  // 웹툰 상세정보, 비슷한 웹툰 정보 가져오기
-  const webtoon_id = parseInt(props.match.params.id);
   const dispatch = useDispatch();
-
-  const detailList = useSelector((store) => store.webtoon.detail_list);
-  const toonOne = detailList.find((d) => d.toonId === webtoon_id);
-
-  const [sortBy, setSortBy] = React.useState("createDate");
-  const [myReview, setMyReview] = React.useState({
+  const webtoon_id = parseInt(props.match.params.id);
+  const initialState = React.useRef({
     reviewId: -1,
     userPointNumber: 0,
     reviewContent: "",
   });
+  // 로그인 유무와 로그인한 유저정보 가져오기
+  const is_login = useSelector((store) => store.user.is_login);
+  const userName = useSelector((store) => store.user.info.userName);
+  const subscribeList = useSelector((store) => store.user.subscribeList);
+  const toon_list = useSelector((store) => store.webtoon.toon_list);
+  const review_list = useSelector((store) => store.review.review_list);
+  const toonOne = toon_list.find((toon) => toon.toonId === webtoon_id);
+  const similarToons = toon_list.filter((toon) =>
+    toon.filterConditions?.includes(webtoon_id)
+  );
+  const toonReviews = review_list.filter(
+    (review) => review.toonId === webtoon_id
+  );
+  const reviewOne = toonReviews.find((review) => review.userName === userName);
 
+  const [myReview, setMyReview] = React.useState(initialState.current);
+  const [sortBy, setSortBy] = React.useState("createDate");
+
+  // effects
   useEffect(() => {
-    if (!toonOne) {
+    if (!toonOne || !toonOne.filterConditions?.includes("detail")) {
       dispatch(webtoonActions.getToonOneServer(webtoon_id));
-      dispatch(webtoonActions.similarToonServer(webtoon_id));
-      return;
     }
-  }, []);
+  }, [toonOne, webtoon_id]);
 
   useEffect(() => {
-    // 기존 리뷰 가져오기
-    const reviewIdx = toonOne?.reviews.findIndex(
-      (item) => item.userName === userName //로그인한 유저의 리뷰 찾기
-    );
-    console.log(reviewIdx);
-    if (myReview.reviewId === -1 && reviewIdx && reviewIdx !== -1)
-      setMyReview(toonOne?.reviews[reviewIdx]);
-  }, [toonOne, myReview]);
+    if (is_login) {
+      if (reviewOne) {
+        setMyReview(reviewOne);
+      } else {
+        setMyReview(initialState.current);
+      }
+    } else {
+      setMyReview(initialState.current);
+    }
+  }, [is_login, webtoon_id, reviewOne]);
 
   //내 리스트에 추가하기(구독하기)
   const handleSubscribe = (webtoon_id, bool) => {
@@ -58,24 +68,12 @@ const Detail = (props) => {
 
   // 별 클릭 시, 내가 작성한 리뷰에 세팅.
   const handleStarClick = (userPointNumber) => {
-    setMyReview({ ...myReview, userPointNumber });
-    dispatch(webtoonActions.putStarServer(webtoon_id, userPointNumber));
-  };
-
-  //리뷰 정렬(최신순,좋아요순)
-  const sortNew = () => {
-    toonOne.reviews.sort(function (a, b) {
-      return a.createDate > b.createDate
-        ? -1
-        : a.createDate < b.createDate
-        ? 1
-        : 0;
-    });
-  };
-  const sortLike = () => {
-    toonOne.reviews.sort(function (a, b) {
-      return a.likeCount - b.likeCount;
-    });
+    if (!is_login) {
+      alert("로그인이 필요한 서비스입니다. 로그인해주세요.");
+    } else {
+      setMyReview({ ...myReview, userPointNumber });
+      dispatch(reviewActions.putStarServer(webtoon_id, userPointNumber));
+    }
   };
 
   return (
@@ -122,7 +120,7 @@ const Detail = (props) => {
                   &nbsp;{toonOne.toonAvgPoint}
                 </Text>
                 <Text margin="0 10px" color={Color.primaryLight}>
-                  {toonOne.toonGenre.map((item) => "#" + item + " ")}
+                  {toonOne.genres?.map((item) => "#" + item + " ")}
                 </Text>
 
                 {toonOne.finished ? (
@@ -164,7 +162,12 @@ const Detail = (props) => {
                 </Button>
               )}
               <Button
-                _onClick={() => history.push(`/review/write/${webtoon_id}`)}
+                _onClick={() =>
+                  history.push({
+                    pathname: `/review/write/${webtoon_id}`,
+                    state: { toonTitle: toonOne.toonTitle },
+                  })
+                }
                 shape="pill"
               >
                 리뷰등록
@@ -173,7 +176,7 @@ const Detail = (props) => {
             <Text fontWeight="medium" color={Color.gray500}>
               웹툰설명
             </Text>
-            <Text tag="p" margin="16px 0">
+            <Text tag="p" margin="16px 0" whiteSpace="normal" lineHeight="22px">
               {toonOne.toonContent}
             </Text>
             <a
@@ -187,9 +190,11 @@ const Detail = (props) => {
                 bgColor={Color.white}
                 padding="12px 16px"
               >
+                <ShootingStar
+                  style={{ width: "16px", height: "16px", marginRight: "8px" }}
+                />
                 <Text
                   tag="p"
-                  width="100%"
                   textAlign="left"
                   fontWeight="medium"
                   color={Color.primary}
@@ -214,7 +219,7 @@ const Detail = (props) => {
                 fontWeight="medium"
                 color={Color.gray500}
               >
-                리뷰({toonOne.reviewCount})
+                리뷰
               </Text>
               {/* 리뷰 정렬하기 */}
               {/* <Grid display="flex" justify="flex-end" gap="8px">
@@ -227,16 +232,16 @@ const Detail = (props) => {
               </Grid> */}
             </Grid>
             {/* 리뷰 목록 */}
-            {toonOne.reviews.map((item, idx) => (
+            {toonReviews.map((item, idx) => (
               <DetailReview key={idx} review={item} />
             ))}
             <Text tag="p" fontWeight="medium" color={Color.gray500}>
-              비슷한 장르의 웹툰({toonOne.reviewCount})
+              비슷한 장르의 웹툰
             </Text>
 
             <Slick>
-              {toonOne.similarList.map((item) => (
-                <SimContainer>
+              {similarToons.map((item, idx) => (
+                <SimContainer key={idx}>
                   <WebToonCard {...item} id={item.toonId} />
                 </SimContainer>
               ))}

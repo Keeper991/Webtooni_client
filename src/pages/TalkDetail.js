@@ -33,26 +33,18 @@ const TalkDetail = (props) => {
   const dispatch = useDispatch();
   useEffect(() => {
     //서버에 포스트 요청
-    // if (!post?.ilikeList) {  //변수명 수정...
     if (!post || post?.is_main === true) {
-      console.log(post?.is_main, "ismain");
       dispatch(talkActions.getPostOneServer(post_id));
     }
-    //서버에 댓글 요청(포스트의 댓글 수가 0이 아님에도 댓글리스트가 없을 때) //댓글 변수명 수정...
+    //서버에 댓글 요청
     if (post?.talkCommentCount !== 0 && comment_list.length === 0) {
-      console.log(
-        post?.talkCommentCount,
-        comment_list,
-        "talkcommentcount,comentlist,서버에코멘트요청시"
-      );
       dispatch(talkCommentActions.getCommentAllServer(parseInt(post_id)));
     }
+    console.log(post?.is_main, "ismain확인");
   }, []);
 
-  const is_login = useSelector((store) => store.user.is_login); //로그인 여부
-  const userName = useSelector((store) => store.user.info?.userName); //로그인 유저 정보
-  const authorName = userName;
-  console.log(userName, "userName");
+  const is_login = useSelector((store) => store.user.is_login);
+  const userName = useSelector((store) => store.user.info?.userName);
 
   //포스트 삭제하기
   const [dltMsg, isDltMsg] = React.useState(false); //삭제 메세지
@@ -85,18 +77,27 @@ const TalkDetail = (props) => {
     }
   };
 
+  //오늘 날짜
+  const date = new Date();
+  const year = date.getFullYear();
+  const month = ("0" + (1 + date.getMonth())).slice(-2);
+  const day = ("0" + date.getDate()).slice(-2);
+  const today = year + "-" + month + "-" + day;
+
   return (
     <>
       {post && (
         <>
-          <Grid bgColor={Color.gray200} position="relative">
+          <Grid bgColor={Color.gray100} position="relative">
             {/* 게시글 내용 */}
             <Grid bgColor={Color.white} width="100%">
               <Grid
                 borderBottom={`1px solid ${Color.gray200}`}
                 padding="16px 20px"
               >
-                <Text type="h2">{post.postTitle}</Text>
+                <Text type="h2" color={Color.gray800}>
+                  {post.postTitle}
+                </Text>
                 <Grid
                   display="flex"
                   margin="7px 0 0 0"
@@ -106,7 +107,8 @@ const TalkDetail = (props) => {
                   <Grid display="flex">
                     <Text
                       color={Color.gray400}
-                      type="caption"
+                      type="num"
+                      fontSize="12px"
                       whiteSpace="nowrap"
                       padding="0 12px 0 0"
                     >
@@ -114,15 +116,20 @@ const TalkDetail = (props) => {
                     </Text>
                     <Text
                       color={Color.gray400}
-                      type="caption"
+                      type="num"
+                      fontSize="12px"
                       whiteSpace="nowrap"
                       padding="0 12px 0 0"
                     >
-                      {post.createDate.substr(5, 5)}
+                      {/* 작성일 오늘인지에 따라 날짜만/시간만 표기 */}
+                      {today === post.createDate.substr(0, 10)
+                        ? post.createDate.substr(11, 5)
+                        : post.createDate.substr(5, 5)}
                     </Text>
                     <Text
                       color={Color.gray400}
-                      type="caption"
+                      type="num"
+                      fontSize="12px"
                       whiteSpace="nowrap"
                       padding="0 12px 0 0"
                     >
@@ -139,14 +146,20 @@ const TalkDetail = (props) => {
                     cursor
                   >
                     {post.ilike ? <FillHeart /> : <EmptyHeart />}{" "}
-                    <Text type="p" whiteSpace="nowrap" padding="0 0 0 6px">
+                    <Text
+                      type="num"
+                      fontSize="12px"
+                      color={Color.gray800}
+                      whiteSpace="nowrap"
+                      padding="0 0 0 6px"
+                    >
                       {post.likeNum}
                     </Text>
                   </Grid>
                 </Grid>
               </Grid>
               <Grid bgColor={Color.white} padding="28px 20px 24px" width="100%">
-                <Text type="p" padding="0 32px 55px 0">
+                <Text color={Color.gray800} type="h2" padding="0 32px 55px 0">
                   {post.postContent}
                 </Text>
                 <Grid
@@ -154,12 +167,11 @@ const TalkDetail = (props) => {
                   display="flex"
                   justify="space-between"
                 >
-                  <Grid>
-                    {/* 유저가 게시글 작성자라면 수정/삭제 */}
-                    {userName === post.userName && (
+                  <PermitStrict authorName={post.userName}>
+                    <Grid>
                       <Grid display="flex">
                         <Text
-                          type="p"
+                          color={Color.gray600}
                           margin="0 24px 0 0"
                           _onClick={() => {
                             props.history.push(`/talk/write/${post_id}`);
@@ -168,17 +180,22 @@ const TalkDetail = (props) => {
                         >
                           수정
                         </Text>
-                        <Text type="p" _onClick={() => isDltMsg(true)} cursor>
+                        <Text
+                          color={Color.gray600}
+                          _onClick={() => isDltMsg(true)}
+                          cursor
+                        >
                           삭제
                         </Text>
                       </Grid>
-                    )}
-                  </Grid>
+                    </Grid>
+                  </PermitStrict>
 
                   <Grid display="flex" cursor>
                     <Comment width="16px" height="16px" />
                     <Text
-                      type="p"
+                      fontSize="12px"
+                      color={Color.gray700}
                       whiteSpace="nowrap"
                       margin="0 0 0 4px"
                       _onClick={writeCmt}
@@ -191,54 +208,12 @@ const TalkDetail = (props) => {
             </Grid>
 
             {/* 댓글 */}
-            <Grid margin="10px 0" bgColor={Color.white} width="100%">
-              {/* 댓글 작성 */}
-              {cmtInp && (
-                <Grid
-                  display="flex"
-                  justify="flex-start"
-                  align="center"
-                  width="100%"
-                  height="56px"
-                  padding="20px"
-                  borderTop={`1px solid ${Color.gray200}`}
-                  borderBottom={`1px solid ${Color.gray200}`}
-                >
-                  <Image
-                    size="28px"
-                    shape="circle"
-                    // src={userImg}
-                  ></Image>
-                  <Input
-                    width="95%"
-                    margin="0 0 0 9px"
-                    padding="0"
-                    placeholder="내용을 입력해 주세요"
-                    border="none"
-                    // color={Color.lightGray5}
-                    placeHolderGray
-                    _onChange={writeComment}
-                    value={comment}
-                  ></Input>
-                  <Text
-                    width="26px"
-                    fontWeight="medium"
-                    _onClick={() => {
-                      dispatch(
-                        talkCommentActions.addCommentServer(
-                          parseInt(post_id),
-                          comment,
-                          post.talkCommentCount
-                        )
-                      );
-                      isCmtInp(false);
-                      setComment("");
-                    }}
-                  >
-                    작성
-                  </Text>
-                </Grid>
-              )}
+            <Grid
+              margin="10px 0"
+              bgColor={Color.white}
+              width="100%"
+              position="relative"
+            >
               {/* 댓글 목록 */}
               {comment_list.map((_, idx) => (
                 <TalkComment
@@ -247,6 +222,56 @@ const TalkDetail = (props) => {
                   commentCount={post.talkCommentCount}
                 ></TalkComment>
               ))}
+
+              {/* 댓글 작성 */}
+              {/* {cmtInp && ( */}
+              <Grid
+                display="flex"
+                justify="flex-start"
+                align="center"
+                width="100vw"
+                height="56px"
+                padding="20px"
+                borderTop={`1px solid ${Color.gray200}`}
+                borderBottom={`1px solid ${Color.gray200}`}
+                position="fixed"
+                bottom="0px"
+                left="0px"
+                zIndex="2"
+                bgColor={Color.white}
+              >
+                <Image size="28px" shape="circle" src={post.userImg}></Image>
+                <Input
+                  width="95%"
+                  margin="0 0 0 9px"
+                  padding="0"
+                  placeholder="내용을 입력해 주세요"
+                  border="none"
+                  color={Color.gray800}
+                  fontSize="14px"
+                  fontWeight={400}
+                  _onChange={writeComment}
+                  value={comment}
+                ></Input>
+                <Text
+                  width="26px"
+                  fontWeight="medium"
+                  _onClick={() => {
+                    dispatch(
+                      talkCommentActions.addCommentServer(
+                        parseInt(post_id),
+                        comment,
+                        post.talkCommentCount
+                      )
+                    );
+                    isCmtInp(false);
+                    setComment("");
+                  }}
+                >
+                  작성
+                </Text>
+              </Grid>
+              {/* )} */}
             </Grid>
           </Grid>
           {/* 삭제메세지 띄우기 */}
@@ -262,7 +287,7 @@ const TalkDetail = (props) => {
             >
               <Grid
                 position="relative"
-                top="296px"
+                top="35%"
                 width="260px"
                 height="161px"
                 borderRadius="8px"
@@ -328,6 +353,7 @@ const Grid = styled.div`
   position: ${(props) => props.position || ""};
   z-index: ${(props) => props.zIndex || ""};
   top: ${(props) => props.top || ""};
+  bottom: ${(props) => props.bottom || ""};
   left: ${(props) => props.left || ""};
   background-color: ${(props) => props.bgColor || ""};
   border-bottom: ${(props) => props.borderBottom || ""};

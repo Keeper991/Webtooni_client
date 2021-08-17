@@ -15,8 +15,8 @@ const DetailStar = ({ onStarClick, starPoint }) => {
     <>
       <StarContainer>
         <FillStarGrid>
-          {starScores.map((score) => (
-            <StarPartGrid>
+          {starScores.map((score, idx) => (
+            <StarPartGrid key={idx}>
               <FillStar width="40px" height="40px" />
 
               <StarPart1
@@ -34,8 +34,8 @@ const DetailStar = ({ onStarClick, starPoint }) => {
         </FillStarGrid>
 
         <EmptyStarGrid hideEmptyStar={hideEmptyStar}>
-          {starScores.map((score) => (
-            <StarPartGrid>
+          {starScores.map((score, idx) => (
+            <StarPartGrid key={idx}>
               <EmptyStar width="40px" height="40px" />
 
               <StarPart1

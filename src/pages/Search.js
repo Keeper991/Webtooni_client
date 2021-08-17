@@ -3,6 +3,7 @@ import { Input, Text } from "../elements";
 import _ from "lodash";
 import { userAPI } from "../shared/API";
 import { ToonListCard } from "../components";
+import { Color } from "../shared/common";
 import styled from "styled-components";
 
 const Search = () => {
@@ -41,18 +42,20 @@ const Search = () => {
           type="text"
           _onChange={handleSearch}
           value={search_value}
-          placeholder="검색어를 입력해주세요."
+          placeholder="웹툰명을 검색해주세요"
         ></Input>
 
-        <Text tag="p" margin="20px 0 0 0">
+        <Text tag="p" fontWeight="bold" margin="30px 0 0 0">
           검색 결과
         </Text>
-        {search_result?.map((_, idx) => {
-          return <ToonListCard key={idx} {..._}></ToonListCard>;
-        })}
+      </Container>
+      {search_result?.map((_, idx) => {
+        return <ToonListCard key={idx} {..._}></ToonListCard>;
+      })}
+      <Container>
         {search_result.length === 0 ? (
           <TitleGrid>
-            <Text>검색 결과가 없습니다</Text>
+            <Text color={Color.gray400}>검색 결과가 없습니다</Text>
           </TitleGrid>
         ) : null}
       </Container>

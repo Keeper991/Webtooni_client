@@ -2,7 +2,7 @@ import React from "react";
 import styled from "styled-components";
 import { useDispatch, useSelector } from "react-redux";
 import { actionCreators as webtoonActions } from "../redux/modules/webtoon";
-import { actionCreators as adminActions } from "../redux/modules/admin";
+import { actionCreators as reviewerActions } from "../redux/modules/reviewer";
 import { OfferCard } from "../components";
 import { Text, Image, Button } from "../elements";
 import { Slick, WebToonCard, SkeletonCard } from "../components";
@@ -12,32 +12,51 @@ import { history } from "../redux/configureStore";
 
 const Recommendation = () => {
   const dispatch = useDispatch();
+  // selectors
+  const is_login = useSelector((state) => state.user.is_login);
+  const toon_list = useSelector((state) => state.webtoon.toon_list);
 
+  // webtoon lists
+  const best_reviewer_list = toon_list.filter((toon) =>
+    toon.filterConditions.includes("bestReviewerOffer")
+  );
+  const md_offer_list = toon_list.filter((toon) =>
+    toon.filterConditions.includes("mdOffer")
+  );
+  const end_toon_list = toon_list.filter((toon) =>
+    toon.filterConditions.includes("endOffer")
+  );
+  const similar_user_list = toon_list.filter((toon) =>
+    toon.filterConditions.includes("similarUserOffer")
+  );
+  const for_user_list = toon_list.filter((toon) =>
+    toon.filterConditions.includes("forUser")
+  );
+
+  // effects
   React.useEffect(() => {
-    if (
-      md_offer_list.length === 0 ||
-      end_toon_list.length === 0 ||
-      best_reviewer_list.length === 0 ||
-      similar_user_list.length === 0
-    ) {
-      dispatch(webtoonActions.getUserOffer());
-      dispatch(webtoonActions.getBestReviewerOffer());
-      dispatch(webtoonActions.getSimilarUserOffer());
-      dispatch(webtoonActions.getEndToonOffer());
-      dispatch(adminActions.getMdOffer());
+    if (!best_reviewer_list.length) {
+      dispatch(webtoonActions.getBestReviewerOfferWebtoonList());
     }
   }, []);
 
-  const md_offer_list = useSelector((state) => state.admin.md_offer);
-  const end_toon_list = useSelector((state) => state.webtoon.end_toon);
-  const best_reviewer_list = useSelector(
-    (state) => state.webtoon.best_reviewer_offer.webtoonAndGenreResponseDtos
-  );
-  const similar_user_list = useSelector(
-    (state) => state.webtoon.similar_user_offer
-  );
+  React.useEffect(() => {
+    if (
+      is_login &&
+      (!md_offer_list.length ||
+        !end_toon_list.length ||
+        !similar_user_list.length ||
+        !end_toon_list.length)
+    ) {
+      dispatch(webtoonActions.getOfferWebtoonListForLogin());
+    }
+
+    if (is_login && !for_user_list.length) {
+      dispatch(webtoonActions.getForUserWebtoonList());
+    }
+  }, [is_login]);
+
   const is_loading = useSelector((state) => state.webtoon.is_loading);
-  const is_login = useSelector((state) => state.user.is_login);
   const webToonList = [
     {
       toonImg:
@@ -139,6 +158,7 @@ const Recommendation = () => {
   return (
     <React.Fragment>
       <OfferCard {...webToonList}></OfferCard>
+      {/* <OfferCard {...for_user_list}></OfferCard> */}
       <BannerBox>
         <Text margin="5px 0 0 0" type="small" color={Color.gray700}>
           좋아하실만한 웹툰을 추천해 드릴게요.
