@@ -9,18 +9,15 @@ import { ReactComponent as BackButton } from "../images/BackButton.svg";
 
 const TalkWrite = (props) => {
   const dispatch = useDispatch();
-  const is_login = useSelector((store) => store.user.is_login); //로그인 여부 판별
+  const is_login = useSelector((store) => store.user.is_login);
 
   //톡 포스트 수정 시 기존 포스트 가져오기
   const post_id = props.match.params.id;
-  console.log(post_id, "postid");
   const post_list = useSelector((store) => store.talk.post_list);
   const prevPost = post_list.filter((p) => String(p.postId) === post_id)[0];
-  console.log(prevPost, "prevPost");
 
   //로그인 유저 정보
   const userName = useSelector((store) => store.user.info?.userName);
-  console.log(userName, "userName");
 
   //톡 포스트 작성하기
   const [post, setPost] = React.useState({
@@ -75,12 +72,7 @@ const TalkWrite = (props) => {
       }, 2000);
       return;
     }
-    console.log(
-      parseInt(prevPost.postId),
-      post.postTitle,
-      post.postContent,
-      "톡에딧확인"
-    );
+
     dispatch(
       talkActions.editPostServer(
         parseInt(prevPost.postId),
