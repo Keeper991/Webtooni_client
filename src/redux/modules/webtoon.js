@@ -46,11 +46,23 @@ const endLoading = createAction(END_LOADING, () => ({}));
 // Top 10 3종 불러오기
 const getRankWebtoonList = () => async (dispatch, getState) => {
   try {
-    const { data: webtooniToons } = await webtoonAPI.getWebtooniRank();
+    let { data: webtooniToons } = await webtoonAPI.getWebtooniRank();
+    webtooniToons = webtooniToons.map((toon) => {
+      toon.genres = toon.genres || [];
+      return toon;
+    });
     dispatch(addToonList(webtooniToons, "webtooni"));
-    const { data: naverToons } = await webtoonAPI.getNaverRank();
+    let { data: naverToons } = await webtoonAPI.getNaverRank();
+    naverToons = naverToons.map((toon) => {
+      toon.genres = toon.genres || [];
+      return toon;
+    });
     dispatch(addToonList(naverToons, "naver"));
-    const { data: kakaoToons } = await webtoonAPI.getKakaoRank();
+    let { data: kakaoToons } = await webtoonAPI.getKakaoRank();
+    kakaoToons = kakaoToons.map((toon) => {
+      toon.genres = toon.genres || [];
+      return toon;
+    });
     dispatch(addToonList(kakaoToons, "kakao"));
   } catch (e) {
     console.log(e);
@@ -185,7 +197,11 @@ export default handleActions(
                 action.payload.category
               );
             }
-            draft.toon_list[toonIdx] = { ...draft.toon_list[toonIdx], ...toon };
+            draft.toon_list[toonIdx] = {
+              ...draft.toon_list[toonIdx],
+              ...toon,
+              genres: [...draft.toon_list[toonIdx].genres, ...toon.genres],
+            };
           }
         });
       }),
