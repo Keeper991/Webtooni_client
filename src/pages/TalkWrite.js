@@ -98,6 +98,7 @@ const TalkWrite = (props) => {
         align="flex-start"
         borderBottom={`1px solid ${Color.gray200}`}
         padding="20px"
+        margin="-130px 0 0 0"
       >
         {/* 뒤로가기 */}
         <Grid

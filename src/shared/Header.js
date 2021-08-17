@@ -52,12 +52,16 @@ const Header = (props) => {
   if (
     props.location.pathname === "/talk/write" ||
     props.location.pathname === "/review/search" ||
-    props.location.pathname === `/review/write/${props.location.state?.id}`
+    props.location.pathname === "/login" ||
+    props.location.pathname.includes("/review/write/")
   ) {
     return null;
   }
 
-  if (props.location.pathname === `/detail/${props.location.state?.id}`) {
+  if (
+    props.location.pathname.includes("/detail") &&
+    !props.location.pathname.includes("/talk/detail")
+  ) {
     return (
       <React.Fragment>
         <SimpleContainer>
@@ -65,49 +69,7 @@ const Header = (props) => {
             <LeftOutlined
               style={{ fontSize: "18px", margin: "25px 0" }}
               onClick={() => {
-                history.goBack();
-              }}
-            ></LeftOutlined>
-            <IconWrap>
-              <SearchOutlined
-                onClick={() => {
-                  history.push("/search");
-                }}
-              />
-              {is_login ? (
-                <UserOutlined
-                  onClick={() => dispatch(modalActions.activeModal("logout"))}
-                />
-              ) : (
-                <Button
-                  bgColor="transparent"
-                  color={Color.black}
-                  fontSize="12px"
-                  border={`1px solid ${Color.gray200}`}
-                  padding="7px 16px"
-                  _onClick={() => {
-                    history.push("/login");
-                  }}
-                >
-                  로그인
-                </Button>
-              )}
-            </IconWrap>
-          </HeaderWrap>
-        </SimpleContainer>
-      </React.Fragment>
-    );
-  }
-
-  if (props.location.pathname === `/review/write/${props.location.state?.id}`) {
-    return (
-      <React.Fragment>
-        <SimpleContainer>
-          <HeaderWrap is_simple>
-            <LeftOutlined
-              style={{ fontSize: "18px", margin: "25px 0" }}
-              onClick={() => {
-                history.goBack();
+                history.go(-1);
               }}
             ></LeftOutlined>
             <IconWrap>
