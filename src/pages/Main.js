@@ -60,6 +60,12 @@ const Main = () => {
     (state) => state.user.isShownWelcomeModal
   );
 
+  const naver_list_1 = naver_list.slice(0, 5);
+  const naver_list_2 = naver_list.slice(5, 10);
+
+  const kakao_list_1 = kakao_list.slice(0, 5);
+  const kakao_list_2 = kakao_list.slice(5, 10);
+
   React.useEffect(() => {
     if (is_login && !isShownWelcomeModal)
       dispatch(modalActions.activeModal("welcome"));
@@ -100,43 +106,140 @@ const Main = () => {
           </Slick>
         )}
       </SliderBox>
-      <Slick is_arrow is_variableWidth={false} is_infinite>
+
+      <Slick custom_arrows is_variableWidth={false} is_infinite>
         <MonthBox>
           <TextGrid>
-            <Text fontWeight="bold">이번 달 네이버 웹툰 TOP 10</Text>
+            <Text fontWeight="bold">네이버 웹툰</Text>
+            <Button
+              width="40px"
+              height="20px"
+              fontSize="10px"
+              fontWeight="bold"
+              borderRadius="27px"
+              padding="0px"
+              color={Color.white}
+              bgColor={Color.naverGreen}
+              border="none"
+              margin="0 0 0 5px"
+            >
+              Top 10
+            </Button>
           </TextGrid>
-          {is_loading || naver_list.length === 0 ? (
+          {/* {is_loading || naver_list.length === 0 ? (
             <RankGrid>
               {Array.from({ length: 10 }).map(() => {
                 return <SkeletonCard rank></SkeletonCard>;
               })}
             </RankGrid>
-          ) : (
+          ) : ( */}
+          <RankGrid>
+            {naver_list_1?.map((_, idx) => {
+              return <WebToonMonth key={idx} {..._} idx={idx}></WebToonMonth>;
+            })}
+          </RankGrid>
+          {/* )} */}
+        </MonthBox>
+        <MonthBox>
+          <TextGrid>
+            <Text fontWeight="bold">네이버 웹툰</Text>
+            <Button
+              width="40px"
+              height="20px"
+              fontSize="10px"
+              fontWeight="bold"
+              borderRadius="27px"
+              padding="0px"
+              color={Color.white}
+              bgColor={Color.naverGreen}
+              border="none"
+              margin="0 0 0 5px"
+            >
+              Top 10
+            </Button>
+          </TextGrid>
+          {/* {is_loading || naver_list.length === 0 ? (
             <RankGrid>
-              {naver_list?.map((_, idx) => {
-                return <WebToonMonth key={idx} {..._} idx={idx}></WebToonMonth>;
+              {Array.from({ length: 10 }).map(() => {
+                return <SkeletonCard rank></SkeletonCard>;
               })}
             </RankGrid>
-          )}
+          ) : ( */}
+          <RankGrid>
+            {naver_list_2?.map((_, idx) => {
+              return (
+                <WebToonMonth key={idx} {..._} idx={idx + 5}></WebToonMonth>
+              );
+            })}
+          </RankGrid>
+          {/* )} */}
         </MonthBox>
 
         <MonthBox>
           <TextGrid>
-            <Text fontWeight="bold">이번 달 카카오 웹툰 TOP 10</Text>
+            <Text fontWeight="bold">카카오 웹툰</Text>
+            <Button
+              width="40px"
+              height="20px"
+              fontSize="10px"
+              fontWeight="bold"
+              borderRadius="27px"
+              padding="0px"
+              color={Color.white}
+              bgColor={Color.kakaoYellow}
+              border="none"
+              margin="0 0 0 5px"
+            >
+              Top 10
+            </Button>
           </TextGrid>
-          {is_loading || kakao_list.length === 0 ? (
+          {/* {is_loading || kakao_list.length === 0 ? (
             <RankGrid>
               {Array.from({ length: 10 }).map(() => {
                 return <SkeletonCard rank></SkeletonCard>;
               })}
             </RankGrid>
-          ) : (
+          ) : ( */}
+          <RankGrid>
+            {kakao_list_1?.map((_, idx) => {
+              return <WebToonMonth key={idx} {..._} idx={idx}></WebToonMonth>;
+            })}
+          </RankGrid>
+          {/* )} */}
+        </MonthBox>
+        <MonthBox>
+          <TextGrid>
+            <Text fontWeight="bold">카카오 웹툰</Text>
+            <Button
+              width="40px"
+              height="20px"
+              fontSize="10px"
+              fontWeight="bold"
+              borderRadius="27px"
+              padding="0px"
+              color={Color.white}
+              bgColor={Color.kakaoYellow}
+              border="none"
+              margin="0 0 0 5px"
+            >
+              Top 10
+            </Button>
+          </TextGrid>
+          {/* {is_loading || kakao_list.length === 0 ? (
             <RankGrid>
-              {kakao_list?.map((_, idx) => {
-                return <WebToonMonth key={idx} {..._} idx={idx}></WebToonMonth>;
+              {Array.from({ length: 10 }).map(() => {
+                return <SkeletonCard rank></SkeletonCard>;
               })}
             </RankGrid>
-          )}
+          ) : ( */}
+          <RankGrid>
+            {kakao_list_2?.map((_, idx) => {
+              return (
+                <WebToonMonth key={idx} {..._} idx={idx + 5}></WebToonMonth>
+              );
+            })}
+          </RankGrid>
+          {/* )} */}
         </MonthBox>
       </Slick>
 
@@ -293,7 +396,8 @@ const SliderBox = styled.div`
   height: auto;
   white-space: nowrap;
   overflow: hidden;
-  margin: 10px 0 10px 16px;
+  margin: 10px 0 10px 0;
+  padding-left: 16px;
 `;
 
 const CenterSliderBox = styled.div`
@@ -347,8 +451,8 @@ const BlurText = styled.p`
 `;
 
 const MonthBox = styled.div`
-  width: 100vw !important;
-  height: 390px !important;
+  width: 100%;
+  height: auto;
   display: flex;
   flex-wrap: wrap;
   flex-direction: column;
@@ -359,7 +463,8 @@ const MonthBox = styled.div`
 
 const TextGrid = styled.div`
   width: 100%;
-  height: 30px;
+  height: 36px;
+  background-color: ${Color.gray100};
   display: flex;
   align-items: center;
   justify-content: center;
@@ -368,12 +473,13 @@ const TextGrid = styled.div`
 
 const RankGrid = styled.div`
   width: 100%;
-  height: 90%;
   display: flex;
   flex-wrap: wrap;
   flex-direction: column;
   align-items: center;
   justify-content: center;
+  padding: 0 16px;
+  margin: 15px 0;
 `;
 
 const ReviewTabGrid = styled.div`
