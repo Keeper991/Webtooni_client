@@ -122,7 +122,7 @@ const Detail = (props) => {
                   &nbsp;{toonOne.toonAvgPoint}
                 </Text>
                 <Text margin="0 10px" color={Color.primaryLight}>
-                  {toonOne.toonGenre.map((item) => "#" + item + " ")}
+                  {toonOne.genres.map((item) => "#" + item + " ")}
                 </Text>
 
                 {toonOne.finished ? (
@@ -166,8 +166,8 @@ const Detail = (props) => {
               <Button
                 _onClick={() => {
                   history.push({
-                    pathname: `/review/write/${props.id}`,
-                    state: { id: props.id, toonTitle: props.toonTitle },
+                    pathname: `/review/write/${props.toonId}`,
+                    state: { id: props.toonId, toonTitle: props.toonTitle },
                   });
                 }}
                 shape="pill"

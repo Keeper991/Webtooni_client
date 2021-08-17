@@ -10,8 +10,8 @@ const WebToonCard = (props) => {
       <Container
         onClick={() => {
           history.push({
-            pathname: `/detail/${props.id}`,
-            state: { id: props.id },
+            pathname: `/detail/${props.toonId}`,
+            state: { id: props.toonId },
           });
         }}
       >

@@ -14,13 +14,13 @@ const ToonListCard = (props) => {
           onClick={() => {
             if (props.review) {
               return history.push({
-                pathname: `/review/write/${props.id}`,
-                state: { id: props.id, toonTitle: props.toonTitle },
+                pathname: `/review/write/${props.toonId}`,
+                state: { id: props.toonId, toonTitle: props.toonTitle },
               });
             }
             return history.push({
-              pathname: `/detail/${props.id}`,
-              state: { id: props.id },
+              pathname: `/detail/${props.toonId}`,
+              state: { id: props.toonId },
             });
           }}
         >
@@ -98,13 +98,13 @@ const ToonListCard = (props) => {
         onClick={() => {
           if (props.review) {
             return history.push({
-              pathname: `/review/write/${props.id}`,
-              state: { id: props.id, toonTitle: props.toonTitle },
+              pathname: `/review/write/${props.toonId}`,
+              state: { id: props.toonId, toonTitle: props.toonTitle },
             });
           }
           return history.push({
-            pathname: `/detail/${props.id}`,
-            state: { id: props.id },
+            pathname: `/detail/${props.toonId}`,
+            state: { id: props.toonId },
           });
         }}
       >

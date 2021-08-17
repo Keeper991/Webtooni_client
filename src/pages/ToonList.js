@@ -52,7 +52,7 @@ const ToonList = (props) => {
         {is_loading || webtooni_list.length === 0 ? (
           <Container
             onClick={() => {
-              history.push(`/detail/${props.id}`);
+              history.push(`/detail/${props.toonId}`);
             }}
           >
             <FlexGrid>
@@ -102,7 +102,7 @@ const ToonList = (props) => {
         {is_loading || end_toon_list.length === 0 ? (
           <Container
             onClick={() => {
-              history.push(`/detail/${props.id}`);
+              history.push(`/detail/${props.toonId}`);
             }}
           >
             <FlexGrid>
@@ -152,7 +152,7 @@ const ToonList = (props) => {
         {is_loading || end_toon_list.length === 0 ? (
           <Container
             onClick={() => {
-              history.push(`/detail/${props.id}`);
+              history.push(`/detail/${props.toonId}`);
             }}
           >
             <FlexGrid>
@@ -202,7 +202,7 @@ const ToonList = (props) => {
         {is_loading || user_offer_list.length === 0 ? (
           <Container
             onClick={() => {
-              history.push(`/detail/${props.id}`);
+              history.push(`/detail/${props.toonId}`);
             }}
           >
             <FlexGrid>
@@ -252,7 +252,7 @@ const ToonList = (props) => {
         {is_loading || similar_offer_list.length === 0 ? (
           <Container
             onClick={() => {
-              history.push(`/detail/${props.id}`);
+              history.push(`/detail/${props.toonId}`);
             }}
           >
             <FlexGrid>
