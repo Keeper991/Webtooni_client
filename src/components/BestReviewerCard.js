@@ -13,27 +13,15 @@ const BestReveiwerCard = (props) => {
           shape="circle"
           size="64px"
         ></Image>
-        <Text
-          tag="p"
-          padding="0 0 5px 0"
-          type="medium"
-          fontWeight="bold"
-          color={Color.gray800}
-        >
+        <Text tag="p" type="medium" fontWeight="bold" color={Color.gray800}>
           {props.user.userName ? props.user.userName : "null"}
         </Text>
-        <Text tag="p" padding="0 0 5px 0" type="caption" color={Color.gray600}>
+        <Text tag="p" type="caption" color={Color.gray600}>
           {props.user.userGrade ? props.user.userGrade : "null"}
         </Text>
         <BottomGrid>
           <FlexGrid>
-            <Text
-              tag="p"
-              padding="3px 0"
-              type="small"
-              fontWeight="bold"
-              color={Color.gray400}
-            >
+            <Text tag="p" type="small" fontWeight="bold" color={Color.gray400}>
               리뷰 수
             </Text>
             <Text type="num" fontSize="14px" fontWeight="bold">
@@ -41,13 +29,7 @@ const BestReveiwerCard = (props) => {
             </Text>
           </FlexGrid>
           <FlexGrid>
-            <Text
-              tag="p"
-              padding="3px 0"
-              type="small"
-              fontWeight="bold"
-              color={Color.gray400}
-            >
+            <Text tag="p" type="small" fontWeight="bold" color={Color.gray400}>
               좋아요 수
             </Text>
             <Text type="num" fontSize="14px" fontWeight="bold">
@@ -61,20 +43,20 @@ const BestReveiwerCard = (props) => {
 };
 
 const Container = styled.div`
-  width: 100px;
-  height: 160px;
+  width: 120px;
+  height: 150px;
   display: inline-flex;
   flex-direction: column;
   justify-content: space-between;
   align-items: center;
-  margin: 20px 20px 30px 0;
   border-radius: 5px;
+  padding: 0px;
 `;
 
 const BottomGrid = styled.div`
   width: 100%;
   display: flex;
-  justify-content: space-between;
+  justify-content: space-around;
 `;
 
 const FlexGrid = styled.div`
@@ -82,7 +64,7 @@ const FlexGrid = styled.div`
   align-items: center;
   justify-content: space-between;
   flex-direction: column;
-  padding: 5px 10px;
+  padding: 5px;
 `;
 
 export default BestReveiwerCard;

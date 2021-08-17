@@ -9,25 +9,33 @@ const WebToonMonth = (props) => {
     <React.Fragment>
       <FlexToonGrid
         onClick={() => {
-          history.push(`/detail/${props.id}`);
+          history.push({
+            pathname: `/detail/${props.toonId}`,
+            state: { id: props.toonId },
+          });
         }}
       >
+        <Text type="num" fontSize="12px" fontWeight="bold" margin="0 16px 0 0">
+          {props.idx + 1}
+        </Text>
         <ImageGrid index={props.idx + 1}>
-          <Image src={props.toonImg} width="100%" height="100%"></Image>
+          <Image
+            src={props.toonImg}
+            width="40px"
+            height="40px"
+            radius="4px"
+          ></Image>
         </ImageGrid>
 
         <InfoGrid>
-          <TitleWrap>
-            <Text tag="p" fontWeight="medium">
-              {props.toonTitle}
-            </Text>
-          </TitleWrap>
-          <AuthorWrap>
+          <Text tag="p" fontWeight="medium">
+            {props.toonTitle}
+          </Text>
+
+          <FlexGrid flexStart>
             <Text tag="p" type="caption" color={Color.gray500}>
               {props.toonAuthor}
             </Text>
-          </AuthorWrap>
-          <FlexGrid>
             <FlexGrid>
               <Image
                 shape="square"
@@ -39,9 +47,6 @@ const WebToonMonth = (props) => {
                 {props.toonAvgPoint}
               </Text>
             </FlexGrid>
-            <Text type="small">
-              {props.toonWeekday ? props.toonWeekday : "완결"}
-            </Text>
           </FlexGrid>
         </InfoGrid>
       </FlexToonGrid>
@@ -53,59 +58,27 @@ const FlexGrid = styled.div`
   display: flex;
   align-items: center;
   justify-content: space-between;
+  ${(props) => props.flexStart && `justify-content: start;`};
 `;
 
 const FlexToonGrid = styled.div`
   display: flex;
   align-items: center;
-  width: 40%;
-  margin: 5px 0;
+  width: 100%;
+  margin: 10px 0;
 `;
 
 const ImageGrid = styled.div`
-  width: 55px;
-  height: 55px;
-
-  &:before {
-    content: "${(props) => props.index}";
-    display: flex;
-    position: absolute;
-    width: 16px;
-    height: 16px;
-    background-color: ${Color.gray600};
-    font-size: 9px;
-    justify-content: center;
-    align-items: center;
-    color: ${Color.white};
-  }
+  width: 40px;
+  height: 40px;
 `;
 
 const InfoGrid = styled.div`
   display: flex;
   flex-direction: column;
-  width: 60%;
-  height: 55px;
+  height: 40px;
   margin-left: 5px;
-  justify-content: space-between;
+  justify-content: space-around;
 `;
 
-const TitleWrap = styled.div`
-  width: 90px;
-
-  & > p {
-    overflow: hidden;
-    text-overflow: ellipsis;
-    white-space: nowrap;
-  }
-`;
-
-const AuthorWrap = styled.div`
-  width: 90px;
-  padding-bottom: 3px;
-  & > p {
-    overflow: hidden;
-    text-overflow: ellipsis;
-    white-space: nowrap;
-  }
-`;
 export default WebToonMonth;

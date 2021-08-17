@@ -122,7 +122,7 @@ const Detail = (props) => {
                   &nbsp;{toonOne.toonAvgPoint}
                 </Text>
                 <Text margin="0 10px" color={Color.primaryLight}>
-                  {toonOne.toonGenre.map((item) => "#" + item + " ")}
+                  {toonOne.genres.map((item) => "#" + item + " ")}
                 </Text>
 
                 {toonOne.finished ? (
@@ -164,7 +164,12 @@ const Detail = (props) => {
                 </Button>
               )}
               <Button
-                _onClick={() => history.push(`/review/write/${webtoon_id}`)}
+                _onClick={() => {
+                  history.push({
+                    pathname: `/review/write/${props.toonId}`,
+                    state: { id: props.toonId, toonTitle: props.toonTitle },
+                  });
+                }}
                 shape="pill"
               >
                 리뷰등록
