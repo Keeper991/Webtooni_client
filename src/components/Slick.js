@@ -9,7 +9,7 @@ import { Color } from "../shared/common";
 const Slick = ({
   width,
   children,
-  is_arrow,
+  custom_arrows,
   is_variableWidth,
   is_infinite,
   is_center,
@@ -23,11 +23,11 @@ const Slick = ({
         style={{
           ...style,
           display: "flex",
-          width: "16px",
-          height: "16px",
+          width: "14px",
+          height: "14px",
           position: "absolute",
-          right: "5%",
-          top: "45px",
+          right: "8%",
+          top: "47px",
           zIndex: 1,
         }}
         onClick={onClick}
@@ -43,11 +43,11 @@ const Slick = ({
         style={{
           ...style,
           display: "flex",
-          width: "16px",
-          height: "16px",
+          width: "14px",
+          height: "14px",
           position: "absolute",
-          left: "5%",
-          top: "45px",
+          left: "8%",
+          top: "47px",
           zIndex: 1,
         }}
         onClick={onClick}
@@ -65,7 +65,7 @@ const Slick = ({
     arrows: false,
   };
 
-  if (is_arrow) {
+  if (custom_arrows) {
     return (
       <SliderWrap
         infinite={is_infinite}
@@ -146,7 +146,7 @@ const LeftArrow = styled.div`
     display: flex !important;
     align-items: center !important;
     justify-content: center !important;
-    font-size: 16px !important;
+    font-size: 14px !important;
     color: ${Color.black} !important;
     font-weight: bold;
   }
@@ -161,7 +161,7 @@ const RightArrow = styled.div`
     display: flex !important;
     align-items: center !important;
     justify-content: center !important;
-    font-size: 16px !important;
+    font-size: 14px !important;
     color: ${Color.black} !important;
     font-weight: bold;
   }
