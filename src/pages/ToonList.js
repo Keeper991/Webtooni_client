@@ -156,7 +156,7 @@ const ToonList = (props) => {
   if (toon_list_name === "best_reviewer") {
     return (
       <React.Fragment>
-        {is_loading || end_toon_list.length === 0 ? (
+        {is_loading || best_reviewer_list.length === 0 ? (
           <Container
             onClick={() => {
               history.push(`/detail/${props.toonId}`);

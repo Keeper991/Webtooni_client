@@ -282,7 +282,7 @@ const MainContainer = styled.div`
   height: auto;
   background: ${Color.gray100};
   display: inline-block;
-  margin-right: 10px;
+  margin-right: 16px;
 `;
 
 const MainFlexToonGrid = styled.div`
@@ -308,31 +308,31 @@ const MainUserGrid = styled.div`
 `;
 
 const MainReviewGrid = styled.div`
-  width: 245px;
-  min-height: 80px;
+  width: 213px;
+  min-height: 100px;
   height: auto;
   padding: 16px;
 `;
 
 const MainReivewText = styled.div`
-  width: 245px;
+  width: 213px;
   font-size: 12px;
   white-space: normal;
   display: -webkit-box;
-  -webkit-line-clamp: 5;
+  -webkit-line-clamp: 3;
   -webkit-box-orient: vertical;
   overflow: hidden;
   word-break: break-word;
-  line-height: 1.4em;
-  max-height: 7em;
+  line-height: 1.6em;
+  max-height: 4.8em;
 `;
 
 const MainReivewTextMore = styled.div`
-  width: 245px;
+  width: 213px;
   font-size: 12px;
   white-space: normal;
   word-break: break-word;
-  line-height: 1.4em;
+  line-height: 1.6em;
 `;
 
 const MainColumnGrid = styled.div`

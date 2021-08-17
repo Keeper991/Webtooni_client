@@ -26,6 +26,7 @@ import {
 import Header from "./Header";
 import GlobalStyle from "./GlobalStyle";
 import Modal from "./Modals/Modal";
+import ScrollToTop from "./ScrollToTop";
 
 function App() {
   const dispatch = useDispatch();
@@ -35,6 +36,7 @@ function App() {
     <>
       <ConnectedRouter history={history}>
         <GlobalStyle></GlobalStyle>
+        <ScrollToTop></ScrollToTop>
         <Header></Header>
         <Route path="/" exact component={Main} />
         <Route path="/detail/:id" exact component={Detail} />

@@ -194,11 +194,19 @@ const Recommendation = () => {
         </Button>
       </TitleGrid>
       <SliderBox>
-        <Slick is_infinite>
-          {best_reviewer_list?.map((_, idx) => {
-            return <WebToonCard key={idx} {..._}></WebToonCard>;
-          })}
-        </Slick>
+        {is_loading || best_reviewer_list.length === 0 ? (
+          <Slick>
+            {Array.from({ length: 10 }).map((_, idx) => {
+              return <SkeletonCard key={idx}></SkeletonCard>;
+            })}
+          </Slick>
+        ) : (
+          <Slick is_infinite>
+            {best_reviewer_list?.map((_, idx) => {
+              return <WebToonCard key={idx} {..._}></WebToonCard>;
+            })}
+          </Slick>
+        )}
       </SliderBox>
 
       <MdBox>
