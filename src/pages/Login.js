@@ -12,16 +12,6 @@ const Login = () => {
   return (
     <React.Fragment>
       <Container>
-        <BackButtonWrap>
-          <Button
-            bgColor="transparent"
-            border="none"
-            padding={0}
-            _onClick={() => history.goBack()}
-          >
-            <BackButton />
-          </Button>
-        </BackButtonWrap>
         <ImageWrap>
           <Image src={title} width="200px" height="27px" />
         </ImageWrap>
@@ -49,8 +39,8 @@ const Login = () => {
 
 const Container = styled.div`
   width: 100%;
-  height: 400px;
-  margin-top: 100px;
+  height: 360px;
+  margin-top: 50px;
   display: flex;
   flex-direction: column;
   justify-content: space-between;
@@ -59,12 +49,6 @@ const Container = styled.div`
   a:visited {
     text-decoration: none;
   }
-`;
-
-const BackButtonWrap = styled.div`
-  position: absolute;
-  top: 85px;
-  left: 20px;
 `;
 
 const ImageWrap = styled.div`

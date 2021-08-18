@@ -64,7 +64,13 @@ const ReviewWrite = (props) => {
       return;
     }
     if (is_login) {
-      dispatch(reviewActions.updateReviewServer(prev_review.reviewId, review));
+      dispatch(
+        reviewActions.updateReviewServer(
+          prev_review.reviewId,
+          review,
+          props.location.state.from_detail
+        )
+      );
     } else {
       alert("로그인하세요~");
     }
