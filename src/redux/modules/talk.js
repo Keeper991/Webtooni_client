@@ -2,6 +2,7 @@ import { createAction, handleActions } from "redux-actions";
 import { produce } from "immer";
 import { talkAPI } from "../../shared/API";
 import { actionCreators as talkCommentActions } from "./talkComment";
+import { actionCreators as userActions } from "./user";
 
 const SET_PAGE = "SET_PAGE";
 const ADD_POST_ONE = "ADD_POST_ONE";
@@ -80,6 +81,11 @@ const addPostServer = (postTitle, postContent) => {
       history.push("/talk");
     } catch (err) {
       console.log(err, "addTalkError");
+      if (err.message === "Request failed with status code 401") {
+        dispatch(userActions.logOut());
+        alert("로그아웃 되었습니다");
+        return;
+      }
     }
   };
 };
@@ -97,6 +103,11 @@ const editPostServer = (postId, postTitle, postContent) => {
       history.replace("/talk");
     } catch (err) {
       console.log(err, "editTalkError");
+      if (err.message === "Request failed with status code 401") {
+        dispatch(userActions.logOut());
+        alert("로그아웃 되었습니다");
+        return;
+      }
     }
   };
 };
@@ -112,6 +123,11 @@ const deletePostServer = (postId) => {
       dispatch(talkCommentActions.resetComment()); //코멘트 리셋
     } catch (err) {
       console.log(err, "deletePostError");
+      if (err.message === "Request failed with status code 401") {
+        dispatch(userActions.logOut());
+        alert("로그아웃 되었습니다");
+        return;
+      }
       alert("포스트 정보가 없어요");
       history.replace("/talk");
     }
@@ -142,6 +158,11 @@ const likePostServer = (post_id) => {
       dispatch(toggleLike(post_id));
     } catch (err) {
       console.log(err, "likePostwError");
+      if (err.message === "Request failed with status code 401") {
+        dispatch(userActions.logOut());
+        alert("로그아웃 되었습니다");
+        return;
+      }
     }
   };
 };

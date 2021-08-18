@@ -186,6 +186,11 @@ const likeReviewServer = (reviewId, bool) => {
       }
     } catch (err) {
       console.log(err, "likeReviewError");
+      if (err.message === "Request failed with status code 401") {
+        dispatch(userActions.logOut());
+        alert("로그아웃 되었습니다");
+        return;
+      }
     }
   };
 };
@@ -226,6 +231,11 @@ const putStarServer = (webtoonId, userPointNumber) => {
       }
     } catch (err) {
       console.log(err, "putStarError");
+      if (err.message === "Request failed with status code 401") {
+        dispatch(userActions.logOut());
+        alert("로그아웃 되었습니다");
+        return;
+      }
     }
   };
 };
@@ -251,6 +261,11 @@ const updateReviewServer = (reviewId, reviewContent, from_detail) => {
       }
     } catch (err) {
       console.log(err, "uploadReviewError");
+      if (err.message === "Request failed with status code 401") {
+        dispatch(userActions.logOut());
+        alert("로그아웃 되었습니다");
+        return;
+      }
     }
   };
 };
@@ -262,6 +277,11 @@ const removeReviewContentServer = (reviewId) => {
       await reviewAPI.deleteReview(reviewId);
       dispatch(removeReviewContent(reviewId));
     } catch (err) {
+      if (err.message === "Request failed with status code 401") {
+        dispatch(userActions.logOut());
+        alert("로그아웃 되었습니다");
+        return;
+      }
       console.log(err, "removeReviewError");
       alert("리뷰 정보가 없어요");
       history.replace("/");
