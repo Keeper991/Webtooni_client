@@ -161,7 +161,7 @@ const TalkDetail = (props) => {
                     onClick={toggleLike}
                     cursor
                   >
-                    {post.ilike ? <FillHeart /> : <EmptyHeart />}{" "}
+                    {post.ilike && is_login ? <FillHeart /> : <EmptyHeart />}{" "}
                     <Text
                       type="num"
                       fontSize="12px"
