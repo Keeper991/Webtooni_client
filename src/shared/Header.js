@@ -52,10 +52,26 @@ const Header = (props) => {
   if (
     props.location.pathname === "/talk/write" ||
     props.location.pathname === "/review/search" ||
-    props.location.pathname === "/login" ||
     props.location.pathname.includes("/review/write/")
   ) {
     return null;
+  }
+
+  if (props.location.pathname === "/login") {
+    return (
+      <React.Fragment>
+        <SimpleContainer>
+          <HeaderWrap is_simple>
+            <LeftOutlined
+              style={{ fontSize: "18px", margin: "25px 0" }}
+              onClick={() => {
+                history.goBack();
+              }}
+            ></LeftOutlined>
+          </HeaderWrap>
+        </SimpleContainer>
+      </React.Fragment>
+    );
   }
 
   if (
@@ -69,7 +85,11 @@ const Header = (props) => {
             <LeftOutlined
               style={{ fontSize: "18px", margin: "25px 0" }}
               onClick={() => {
-                history.go(-1);
+                if (props.location.state?.from_detail) {
+                  history.go(-3);
+                } else {
+                  history.goBack();
+                }
               }}
             ></LeftOutlined>
             <IconWrap>
