@@ -91,6 +91,11 @@ const loginCheck =
         !res.data.userName && history.push("/taste");
       } catch (e) {
         console.log(e);
+        if (e.message === "Request failed with status code 401") {
+          dispatch(logOut());
+          alert("로그아웃 되었습니다");
+          return;
+        }
       }
     } else {
       dispatch(logOut());
@@ -103,6 +108,11 @@ const subscribeServer = (webtoonId, bool) => async (dispatch, getState) => {
     dispatch(bool ? subscribe(webtoonId) : unsubscribe(webtoonId));
   } catch (e) {
     console.log(e);
+    if (e.message === "Request failed with status code 401") {
+      dispatch(logOut());
+      alert("로그아웃 되었습니다");
+      return;
+    }
   }
 };
 

@@ -2,6 +2,7 @@ import { createAction, handleActions } from "redux-actions";
 import { produce } from "immer";
 import { talkAPI } from "../../shared/API";
 import { actionCreators as talkActions } from "./talk";
+import { actionCreators as userActions } from "./user";
 
 const SET_COMMENT_ALL = "SET_COMMENT_ALL";
 const ADD_COMMENT_ONE = "ADD_COMMENT_ONE";
@@ -76,6 +77,11 @@ const addCommentServer = (postId, commentContent, commentCount) => {
       );
     } catch (err) {
       console.log(err, "addCommentError");
+      if (err.message === "Request failed with status code 401") {
+        dispatch(userActions.logOut());
+        alert("로그아웃 되었습니다");
+        return;
+      }
     }
   };
 };
@@ -91,6 +97,11 @@ const editCommentServer = (commentId, commentContent) => {
       dispatch(editCommentOne(commentId, commentContent));
     } catch (err) {
       console.log(err, "editCommentError");
+      if (err.message === "Request failed with status code 401") {
+        dispatch(userActions.logOut());
+        alert("로그아웃 되었습니다");
+        return;
+      }
     }
   };
 };
@@ -109,6 +120,11 @@ const deleteCommentServer = (postId, commentId, commentCount) => {
       );
     } catch (err) {
       console.log(err, "deleteCommentError");
+      if (err.message === "Request failed with status code 401") {
+        dispatch(userActions.logOut());
+        alert("로그아웃 되었습니다");
+        return;
+      }
       alert("댓글 정보가 없어요");
     }
   };

@@ -84,6 +84,11 @@ const getForUserWebtoonList = () => async (dispatch, getState) => {
     dispatch(addToonList(forUserToons, "forUser"));
   } catch (e) {
     console.log(e);
+    if (e.message === "Request failed with status code 401") {
+      dispatch(userActions.logOut());
+      alert("로그아웃 되었습니다");
+      return;
+    }
     alert("웹툰 리스트를 불러오는데에 실패했습니다.");
   }
 };
@@ -109,6 +114,11 @@ const getOfferWebtoonListForLogin = () => {
       );
     } catch (err) {
       console.log(err);
+      if (err.message === "Request failed with status code 401") {
+        dispatch(userActions.logOut());
+        alert("로그아웃 되었습니다");
+        return;
+      }
       alert("웹툰 리스트를 불러오는데에 실패했습니다.");
     }
   };

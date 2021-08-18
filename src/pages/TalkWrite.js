@@ -108,7 +108,7 @@ const TalkWrite = (props) => {
             border="none"
             bgColor={Color.gray900}
             width="66px"
-            height="32px"
+            height="36px"
             _onClick={addPost}
           >
             <Text color={Color.white} fontWeight="medium">
@@ -135,7 +135,6 @@ const TalkWrite = (props) => {
           placeholder="제목을 입력하세요"
           color={Color.gray800}
           fontSize="16px"
-          fontWeight={400}
           _onChange={(e) => setPost({ ...post, postTitle: e.target.value })}
           border="none"
           value={post.postTitle}
@@ -148,6 +147,7 @@ const TalkWrite = (props) => {
         flexDir="column"
         justify="center"
         align="center"
+        height="100%"
       >
         <Input
           width="100%"
@@ -156,10 +156,9 @@ const TalkWrite = (props) => {
           placeholder="내용을 입력하세요"
           color={Color.gray800}
           fontSize="16px"
-          fontWeight={400}
           _onChange={(e) => setPost({ ...post, postContent: e.target.value })}
           border="none"
-          height="400px"
+          height="80vh"
           value={post.postContent}
         ></Input>
 
@@ -184,12 +183,12 @@ const Grid = styled.div`
 `;
 
 const CntAlertStyle = styled.div`
-  width: 296px;
+  width: 80vw;
   height: 32px;
   border-radius: 99px;
-  background-color: rgba(0, 0, 0, 0.6);
+  background-color: ${Color.gray900};
   position: absolute;
-  bottom: 32px;
+  bottom: 20px;
   line-height: 32px;
   text-align: center;
   font-size: 12px;
