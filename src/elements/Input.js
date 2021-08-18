@@ -19,6 +19,7 @@ const Input = (props) => {
     value,
     multiLine,
     children,
+    taRef,
   } = props;
 
   const styles = {
@@ -43,6 +44,7 @@ const Input = (props) => {
             placeholder={placeholder}
             onChange={_onChange}
             value={value}
+            ref={taRef}
           ></ElTextArea>
         </ElLabel>
       </React.Fragment>
@@ -81,6 +83,7 @@ Input.defaultProps = {
   type: "text",
   value: "",
   children: "",
+  ref: "",
 };
 
 const ElLabel = styled.label`

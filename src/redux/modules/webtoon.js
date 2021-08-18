@@ -73,7 +73,11 @@ const getRankWebtoonList = () => async (dispatch, getState) => {
 // ~님을 위한 추천 불러오기
 const getForUserWebtoonList = () => async (dispatch, getState) => {
   try {
-    const { data: forUserToons } = await offerAPI.getForUser();
+    let { data: forUserToons } = await offerAPI.getForUser();
+    forUserToons = forUserToons.map((toon) => {
+      toon.genres = toon.genres || [];
+      return toon;
+    });
     dispatch(addToonList(forUserToons, "forUser"));
   } catch (e) {
     console.log(e);
@@ -111,8 +115,9 @@ const getOfferWebtoonListForLogin = () => {
       dispatch(addToonList(similarUserOfferToons, "similarUserOffer"));
       const { data: endOfferToons } = await offerAPI.getEnd();
       dispatch(addToonList(endOfferToons, "endOffer"));
-      const { data: mdOfferToons } = await offerAPI.getMd();
-      dispatch(addToonList([mdOfferToons], "mdOffer"));
+      let { data: mdOfferToon } = await offerAPI.getMd();
+      mdOfferToon.genres = mdOfferToon.genres || [];
+      dispatch(addToonList([mdOfferToon], "mdOffer"));
     } catch (err) {
       console.log(err);
       alert("웹툰 리스트를 불러오는데에 실패했습니다.");
@@ -195,6 +200,14 @@ export default handleActions(
             if (action.payload.category) {
               draft.toon_list[toonIdx].filterConditions.push(
                 action.payload.category
+              );
+              draft.toon_list[toonIdx].filterConditions = draft.toon_list[
+                toonIdx
+              ].filterConditions.filter(
+                (condition, idx) =>
+                  draft.toon_list[toonIdx].filterConditions.indexOf(
+                    condition
+                  ) === idx
               );
             }
             draft.toon_list[toonIdx] = {

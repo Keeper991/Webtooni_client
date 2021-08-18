@@ -14,11 +14,11 @@ const getNaverAddr = () => {
     process.env.NODE_ENV === "development"
       ? "http://localhost:3000"
       : "http://webtooniverse-host.s3-website.ap-northeast-2.amazonaws.com";
-  return `https://nid.naver.com/oauth2.0/authorize?response_type=code&client_id=....&redirect_uri=${redirectURI}&state=....`;
+  return `https://nid.naver.com/oauth2.0/authorize?response_type=code&client_id=7RBFbToxSfOTA51ofOYj&redirect_uri=${redirectURI}/user/naver`;
 };
 
 const instance = axios.create({
-  baseURL: "http://13.124.236.225/api/v1/",
+  baseURL: "http://3.35.149.44/api/v1/",
 });
 
 // 매 요청 전에 token 유무를 확인해서 header에 Authorization 추가.
