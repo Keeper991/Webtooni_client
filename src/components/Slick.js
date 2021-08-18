@@ -92,6 +92,7 @@ const Slick = ({
       slidesToShow={1}
       draggable
       variableWidth={is_variableWidth}
+      arrows={false}
     >
       {children}
     </SliderWrap>
@@ -124,12 +125,14 @@ const CenterSliderWrap = styled(Slider)`
     height: auto;
     align-items: center;
     justify-content: center;
+    opacity: 0.5;
   }
   .slick-center {
     -webkit-transform: scale(1.25);
     -moz-transform: scale(1.25);
     transform: scale(1.25);
     transition: all 0.2s;
+    opacity: 1 !important;
   }
 
   .slick-list {
