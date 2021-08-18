@@ -178,8 +178,8 @@ const Main = () => {
           </TextGrid>
           {is_loading || naver_list.length === 0 ? (
             <RankGrid>
-              {Array.from({ length: 5 }).map(() => {
-                return <SkeletonCard rank></SkeletonCard>;
+              {Array.from({ length: 5 }).map((_, idx) => {
+                return <SkeletonCard key={idx} rank></SkeletonCard>;
               })}
             </RankGrid>
           ) : (
@@ -245,8 +245,8 @@ const Main = () => {
           </TextGrid>
           {is_loading || kakao_list.length === 0 ? (
             <RankGrid>
-              {Array.from({ length: 5 }).map(() => {
-                return <SkeletonCard rank></SkeletonCard>;
+              {Array.from({ length: 5 }).map((_, idx) => {
+                return <SkeletonCard key={idx} rank></SkeletonCard>;
               })}
             </RankGrid>
           ) : (

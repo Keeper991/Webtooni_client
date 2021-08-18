@@ -93,7 +93,7 @@ const getMainReviewList = () => {
           toonImg: review.toonImg,
           toonPlatform: review.toonPlatform,
           toonWeekday: review.toonWeekday,
-          genres: review.genres,
+          genres: review.genres || [],
         };
       });
       dispatch(webtoonActions.addToonList(bestReviewToons, "bestReview"));
@@ -115,7 +115,7 @@ const getMainReviewList = () => {
           toonImg: review.toonImg,
           toonPlatform: review.toonPlatform,
           toonWeekday: review.toonWeekday,
-          genres: review.genres,
+          genres: review.genres || [],
         };
       });
       dispatch(webtoonActions.addToonList(newReviewToons, "newReview"));

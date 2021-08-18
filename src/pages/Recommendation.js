@@ -308,8 +308,8 @@ const Recommendation = () => {
       <SliderBox>
         {is_loading || end_toon_list.length === 0 ? (
           <Slick is_infinite>
-            {Array.from({ length: 10 }).map(() => {
-              return <SkeletonCard></SkeletonCard>;
+            {Array.from({ length: 10 }).map((_, idx) => {
+              return <SkeletonCard key={idx}></SkeletonCard>;
             })}
           </Slick>
         ) : (
@@ -345,8 +345,8 @@ const Recommendation = () => {
         <SliderBox>
           {is_loading || similar_user_list.length === 0 ? (
             <Slick is_infinite>
-              {Array.from({ length: 10 }).map(() => {
-                return <SkeletonCard></SkeletonCard>;
+              {Array.from({ length: 10 }).map((_, idx) => {
+                return <SkeletonCard key={idx}></SkeletonCard>;
               })}
             </Slick>
           ) : (
@@ -363,8 +363,8 @@ const Recommendation = () => {
           <BlurBox>
             {is_loading || similar_user_list.length === 0 ? (
               <Slick is_infinite>
-                {Array.from({ length: 10 }).map(() => {
-                  return <SkeletonCard></SkeletonCard>;
+                {Array.from({ length: 10 }).map((_, idx) => {
+                  return <SkeletonCard key={idx}></SkeletonCard>;
                 })}
               </Slick>
             ) : (
