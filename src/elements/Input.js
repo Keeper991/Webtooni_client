@@ -83,7 +83,7 @@ Input.defaultProps = {
   type: "text",
   value: "",
   children: "",
-  ref: "",
+  taRef: null,
 };
 
 const ElLabel = styled.label`
