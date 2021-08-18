@@ -7,7 +7,7 @@ const OfferCard = (props) => {
   return (
     <React.Fragment>
       <Container>
-        <Image src={props[0].toonImg} width="100%" height="100%"></Image>
+        <Image src={props.toonImg} width="100%" height="100%"></Image>
         <InfoGrid>
           <Text
             type="h1"
@@ -15,21 +15,21 @@ const OfferCard = (props) => {
             color={Color.white}
             margin="0 0 8px 0"
           >
-            {props[0].toonTitle}
+            {props.toonTitle}
           </Text>
-          <FlexGrid>
+          <FlexGrid flexStart>
             <Text type="caption" color={Color.white}>
-              {props[0].toonAuthor}
+              {props.toonAuthor}
             </Text>
             <FlexGrid>
               <Image
                 shape="square"
-                margin="0 5px 0 0"
+                margin="0 5px 0 10px"
                 size="12px"
                 src="https://lh3.googleusercontent.com/pw/AM-JKLXIrRX56QwruA9no5dsQDpzLmNNgGigp4H-mNbe8Zll_MgRc1OVhN8nKaqDwTOSKiNGUT6bQ6O7sYRBDsPhnj49j7ACDz5qWrSeebdROovTQKhnt8O2jbq6QpskSozPMpq02E2hUQqTjg3gfLZpx-xv=s12-no?authuser=0"
               ></Image>
-              <Text type="caption" color={Color.white}>
-                {props[0].toonPointTotalNumber}
+              <Text type="num" color={Color.white} fontWeight="bold">
+                {props.toonAvgPoint}
               </Text>
             </FlexGrid>
           </FlexGrid>
@@ -84,5 +84,6 @@ const InfoGrid = styled.div`
 const FlexGrid = styled.div`
   display: flex;
   justify-content: space-between;
+  ${(props) => props.flexStart && `justify-content: start;`};
 `;
 export default OfferCard;
