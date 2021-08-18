@@ -93,7 +93,7 @@ const getMainReviewList = () => {
           toonImg: review.toonImg,
           toonPlatform: review.toonPlatform,
           toonWeekday: review.toonWeekday,
-          genres: review.genres,
+          genres: review.genres || [],
         };
       });
       dispatch(webtoonActions.addToonList(bestReviewToons, "bestReview"));
@@ -115,7 +115,7 @@ const getMainReviewList = () => {
           toonImg: review.toonImg,
           toonPlatform: review.toonPlatform,
           toonWeekday: review.toonWeekday,
-          genres: review.genres,
+          genres: review.genres || [],
         };
       });
       dispatch(webtoonActions.addToonList(newReviewToons, "newReview"));
@@ -231,7 +231,7 @@ const putStarServer = (webtoonId, userPointNumber) => {
 };
 
 //리뷰 작성
-const updateReviewServer = (reviewId, reviewContent) => {
+const updateReviewServer = (reviewId, reviewContent, from_detail) => {
   return async function (dispatch, getState, { history }) {
     try {
       const {
@@ -241,7 +241,14 @@ const updateReviewServer = (reviewId, reviewContent) => {
         (review) => review.reviewId === reviewId
       );
       dispatch(updateReview(reviewId, reviewContent, createDate));
-      history.push(`/detail/${toonId}`);
+      if (from_detail) {
+        history.push({
+          pathname: `/detail/${toonId}`,
+          state: { from_detail: true },
+        });
+      } else {
+        history.replace(`/detail/${toonId}`);
+      }
     } catch (err) {
       console.log(err, "uploadReviewError");
     }

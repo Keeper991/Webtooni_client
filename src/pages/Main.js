@@ -178,8 +178,8 @@ const Main = () => {
           </TextGrid>
           {is_loading || naver_list.length === 0 ? (
             <RankGrid>
-              {Array.from({ length: 5 }).map(() => {
-                return <SkeletonCard rank></SkeletonCard>;
+              {Array.from({ length: 5 }).map((_, idx) => {
+                return <SkeletonCard key={idx} rank></SkeletonCard>;
               })}
             </RankGrid>
           ) : (
@@ -245,8 +245,8 @@ const Main = () => {
           </TextGrid>
           {is_loading || kakao_list.length === 0 ? (
             <RankGrid>
-              {Array.from({ length: 5 }).map(() => {
-                return <SkeletonCard rank></SkeletonCard>;
+              {Array.from({ length: 5 }).map((_, idx) => {
+                return <SkeletonCard key={idx} rank></SkeletonCard>;
               })}
             </RankGrid>
           ) : (
@@ -260,65 +260,6 @@ const Main = () => {
           )}
         </MonthBox>
       </Slick>
-
-      <TitleGrid>
-        <Text type="h2" fontWeight="bold">
-          {user_info?.userName
-            ? `${user_info.userName}님만을 위한 웹툰 추천`
-            : "유저 맞춤 웹툰 추천"}
-        </Text>
-        {is_login ? (
-          <Button
-            border="none"
-            bgColor={Color.white}
-            color={Color.gray700}
-            fontSize="12px"
-            width="50px"
-            _onClick={() => {
-              history.push("/toonlist/user_offer");
-            }}
-          >
-            더보기
-          </Button>
-        ) : null}
-      </TitleGrid>
-
-      {is_login ? (
-        <SliderBox>
-          {is_loading || for_user_list.length === 0 ? (
-            <Slick is_infinite>
-              {Array.from({ length: 10 }).map((_, idx) => {
-                return <SkeletonCard key={idx}></SkeletonCard>;
-              })}
-            </Slick>
-          ) : (
-            <Slick is_infinite>
-              {for_user_list?.map((_, idx) => {
-                return <WebToonCard key={idx} {..._}></WebToonCard>;
-              })}
-            </Slick>
-          )}
-        </SliderBox>
-      ) : (
-        <HiddenBlurBox>
-          <BlurText>지금 로그인하고 맞춤 웹툰 추천 받기!</BlurText>
-          <BlurBox>
-            {is_loading || for_user_list.length === 0 ? (
-              <Slick is_infinite>
-                {Array.from({ length: 10 }).map((_, idx) => {
-                  return <SkeletonCard key={idx}></SkeletonCard>;
-                })}
-              </Slick>
-            ) : (
-              <Slick is_infinite>
-                {for_user_list?.map((_, idx) => {
-                  return <WebToonCard key={idx} {..._}></WebToonCard>;
-                })}
-              </Slick>
-            )}
-          </BlurBox>
-        </HiddenBlurBox>
-      )}
 
       <BannerBox>
         <Text margin="5px 0 0 0" type="small" color={Color.gray700}>
@@ -415,7 +356,7 @@ const SliderBox = styled.div`
   white-space: nowrap;
   overflow: hidden;
   margin: 10px 0 10px 0;
-  padding: 0 16px;
+  padding: 0 0 0 16px;
 `;
 
 const CenterSliderBox = styled.div`

@@ -15,6 +15,15 @@ const Recommendation = () => {
   // selectors
   const is_login = useSelector((state) => state.user.is_login);
   const toon_list = useSelector((state) => state.webtoon.toon_list);
+  const [showMore, setShowMore] = React.useState(false);
+
+  const handleTextToggle = () => {
+    if (showMore) {
+      setShowMore(false);
+    } else {
+      setShowMore(true);
+    }
+  };
 
   // webtoon lists
   const best_reviewer_list = toon_list.filter((toon) =>
@@ -31,8 +40,15 @@ const Recommendation = () => {
   );
   const for_user_list = toon_list.filter((toon) =>
     toon.filterConditions.includes("forUser")
-  );
+  )[0];
 
+  const md_review = {
+    userImg: "2",
+    userName: "MD김투니",
+    createDate: "08.18",
+    reviewContent:
+      "판타지 장르 중에서는 최고로 꼽힐만한 작품 중 하나라고 생각합니다. 굉장히 넓은 세계관을 유지하면서도 세계관이 무너지지 않고 있습니다. 또한 그 넓은 이야기를 굉장히 높은 퀄리티의 그림과 연출로 풀어내고 있죠. 오랜기간 동안 사랑을 받은 이유가 분명히 있습니다.",
+  };
   // effects
   React.useEffect(() => {
     if (!best_reviewer_list.length) {
@@ -51,130 +67,342 @@ const Recommendation = () => {
       dispatch(webtoonActions.getOfferWebtoonListForLogin());
     }
 
-    if (is_login && !for_user_list.length) {
+    if (is_login && !for_user_list?.length) {
       dispatch(webtoonActions.getForUserWebtoonList());
     }
   }, [is_login]);
 
   const is_loading = useSelector((state) => state.webtoon.is_loading);
-  const webToonList = [
-    {
-      toonImg:
-        "https://shared-comic.pstatic.net/thumb/webtoon/703846/thumbnail/thumbnail_IMAG06_aa715a18-fe51-4adf-b21b-5fc253ed3f32.jpg",
-      toonUrl:
-        "https://comic.naver.com/webtoon/list?titleId=703846&weekday=tue",
-      toonTitle: "여신강림",
-      toonAuthor: "야옹이",
-      toonPointTotalNumber: 4.8,
-      toonPlatform: "카카오 웹툰",
-      toonDay: "화",
-    },
-    {
-      toonImg:
-        "https://shared-comic.pstatic.net/thumb/webtoon/773459/thumbnail/thumbnail_IMAG06_74d73b73-0bed-42f7-9f81-19b9732087cf.jpg",
-      toonUrl:
-        "https://comic.naver.com/webtoon/list?titleId=773459&weekday=tue",
-      toonTitle: "용사가 돌아왔다",
-      toonAuthor: "나락 / 풍백",
-      toonPointTotalNumber: 3,
-      toonPlatform: "네이버 웹툰",
-      toonDay: "목",
-    },
-    {
-      toonImg:
-        "https://shared-comic.pstatic.net/thumb/webtoon/703852/thumbnail/thumbnail_IMAG06_0aacf362-325b-4d8d-ad60-4b7d888b2fdd.jpg",
-      toonUrl: "https://comic.naver.com/webtoon/list?titleId=703852",
-      toonTitle: "바른연애 길잡이",
-      toonAuthor: "남수",
-      toonPointTotalNumber: 5,
-      toonPlatform: "카카오 웹툰",
-      toonDay: "수",
-    },
-    {
-      toonImg:
-        "https://shared-comic.pstatic.net/thumb/webtoon/703846/thumbnail/thumbnail_IMAG06_aa715a18-fe51-4adf-b21b-5fc253ed3f32.jpg",
-      toonTitle: "여신강림",
-      toonAuthor: "야옹이",
-      toonPointTotalNumber: 4.8,
-      toonPlatform: "네이버 웹툰",
-      toonDay: "화",
-    },
-    {
-      toonImg:
-        "https://shared-comic.pstatic.net/thumb/webtoon/773459/thumbnail/thumbnail_IMAG06_74d73b73-0bed-42f7-9f81-19b9732087cf.jpg",
-      toonTitle: "용사가 돌아왔다",
-      toonAuthor: "나락 / 풍백",
-      toonPointTotalNumber: 3,
-      toonPlatform: "네이버 웹툰",
-      toonDay: "목",
-    },
-    {
-      toonImg:
-        "https://shared-comic.pstatic.net/thumb/webtoon/703852/thumbnail/thumbnail_IMAG06_0aacf362-325b-4d8d-ad60-4b7d888b2fdd.jpg",
-      toonTitle: "바른연애 길잡이",
-      toonAuthor: "남수",
-      toonPointTotalNumber: 5,
-      toonPlatform: "네이버 웹툰",
-      toonDay: "수",
-    },
-    {
-      toonImg:
-        "https://shared-comic.pstatic.net/thumb/webtoon/703846/thumbnail/thumbnail_IMAG06_aa715a18-fe51-4adf-b21b-5fc253ed3f32.jpg",
-      toonTitle: "여신강림",
-      toonAuthor: "야옹이",
-      toonPointTotalNumber: 4.8,
-      toonPlatform: "네이버 웹툰",
-      toonDay: "화",
-    },
-    {
-      toonImg:
-        "https://shared-comic.pstatic.net/thumb/webtoon/773459/thumbnail/thumbnail_IMAG06_74d73b73-0bed-42f7-9f81-19b9732087cf.jpg",
-      toonTitle: "용사가 돌아왔다",
-      toonAuthor: "나락 / 풍백",
-      toonPointTotalNumber: 3,
-      toonPlatform: "네이버 웹툰",
-      toonDay: "목",
-    },
-    {
-      toonImg:
-        "https://shared-comic.pstatic.net/thumb/webtoon/703852/thumbnail/thumbnail_IMAG06_0aacf362-325b-4d8d-ad60-4b7d888b2fdd.jpg",
-      toonTitle: "바른연애 길잡이",
-      toonAuthor: "남수",
-      toonPointTotalNumber: 5,
-      toonPlatform: "네이버 웹툰",
-      toonDay: "수",
-    },
-    {
-      toonImg:
-        "https://shared-comic.pstatic.net/thumb/webtoon/703846/thumbnail/thumbnail_IMAG06_aa715a18-fe51-4adf-b21b-5fc253ed3f32.jpg",
-      toonTitle: "여신강림",
-      toonAuthor: "야옹이",
-      toonPointTotalNumber: 4.8,
-      toonPlatform: "네이버 웹툰",
-      toonDay: "화",
-    },
-  ];
+
+  if (is_login) {
+    return (
+      <React.Fragment>
+        <OfferCard {...for_user_list}></OfferCard>
+        <BannerBox>
+          <Text margin="5px 0 0 0" type="small" color={Color.gray700}>
+            좋아하실만한 웹툰을 추천해 드릴게요.
+          </Text>
+          <FlexGrid>
+            <Text fontWeight="bold" color={Color.gray700}>
+              재밌게 본 웹툰의 리뷰를 등록해보세요!
+            </Text>
+            <Image
+              shape="square"
+              size="16px"
+              margin="0 5px"
+              src="https://lh3.googleusercontent.com/pw/AM-JKLWPhtnQViH6A2gkyW-RSm0DPzry9dNgxBNfUplfxinXpWyXDHotbccu1JiRG8NoxAgreYwSXnKylBkgJ2OUew1FEhCanaMevg_G-Prks9-3ooXIluMWS9n6q-j2m4PAe4IY9o6t5Vcg6F51UfY7x2ms=w16-h17-no?authuser=0"
+            ></Image>
+          </FlexGrid>
+        </BannerBox>
+
+        <TitleGrid>
+          <Text type="h2" fontWeight="bold" color={Color.gray800}>
+            이번 주 웹툰 평론가의 추천
+          </Text>
+          <Button
+            border="none"
+            bgColor={Color.white}
+            color={Color.gray700}
+            fontSize="12px"
+            width="50px"
+            _onClick={() => {
+              history.push("/toonlist/best_reviewer");
+            }}
+          >
+            더보기
+          </Button>
+        </TitleGrid>
+        <SliderBox>
+          {is_loading || best_reviewer_list.length === 0 ? (
+            <Slick>
+              {Array.from({ length: 10 }).map((_, idx) => {
+                return <SkeletonCard key={idx}></SkeletonCard>;
+              })}
+            </Slick>
+          ) : (
+            <Slick is_infinite>
+              {best_reviewer_list?.map((_, idx) => {
+                return <WebToonCard key={idx} {..._}></WebToonCard>;
+              })}
+            </Slick>
+          )}
+        </SliderBox>
+
+        <MdBox>
+          <BookMark></BookMark>
+          <MdInfoBox>
+            <Text type="small" color={Color.primary}>
+              #MD추천
+            </Text>
+            <Text type="h1" color={Color.white} fontWeight="bold">
+              네웹 대표 <br /> 글로벌 인기작!
+            </Text>
+            <Text type="caption" color={Color.gray300}>
+              두근두근 청춘 로맨스물을 찾고 있다면?
+            </Text>
+          </MdInfoBox>
+          <PlatformImg>
+            <Image
+              shape="square"
+              size="33px"
+              src="https://lh3.googleusercontent.com/pw/AM-JKLUzns3dJ9QMMvbc1SAKf7CNsU2e3HAN-XkY-qHk_1o5X_CskFJiSAwZ9F8lRBhNaRwxMMqOI32OBdJW3bPgupH1FAx-z9WI51FwqIiIC5ggfzfGxiIM47ux759UeRX5p1-7dv2Uf3GKP-NZ9hPi0cqR=s33-no?authuser=0"
+            ></Image>
+          </PlatformImg>
+        </MdBox>
+
+        <FlexToonGrid>
+          <Image
+            margin="0 7px"
+            src={md_offer_list && md_offer_list[0]?.toonImg}
+            shape="circle"
+            size="64px"
+          ></Image>
+          <InfoGrid>
+            <Text fontWeight="medium">
+              {md_offer_list && md_offer_list[0]?.toonTitle}
+            </Text>
+            <FlexGrid>
+              <Text type="caption" color={Color.gray400}>
+                {md_offer_list && md_offer_list[0]?.toonAuthor}
+              </Text>
+              <Image
+                shape="square"
+                margin="0 5px 0 7px"
+                size="12px"
+                src="https://lh3.googleusercontent.com/pw/AM-JKLXIrRX56QwruA9no5dsQDpzLmNNgGigp4H-mNbe8Zll_MgRc1OVhN8nKaqDwTOSKiNGUT6bQ6O7sYRBDsPhnj49j7ACDz5qWrSeebdROovTQKhnt8O2jbq6QpskSozPMpq02E2hUQqTjg3gfLZpx-xv=s12-no?authuser=0"
+              ></Image>
+              <Text
+                type="num"
+                fontSize="12px"
+                fontWeight="bold"
+                margin="0 10px 0 0"
+              >
+                {md_offer_list && md_offer_list[0]?.toonAvgPoint}
+              </Text>
+              <Text type="caption" color={Color.gray400}>
+                {md_offer_list && md_offer_list[0]?.toonWeekday}
+              </Text>
+            </FlexGrid>
+            <TextGrid>
+              <Text tag="p" type="caption" color={Color.gray800}>
+                {md_offer_list && md_offer_list[0]?.toonContent}
+              </Text>
+            </TextGrid>
+
+            <Text></Text>
+          </InfoGrid>
+        </FlexToonGrid>
+        <MdCommentBox>
+          <FlexGrid>
+            <Image size="32px" shape="circle" src={profileImgList[0]}></Image>
+            <Text type="caption" margin="0 7px">
+              김투니
+            </Text>
+            <Text type="caption" color={Color.gray400}>
+              08.02
+            </Text>
+          </FlexGrid>
+
+          <Text tag="p" margin="10px 0 0 0" color={Color.gray800}>
+            기본적으로 재밌습니다. <br /> <br />
+            이야기 전개도 빠르고 흡입력 있습니다.
+          </Text>
+        </MdCommentBox>
+
+        <TitleGrid>
+          <Text type="h2" fontWeight="bold" color={Color.gray800}>
+            완결 작품 추천
+          </Text>
+          <Button
+            border="none"
+            bgColor={Color.white}
+            color={Color.gray700}
+            fontSize="12px"
+            width="50px"
+            _onClick={() => {
+              history.push("/toonlist/end_toon");
+            }}
+          >
+            더보기
+          </Button>
+        </TitleGrid>
+        <SliderBox>
+          {is_loading || end_toon_list.length === 0 ? (
+            <Slick is_infinite>
+              {Array.from({ length: 10 }).map(() => {
+                return <SkeletonCard></SkeletonCard>;
+              })}
+            </Slick>
+          ) : (
+            <Slick is_infinite>
+              {end_toon_list?.map((_, idx) => {
+                return <WebToonCard key={idx} {..._}></WebToonCard>;
+              })}
+            </Slick>
+          )}
+        </SliderBox>
+
+        <TitleGrid>
+          <Text type="h2" fontWeight="bold" color={Color.gray800}>
+            비슷한 취향의 사용자가 본 웹툰
+          </Text>
+          {is_login ? (
+            <Button
+              border="none"
+              bgColor={Color.white}
+              color={Color.gray700}
+              fontSize="12px"
+              width="50px"
+              _onClick={() => {
+                history.push("/toonlist/similar_toon");
+              }}
+            >
+              더보기
+            </Button>
+          ) : null}
+        </TitleGrid>
+
+        {is_login ? (
+          <SliderBox>
+            {is_loading || similar_user_list.length === 0 ? (
+              <Slick is_infinite>
+                {Array.from({ length: 10 }).map(() => {
+                  return <SkeletonCard></SkeletonCard>;
+                })}
+              </Slick>
+            ) : (
+              <Slick is_infinite>
+                {similar_user_list?.map((_, idx) => {
+                  return <WebToonCard key={idx} {..._}></WebToonCard>;
+                })}
+              </Slick>
+            )}
+          </SliderBox>
+        ) : (
+          <HiddenBlurBox>
+            <BlurText>지금 로그인하고 맞춤 웹툰 추천 받기!</BlurText>
+            <BlurBox>
+              {is_loading || similar_user_list.length === 0 ? (
+                <Slick is_infinite>
+                  {Array.from({ length: 10 }).map(() => {
+                    return <SkeletonCard></SkeletonCard>;
+                  })}
+                </Slick>
+              ) : (
+                <Slick is_infinite>
+                  {similar_user_list?.map((_, idx) => {
+                    return <WebToonCard key={idx} {..._}></WebToonCard>;
+                  })}
+                </Slick>
+              )}
+            </BlurBox>
+          </HiddenBlurBox>
+        )}
+      </React.Fragment>
+    );
+  }
 
   return (
     <React.Fragment>
-      <OfferCard {...webToonList}></OfferCard>
-      {/* <OfferCard {...for_user_list}></OfferCard> */}
-      <BannerBox>
-        <Text margin="5px 0 0 0" type="small" color={Color.gray700}>
-          좋아하실만한 웹툰을 추천해 드릴게요.
-        </Text>
-        <FlexGrid>
-          <Text fontWeight="bold" color={Color.gray700}>
-            재밌게 본 웹툰의 리뷰를 등록해보세요!
+      <MdBox>
+        <BookMark></BookMark>
+        <MdInfoBox>
+          <Text type="small" color={Color.primary}>
+            #MD추천
           </Text>
+          <Text type="h1" color={Color.white} fontWeight="bold">
+            네웹 대표 <br /> 글로벌 인기작!
+          </Text>
+          <Text type="caption" color={Color.gray300}>
+            두근두근 청춘 로맨스물을 찾고 있다면?
+          </Text>
+        </MdInfoBox>
+        <PlatformImg>
           <Image
             shape="square"
-            size="16px"
-            margin="0 5px"
-            src="https://lh3.googleusercontent.com/pw/AM-JKLWPhtnQViH6A2gkyW-RSm0DPzry9dNgxBNfUplfxinXpWyXDHotbccu1JiRG8NoxAgreYwSXnKylBkgJ2OUew1FEhCanaMevg_G-Prks9-3ooXIluMWS9n6q-j2m4PAe4IY9o6t5Vcg6F51UfY7x2ms=w16-h17-no?authuser=0"
+            size="33px"
+            src="https://lh3.googleusercontent.com/pw/AM-JKLUzns3dJ9QMMvbc1SAKf7CNsU2e3HAN-XkY-qHk_1o5X_CskFJiSAwZ9F8lRBhNaRwxMMqOI32OBdJW3bPgupH1FAx-z9WI51FwqIiIC5ggfzfGxiIM47ux759UeRX5p1-7dv2Uf3GKP-NZ9hPi0cqR=s33-no?authuser=0"
           ></Image>
+        </PlatformImg>
+      </MdBox>
+      <FlexToonGrid>
+        <Image
+          margin="0 7px"
+          src={md_offer_list && md_offer_list[0]?.toonImg}
+          shape="circle"
+          size="64px"
+        ></Image>
+        <InfoGrid>
+          <Text fontWeight="medium">
+            {md_offer_list && md_offer_list[0]?.toonTitle}
+          </Text>
+          <FlexGrid>
+            <Text type="caption" color={Color.gray400}>
+              {md_offer_list && md_offer_list[0]?.toonAuthor}
+            </Text>
+            <Image
+              shape="square"
+              margin="0 5px 0 7px"
+              size="12px"
+              src="https://lh3.googleusercontent.com/pw/AM-JKLXIrRX56QwruA9no5dsQDpzLmNNgGigp4H-mNbe8Zll_MgRc1OVhN8nKaqDwTOSKiNGUT6bQ6O7sYRBDsPhnj49j7ACDz5qWrSeebdROovTQKhnt8O2jbq6QpskSozPMpq02E2hUQqTjg3gfLZpx-xv=s12-no?authuser=0"
+            ></Image>
+            <Text
+              type="num"
+              fontSize="12px"
+              fontWeight="bold"
+              margin="0 10px 0 0"
+            >
+              {md_offer_list && md_offer_list[0]?.toonAvgPoint}
+            </Text>
+            <Text type="caption" color={Color.gray400}>
+              {md_offer_list && md_offer_list[0]?.toonWeekday}
+            </Text>
+          </FlexGrid>
+          <TextGrid>
+            <Text tag="p" type="caption" color={Color.gray800}>
+              {md_offer_list && md_offer_list[0]?.toonContent}
+            </Text>
+          </TextGrid>
+
+          <Text></Text>
+        </InfoGrid>
+      </FlexToonGrid>
+      <MdCommentBox>
+        <FlexGrid>
+          <Image
+            size="32px"
+            shape="circle"
+            src={profileImgList[md_review.userImg]}
+          ></Image>
+          <Text type="caption" margin="0 7px">
+            {md_review.userName}
+          </Text>
+          <Text type="caption" color={Color.gray400}>
+            {md_review.createDate}
+          </Text>
         </FlexGrid>
-      </BannerBox>
+
+        <ReviewGrid>
+          {showMore ? (
+            <ReivewTextMore>{md_review?.reviewContent}</ReivewTextMore>
+          ) : (
+            <ReivewText>{md_review?.reviewContent}</ReivewText>
+          )}
+          {md_review.reviewContent?.length >= 73 ? (
+            <Button
+              bgColor="transparent"
+              color={Color.gray400}
+              padding="0"
+              margin="5px 0 0 0"
+              fontSize="12px"
+              border="none"
+              _onClick={handleTextToggle}
+            >
+              {showMore ? "줄이기" : "더보기"}
+            </Button>
+          ) : null}
+        </ReviewGrid>
+      </MdCommentBox>
 
       <TitleGrid>
         <Text type="h2" fontWeight="bold" color={Color.gray800}>
@@ -209,85 +437,6 @@ const Recommendation = () => {
         )}
       </SliderBox>
 
-      <MdBox>
-        <BookMark></BookMark>
-        <MdInfoBox>
-          <Text type="small" color={Color.primary}>
-            #MD추천
-          </Text>
-          <Text type="h1" color={Color.white} fontWeight="bold">
-            네웹 대표 <br /> 글로벌 인기작!
-          </Text>
-          <Text type="caption" color={Color.gray300}>
-            두근두근 청춘 로맨스물을 찾고 있다면?
-          </Text>
-        </MdInfoBox>
-        <PlatformImg>
-          <Image
-            shape="square"
-            size="33px"
-            src="https://lh3.googleusercontent.com/pw/AM-JKLUzns3dJ9QMMvbc1SAKf7CNsU2e3HAN-XkY-qHk_1o5X_CskFJiSAwZ9F8lRBhNaRwxMMqOI32OBdJW3bPgupH1FAx-z9WI51FwqIiIC5ggfzfGxiIM47ux759UeRX5p1-7dv2Uf3GKP-NZ9hPi0cqR=s33-no?authuser=0"
-          ></Image>
-        </PlatformImg>
-      </MdBox>
-
-      <FlexToonGrid>
-        <Image
-          margin="0 7px"
-          src={md_offer_list.toonImg}
-          shape="circle"
-          size="64px"
-        ></Image>
-        <InfoGrid>
-          <Text fontWeight="medium">{md_offer_list.toonTitle}</Text>
-          <FlexGrid>
-            <Text type="caption" color={Color.gray400}>
-              {md_offer_list.toonAuthor}
-            </Text>
-            <Image
-              shape="square"
-              margin="0 5px 0 7px"
-              size="12px"
-              src="https://lh3.googleusercontent.com/pw/AM-JKLXIrRX56QwruA9no5dsQDpzLmNNgGigp4H-mNbe8Zll_MgRc1OVhN8nKaqDwTOSKiNGUT6bQ6O7sYRBDsPhnj49j7ACDz5qWrSeebdROovTQKhnt8O2jbq6QpskSozPMpq02E2hUQqTjg3gfLZpx-xv=s12-no?authuser=0"
-            ></Image>
-            <Text
-              type="num"
-              fontSize="12px"
-              fontWeight="bold"
-              margin="0 10px 0 0"
-            >
-              {md_offer_list.toonAvgPoint}
-            </Text>
-            <Text type="caption" color={Color.gray400}>
-              {md_offer_list.toonWeekday}
-            </Text>
-          </FlexGrid>
-          <TextGrid>
-            <Text tag="p" type="caption" color={Color.gray800}>
-              {md_offer_list.toonContent}
-            </Text>
-          </TextGrid>
-
-          <Text></Text>
-        </InfoGrid>
-      </FlexToonGrid>
-      <MdCommentBox>
-        <FlexGrid>
-          <Image size="32px" shape="circle" src={profileImgList[0]}></Image>
-          <Text type="caption" margin="0 7px">
-            김투니
-          </Text>
-          <Text type="caption" color={Color.gray400}>
-            08.02
-          </Text>
-        </FlexGrid>
-
-        <Text tag="p" margin="10px 0 0 0" color={Color.gray800}>
-          기본적으로 재밌습니다. <br /> <br />
-          이야기 전개도 빠르고 흡입력 있습니다.
-        </Text>
-      </MdCommentBox>
-
       <TitleGrid>
         <Text type="h2" fontWeight="bold" color={Color.gray800}>
           완결 작품 추천
@@ -308,8 +457,8 @@ const Recommendation = () => {
       <SliderBox>
         {is_loading || end_toon_list.length === 0 ? (
           <Slick is_infinite>
-            {Array.from({ length: 10 }).map(() => {
-              return <SkeletonCard></SkeletonCard>;
+            {Array.from({ length: 10 }).map((_, idx) => {
+              return <SkeletonCard key={idx}></SkeletonCard>;
             })}
           </Slick>
         ) : (
@@ -320,6 +469,25 @@ const Recommendation = () => {
           </Slick>
         )}
       </SliderBox>
+
+      <OfferCard {...for_user_list}></OfferCard>
+
+      <BannerBox>
+        <Text margin="5px 0 0 0" type="small" color={Color.gray700}>
+          좋아하실만한 웹툰을 추천해 드릴게요.
+        </Text>
+        <FlexGrid>
+          <Text fontWeight="bold" color={Color.gray700}>
+            재밌게 본 웹툰의 리뷰를 등록해보세요!
+          </Text>
+          <Image
+            shape="square"
+            size="16px"
+            margin="0 5px"
+            src="https://lh3.googleusercontent.com/pw/AM-JKLWPhtnQViH6A2gkyW-RSm0DPzry9dNgxBNfUplfxinXpWyXDHotbccu1JiRG8NoxAgreYwSXnKylBkgJ2OUew1FEhCanaMevg_G-Prks9-3ooXIluMWS9n6q-j2m4PAe4IY9o6t5Vcg6F51UfY7x2ms=w16-h17-no?authuser=0"
+          ></Image>
+        </FlexGrid>
+      </BannerBox>
 
       <TitleGrid>
         <Text type="h2" fontWeight="bold" color={Color.gray800}>
@@ -345,8 +513,8 @@ const Recommendation = () => {
         <SliderBox>
           {is_loading || similar_user_list.length === 0 ? (
             <Slick is_infinite>
-              {Array.from({ length: 10 }).map(() => {
-                return <SkeletonCard></SkeletonCard>;
+              {Array.from({ length: 10 }).map((_, idx) => {
+                return <SkeletonCard key={idx}></SkeletonCard>;
               })}
             </Slick>
           ) : (
@@ -363,8 +531,8 @@ const Recommendation = () => {
           <BlurBox>
             {is_loading || similar_user_list.length === 0 ? (
               <Slick is_infinite>
-                {Array.from({ length: 10 }).map(() => {
-                  return <SkeletonCard></SkeletonCard>;
+                {Array.from({ length: 10 }).map((_, idx) => {
+                  return <SkeletonCard key={idx}></SkeletonCard>;
                 })}
               </Slick>
             ) : (
@@ -462,14 +630,62 @@ const InfoGrid = styled.div`
 `;
 
 const MdCommentBox = styled.div`
-  width: 320px;
-  padding: 13px 15px 70px;
+  width: 100%auto;
+  padding: 16px;
   background-color: ${Color.gray100};
-  margin: 20px auto;
+  margin: 20px 16px;
   border-radius: 8px;
   display: flex;
   flex-direction: column;
   justify-content: center;
+`;
+
+const MdCommentGrid = styled.div`
+  width: 100%;
+  min-height: 80px;
+  padding: 16px;
+  background-color: aliceblue;
+
+  & > p {
+    width: 100%;
+    font-size: 12px;
+    white-space: normal;
+    display: -webkit-box;
+    -webkit-line-clamp: 3;
+    -webkit-box-orient: vertical;
+    overflow: hidden;
+    word-break: break-word;
+    line-height: 1.6em;
+    max-height: 4.8em;
+  }
+`;
+
+const ReviewGrid = styled.div`
+  width: 100%;
+  min-height: 80px;
+  height: auto;
+  padding: 20px 0;
+`;
+
+const ReivewText = styled.div`
+  width: 100%;
+  font-size: 12px;
+  white-space: normal;
+  display: -webkit-box;
+  -webkit-line-clamp: 3;
+  -webkit-box-orient: vertical;
+  overflow: hidden;
+  word-break: break-word;
+  line-height: 1.6em;
+  max-height: 4.8em;
+`;
+
+const ReivewTextMore = styled.div`
+  width: 100%;
+  font-size: 12px;
+  white-space: normal;
+  word-break: break-word;
+  line-height: 1.6em;
 `;
 
 const MdInfoBox = styled.div`

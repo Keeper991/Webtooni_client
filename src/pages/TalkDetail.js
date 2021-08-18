@@ -58,9 +58,12 @@ const TalkDetail = (props) => {
   //댓글
   // const [cmtInp, isCmtInp] = React.useState(false); //댓글 입력창 보이기
   const [comment, setComment] = React.useState(""); //댓글 입력하기
-  const writeComment = (e) => {
+  const commentRef = React.useRef();
+  const writeComment = React.useCallback((e) => {
     setComment(e.target.value);
-  };
+    commentRef.current.style.height = "17px";
+    commentRef.current.style.height = commentRef.current.scrollHeight + "px";
+  }, []);
 
   const uploadCmt = () => {
     if (is_login) {
@@ -237,8 +240,7 @@ const TalkDetail = (props) => {
                 justify="flex-start"
                 align="center"
                 width="100vw"
-                height="56px"
-                padding="20px"
+                padding="14px 16px"
                 borderTop={`1px solid ${Color.gray200}`}
                 borderBottom={`1px solid ${Color.gray200}`}
                 position="fixed"
@@ -249,6 +251,8 @@ const TalkDetail = (props) => {
               >
                 <Image size="28px" shape="circle" src={post.userImg}></Image>
                 <Input
+                  multiLine
+                  taRef={commentRef}
                   width="95%"
                   margin="0 0 0 9px"
                   padding="0"
@@ -334,6 +338,7 @@ const TalkDetail = (props) => {
     </>
   );
 };
+
 const Grid = styled.div`
   width: ${(props) => props.width || "auto"};
   height: ${(props) => props.height || "auto"};
@@ -353,6 +358,10 @@ const Grid = styled.div`
   border-top: ${(props) => props.borderTop || ""};
   border-radius: ${(props) => props.borderRadius || ""};
 
+  & textarea {
+    height: 17px;
+    max-height: 48px;
+  }
   ${(props) => (props.cursor ? "cursor: pointer" : "")};
 `;
 export default TalkDetail;
