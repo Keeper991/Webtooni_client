@@ -150,6 +150,10 @@ const getToonOneServer = (webtoonId) => {
             (_toon) => _toon.toonId === toon.toonId
           ) === idx
       );
+      similarGenreToons = similarGenreToons.map((toon) => {
+        toon.genres = toon.genres || [];
+        return toon;
+      });
       dispatch(addToonList(similarGenreToons, webtoonId));
 
       // 리뷰 리스트를 리뷰 모듈의 리뷰 리스트에 추가
