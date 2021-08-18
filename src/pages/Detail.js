@@ -165,7 +165,7 @@ const Detail = (props) => {
                 _onClick={() =>
                   history.push({
                     pathname: `/review/write/${webtoon_id}`,
-                    state: { toonTitle: toonOne.toonTitle },
+                    state: { toonTitle: toonOne.toonTitle, from_detail: true },
                   })
                 }
                 shape="pill"
