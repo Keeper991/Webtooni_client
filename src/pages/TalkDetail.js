@@ -61,11 +61,19 @@ const TalkDetail = (props) => {
   const commentRef = React.useRef();
   const writeComment = React.useCallback((e) => {
     setComment(e.target.value);
-    commentRef.current.style.height = "17px";
+    commentRef.current.style.height = "24px";
     commentRef.current.style.height = commentRef.current.scrollHeight + "px";
   }, []);
 
   const uploadCmt = () => {
+    if (!is_login) {
+      alert("로그인하세요~");
+      return;
+    }
+    if (!comment) {
+      alert("내용을 입력하세요~");
+      return;
+    }
     if (is_login) {
       // isCmtInp(true);
       dispatch(
@@ -77,8 +85,6 @@ const TalkDetail = (props) => {
       );
       setComment("");
       // isCmtInp(false);
-    } else {
-      alert("로그인하세요~");
     }
   };
 
@@ -186,7 +192,7 @@ const TalkDetail = (props) => {
                       margin="0 0 0 4px"
                       // _onClick={()=>isCmtInp(true)}
                     >
-                      댓글
+                      댓글&nbsp;{post.talkCommentCount}개
                     </Text>
                   </Grid>
 
@@ -240,7 +246,7 @@ const TalkDetail = (props) => {
                 justify="flex-start"
                 align="center"
                 width="100vw"
-                padding="14px 16px"
+                padding="10px 16px"
                 borderTop={`1px solid ${Color.gray200}`}
                 borderBottom={`1px solid ${Color.gray200}`}
                 position="fixed"
@@ -359,9 +365,10 @@ const Grid = styled.div`
   border-radius: ${(props) => props.borderRadius || ""};
 
   & textarea {
-    height: 17px;
-    max-height: 48px;
+    height: 24px;
+    max-height: 58px;
   }
   ${(props) => (props.cursor ? "cursor: pointer" : "")};
 `;
+
 export default TalkDetail;
