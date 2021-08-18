@@ -5,8 +5,6 @@ import { getKakaoAddr, getNaverAddr } from "../shared/API";
 import { kakao_symbol, naver_symbol } from "../images/symbols";
 import { Color } from "../shared/common";
 import title from "../images/title.png";
-import { ReactComponent as BackButton } from "../images/BackButton.svg";
-import { history } from "../redux/configureStore";
 
 const Login = () => {
   return (

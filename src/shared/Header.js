@@ -1,7 +1,6 @@
-import React, { useState } from "react";
+import React from "react";
 import styled from "styled-components";
 import { history } from "../redux/configureStore";
-import { actionCreators as userActions } from "../redux/modules/user";
 import { actionCreators as modalActions } from "../redux/modules/modal";
 import { useDispatch, useSelector } from "react-redux";
 import { Button, Image } from "../elements/index";

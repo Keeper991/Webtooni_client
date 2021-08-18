@@ -45,24 +45,16 @@ const ReviewWrite = (props) => {
     }
   }, [prev_review]);
 
-  useEffect(() => {
-    //로그인 안 했으면 메인으로 이동
-    if (!is_login) {
-      alert("로그인 후 이용하세요~");
-      history.go(-1);
-      return;
-    }
-  }, [is_login]);
-
   //리뷰 등록
   const uploadReview = () => {
-    if (!review) {
+    if (!review || starPoint === 0) {
       isContentAlert(true);
       setTimeout(function () {
         isContentAlert(false);
       }, 2000);
       return;
     }
+
     if (is_login) {
       dispatch(
         reviewActions.updateReviewServer(
@@ -101,7 +93,7 @@ const ReviewWrite = (props) => {
           border="none"
           bgColor={Color.gray900}
           width="66px"
-          height="32px"
+          height="36px"
           _onClick={uploadReview}
         >
           <Text color={Color.white} fontWeight="medium">
@@ -116,7 +108,7 @@ const ReviewWrite = (props) => {
         justify="flex-start"
       >
         <Grid
-          width="128px"
+          width="auto"
           height="36px"
           display="flex"
           justify="center"
@@ -147,17 +139,30 @@ const ReviewWrite = (props) => {
           starPoint={starPoint}
         />
       </Grid>
-      <Input
-        padding="30px 20px 0"
-        multiLine
-        placeholder="내용을 입력하세요"
-        _onChange={(e) => setReview(e.target.value)}
-        border="none"
-        height="400px"
-        value={review}
-      ></Input>
 
-      <CntAlertStyle fadeOut={!contentAlert}>내용을 입력하세요</CntAlertStyle>
+      <Grid
+        position="relative"
+        display="flex"
+        flexDir="column"
+        justify="center"
+        align="center"
+        height="100%"
+      >
+        <Input
+          padding="30px 23px 0"
+          multiLine
+          placeholder="내용을 입력하세요"
+          _onChange={(e) => setReview(e.target.value)}
+          border="none"
+          width="100%"
+          height="65vh"
+          fontSize="16px"
+          color={Color.gray800}
+          value={review}
+        ></Input>
+
+        <CntAlertStyle fadeOut={!contentAlert}>내용을 입력하세요</CntAlertStyle>
+      </Grid>
     </>
   );
 };
@@ -180,17 +185,17 @@ const Grid = styled.div`
 `;
 
 const CntAlertStyle = styled.div`
-  width: 296px;
+  width: 80vw;
   height: 32px;
   border-radius: 99px;
-  background-color: rgba(0, 0, 0, 0.5);
+  background-color: ${Color.gray900};
   position: absolute;
-  bottom: 32px;
+  bottom: 20px;
   line-height: 32px;
   text-align: center;
   font-size: 12px;
   font-weight: 400;
-  color: ${Color.gray900};
+  color: ${Color.white};
   animation-duration: 2s;
   animation-timing-function: ease-out;
   animation-fill-mode: forwards;

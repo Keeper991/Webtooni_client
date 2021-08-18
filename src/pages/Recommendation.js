@@ -2,7 +2,6 @@ import React from "react";
 import styled from "styled-components";
 import { useDispatch, useSelector } from "react-redux";
 import { actionCreators as webtoonActions } from "../redux/modules/webtoon";
-import { actionCreators as reviewerActions } from "../redux/modules/reviewer";
 import { OfferCard } from "../components";
 import { Text, Image, Button } from "../elements";
 import { Slick, WebToonCard, SkeletonCard } from "../components";
@@ -14,7 +13,11 @@ const Recommendation = () => {
   const dispatch = useDispatch();
   // selectors
   const is_login = useSelector((state) => state.user.is_login);
+  const user_name = useSelector((state) => state.user.info.userName);
   const toon_list = useSelector((state) => state.webtoon.toon_list);
+  const best_reviewer_info = useSelector(
+    (state) => state.reviewer.best_reviewer_offer_user_info
+  );
   const [showMore, setShowMore] = React.useState(false);
 
   const handleTextToggle = () => {
@@ -51,23 +54,13 @@ const Recommendation = () => {
   };
   // effects
   React.useEffect(() => {
-    if (!best_reviewer_list.length) {
-      dispatch(webtoonActions.getBestReviewerOfferWebtoonList());
+    if (!end_toon_list.length || !md_offer_list.length || !best_reviewer_list) {
+      dispatch(webtoonActions.getOfferWebtoonListForLogin());
     }
   }, []);
 
   React.useEffect(() => {
-    if (
-      is_login &&
-      (!md_offer_list.length ||
-        !end_toon_list.length ||
-        !similar_user_list.length ||
-        !end_toon_list.length)
-    ) {
-      dispatch(webtoonActions.getOfferWebtoonListForLogin());
-    }
-
-    if (is_login && !for_user_list?.length) {
+    if (is_login && (!for_user_list?.length || !similar_user_list.length)) {
       dispatch(webtoonActions.getForUserWebtoonList());
     }
   }, [is_login]);
@@ -77,8 +70,13 @@ const Recommendation = () => {
   if (is_login) {
     return (
       <React.Fragment>
-        <OfferCard {...for_user_list}></OfferCard>
-        <BannerBox>
+        <OfferCard {...for_user_list} user_name={user_name}></OfferCard>
+
+        <BannerBox
+          onClick={() => {
+            history.push("/review/search");
+          }}
+        >
           <Text margin="5px 0 0 0" type="small" color={Color.gray700}>
             좋아하실만한 웹툰을 추천해 드릴게요.
           </Text>
@@ -97,37 +95,58 @@ const Recommendation = () => {
 
         <TitleGrid>
           <Text type="h2" fontWeight="bold" color={Color.gray800}>
-            이번 주 웹툰 평론가의 추천
+            비슷한 취향의 사용자가 본 웹툰
           </Text>
-          <Button
-            border="none"
-            bgColor={Color.white}
-            color={Color.gray700}
-            fontSize="12px"
-            width="50px"
-            _onClick={() => {
-              history.push("/toonlist/best_reviewer");
-            }}
-          >
-            더보기
-          </Button>
+          {is_login ? (
+            <Button
+              border="none"
+              bgColor={Color.white}
+              color={Color.gray700}
+              fontSize="12px"
+              width="50px"
+              _onClick={() => {
+                history.push("/toonlist/similar_toon");
+              }}
+            >
+              더보기
+            </Button>
+          ) : null}
         </TitleGrid>
-        <SliderBox>
-          {is_loading || best_reviewer_list.length === 0 ? (
-            <Slick>
-              {Array.from({ length: 10 }).map((_, idx) => {
-                return <SkeletonCard key={idx}></SkeletonCard>;
-              })}
-            </Slick>
-          ) : (
-            <Slick is_infinite>
-              {best_reviewer_list?.map((_, idx) => {
-                return <WebToonCard key={idx} {..._}></WebToonCard>;
-              })}
-            </Slick>
-          )}
-        </SliderBox>
 
+        {is_login ? (
+          <SliderBox>
+            {is_loading || similar_user_list.length === 0 ? (
+              <Slick is_infinite>
+                {Array.from({ length: 10 }).map((_, idx) => {
+                  return <SkeletonCard key={idx}></SkeletonCard>;
+                })}
+              </Slick>
+            ) : (
+              <Slick is_infinite>
+                {similar_user_list?.map((_, idx) => {
+                  return <WebToonCard key={idx} {..._}></WebToonCard>;
+                })}
+              </Slick>
+            )}
+          </SliderBox>
+        ) : (
+          <HiddenBlurBox>
+            <BlurText>지금 로그인하고 맞춤 웹툰 추천 받기!</BlurText>
+            <BlurBox>
+              <Slick is_infinite>
+                {Array.from({ length: 10 }).map((_, idx) => {
+                  return <SkeletonCard key={idx}></SkeletonCard>;
+                })}
+              </Slick>
+
+              <Slick is_infinite>
+                {similar_user_list?.map((_, idx) => {
+                  return <WebToonCard key={idx} {..._}></WebToonCard>;
+                })}
+              </Slick>
+            </BlurBox>
+          </HiddenBlurBox>
+        )}
         <MdBox>
           <BookMark></BookMark>
           <MdInfoBox>
@@ -149,7 +168,6 @@ const Recommendation = () => {
             ></Image>
           </PlatformImg>
         </MdBox>
-
         <FlexToonGrid>
           <Image
             margin="0 7px"
@@ -185,7 +203,7 @@ const Recommendation = () => {
             </FlexGrid>
             <TextGrid>
               <Text tag="p" type="caption" color={Color.gray800}>
-                {md_offer_list && md_offer_list[0]?.toonContent}
+                긴 호흡을 지닌 네이버 웹툰 3대장!
               </Text>
             </TextGrid>
 
@@ -194,20 +212,98 @@ const Recommendation = () => {
         </FlexToonGrid>
         <MdCommentBox>
           <FlexGrid>
-            <Image size="32px" shape="circle" src={profileImgList[0]}></Image>
+            <Image
+              size="32px"
+              shape="circle"
+              src={profileImgList[md_review.userImg]}
+            ></Image>
             <Text type="caption" margin="0 7px">
-              김투니
+              {md_review.userName}
             </Text>
             <Text type="caption" color={Color.gray400}>
-              08.02
+              {md_review.createDate}
             </Text>
           </FlexGrid>
 
-          <Text tag="p" margin="10px 0 0 0" color={Color.gray800}>
-            기본적으로 재밌습니다. <br /> <br />
-            이야기 전개도 빠르고 흡입력 있습니다.
-          </Text>
+          <ReviewGrid>
+            {showMore ? (
+              <ReivewTextMore>{md_review?.reviewContent}</ReivewTextMore>
+            ) : (
+              <ReivewText>{md_review?.reviewContent}</ReivewText>
+            )}
+            {md_review.reviewContent?.length >= 73 ? (
+              <Button
+                bgColor="transparent"
+                color={Color.gray400}
+                padding="0"
+                margin="10px 0 0 0"
+                fontSize="12px"
+                border="none"
+                _onClick={handleTextToggle}
+              >
+                {showMore ? "줄이기" : "더보기"}
+              </Button>
+            ) : null}
+          </ReviewGrid>
         </MdCommentBox>
+
+        <TitleGrid>
+          <Text type="h2" fontWeight="bold" color={Color.gray800}>
+            이번 주 웹툰 평론가의 추천
+          </Text>
+          <Button
+            border="none"
+            bgColor={Color.white}
+            color={Color.gray700}
+            fontSize="12px"
+            width="50px"
+            _onClick={() => {
+              history.push("/toonlist/best_reviewer");
+            }}
+          >
+            더보기
+          </Button>
+        </TitleGrid>
+
+        <FlexReviewerGrid>
+          <Image
+            margin="0 7px"
+            src={profileImgList[best_reviewer_info?.userImg]}
+            shape="circle"
+            size="48px"
+          ></Image>
+          <FlexInfoGrid>
+            <Text
+              tag="p"
+              padding="3px 0 0 0"
+              fontWeight="medium"
+              color={Color.gray800}
+            >
+              {best_reviewer_info?.userName}
+            </Text>
+            <FlexGrid>
+              <Text type="caption" color={Color.gray400}>
+                {best_reviewer_info?.userGrade}
+              </Text>
+            </FlexGrid>
+          </FlexInfoGrid>
+        </FlexReviewerGrid>
+
+        <SliderBox>
+          {is_loading || best_reviewer_list.length === 0 ? (
+            <Slick>
+              {Array.from({ length: 10 }).map((_, idx) => {
+                return <SkeletonCard key={idx}></SkeletonCard>;
+              })}
+            </Slick>
+          ) : (
+            <Slick is_infinite>
+              {best_reviewer_list?.map((_, idx) => {
+                return <WebToonCard key={idx} {..._}></WebToonCard>;
+              })}
+            </Slick>
+          )}
+        </SliderBox>
 
         <TitleGrid>
           <Text type="h2" fontWeight="bold" color={Color.gray800}>
@@ -229,8 +325,8 @@ const Recommendation = () => {
         <SliderBox>
           {is_loading || end_toon_list.length === 0 ? (
             <Slick is_infinite>
-              {Array.from({ length: 10 }).map(() => {
-                return <SkeletonCard></SkeletonCard>;
+              {Array.from({ length: 10 }).map((_, idx) => {
+                return <SkeletonCard key={idx}></SkeletonCard>;
               })}
             </Slick>
           ) : (
@@ -241,63 +337,6 @@ const Recommendation = () => {
             </Slick>
           )}
         </SliderBox>
-
-        <TitleGrid>
-          <Text type="h2" fontWeight="bold" color={Color.gray800}>
-            비슷한 취향의 사용자가 본 웹툰
-          </Text>
-          {is_login ? (
-            <Button
-              border="none"
-              bgColor={Color.white}
-              color={Color.gray700}
-              fontSize="12px"
-              width="50px"
-              _onClick={() => {
-                history.push("/toonlist/similar_toon");
-              }}
-            >
-              더보기
-            </Button>
-          ) : null}
-        </TitleGrid>
-
-        {is_login ? (
-          <SliderBox>
-            {is_loading || similar_user_list.length === 0 ? (
-              <Slick is_infinite>
-                {Array.from({ length: 10 }).map(() => {
-                  return <SkeletonCard></SkeletonCard>;
-                })}
-              </Slick>
-            ) : (
-              <Slick is_infinite>
-                {similar_user_list?.map((_, idx) => {
-                  return <WebToonCard key={idx} {..._}></WebToonCard>;
-                })}
-              </Slick>
-            )}
-          </SliderBox>
-        ) : (
-          <HiddenBlurBox>
-            <BlurText>지금 로그인하고 맞춤 웹툰 추천 받기!</BlurText>
-            <BlurBox>
-              {is_loading || similar_user_list.length === 0 ? (
-                <Slick is_infinite>
-                  {Array.from({ length: 10 }).map(() => {
-                    return <SkeletonCard></SkeletonCard>;
-                  })}
-                </Slick>
-              ) : (
-                <Slick is_infinite>
-                  {similar_user_list?.map((_, idx) => {
-                    return <WebToonCard key={idx} {..._}></WebToonCard>;
-                  })}
-                </Slick>
-              )}
-            </BlurBox>
-          </HiddenBlurBox>
-        )}
       </React.Fragment>
     );
   }
@@ -360,7 +399,7 @@ const Recommendation = () => {
           </FlexGrid>
           <TextGrid>
             <Text tag="p" type="caption" color={Color.gray800}>
-              {md_offer_list && md_offer_list[0]?.toonContent}
+              긴 호흡을 지닌 네이버 웹툰 3대장!
             </Text>
           </TextGrid>
 
@@ -421,6 +460,31 @@ const Recommendation = () => {
           더보기
         </Button>
       </TitleGrid>
+
+      <FlexReviewerGrid>
+        <Image
+          margin="0 7px"
+          src={profileImgList[best_reviewer_info?.userImg]}
+          shape="circle"
+          size="48px"
+        ></Image>
+        <FlexInfoGrid>
+          <Text
+            tag="p"
+            padding="3px 0 0 0"
+            fontWeight="medium"
+            color={Color.gray800}
+          >
+            {best_reviewer_info?.userName}
+          </Text>
+          <FlexGrid>
+            <Text type="caption" color={Color.gray400}>
+              {best_reviewer_info?.userGrade}
+            </Text>
+          </FlexGrid>
+        </FlexInfoGrid>
+      </FlexReviewerGrid>
+
       <SliderBox>
         {is_loading || best_reviewer_list.length === 0 ? (
           <Slick>
@@ -470,7 +534,7 @@ const Recommendation = () => {
         )}
       </SliderBox>
 
-      <OfferCard {...for_user_list}></OfferCard>
+      <OfferCard {...for_user_list} user_name={user_name}></OfferCard>
 
       <BannerBox>
         <Text margin="5px 0 0 0" type="small" color={Color.gray700}>
@@ -617,7 +681,16 @@ const TitleGrid = styled.div`
 const FlexToonGrid = styled.div`
   display: flex;
   align-items: center;
-  padding: 0 0 0 23px;
+  margin: 20px 0;
+  padding: 0 23px;
+`;
+
+const FlexReviewerGrid = styled.div`
+  display: flex;
+  align-items: center;
+  width: 100%;
+  margin: 20px 0 30px;
+  padding: 0 16px;
 `;
 
 const InfoGrid = styled.div`
@@ -629,40 +702,29 @@ const InfoGrid = styled.div`
   padding: 3px;
 `;
 
+const FlexInfoGrid = styled.div`
+  display: flex;
+  flex-direction: column;
+  width: 70%;
+  height: 48px;
+  justify-content: space-around;
+  padding: 3px;
+`;
+
 const MdCommentBox = styled.div`
   width: 100%auto;
+  min-height: 100px;
   padding: 16px;
   background-color: ${Color.gray100};
-  margin: 20px 16px;
+  margin: 20px 16px 40px;
   border-radius: 8px;
   display: flex;
   flex-direction: column;
   justify-content: center;
 `;
 
-const MdCommentGrid = styled.div`
-  width: 100%;
-  min-height: 80px;
-  padding: 16px;
-  background-color: aliceblue;
-
-  & > p {
-    width: 100%;
-    font-size: 12px;
-    white-space: normal;
-    display: -webkit-box;
-    -webkit-line-clamp: 3;
-    -webkit-box-orient: vertical;
-    overflow: hidden;
-    word-break: break-word;
-    line-height: 1.6em;
-    max-height: 4.8em;
-  }
-`;
-
 const ReviewGrid = styled.div`
   width: 100%;
-  min-height: 80px;
   height: auto;
   padding: 20px 0;
 `;

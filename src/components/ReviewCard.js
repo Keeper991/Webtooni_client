@@ -11,7 +11,6 @@ import time from "../shared/time";
 
 const ReviewCard = (props) => {
   const dispatch = useDispatch();
-  const is_main = props.main;
   const [showMore, setShowMore] = React.useState(false);
 
   const is_login = useSelector((state) => state.user.is_login);
@@ -31,9 +30,6 @@ const ReviewCard = (props) => {
   };
 
   const handleLike = () => {
-    if (is_main) {
-      return;
-    }
     if (is_login) {
       dispatch(
         reviewActions.likeReviewServer(
@@ -210,7 +206,7 @@ const Container = styled.div`
   background: ${Color.gray100};
   display: inline-block;
   border-radius: 15px;
-  border: 1px solid #ccc;
+  border: 1px solid ${Color.gray200};
   ${(props) =>
     props.main ? `margin: 10px 20px 20px 0` : `margin: 0 0 20px 0`};
 `;
@@ -229,7 +225,7 @@ const FlexGrid = styled.div`
 const FlexToonGrid = styled.div`
   display: flex;
   align-items: center;
-  border-top: 1px solid #ccc;
+  border-top: 1px solid ${Color.gray200};
   padding: 16px;
 `;
 

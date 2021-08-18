@@ -70,9 +70,12 @@ const getRankWebtoonList = () => async (dispatch, getState) => {
   }
 };
 
-// ~님을 위한 추천 불러오기
+// 비슷한 취향의 유저가 본, ~님을 위한 추천 불러오기
 const getForUserWebtoonList = () => async (dispatch, getState) => {
   try {
+    const { data: similarUserOfferToons } =
+      await offerAPI.getSimilarUsersChoice();
+    dispatch(addToonList(similarUserOfferToons, "similarUserOffer"));
     let { data: forUserToons } = await offerAPI.getForUser();
     forUserToons = forUserToons.map((toon) => {
       toon.genres = toon.genres || [];
@@ -81,14 +84,24 @@ const getForUserWebtoonList = () => async (dispatch, getState) => {
     dispatch(addToonList(forUserToons, "forUser"));
   } catch (e) {
     console.log(e);
+    if (e.message === "Request failed with status code 401") {
+      dispatch(userActions.logOut());
+      alert("로그아웃 되었습니다");
+      return;
+    }
     alert("웹툰 리스트를 불러오는데에 실패했습니다.");
   }
 };
 
-// 베스트 리뷰어(웹툰 평론가)의 추천 웹툰 받아오기
-const getBestReviewerOfferWebtoonList = () => {
+// 추천 웹툰 리스트 받아오기 (완결작, MD, 베스트 리뷰어의 추천)
+const getOfferWebtoonListForLogin = () => {
   return async function (dispatch, getState, { history }) {
     try {
+      const { data: endOfferToons } = await offerAPI.getEnd();
+      dispatch(addToonList(endOfferToons, "endOffer"));
+      let { data: mdOfferToon } = await offerAPI.getMd();
+      mdOfferToon.genres = mdOfferToon.genres || [];
+      dispatch(addToonList([mdOfferToon], "mdOffer"));
       const {
         data: {
           userInfoOnlyResponseDto: bestReviewerOfferUserInfo,
@@ -101,25 +114,11 @@ const getBestReviewerOfferWebtoonList = () => {
       );
     } catch (err) {
       console.log(err);
-      alert("웹툰 리스트를 불러오는데에 실패했습니다.");
-    }
-  };
-};
-
-// 로그인 유저를 위한 추천 웹툰 리스트 받아오기 (비슷한 취향의 유저, MD, 완결작)
-const getOfferWebtoonListForLogin = () => {
-  return async function (dispatch, getState, { history }) {
-    try {
-      const { data: similarUserOfferToons } =
-        await offerAPI.getSimilarUsersChoice();
-      dispatch(addToonList(similarUserOfferToons, "similarUserOffer"));
-      const { data: endOfferToons } = await offerAPI.getEnd();
-      dispatch(addToonList(endOfferToons, "endOffer"));
-      let { data: mdOfferToon } = await offerAPI.getMd();
-      mdOfferToon.genres = mdOfferToon.genres || [];
-      dispatch(addToonList([mdOfferToon], "mdOffer"));
-    } catch (err) {
-      console.log(err);
+      if (err.message === "Request failed with status code 401") {
+        dispatch(userActions.logOut());
+        alert("로그아웃 되었습니다");
+        return;
+      }
       alert("웹툰 리스트를 불러오는데에 실패했습니다.");
     }
   };
@@ -150,6 +149,10 @@ const getToonOneServer = (webtoonId) => {
             (_toon) => _toon.toonId === toon.toonId
           ) === idx
       );
+      similarGenreToons = similarGenreToons.map((toon) => {
+        toon.genres = toon.genres || [];
+        return toon;
+      });
       dispatch(addToonList(similarGenreToons, webtoonId));
 
       // 리뷰 리스트를 리뷰 모듈의 리뷰 리스트에 추가
@@ -257,7 +260,6 @@ export default handleActions(
 const actionCreators = {
   getRankWebtoonList,
   getForUserWebtoonList,
-  getBestReviewerOfferWebtoonList,
   getOfferWebtoonListForLogin,
   getToonOneServer,
   addToonList,

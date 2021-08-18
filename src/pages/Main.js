@@ -27,7 +27,6 @@ const Main = () => {
   const toon_list = useSelector((state) => state.webtoon.toon_list);
   const is_loading = useSelector((state) => state.webtoon.is_loading);
   const is_login = useSelector((state) => state.user.is_login);
-  const user_info = useSelector((state) => state.user.info);
   const reviewer_list = useSelector((state) => state.reviewer.best_reviewer);
   const review_list = useSelector((state) => state.review.review_list);
   const isShownWelcomeModal = useSelector(
@@ -78,6 +77,8 @@ const Main = () => {
 
   const kakao_list_1 = kakao_list.slice(0, 5);
   const kakao_list_2 = kakao_list.slice(5, 10);
+
+  const like_list = useSelector((state) => state.user.reviewLikeList);
 
   React.useEffect(() => {
     if (is_login && !for_user_list.length) {
@@ -261,7 +262,11 @@ const Main = () => {
         </MonthBox>
       </Slick>
 
-      <BannerBox>
+      <BannerBox
+        onClick={() => {
+          history.push("/review/search");
+        }}
+      >
         <Text margin="5px 0 0 0" type="small" color={Color.gray700}>
           좋아하실만한 웹툰을 추천해 드릴게요.
         </Text>
@@ -278,39 +283,61 @@ const Main = () => {
         </FlexGrid>
       </BannerBox>
 
-      <ReviewTabGrid>
+      <TitleGrid>
+        <ReviewTabGrid>
+          <Button
+            _onClick={() => {
+              setIsBest(true);
+            }}
+            bgColor={Color.white}
+            width="90px"
+            height="30px"
+            border="none"
+            fontWeight="bold"
+            color={is_best ? Color.black : Color.gray400}
+          >
+            베스트 리뷰
+          </Button>
+          <Button
+            _onClick={() => {
+              setIsBest(false);
+            }}
+            bgColor={Color.white}
+            width="90px"
+            height="30px"
+            border="none"
+            fontWeight="bold"
+            color={!is_best ? Color.black : Color.gray400}
+          >
+            최신 리뷰
+          </Button>
+        </ReviewTabGrid>
         <Button
-          _onClick={() => {
-            setIsBest(true);
-          }}
-          bgColor={Color.white}
-          width="90px"
-          height="30px"
           border="none"
-          fontWeight="bold"
-          color={is_best ? Color.black : Color.gray400}
-        >
-          베스트 리뷰
-        </Button>
-        <Button
-          _onClick={() => {
-            setIsBest(false);
-          }}
           bgColor={Color.white}
-          width="90px"
-          height="30px"
-          border="none"
-          fontWeight="bold"
-          color={!is_best ? Color.black : Color.gray400}
+          color={Color.gray700}
+          fontSize="12px"
+          width="50px"
+          _onClick={() => {
+            history.push("/review");
+          }}
         >
-          최신 리뷰
+          더보기
         </Button>
-      </ReviewTabGrid>
+      </TitleGrid>
+
       {is_best ? (
         <SliderBox>
           <Slick is_infinite>
             {best_review_list?.map((_, idx) => {
-              return <ReviewCard key={idx} {..._} main></ReviewCard>;
+              return (
+                <ReviewCard
+                  key={idx}
+                  {..._}
+                  main
+                  like_list={like_list}
+                ></ReviewCard>
+              );
             })}
           </Slick>
         </SliderBox>
@@ -318,7 +345,14 @@ const Main = () => {
         <SliderBox>
           <Slick is_infinite>
             {recent_review_list?.map((_, idx) => {
-              return <ReviewCard key={idx} {..._} main></ReviewCard>;
+              return (
+                <ReviewCard
+                  key={idx}
+                  {..._}
+                  main
+                  like_list={like_list}
+                ></ReviewCard>
+              );
             })}
           </Slick>
         </SliderBox>
@@ -374,41 +408,6 @@ const CenterSliderBox = styled.div`
   background-size: contain;
 `;
 
-const HiddenBlurBox = styled.div`
-  position: relative;
-  white-space: nowrap;
-  overflow: hidden;
-  margin: 10px 0 50px 0;
-
-  &:before {
-    content: "";
-    display: block;
-    position: absolute;
-    z-index: 1;
-    width: 100%;
-    height: 100%;
-    background-color: ${Color.black};
-    opacity: 0.5;
-  }
-`;
-
-const BlurBox = styled.div`
-  filter: blur(1.5px);
-`;
-
-const BlurText = styled.p`
-  width: 100%;
-  height: 100%;
-  display: flex;
-  position: absolute;
-  justify-content: center;
-  align-items: center;
-  font-size: 16px;
-  font-weight: bold;
-  color: #fff;
-  z-index: 5;
-`;
-
 const MonthBox = styled.div`
   width: 100%;
   height: auto;
@@ -442,9 +441,6 @@ const RankGrid = styled.div`
 `;
 
 const ReviewTabGrid = styled.div`
-  width: 100%;
-  margin-top: 40px;
-  padding: 0 16px;
   display: flex;
 `;
 
@@ -453,7 +449,7 @@ const BannerBox = styled.div`
   height: 66px;
   background-color: ${Color.gray100};
   padding: 0 16px;
-  margin: 30px auto;
+  margin: 20px auto 30px;
   border-radius: 8px;
   display: flex;
   flex-direction: column;
