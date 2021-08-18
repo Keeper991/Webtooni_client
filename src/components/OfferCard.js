@@ -4,10 +4,11 @@ import { Image, Text } from "../elements";
 import { Color } from "../shared/common";
 
 const OfferCard = (props) => {
+  console.log(props.user_name);
   return (
     <React.Fragment>
       <Container>
-        <Image src={props.toonImg} width="100%" height="100%"></Image>
+        <ToonImgGrid src={props.toonImg}></ToonImgGrid>
         <InfoGrid>
           <Text
             type="h1"
@@ -36,7 +37,7 @@ const OfferCard = (props) => {
         </InfoGrid>
         <BottomBox>
           <Text type="caption" color={Color.white} fontWeight="bold">
-            😍김투니님 만을 위한 추천
+            😍 {props.user_name}님 만을 위한 추천
           </Text>
         </BottomBox>
       </Container>
@@ -49,6 +50,27 @@ const Container = styled.div`
   height: 282px;
   position: relative;
   margin: 10px 0;
+`;
+
+const ToonImgGrid = styled.div`
+  width: 100%;
+  height: 100%;
+  background-image: url("${(props) => props.src}");
+
+  background-size: cover;
+  background-position: center;
+
+  &:before {
+    content: "";
+    width: 100%;
+    height: 100%;
+    position: absolute;
+    top: 0;
+    left: 0;
+    background-color: ${Color.black};
+    opacity: 0.4;
+    z-index: 1;
+  }
 `;
 
 const BottomBox = styled.div`
@@ -79,6 +101,7 @@ const InfoGrid = styled.div`
   position: absolute;
   left: 20px;
   bottom: 60px;
+  z-index: 2;
 `;
 
 const FlexGrid = styled.div`

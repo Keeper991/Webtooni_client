@@ -70,9 +70,12 @@ const getRankWebtoonList = () => async (dispatch, getState) => {
   }
 };
 
-// ~님을 위한 추천 불러오기
+// 비슷한 취향의 유저가 본, ~님을 위한 추천 불러오기
 const getForUserWebtoonList = () => async (dispatch, getState) => {
   try {
+    const { data: similarUserOfferToons } =
+      await offerAPI.getSimilarUsersChoice();
+    dispatch(addToonList(similarUserOfferToons, "similarUserOffer"));
     let { data: forUserToons } = await offerAPI.getForUser();
     forUserToons = forUserToons.map((toon) => {
       toon.genres = toon.genres || [];
@@ -90,10 +93,15 @@ const getForUserWebtoonList = () => async (dispatch, getState) => {
   }
 };
 
-// 베스트 리뷰어(웹툰 평론가)의 추천 웹툰 받아오기
-const getBestReviewerOfferWebtoonList = () => {
+// 추천 웹툰 리스트 받아오기 (완결작, MD, 베스트 리뷰어의 추천)
+const getOfferWebtoonListForLogin = () => {
   return async function (dispatch, getState, { history }) {
     try {
+      const { data: endOfferToons } = await offerAPI.getEnd();
+      dispatch(addToonList(endOfferToons, "endOffer"));
+      let { data: mdOfferToon } = await offerAPI.getMd();
+      mdOfferToon.genres = mdOfferToon.genres || [];
+      dispatch(addToonList([mdOfferToon], "mdOffer"));
       const {
         data: {
           userInfoOnlyResponseDto: bestReviewerOfferUserInfo,
@@ -104,25 +112,6 @@ const getBestReviewerOfferWebtoonList = () => {
       dispatch(
         reviewerActions.setBestReviewerOfferUserInfo(bestReviewerOfferUserInfo)
       );
-    } catch (err) {
-      console.log(err);
-      alert("웹툰 리스트를 불러오는데에 실패했습니다.");
-    }
-  };
-};
-
-// 로그인 유저를 위한 추천 웹툰 리스트 받아오기 (비슷한 취향의 유저, MD, 완결작)
-const getOfferWebtoonListForLogin = () => {
-  return async function (dispatch, getState, { history }) {
-    try {
-      const { data: similarUserOfferToons } =
-        await offerAPI.getSimilarUsersChoice();
-      dispatch(addToonList(similarUserOfferToons, "similarUserOffer"));
-      const { data: endOfferToons } = await offerAPI.getEnd();
-      dispatch(addToonList(endOfferToons, "endOffer"));
-      let { data: mdOfferToon } = await offerAPI.getMd();
-      mdOfferToon.genres = mdOfferToon.genres || [];
-      dispatch(addToonList([mdOfferToon], "mdOffer"));
     } catch (err) {
       console.log(err);
       if (err.message === "Request failed with status code 401") {
@@ -271,7 +260,6 @@ export default handleActions(
 const actionCreators = {
   getRankWebtoonList,
   getForUserWebtoonList,
-  getBestReviewerOfferWebtoonList,
   getOfferWebtoonListForLogin,
   getToonOneServer,
   addToonList,
