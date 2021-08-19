@@ -142,10 +142,14 @@ const ReviewWrite = (props) => {
       <Grid padding="20px 20px 15px">
         <DetailStar
           onStarClick={(starPoint) => {
-            if (!loading) {
+            if (!loading && is_login) {
               setStarPoint(starPoint);
               dispatch(reviewActions.putStarServer(webtoon_id, starPoint));
               starPoint = { starPoint };
+            } else if (loading && is_login) {
+              alert('응답 대기중입니다. 잠시만 기다려주세요.')
+            } else {
+              alert('로그인이 필요한 서비스입니다. 로그인해주세요.')
             }
           }}
         />
