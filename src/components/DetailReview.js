@@ -11,6 +11,7 @@ import { ReactComponent as EmptyHeart } from "../images/EmptyHeart.svg";
 import { ReactComponent as FillHeart } from "../images/FillHeart.svg";
 import { Permit, PermitStrict } from "../shared/PermitAuth";
 import time from "../shared/time";
+import profileImgList from "../images/profiles";
 
 const DetailReview = (props) => {
   const {
@@ -26,9 +27,15 @@ const DetailReview = (props) => {
   const dispatch = useDispatch();
   const is_login = useSelector((store) => store.user.is_login);
   const reviewLikeList = useSelector((store) => store.user.reviewLikeList);
+  const loading = useSelector((store) => store.review.is_loading_review);
+
+  const myColor = props.isMe ? Color.primaryLight : Color.gray200;
 
   //좋아요 토글
   const toggleLike = () => {
+    if (loading) {
+      return;
+    }
     if (is_login) {
       dispatch(
         reviewActions.likeReviewServer(
@@ -47,48 +54,66 @@ const DetailReview = (props) => {
   return (
     <Grid
       padding="20px 16px"
-      margin="10px 0"
+      margin="0 0 20px 0"
       bgColor={Color.gray100}
-      border={`1px solid ${Color.gray200}`}
+      border={`1px solid ${myColor}`}
       borderRadius="12px"
     >
       <Grid display="flex">
-        <Image size="40px" shape="circle" src={userImg}></Image>
+        <Image size="40px" shape="circle" src={profileImgList[userImg]}></Image>
         <Grid padding="0 0 0 7px" width="100%">
-          <Text type="num" fontSize="12px">
+          <Text type="num" tag="p" fontSize="12px">
             {userName}
           </Text>
-          <Grid display="flex" padding="0 0 8px 0">
+          <Grid display="flex" align="center" padding="6px 0 8px 0">
             <FillStar width="12px" height="12px" />
             <Text
-              margin="0 8px"
               type="num"
               fontSize="12px"
+              margin="0 0 0 4px"
               color={Color.gray700}
             >
-              &nbsp;{userPointNumber}
+              {userPointNumber}
             </Text>
-            <Text type="small" color={Color.gray500}>
+            <Text type="small" margin="0 0 0 8px" color={Color.gray500}>
               {time(createDate)}
             </Text>
           </Grid>
         </Grid>
       </Grid>
-      <Text tag="p" margin="16px 0 28px 0">
+      <Text
+        tag="p"
+        whiteSpace="normal"
+        lineHeight="22px"
+        color={Color.gray800}
+        margin="16px 0 28px 0"
+      >
         {reviewContent}
       </Text>
-      {/* 클릭 시 좋아요 토글. 로그인한 유저의 좋아요 여부 알아야함 -> 그 때 토글을 위한 이미지도 구분해 넣기 */}
 
+      {/* 클릭 시 좋아요 토글*/}
       <Grid display="flex" justify="space-between">
         <Grid display="flex" align="center" onClick={toggleLike} cursor="true">
-          {reviewLikeList.includes(reviewId) ? <FillHeart /> : <EmptyHeart />}
-          <Text whiteSpace="nowrap" padding="0 0 0 6px">
+          {reviewLikeList.includes(reviewId) && is_login ? (
+            <FillHeart />
+          ) : (
+            <EmptyHeart />
+          )}
+          <Text
+            type="caption"
+            whiteSpace="nowrap"
+            color={Color.gray800}
+            padding="0 0 0 6px"
+          >
             {likeCount}
           </Text>
         </Grid>
         <PermitStrict authorName={userName}>
           <Text
+            color={Color.gray800}
+            type="caption"
             _onClick={() =>
+              !loading &&
               dispatch(reviewActions.removeReviewContentServer(reviewId))
             }
             cursor="true"
@@ -108,6 +133,7 @@ DetailReview.defaultProps = {
     likeCount: null,
     id: null,
   },
+  isMe: false,
 };
 const Grid = styled.div`
   width: ${(props) => props.width || "auto"};
