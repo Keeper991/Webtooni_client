@@ -9,6 +9,7 @@ import { history } from "../redux/configureStore";
 
 const ToonList = (props) => {
   const toon_list_name = props.match.params.id;
+  const toon_id = props.location.state?.toon_id;
 
   const dispatch = useDispatch();
 
@@ -31,6 +32,10 @@ const ToonList = (props) => {
     toon.filterConditions.includes("bestReviewerOffer")
   );
 
+  const similar_genre_list = toon_list.filter((toon) =>
+    toon.filterConditions.includes(toon_id)
+  );
+
   React.useEffect(() => {
     if (toon_list_name === "webtooniverse_rank" && webtooni_list.length === 0) {
       dispatch(webtoonActions.getWebtooniRank());
@@ -50,6 +55,9 @@ const ToonList = (props) => {
 
     if (toon_list_name === "similar_toon" && similar_user_list.length === 0) {
       dispatch(webtoonActions.getSimilarUserOffer());
+    }
+    if (toon_list_name === "similar_genre" && similar_genre_list.length === 0) {
+      dispatch(webtoonActions.getSimilarGenre());
     }
   }, []);
 
@@ -283,6 +291,55 @@ const ToonList = (props) => {
     );
   }
 
+  if (toon_list_name === "similar_genre") {
+    return (
+      <React.Fragment>
+        {is_loading || similar_genre_list.length === 0 ? (
+          <Container
+            onClick={() => {
+              history.push(`/detail/${toon_id}`);
+            }}
+          >
+            <FlexGrid>
+              <LeftOutlined
+                style={{ margin: "0 5px" }}
+                onClick={() => {
+                  history.goBack();
+                }}
+              ></LeftOutlined>
+              <Text type="h2" fontWeight="bold">
+                비슷한 장르의 웹툰 추천
+              </Text>
+            </FlexGrid>
+            <SliderBox>
+              {Array.from({ length: 10 }).map(() => {
+                return <SkeletonCard more></SkeletonCard>;
+              })}
+            </SliderBox>
+          </Container>
+        ) : (
+          <Container>
+            <FlexGrid>
+              <LeftOutlined
+                style={{ margin: "0 5px" }}
+                onClick={() => {
+                  history.goBack();
+                }}
+              ></LeftOutlined>
+              <Text type="h2" fontWeight="bold">
+                비슷한 장르의 웹툰 추천
+              </Text>
+            </FlexGrid>
+            <SliderBox>
+              {similar_genre_list?.map((_, idx) => {
+                return <ToonListCard key={idx} {..._}></ToonListCard>;
+              })}
+            </SliderBox>
+          </Container>
+        )}
+      </React.Fragment>
+    );
+  }
   return null;
 };
 
