@@ -7,7 +7,7 @@ const ProgressStepBtns = ({ currentPageNum, clickHandlers, ...props }) => {
   return (
     <>
       {clickHandlers.map((onClick, i) => (
-        <>
+        <React.Fragment key={i}>
           <Button
             shape="circle"
             bgColor={currentPageNum === i + 1 ? Color.black : Color.gray200}
@@ -26,7 +26,7 @@ const ProgressStepBtns = ({ currentPageNum, clickHandlers, ...props }) => {
             </Text>
           </Button>
           {i < clickHandlers.length - 1 && <Line />}
-        </>
+        </React.Fragment>
       ))}
     </>
   );
