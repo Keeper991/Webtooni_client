@@ -122,7 +122,7 @@ const offerMode = {
   slidesToShow: 1,
   slidesToScroll: 1,
   autoplay: true,
-  arrows: true,
+  arrows: false,
   speed: 700,
   autoplaySpeed: 5000,
   cssEase: "ease-in-out",
