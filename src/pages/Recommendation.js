@@ -52,6 +52,25 @@ const Recommendation = () => {
     reviewContent:
       "판타지 장르 중에서는 최고로 꼽힐만한 작품 중 하나라고 생각합니다. 굉장히 넓은 세계관을 유지하면서도 세계관이 무너지지 않고 있습니다. 또한 그 넓은 이야기를 굉장히 높은 퀄리티의 그림과 연출로 풀어내고 있죠. 오랜기간 동안 사랑을 받은 이유가 분명히 있습니다.",
   };
+
+  // slick swipe click prevent
+  const [dragging, setDragging] = React.useState(false);
+
+  const handleBeforeChange = React.useCallback(() => {
+    setDragging(true);
+  }, [setDragging]);
+
+  const handleAfterChange = React.useCallback(() => {
+    setDragging(false);
+  }, [setDragging]);
+
+  const handleOnItemClick = React.useCallback(
+    (e) => {
+      if (dragging) e.stopPropagation();
+    },
+    [dragging]
+  );
+
   // effects
   React.useEffect(() => {
     if (!end_toon_list.length || !md_offer_list.length || !best_reviewer_list) {
@@ -70,8 +89,12 @@ const Recommendation = () => {
   if (is_login) {
     return (
       <React.Fragment>
-        <OfferSliderBox>
-          <Slick is_offer>
+        <OfferSliderBox onClickCapture={handleOnItemClick}>
+          <Slick
+            is_offer
+            _afterChange={handleAfterChange}
+            _beforeChange={handleBeforeChange}
+          >
             {for_user_list.map((_, idx) => {
               return (
                 <OfferCard key={idx} {..._} user_name={user_name}></OfferCard>
@@ -126,40 +149,26 @@ const Recommendation = () => {
           ) : null}
         </TitleGrid>
 
-        {is_login ? (
-          <SliderBox>
-            {is_loading || similar_user_list.length === 0 ? (
-              <Slick is_infinite>
-                {Array.from({ length: 10 }).map((_, idx) => {
-                  return <SkeletonCard key={idx}></SkeletonCard>;
-                })}
-              </Slick>
-            ) : (
-              <Slick is_infinite>
-                {similar_user_list?.map((_, idx) => {
-                  return <WebToonCard key={idx} {..._}></WebToonCard>;
-                })}
-              </Slick>
-            )}
-          </SliderBox>
-        ) : (
-          <HiddenBlurBox>
-            <BlurText>지금 로그인하고 맞춤 웹툰 추천 받기!</BlurText>
-            <BlurBox>
-              <Slick is_infinite>
-                {Array.from({ length: 10 }).map((_, idx) => {
-                  return <SkeletonCard key={idx}></SkeletonCard>;
-                })}
-              </Slick>
+        <SliderBox onClickCapture={handleOnItemClick}>
+          {is_loading || similar_user_list.length === 0 ? (
+            <Slick is_infinite>
+              {Array.from({ length: 10 }).map((_, idx) => {
+                return <SkeletonCard key={idx}></SkeletonCard>;
+              })}
+            </Slick>
+          ) : (
+            <Slick
+              is_infinite
+              _afterChange={handleAfterChange}
+              _beforeChange={handleBeforeChange}
+            >
+              {similar_user_list?.map((_, idx) => {
+                return <WebToonCard key={idx} {..._}></WebToonCard>;
+              })}
+            </Slick>
+          )}
+        </SliderBox>
 
-              <Slick is_infinite>
-                {similar_user_list?.map((_, idx) => {
-                  return <WebToonCard key={idx} {..._}></WebToonCard>;
-                })}
-              </Slick>
-            </BlurBox>
-          </HiddenBlurBox>
-        )}
         <MdBox>
           <BookMark></BookMark>
           <MdInfoBox>
@@ -302,7 +311,7 @@ const Recommendation = () => {
           </FlexInfoGrid>
         </FlexReviewerGrid>
 
-        <SliderBox>
+        <SliderBox onClickCapture={handleOnItemClick}>
           {is_loading || best_reviewer_list.length === 0 ? (
             <Slick>
               {Array.from({ length: 10 }).map((_, idx) => {
@@ -310,7 +319,11 @@ const Recommendation = () => {
               })}
             </Slick>
           ) : (
-            <Slick is_infinite>
+            <Slick
+              is_infinite
+              _afterChange={handleAfterChange}
+              _beforeChange={handleBeforeChange}
+            >
               {best_reviewer_list?.map((_, idx) => {
                 return <WebToonCard key={idx} {..._}></WebToonCard>;
               })}
@@ -335,15 +348,19 @@ const Recommendation = () => {
             더보기
           </Button>
         </TitleGrid>
-        <SliderBox>
+        <SliderBox onClickCapture={handleOnItemClick}>
           {is_loading || end_toon_list.length === 0 ? (
-            <Slick is_infinite>
+            <Slick>
               {Array.from({ length: 10 }).map((_, idx) => {
                 return <SkeletonCard key={idx}></SkeletonCard>;
               })}
             </Slick>
           ) : (
-            <Slick is_infinite>
+            <Slick
+              is_infinite
+              _afterChange={handleAfterChange}
+              _beforeChange={handleBeforeChange}
+            >
               {end_toon_list?.map((_, idx) => {
                 return <WebToonCard key={idx} {..._}></WebToonCard>;
               })}
@@ -356,6 +373,20 @@ const Recommendation = () => {
 
   return (
     <React.Fragment>
+      <BannerBox
+        onClick={() => {
+          history.push("/login");
+        }}
+      >
+        <Text margin="5px 0 0 0" type="small" color={Color.gray700}>
+          좋아하실만한 웹툰을 추천해 드릴게요.
+        </Text>
+        <FlexGrid>
+          <Text fontWeight="bold" color={Color.gray700}>
+            로그인 후 취향 저격 웹툰 추천받기! 🥰
+          </Text>
+        </FlexGrid>
+      </BannerBox>
       <MdBox>
         <BookMark></BookMark>
         <MdInfoBox>
@@ -498,7 +529,7 @@ const Recommendation = () => {
         </FlexInfoGrid>
       </FlexReviewerGrid>
 
-      <SliderBox>
+      <SliderBox onClickCapture={handleOnItemClick}>
         {is_loading || best_reviewer_list.length === 0 ? (
           <Slick>
             {Array.from({ length: 10 }).map((_, idx) => {
@@ -506,7 +537,11 @@ const Recommendation = () => {
             })}
           </Slick>
         ) : (
-          <Slick is_infinite>
+          <Slick
+            is_infinite
+            _afterChange={handleAfterChange}
+            _beforeChange={handleBeforeChange}
+          >
             {best_reviewer_list?.map((_, idx) => {
               return <WebToonCard key={idx} {..._}></WebToonCard>;
             })}
@@ -531,7 +566,7 @@ const Recommendation = () => {
           더보기
         </Button>
       </TitleGrid>
-      <SliderBox>
+      <SliderBox onClickCapture={handleOnItemClick}>
         {is_loading || end_toon_list.length === 0 ? (
           <Slick is_infinite>
             {Array.from({ length: 10 }).map((_, idx) => {
@@ -539,7 +574,11 @@ const Recommendation = () => {
             })}
           </Slick>
         ) : (
-          <Slick is_infinite>
+          <Slick
+            is_infinite
+            _afterChange={handleAfterChange}
+            _beforeChange={handleBeforeChange}
+          >
             {end_toon_list?.map((_, idx) => {
               return <WebToonCard key={idx} {..._}></WebToonCard>;
             })}
@@ -547,7 +586,7 @@ const Recommendation = () => {
         )}
       </SliderBox>
 
-      <OfferCard {...for_user_list} user_name={user_name}></OfferCard>
+      {/* <OfferCard {...for_user_list} user_name={user_name}></OfferCard>
 
       <BannerBox>
         <Text margin="5px 0 0 0" type="small" color={Color.gray700}>
@@ -621,7 +660,7 @@ const Recommendation = () => {
             )}
           </BlurBox>
         </HiddenBlurBox>
-      )}
+      )} */}
     </React.Fragment>
   );
 };
