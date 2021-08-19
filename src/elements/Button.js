@@ -111,6 +111,8 @@ const ElCircleButton = styled.button`
   &:hover {
     opacity: 0.8;
   }
+
+  font-family: "Noto Sans KR";
 `;
 
 const ElPillButton = styled.button`
@@ -135,6 +137,8 @@ const ElPillButton = styled.button`
   &:active {
     outline: none;
   }
+
+  font-family: "Noto Sans KR";
 `;
 
 const ElButton = styled.button`
@@ -171,6 +175,8 @@ const ElButton = styled.button`
   &:active {
     opacity: 1;
   }
+
+  font-family: "Noto Sans KR";
 `;
 
 export default Button;
