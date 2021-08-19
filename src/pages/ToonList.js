@@ -57,11 +57,7 @@ const ToonList = (props) => {
     return (
       <React.Fragment>
         {is_loading || webtooni_list.length === 0 ? (
-          <Container
-            onClick={() => {
-              history.push(`/detail/${props.toonId}`);
-            }}
-          >
+          <Container>
             <FlexGrid>
               <LeftOutlined
                 style={{ margin: "0 5px" }}
@@ -107,11 +103,7 @@ const ToonList = (props) => {
     return (
       <React.Fragment>
         {is_loading || end_toon_list.length === 0 ? (
-          <Container
-            onClick={() => {
-              history.push(`/detail/${props.toonId}`);
-            }}
-          >
+          <Container>
             <FlexGrid>
               <LeftOutlined
                 style={{ margin: "0 5px" }}
@@ -157,11 +149,7 @@ const ToonList = (props) => {
     return (
       <React.Fragment>
         {is_loading || best_reviewer_list.length === 0 ? (
-          <Container
-            onClick={() => {
-              history.push(`/detail/${props.toonId}`);
-            }}
-          >
+          <Container>
             <FlexGrid>
               <LeftOutlined
                 style={{ margin: "0 5px" }}
@@ -207,11 +195,7 @@ const ToonList = (props) => {
     return (
       <React.Fragment>
         {is_loading || for_user_list.length === 0 ? (
-          <Container
-            onClick={() => {
-              history.push(`/detail/${props.toonId}`);
-            }}
-          >
+          <Container>
             <FlexGrid>
               <LeftOutlined
                 style={{ margin: "0 5px" }}
@@ -257,11 +241,7 @@ const ToonList = (props) => {
     return (
       <React.Fragment>
         {is_loading || similar_user_list.length === 0 ? (
-          <Container
-            onClick={() => {
-              history.push(`/detail/${props.toonId}`);
-            }}
-          >
+          <Container>
             <FlexGrid>
               <LeftOutlined
                 style={{ margin: "0 5px" }}
