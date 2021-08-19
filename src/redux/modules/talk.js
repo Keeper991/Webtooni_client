@@ -4,13 +4,14 @@ import { talkAPI } from "../../shared/API";
 import { actionCreators as talkCommentActions } from "./talkComment";
 import { actionCreators as userActions } from "./user";
 
-const SET_PAGE = "SET_PAGE";
-const ADD_POST_ONE = "ADD_POST_ONE";
-const EDIT_POST_ONE = "EDIT_POST_ONE";
-const DELETE_POST_ONE = "DELETE_POST_ONE";
-const SET_PAGE_NUMBER = "SET_PAGE_NUMBER";
-const SET_POST_COUNT = "SET_POST_COUNT";
-const TOGGLE_LIKE = "TOGGLE_LIKE";
+const SET_PAGE = "talk/SET_PAGE";
+const ADD_POST_ONE = "talk/ADD_POST_ONE";
+const EDIT_POST_ONE = "talk/EDIT_POST_ONE";
+const DELETE_POST_ONE = "talk/DELETE_POST_ONE";
+const SET_PAGE_NUMBER = "talk/SET_PAGE_NUMBER";
+const SET_POST_COUNT = "talk/SET_POST_COUNT";
+const TOGGLE_LIKE = "talk/TOGGLE_LIKE";
+const LOADING = "talk/LOADING";
 
 const setPage = createAction(SET_PAGE, (post_list, page_number) => ({
   post_list,
@@ -31,6 +32,9 @@ const sePostCount = createAction(SET_POST_COUNT, (post_count) => ({
 const toggleLike = createAction(TOGGLE_LIKE, (post_id) => ({
   post_id,
 }));
+const loading = createAction(LOADING, (is_loading) => ({
+  is_loading,
+}));
 
 const initialState = {
   post_list: [
@@ -47,6 +51,7 @@ const initialState = {
   page_number_list: [], //조회한 페이지 번호
   cur_page: 1,
   post_count: 1, //전체 포스트 수
+  is_loading: false,
 };
 
 //페이지 별 리스트 불러오기
@@ -64,10 +69,12 @@ const getPageServer = (page_number) => {
   };
 };
 
-//포스트 작성. 서버에 요청 후 포스트아이디도 받아와서 같이 저장해야 함...
+//포스트 작성
 const addPostServer = (postTitle, postContent) => {
   return async function (dispatch, getState, { history }) {
     try {
+      dispatch(loading(true));
+
       const response = await talkAPI.addPost({ postTitle, postContent });
       const { userImg, userName, userGrade } = getState().user.info;
       const is_detail = false; //상세정보 여부(작성OR상세)
@@ -79,6 +86,7 @@ const addPostServer = (postTitle, postContent) => {
       );
       dispatch(talkCommentActions.resetComment()); //코멘트 리셋
       history.push("/talk");
+      dispatch(loading(false));
     } catch (err) {
       console.log(err, "addTalkError");
       if (err.message === "Request failed with status code 401") {
@@ -86,6 +94,7 @@ const addPostServer = (postTitle, postContent) => {
         alert("로그아웃 되었습니다");
         return;
       }
+      dispatch(loading(false));
     }
   };
 };
@@ -93,6 +102,7 @@ const addPostServer = (postTitle, postContent) => {
 const editPostServer = (postId, postTitle, postContent) => {
   return async function (dispatch, getState, { history }) {
     try {
+      dispatch(loading(true));
       await talkAPI.editPost({
         postId,
         postTitle,
@@ -101,6 +111,7 @@ const editPostServer = (postId, postTitle, postContent) => {
       const post_one = { postId, postTitle, postContent };
       dispatch(editPostOne(post_one));
       history.replace("/talk");
+      dispatch(loading(false));
     } catch (err) {
       console.log(err, "editTalkError");
       if (err.message === "Request failed with status code 401") {
@@ -108,6 +119,7 @@ const editPostServer = (postId, postTitle, postContent) => {
         alert("로그아웃 되었습니다");
         return;
       }
+      dispatch(loading(false));
     }
   };
 };
@@ -116,11 +128,13 @@ const editPostServer = (postId, postTitle, postContent) => {
 const deletePostServer = (postId) => {
   return async function (dispatch, getState, { history }) {
     try {
+      dispatch(loading(true));
       await talkAPI.deletePost(postId);
       dispatch(deletePostOne(postId));
       history.replace("/talk");
 
       dispatch(talkCommentActions.resetComment()); //코멘트 리셋
+      dispatch(loading(false));
     } catch (err) {
       console.log(err, "deletePostError");
       if (err.message === "Request failed with status code 401") {
@@ -130,6 +144,7 @@ const deletePostServer = (postId) => {
       }
       alert("포스트 정보가 없어요");
       history.replace("/talk");
+      dispatch(loading(false));
     }
   };
 };
@@ -150,12 +165,14 @@ const getPostOneServer = (post_id) => {
   };
 };
 
-//포스트 좋아요 토글 : 로그인 유저의 기존 좋아요 여부를 상세 api로 받아야 함 + 리듀서 액션 추가
+//포스트 좋아요 토글
 const likePostServer = (post_id) => {
   return async function (dispatch, getState) {
     try {
+      dispatch(loading(true));
       await talkAPI.likePost(post_id);
       dispatch(toggleLike(post_id));
+      dispatch(loading(false));
     } catch (err) {
       console.log(err, "likePostwError");
       if (err.message === "Request failed with status code 401") {
@@ -163,6 +180,7 @@ const likePostServer = (post_id) => {
         alert("로그아웃 되었습니다");
         return;
       }
+      dispatch(loading(false));
     }
   };
 };
@@ -274,6 +292,10 @@ export default handleActions(
     [SET_POST_COUNT]: (state, action) =>
       produce(state, (draft) => {
         draft.post_count = action.payload.post_count;
+      }),
+    [LOADING]: (state, action) =>
+      produce(state, (draft) => {
+        draft.is_loading = action.payload.is_loading;
       }),
   },
   initialState

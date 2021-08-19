@@ -176,6 +176,7 @@ const getReviewList = (page_num) => {
 const likeReviewServer = (reviewId, bool) => {
   return async function (dispatch) {
     try {
+      dispatch(loading(true));
       await reviewAPI.likeReview(reviewId);
       if (bool) {
         dispatch(userActions.addReviewLike(reviewId));
@@ -184,13 +185,14 @@ const likeReviewServer = (reviewId, bool) => {
         dispatch(userActions.removeReviewLike(reviewId));
         dispatch(removeReviewLike(reviewId));
       }
+      dispatch(loading(false));
     } catch (err) {
       console.log(err, "likeReviewError");
       if (err.message === "Request failed with status code 401") {
         dispatch(userActions.logOut());
         alert("로그아웃 되었습니다");
-        return;
       }
+      dispatch(loading(false));
     }
   };
 };
@@ -199,6 +201,7 @@ const likeReviewServer = (reviewId, bool) => {
 const putStarServer = (webtoonId, userPointNumber) => {
   return async function (dispatch, getState) {
     try {
+      dispatch(loading(true));
       const {
         data: { reviewId, toonAvgPoint },
       } = await reviewAPI.putStar({ toonId: webtoonId, userPointNumber });
@@ -229,13 +232,14 @@ const putStarServer = (webtoonId, userPointNumber) => {
         dispatch(webtoonActions.setToonAvgPoint(toonAvgPoint, webtoonId));
         dispatch(addStar(newReview));
       }
+      dispatch(loading(false));
     } catch (err) {
       console.log(err, "putStarError");
       if (err.message === "Request failed with status code 401") {
         dispatch(userActions.logOut());
         alert("로그아웃 되었습니다");
-        return;
       }
+      dispatch(loading(false));
     }
   };
 };
@@ -244,6 +248,7 @@ const putStarServer = (webtoonId, userPointNumber) => {
 const updateReviewServer = (reviewId, reviewContent, from_detail) => {
   return async function (dispatch, getState, { history }) {
     try {
+      dispatch(loading(true));
       const {
         data: { createDate },
       } = await reviewAPI.putReview({ reviewId, reviewContent });
@@ -259,13 +264,14 @@ const updateReviewServer = (reviewId, reviewContent, from_detail) => {
       } else {
         history.replace(`/detail/${toonId}`);
       }
+      dispatch(loading(false));
     } catch (err) {
       console.log(err, "uploadReviewError");
       if (err.message === "Request failed with status code 401") {
         dispatch(userActions.logOut());
         alert("로그아웃 되었습니다");
-        return;
       }
+      dispatch(loading(false));
     }
   };
 };
@@ -274,17 +280,19 @@ const updateReviewServer = (reviewId, reviewContent, from_detail) => {
 const removeReviewContentServer = (reviewId) => {
   return async function (dispatch, getState, { history }) {
     try {
+      dispatch(loading(true));
       await reviewAPI.deleteReview(reviewId);
       dispatch(removeReviewContent(reviewId));
+      dispatch(loading(false));
     } catch (err) {
       if (err.message === "Request failed with status code 401") {
         dispatch(userActions.logOut());
         alert("로그아웃 되었습니다");
-        return;
+      } else {
+        console.log(err, "removeReviewError");
+        alert("리뷰 정보가 없어요");
       }
-      console.log(err, "removeReviewError");
-      alert("리뷰 정보가 없어요");
-      history.replace("/");
+      dispatch(loading(false));
     }
   };
 };

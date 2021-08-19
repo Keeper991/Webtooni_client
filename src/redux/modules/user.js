@@ -19,6 +19,7 @@ const SET_IS_CHECKING = "user/SET_IS_CHECKING";
 const ADD_STAR_POINT = "user/ADD_STAR_POINT";
 const EDIT_STAR_POINT = "user/EDIT_STAR_POINT";
 const EDIT_REVIEW = "user/EDIT_REVIEW";
+const LOADING = "user/LOADING";
 
 const addReviewLikeList = createAction(ADD_REVIEW_LIKE_LIST, (reviewList) => ({
   reviewList,
@@ -44,6 +45,27 @@ const unsubscribe = createAction(UNSUBSCRIBE, (webtoonId) => ({
 const shownWelcomeModal = createAction(SHOWN_WELCOME_MODAL, () => ({}));
 
 const setIsChecking = createAction(SET_IS_CHECKING, () => ({}));
+
+const addStarPoint = createAction(
+  ADD_STAR_POINT,
+  (reviewId, webtoonId, userName, userPointNumber) => ({
+    reviewId,
+    webtoonId,
+    userName,
+    userPointNumber,
+  })
+);
+const editStarPoint = createAction(
+  EDIT_STAR_POINT,
+  (reviewId, userPointNumber) => ({ reviewId, userPointNumber })
+);
+const editReview = createAction(EDIT_REVIEW, (reviewId, reviewContent) => ({
+  reviewId,
+  reviewContent,
+}));
+const loading = createAction(LOADING, (is_loading) => ({
+  is_loading,
+}));
 
 ///////////////////////////////////////////////////////////
 // thunks
@@ -93,8 +115,10 @@ const loginCheck =
 
 const subscribeServer = (webtoonId, bool) => async (dispatch, getState) => {
   try {
+    dispatch(loading(true));
     await userAPI.subscribe({ toonId: webtoonId, myListOrNot: bool });
     dispatch(bool ? subscribe(webtoonId) : unsubscribe(webtoonId));
+    dispatch(loading(false));
   } catch (e) {
     console.log(e);
     if (e.message === "Request failed with status code 401") {
@@ -102,6 +126,7 @@ const subscribeServer = (webtoonId, bool) => async (dispatch, getState) => {
       alert("로그아웃 되었습니다");
       return;
     }
+    dispatch(loading(false));
   }
 };
 
@@ -136,6 +161,7 @@ const initialState = {
   isRequestedUserPageInfo: false,
   is_login: false,
   isChecking: true,
+  is_loading: false,
 };
 
 export default handleActions(
@@ -200,6 +226,10 @@ export default handleActions(
     [SET_IS_CHECKING]: (state, action) =>
       produce(state, (draft) => {
         draft.isChecking = false;
+      }),
+    [LOADING]: (state, action) =>
+      produce(state, (draft) => {
+        draft.is_loading = action.payload.is_loading;
       }),
   },
   initialState
