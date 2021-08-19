@@ -38,6 +38,24 @@ const Detail = (props) => {
   const [myReview, setMyReview] = React.useState(initialState.current);
   const [sortBy, setSortBy] = React.useState("createDate");
 
+  // slick swipe click prevent
+  const [dragging, setDragging] = React.useState(false);
+
+  const handleBeforeChange = React.useCallback(() => {
+    setDragging(true);
+  }, [setDragging]);
+
+  const handleAfterChange = React.useCallback(() => {
+    setDragging(false);
+  }, [setDragging]);
+
+  const handleOnItemClick = React.useCallback(
+    (e) => {
+      if (dragging) e.stopPropagation();
+    },
+    [dragging]
+  );
+
   // effects
   useEffect(() => {
     if (!toonOne || !toonOne.filterConditions?.includes("detail")) {
@@ -239,9 +257,12 @@ const Detail = (props) => {
               비슷한 장르의 웹툰
             </Text>
 
-            <Slick>
+            <Slick
+              _afterChange={handleAfterChange}
+              _beforeChange={handleBeforeChange}
+            >
               {similarToons.map((item, idx) => (
-                <SimContainer key={idx}>
+                <SimContainer key={idx} onClickCapture={handleOnItemClick}>
                   <WebToonCard {...item} id={item.toonId} />
                 </SimContainer>
               ))}

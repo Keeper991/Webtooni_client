@@ -52,6 +52,24 @@ const Main = () => {
     toon.filterConditions.includes("kakao")
   );
 
+  // slick swipe click prevent
+  const [dragging, setDragging] = React.useState(false);
+
+  const handleBeforeChange = React.useCallback(() => {
+    setDragging(true);
+  }, [setDragging]);
+
+  const handleAfterChange = React.useCallback(() => {
+    setDragging(false);
+  }, [setDragging]);
+
+  const handleOnItemClick = React.useCallback(
+    (e) => {
+      if (dragging) e.stopPropagation();
+    },
+    [dragging]
+  );
+
   // effects
   React.useEffect(() => {
     if (
@@ -103,7 +121,7 @@ const Main = () => {
         </Button>
       </TitleGrid>
 
-      <SliderBox>
+      <SliderBox onClickCapture={handleOnItemClick}>
         {is_loading || webtooni_list.length === 0 ? (
           <Slick>
             {Array.from({ length: 10 }).map((_, idx) => {
@@ -111,7 +129,10 @@ const Main = () => {
             })}
           </Slick>
         ) : (
-          <Slick>
+          <Slick
+            _afterChange={handleAfterChange}
+            _beforeChange={handleBeforeChange}
+          >
             {webtooni_list?.map((_, idx) => {
               return <WebToonCard key={idx} {..._}></WebToonCard>;
             })}
@@ -119,8 +140,14 @@ const Main = () => {
         )}
       </SliderBox>
 
-      <Slick custom_arrows is_variableWidth={false} is_infinite>
-        <MonthBox>
+      <Slick
+        custom_arrows
+        is_variableWidth={false}
+        is_infinite
+        _afterChange={handleAfterChange}
+        _beforeChange={handleBeforeChange}
+      >
+        <MonthBox onClickCapture={handleOnItemClick}>
           <TextGrid>
             <Text fontWeight="bold">네이버 웹툰</Text>
             <Button
@@ -152,7 +179,7 @@ const Main = () => {
             </RankGrid>
           )}
         </MonthBox>
-        <MonthBox>
+        <MonthBox onClickCapture={handleOnItemClick}>
           <TextGrid>
             <Text fontWeight="bold">네이버 웹툰</Text>
             <Button
@@ -187,7 +214,7 @@ const Main = () => {
           )}
         </MonthBox>
 
-        <MonthBox>
+        <MonthBox onClickCapture={handleOnItemClick}>
           <TextGrid>
             <Text fontWeight="bold">카카오 웹툰</Text>
             <Button
@@ -219,7 +246,7 @@ const Main = () => {
             </RankGrid>
           )}
         </MonthBox>
-        <MonthBox>
+        <MonthBox onClickCapture={handleOnItemClick}>
           <TextGrid>
             <Text fontWeight="bold">카카오 웹툰</Text>
             <Button
@@ -320,8 +347,12 @@ const Main = () => {
       </TitleGrid>
 
       {is_best ? (
-        <SliderBox>
-          <Slick is_infinite>
+        <SliderBox onClickCapture={handleOnItemClick}>
+          <Slick
+            is_infinite
+            _afterChange={handleAfterChange}
+            _beforeChange={handleBeforeChange}
+          >
             {best_review_list?.map((_, idx) => {
               return (
                 <ReviewCard
@@ -335,8 +366,12 @@ const Main = () => {
           </Slick>
         </SliderBox>
       ) : (
-        <SliderBox>
-          <Slick is_infinite>
+        <SliderBox onClickCapture={handleOnItemClick}>
+          <Slick
+            is_infinite
+            _afterChange={handleAfterChange}
+            _beforeChange={handleBeforeChange}
+          >
             {recent_review_list?.map((_, idx) => {
               return (
                 <ReviewCard
