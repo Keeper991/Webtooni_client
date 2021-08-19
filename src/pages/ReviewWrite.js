@@ -7,7 +7,7 @@ import { actionCreators as reviewActions } from "../redux/modules/review";
 import { actionCreators as webtoonActions } from "../redux/modules/webtoon";
 import { history } from "../redux/configureStore";
 import { Color } from "../shared/common";
-import { ReactComponent as BackButton } from "../images/BackButton.svg";
+import { LeftOutlined } from "@ant-design/icons";
 
 const ReviewWrite = (props) => {
   const dispatch = useDispatch();
@@ -74,10 +74,12 @@ const ReviewWrite = (props) => {
     <>
       <Grid
         display="flex"
+        width="100%"
+        height="70px"
         justify="space-between"
-        align="flex-start"
+        align="center"
         borderBottom={`1px solid ${Color.gray200}`}
-        padding="20px"
+        padding="0 16px"
         margin="-130px 0 0 0"
       >
         {/* 뒤로가기 */}
@@ -87,7 +89,12 @@ const ReviewWrite = (props) => {
             history.go(-1);
           }}
         >
-          <BackButton></BackButton>
+          <LeftOutlined
+            style={{ fontSize: "18px", margin: "25px 0" }}
+            onClick={() => {
+              history.goBack();
+            }}
+          ></LeftOutlined>
         </Grid>
 
         {/* 게시글 등록 */}
