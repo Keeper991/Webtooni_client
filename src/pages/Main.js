@@ -393,7 +393,7 @@ const Main = () => {
       </TitleGrid>
       <CenterSliderBox>
         <Slick is_center>
-          {reviewer_list.map((_, idx) => {
+          {reviewer_list?.map((_, idx) => {
             return <BestReveiwerCard key={idx} {..._}></BestReveiwerCard>;
           })}
         </Slick>
