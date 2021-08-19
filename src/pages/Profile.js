@@ -5,7 +5,7 @@ import { Color } from "../shared/common";
 import { history } from "../redux/configureStore";
 import profileImgList from "../images/profiles";
 import { ProgressStepBtns } from "../components";
-import { useDispatch } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
 import { actionCreators as userActions } from "../redux/modules/user";
 
 const TASTE_LS = "TASTE_LIST";
@@ -16,6 +16,12 @@ const Profile = () => {
   const [profile, setProfile] = useState(-1);
   const [userName, setUserName] = useState("");
   const dispatch = useDispatch();
+
+  const isLogin = useSelector((state) => state.user.is_login);
+  const isShownWelcomeModal = useSelector(
+    (state) => state.user.info.isShownWelcomeModal
+  );
+  const isChecking = useSelector((state) => state.user.isChecking);
 
   useEffect(() => {
     const tasteDataLS = localStorage.getItem(TASTE_LS);
@@ -28,6 +34,13 @@ const Profile = () => {
     const userNameDataLS = localStorage.getItem(USERNAME_LS);
     userNameDataLS && setUserName(userNameDataLS);
   }, []);
+
+  useEffect(() => {
+    if (!isChecking && !(isLogin === true && isShownWelcomeModal === false)) {
+      window.alert("잘못된 접근입니다.");
+      history.push("/");
+    }
+  }, [isLogin, isChecking]);
 
   const progressStepClickHandlers = [
     () => {
