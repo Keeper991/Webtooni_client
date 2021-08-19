@@ -17,15 +17,23 @@ const TalkComment = (props) => {
   const [edit, isEdit] = React.useState(false);
   //댓글 수정 작성
   const [comment, setComment] = React.useState(comment_info.commentContent);
-  const writeComment = (e) => {
+  const commentRef = React.useRef();
+  const writeComment = React.useCallback((e) => {
     setComment(e.target.value);
-  };
+    commentRef.current.style.height = "24px";
+    commentRef.current.style.height = commentRef.current.scrollHeight + "px";
+  }, []);
 
   //댓글 수정하기
   const editComment = () => {
     if (loading_talkComment) {
       return;
     }
+    if (!comment) {
+      alert("내용을 입력하세요~");
+      return;
+    }
+
     dispatch(
       talkCommentActions.editCommentServer(
         parseInt(comment_info.commentId),
@@ -84,6 +92,8 @@ const TalkComment = (props) => {
               src={profileImgList[comment_info.userImg]}
             ></Image>
             <Input
+              multiLine
+              taRef={commentRef}
               width="95%"
               margin="0 0 0 9px"
               padding="0"
@@ -126,7 +136,9 @@ const TalkComment = (props) => {
                     : comment_info.createDate.substr(5, 5)}
                 </Text>
               </Grid>
-              <Text color={Color.gray800}>{comment_info.commentContent}</Text>
+              <Text whiteSpace="normal" lineHeight="22px" color={Color.gray800}>
+                {comment_info.commentContent}
+              </Text>
             </Grid>
           </Grid>
           <PermitStrict authorName={comment_info.userName}>
