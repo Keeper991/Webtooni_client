@@ -56,7 +56,7 @@ Image.defaultProps = {
   padding: 0,
   margin: 0,
   shape: "",
-  src: "https://blog.kakaocdn.net/dn/cuKRq9/btq6skF4PU3/6dgz9y2RwrkJmwNITLgRBK/img.png",
+  src: "https://i.stack.imgur.com/y9DpT.jpg",
   size: 0,
   children: null,
   display: "",

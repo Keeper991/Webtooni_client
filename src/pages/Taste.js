@@ -6,6 +6,7 @@ import { Color } from "../shared/common";
 
 import { history } from "../redux/configureStore";
 import { ProgressStepBtns } from "../components";
+import { useSelector } from "react-redux";
 
 const MAX_SELECT_COUNT = 5;
 const TASTE_LS = "TASTE_LIST";
@@ -27,9 +28,18 @@ const Taste = () => {
   ];
   const [tastes, setTastes] = useState([]);
 
+  const is_login = useSelector((state) => state.user.is_login);
+  const is_shown_modal = useSelector(
+    (state) => state.user.info.isShownWelcomeModal
+  );
+
   useEffect(() => {
     const tasteDataLS = localStorage.getItem(TASTE_LS);
     tasteDataLS && setTastes(tasteDataLS.split(","));
+    if (!(is_login === true && is_shown_modal === false)) {
+      window.alert("잘못된 접근입니다.");
+      history.push("/");
+    }
   }, []);
 
   const progressStepClickHandlers = [
@@ -61,7 +71,7 @@ const Taste = () => {
         </TitleArea>
         <TasteArea>
           {genreList.map((genre, i) => (
-            <TasteBtnWrap active={tastes.includes(genre)}>
+            <TasteBtnWrap key={i} active={tastes.includes(genre)}>
               <Button
                 shape="pill"
                 border={`1px solid ${Color.gray300}`}

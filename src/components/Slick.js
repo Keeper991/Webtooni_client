@@ -5,6 +5,7 @@ import "slick-carousel/slick/slick.css";
 import "slick-carousel/slick/slick-theme.css";
 
 import { Color } from "../shared/common";
+import React from "react";
 // children에 width나 display 속성을 사용할 경우, !important를 붙여줄 것.
 const Slick = ({
   width,
@@ -13,6 +14,9 @@ const Slick = ({
   is_variableWidth,
   is_infinite,
   is_center,
+  is_offer,
+  _beforeChange,
+  _afterChange,
   ...props
 }) => {
   const CustomNextArrows = (props) => {
@@ -55,16 +59,17 @@ const Slick = ({
     );
   };
 
-  const centerMode = {
-    className: "center",
-    centerMode: true,
-    infinite: true,
-    centerPadding: "0px",
-    slidesToShow: 3,
-    speed: 800,
-    arrows: false,
-  };
-
+  if (is_offer) {
+    return (
+      <OfferSliderWrap
+        {...offerMode}
+        beforeChange={_beforeChange}
+        afterChange={_afterChange}
+      >
+        {children}
+      </OfferSliderWrap>
+    );
+  }
   if (custom_arrows) {
     return (
       <SliderWrap
@@ -75,6 +80,8 @@ const Slick = ({
         variableWidth={is_variableWidth}
         nextArrow={<CustomNextArrows></CustomNextArrows>}
         prevArrow={<CustomPrevArrows></CustomPrevArrows>}
+        beforeChange={_beforeChange}
+        afterChange={_afterChange}
       >
         {children}
       </SliderWrap>
@@ -82,7 +89,15 @@ const Slick = ({
   }
 
   if (is_center) {
-    return <CenterSliderWrap {...centerMode}>{children}</CenterSliderWrap>;
+    return (
+      <CenterSliderWrap
+        beforeChange={_beforeChange}
+        afterChange={_afterChange}
+        {...centerMode}
+      >
+        {children}
+      </CenterSliderWrap>
+    );
   }
 
   return (
@@ -93,6 +108,8 @@ const Slick = ({
       draggable
       variableWidth={is_variableWidth}
       arrows={false}
+      beforeChange={_beforeChange}
+      afterChange={_afterChange}
     >
       {children}
     </SliderWrap>
@@ -103,11 +120,57 @@ Slick.defaultProps = {
   width: "90%",
   is_infinite: false,
   is_variableWidth: true,
+  _beforeChange: () => {},
+  _afterChange: () => {},
+};
+
+const offerMode = {
+  dots: true,
+  infinite: true,
+  slidesToShow: 1,
+  slidesToScroll: 1,
+  autoplay: true,
+  arrows: true,
+  speed: 700,
+  autoplaySpeed: 5000,
+  cssEase: "ease-in-out",
+};
+
+const centerMode = {
+  className: "center",
+  centerMode: true,
+  infinite: true,
+  centerPadding: "0px",
+  slidesToShow: 3,
+  speed: 800,
+  arrows: false,
 };
 
 const SliderWrap = styled(Slider)`
   width: ${({ width }) => width};
   margin: 0 auto;
+`;
+
+const OfferSliderWrap = styled(Slider)`
+  width: 100%auto;
+  margin: 0 auto;
+
+  .slick-dots li {
+    margin: 0 2px !important;
+  }
+
+  .slick-dots li button:before {
+    color: ${Color.primary};
+  }
+
+  .slick-dots li.slick-active button:focus:before,
+  .slick-dots li button:hover:before {
+    opacity: 1;
+  }
+
+  .slick-dots li button:focus:before {
+    opacity: 0.25;
+  }
 `;
 
 const CenterSliderWrap = styled(Slider)`

@@ -2,6 +2,8 @@ import { createAction, handleActions } from "redux-actions";
 import { produce } from "immer";
 import { userAPI } from "../../shared/API";
 import { setToken, getToken, removeToken } from "../../shared/PermitAuth";
+import { actionCreators as webtoonActions } from "./webtoon";
+import { actionCreators as reviewActions } from "./review";
 
 const ADD_REVIEW_LIKE_LIST = "user/ADD_REVIEW_LIKE_LIST";
 const ADD_REVIEW_LIKE = "user/ADD_REVIEW_LIKE";
@@ -40,24 +42,6 @@ const unsubscribe = createAction(UNSUBSCRIBE, (webtoonId) => ({
 }));
 const shownWelcomeModal = createAction(SHOWN_WELCOME_MODAL, () => ({}));
 
-const addStarPoint = createAction(
-  ADD_STAR_POINT,
-  (reviewId, webtoonId, userName, userPointNumber) => ({
-    reviewId,
-    webtoonId,
-    userName,
-    userPointNumber,
-  })
-);
-const editStarPoint = createAction(
-  EDIT_STAR_POINT,
-  (reviewId, userPointNumber) => ({ reviewId, userPointNumber })
-);
-const editReview = createAction(EDIT_REVIEW, (reviewId, reviewContent) => ({
-  reviewId,
-  reviewContent,
-}));
-
 ///////////////////////////////////////////////////////////
 // thunks
 ///////////////////////////////////////////////////////////
@@ -71,7 +55,7 @@ const kakaoLoginServer =
       const infoRes = await userAPI.getInfo();
       infoRes.data.isShownWelcomeModal = Boolean(infoRes.data.userName);
       dispatch(setUser(infoRes.data));
-      infoRes.data.userName ? history.push("/") : history.push("/taste");
+      infoRes.data.userName ? history.replace("/") : history.replace("/taste");
     } catch (e) {
       console.log(e);
       alert("로그인에 실패했습니다.");
@@ -117,15 +101,19 @@ const subscribeServer = (webtoonId, bool) => async (dispatch, getState) => {
 };
 
 const setUserServer =
-  (info) =>
+  (info, callback) =>
   async (dispatch, getState, { history }) => {
     try {
       await userAPI.putUserInfo(info);
       dispatch(setUser(info));
+      callback();
       history.replace("/");
     } catch (e) {
-      console.log(e);
-      alert("가입에 실패했습니다.");
+      if (e.response.status === 400) {
+        alert("중복된 닉네임입니다.");
+      } else {
+        alert("회원정보 등록에 실패했습니다.");
+      }
     }
   };
 
@@ -137,11 +125,10 @@ const initialState = {
     isShownWelcomeModal: false,
   },
   subscribeList: [],
-  reviewList: [],
   reviewLikeList: [],
-  postList: [],
   postLikeList: [],
-  commentList: [],
+  userList: [],
+  isRequestedUserPageInfo: false,
   is_login: false,
 };
 
@@ -185,7 +172,7 @@ export default handleActions(
     [SET_SUBSCRIBE_LIST]: (state, action) =>
       produce(state, (draft) => {
         draft.subscribeList.push(...action.payload.webtoonIdList);
-        draft.subscribeList = Array.from(new Set(draft.subscribeList));
+        draft.subscribeList = [...new Set(draft.subscribeList)];
       }),
     [SUBSCRIBE]: (state, action) =>
       produce(state, (draft) => {
@@ -203,12 +190,6 @@ export default handleActions(
     [SHOWN_WELCOME_MODAL]: (state, action) =>
       produce(state, (draft) => {
         draft.info.isShownWelcomeModal = true;
-      }),
-    [ADD_STAR_POINT]: (state, action) =>
-      produce(state, (draft) => {
-        const { reviewId, webtoonId, userName, userPointNumber } =
-          action.payload;
-        draft.reviewList.push();
       }),
   },
   initialState
