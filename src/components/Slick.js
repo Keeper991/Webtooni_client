@@ -89,15 +89,7 @@ const Slick = ({
   }
 
   if (is_center) {
-    return (
-      <CenterSliderWrap
-        beforeChange={_beforeChange}
-        afterChange={_afterChange}
-        {...centerMode}
-      >
-        {children}
-      </CenterSliderWrap>
-    );
+    return <CenterSliderWrap {...centerMode}>{children}</CenterSliderWrap>;
   }
 
   return (
