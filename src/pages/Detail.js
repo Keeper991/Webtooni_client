@@ -39,14 +39,18 @@ const Detail = (props) => {
     (review) => review.toonId === webtoon_id
   );
   const reviewOne = toonReviews.find((review) => review.userName === userName);
-  toonReviews = toonReviews.filter((review) => review.userName !== userName); //다른 사람들의 리뷰
+  toonReviews = toonReviews.filter((review) => review.userName !== userName);
 
   const [myReview, setMyReview] = React.useState(initialState.current);
 
+  //보여줄 리뷰 개수 설정
+  const [shownReview, addShownReview] = React.useState(2);
   const startReviewNo = reviewOne?.reviewContent ? 1 : 2;
-  const [shownReview, addShownReview] = React.useState(startReviewNo);
-  const [sortByNew, isSortByNew] = React.useState(true);
+  useEffect(() => {
+    addShownReview(startReviewNo);
+  }, [startReviewNo]);
 
+  const [sortByNew, isSortByNew] = React.useState(true);
   const loading = useSelector((store) => store.review.is_loading_review);
   const loading_user = useSelector((store) => store.user.is_loading);
 
@@ -305,7 +309,7 @@ const Detail = (props) => {
                     fontWeight="medium"
                     color={Color.gray500}
                   >
-                    리뷰&nbsp;{likeReviews.length}개
+                    리뷰&nbsp;{countReview}개
                   </Text>
                   {/* 리뷰 정렬하기 */}
                   <SortGrid>
@@ -327,6 +331,7 @@ const Detail = (props) => {
                 {sortByNew
                   ? newReviews.map((item, idx) => {
                       if (idx < shownReview) {
+                        console.log(item, "item");
                         return <DetailReview key={idx} review={item} />;
                       }
                     })
