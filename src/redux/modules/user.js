@@ -2,8 +2,6 @@ import { createAction, handleActions } from "redux-actions";
 import { produce } from "immer";
 import { userAPI } from "../../shared/API";
 import { setToken, getToken, removeToken } from "../../shared/PermitAuth";
-import { actionCreators as webtoonActions } from "./webtoon";
-import { actionCreators as reviewActions } from "./review";
 
 const ADD_REVIEW_LIKE_LIST = "user/ADD_REVIEW_LIKE_LIST";
 const ADD_REVIEW_LIKE = "user/ADD_REVIEW_LIKE";
@@ -16,9 +14,6 @@ const SUBSCRIBE = "user/SUBSCRIBE";
 const UNSUBSCRIBE = "user/UNSUBSCRIBE";
 const SHOWN_WELCOME_MODAL = "user/SHOWN_WELCOME_MODAL";
 const SET_IS_CHECKING = "user/SET_IS_CHECKING";
-const ADD_STAR_POINT = "user/ADD_STAR_POINT";
-const EDIT_STAR_POINT = "user/EDIT_STAR_POINT";
-const EDIT_REVIEW = "user/EDIT_REVIEW";
 const LOADING = "user/LOADING";
 
 const addReviewLikeList = createAction(ADD_REVIEW_LIKE_LIST, (reviewList) => ({
@@ -46,23 +41,6 @@ const shownWelcomeModal = createAction(SHOWN_WELCOME_MODAL, () => ({}));
 
 const setIsChecking = createAction(SET_IS_CHECKING, () => ({}));
 
-const addStarPoint = createAction(
-  ADD_STAR_POINT,
-  (reviewId, webtoonId, userName, userPointNumber) => ({
-    reviewId,
-    webtoonId,
-    userName,
-    userPointNumber,
-  })
-);
-const editStarPoint = createAction(
-  EDIT_STAR_POINT,
-  (reviewId, userPointNumber) => ({ reviewId, userPointNumber })
-);
-const editReview = createAction(EDIT_REVIEW, (reviewId, reviewContent) => ({
-  reviewId,
-  reviewContent,
-}));
 const loading = createAction(LOADING, (is_loading) => ({
   is_loading,
 }));
@@ -110,12 +88,11 @@ const loginCheck =
           alert("로그아웃 되었습니다");
           return;
         }
-      } finally {
-        dispatch(setIsChecking());
       }
     } else {
       dispatch(logOut());
     }
+    dispatch(setIsChecking());
   };
 
 const subscribeServer = (webtoonId, bool) => async (dispatch, getState) => {
@@ -251,9 +228,8 @@ const actionCreators = {
   subscribeServer,
   setUserServer,
   subscribe,
-  // 아래는 테스트용.
-  setUser,
   shownWelcomeModal,
+  setUser,
 };
 
 export { actionCreators };

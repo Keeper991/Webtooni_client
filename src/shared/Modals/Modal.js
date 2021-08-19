@@ -13,22 +13,20 @@ const Modal = () => {
   const dispatch = useDispatch();
   const { userName, userImg } = useSelector((state) => state.user.info);
   const { isActiveModal, modalKind } = useSelector((state) => state.modal);
+  const confirmHandlers = {
+    logout: () => dispatch(userActions.logOut()),
+    welcome: () => dispatch(userActions.shownWelcomeModal()),
+  };
   const kinds = {
     logout: (
-      <ConfirmModal
-        icon={Delete}
-        handleConfirm={() => dispatch(userActions.logOut())}
-      >
+      <ConfirmModal icon={Delete} handleConfirm={confirmHandlers[modalKind]}>
         로그아웃 하시겠습니까?
       </ConfirmModal>
     ),
     welcome: (
       <AlertModal
         icon={profileImgList[userImg]}
-        handleConfirm={() => {
-          dispatch(userActions.shownWelcomeModal());
-          dispatch(modalActions.inactiveModal());
-        }}
+        handleConfirm={confirmHandlers[modalKind]}
       >
         <Text fontWeight="bold">{userName} 님 반가워요!</Text>
         <br />
@@ -42,7 +40,11 @@ const Modal = () => {
   return (
     <Container isActive={isActiveModal}>
       <Content>{kinds[modalKind]}</Content>
-      <ModalBg onClick={() => dispatch(modalActions.inactiveModal())} />
+      <ModalBg
+        onClick={() => {
+          dispatch(modalActions.inactiveModal());
+        }}
+      />
     </Container>
   );
 };
