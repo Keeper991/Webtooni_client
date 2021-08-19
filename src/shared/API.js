@@ -1,24 +1,26 @@
 import axios from "axios";
 import { getToken } from "./PermitAuth";
 
+const isDevelopment = process.env.NODE_ENV === "development";
+
 const getKakaoAddr = () => {
-  const redirectURI =
-    process.env.NODE_ENV === "development"
-      ? "http://localhost:3000"
-      : "http://webtooniverse-host.s3-website.ap-northeast-2.amazonaws.com";
+  const redirectURI = isDevelopment
+    ? "http://localhost:3000"
+    : "http://webtooniverse-host.s3-website.ap-northeast-2.amazonaws.com";
   return `https://kauth.kakao.com/oauth/authorize?client_id=9bf8aff1cb1460ec63268cd09c603a1a&redirect_uri=${redirectURI}/user/kakao&response_type=code`;
 };
 
 const getNaverAddr = () => {
-  const redirectURI =
-    process.env.NODE_ENV === "development"
-      ? "http://localhost:3000"
-      : "http://webtooniverse-host.s3-website.ap-northeast-2.amazonaws.com";
+  const redirectURI = isDevelopment
+    ? "http://localhost:3000"
+    : "http://webtooniverse-host.s3-website.ap-northeast-2.amazonaws.com";
   return `https://nid.naver.com/oauth2.0/authorize?response_type=code&client_id=7RBFbToxSfOTA51ofOYj&redirect_uri=${redirectURI}/user/naver`;
 };
 
 const instance = axios.create({
-  baseURL: "http://13.124.236.225/api/v1/",
+  baseURL: isDevelopment
+    ? "http://34.64.193.34/api/v1/"
+    : "http://13.124.236.225/api/v1/",
 });
 
 // 매 요청 전에 token 유무를 확인해서 header에 Authorization 추가.
@@ -26,6 +28,11 @@ instance.interceptors.request.use((config) => {
   const token = getToken();
   if (token) config.headers.common["Authorization"] = `${token}`;
   return config;
+});
+
+instance.interceptors.response.use(null, (error) => {
+  console.log(error);
+  return Promise.reject(error);
 });
 
 const webtoonAPI = {
@@ -95,6 +102,8 @@ const userAPI = {
     instance.get(`user/kakao/callback`, { params: { code } }),
   naverLoginCallback: () => instance.get(`user/naver/callback`),
   search: (keyword) => instance.get(`search`, { params: { keyword } }),
+  getUserPageInfo: (userName) =>
+    instance.get(`user/infos`, { params: { user: userName } }),
 };
 
 export {
