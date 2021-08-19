@@ -80,7 +80,7 @@ const addCommentServer = (postId, commentContent, commentCount) => {
       const post_list = getState().talk.post_list;
       const post = post_list.filter((p) => p.postId === postId)[0];
       dispatch(
-        talkActions.editPostOne({ ...post, commentCount: commentCount + 1 }) //댓글수 변수명 나중에 수정
+        talkActions.editPostOne({ ...post, talkCommentCount: commentCount + 1 })
       );
       dispatch(loading(false));
     } catch (err) {
@@ -131,7 +131,7 @@ const deleteCommentServer = (postId, commentId, commentCount) => {
       const post_list = getState().talk.post_list;
       const post = post_list.filter((p) => p.postId === postId)[0];
       dispatch(
-        talkActions.editPostOne({ ...post, commentCount: commentCount - 1 })
+        talkActions.editPostOne({ ...post, talkCommentCount: commentCount - 1 })
       );
       dispatch(loading(false));
     } catch (err) {
