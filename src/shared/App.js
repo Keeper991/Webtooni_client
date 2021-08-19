@@ -11,7 +11,6 @@ import {
   Review,
   ReviewSearch,
   Search,
-  User,
   Login,
   Talk,
   TalkWrite,
@@ -20,7 +19,6 @@ import {
   Profile,
   ToonList,
   SocialLogin,
-  NaverLogin,
   ReviewWrite,
 } from "../pages/index";
 import Header from "./Header";
@@ -54,7 +52,7 @@ function App() {
         <Route path="/talk/write/:id" exact component={TalkWrite} />
         <Route path="/talk/detail/:id" exact component={TalkDetail} />
         <Route path="/user/kakao" exact component={SocialLogin} />
-        <Route path="/user/naver" exact component={NaverLogin} />
+        <Route path="/user/naver" exact component={SocialLogin} />
         {/* <Route path="/user/:userName" exact component={User} /> */}
       </ConnectedRouter>
       <Modal />

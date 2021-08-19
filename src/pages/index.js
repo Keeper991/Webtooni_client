@@ -13,7 +13,6 @@ import Taste from "./Taste";
 import Profile from "./Profile";
 import ToonList from "./ToonList";
 import SocialLogin from "./SocialLogin";
-import NaverLogin from "./NaverLogin";
 import ReviewWrite from "./ReviewWrite";
 
 export {
@@ -30,7 +29,6 @@ export {
   Taste,
   Profile,
   ToonList,
-  NaverLogin,
   SocialLogin,
   ReviewWrite,
   ReviewSearch,
