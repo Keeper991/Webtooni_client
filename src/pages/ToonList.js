@@ -74,8 +74,8 @@ const ToonList = (props) => {
               </Text>
             </FlexGrid>
             <SliderBox>
-              {Array.from({ length: 10 }).map(() => {
-                return <SkeletonCard more></SkeletonCard>;
+              {Array.from({ length: 10 }).map((_, idx) => {
+                return <SkeletonCard key={idx} more></SkeletonCard>;
               })}
             </SliderBox>
           </Container>
@@ -124,8 +124,8 @@ const ToonList = (props) => {
               </Text>
             </FlexGrid>
             <SliderBox>
-              {Array.from({ length: 10 }).map(() => {
-                return <SkeletonCard more></SkeletonCard>;
+              {Array.from({ length: 10 }).map((_, idx) => {
+                return <SkeletonCard key={idx} more></SkeletonCard>;
               })}
             </SliderBox>
           </Container>
@@ -174,8 +174,8 @@ const ToonList = (props) => {
               </Text>
             </FlexGrid>
             <SliderBox>
-              {Array.from({ length: 10 }).map(() => {
-                return <SkeletonCard more></SkeletonCard>;
+              {Array.from({ length: 10 }).map((_, idx) => {
+                return <SkeletonCard key={idx} more></SkeletonCard>;
               })}
             </SliderBox>
           </Container>
@@ -224,8 +224,8 @@ const ToonList = (props) => {
               </Text>
             </FlexGrid>
             <SliderBox>
-              {Array.from({ length: 10 }).map(() => {
-                return <SkeletonCard more></SkeletonCard>;
+              {Array.from({ length: 10 }).map((_, idx) => {
+                return <SkeletonCard key={idx} more></SkeletonCard>;
               })}
             </SliderBox>
           </Container>
@@ -274,8 +274,8 @@ const ToonList = (props) => {
               </Text>
             </FlexGrid>
             <SliderBox>
-              {Array.from({ length: 10 }).map(() => {
-                return <SkeletonCard more></SkeletonCard>;
+              {Array.from({ length: 10 }).map((_, idx) => {
+                return <SkeletonCard key={idx} more></SkeletonCard>;
               })}
             </SliderBox>
           </Container>

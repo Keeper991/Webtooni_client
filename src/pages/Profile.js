@@ -45,10 +45,12 @@ const Profile = () => {
       userName: userName,
       isShownWelcomeModal: false,
     };
-    localStorage.removeItem(TASTE_LS);
-    localStorage.removeItem(PROFILE_LS);
-    localStorage.removeItem(USERNAME_LS);
-    dispatch(userActions.setUserServer(data));
+    const removeInfoData = () => {
+      localStorage.removeItem(TASTE_LS);
+      localStorage.removeItem(PROFILE_LS);
+      localStorage.removeItem(USERNAME_LS);
+    };
+    dispatch(userActions.setUserServer(data, removeInfoData));
   };
 
   return (
@@ -69,6 +71,7 @@ const Profile = () => {
           <ProfileArea>
             {profileImgList.map((profileImg, i) => (
               <Button
+                key={i}
                 shape="circle"
                 size="auto"
                 border="none"

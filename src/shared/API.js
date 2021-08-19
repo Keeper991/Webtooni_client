@@ -18,7 +18,7 @@ const getNaverAddr = () => {
 };
 
 const instance = axios.create({
-  baseURL: "http://3.35.149.44/api/v1/",
+  baseURL: "http://13.124.236.225/api/v1/",
 });
 
 // 매 요청 전에 token 유무를 확인해서 header에 Authorization 추가.

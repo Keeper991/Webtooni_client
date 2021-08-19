@@ -61,7 +61,7 @@ const Taste = () => {
         </TitleArea>
         <TasteArea>
           {genreList.map((genre, i) => (
-            <TasteBtnWrap active={tastes.includes(genre)}>
+            <TasteBtnWrap key={i} active={tastes.includes(genre)}>
               <Button
                 shape="pill"
                 border={`1px solid ${Color.gray300}`}

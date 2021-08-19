@@ -51,9 +51,6 @@ const Main = () => {
   const kakao_list = toon_list.filter((toon) =>
     toon.filterConditions.includes("kakao")
   );
-  const for_user_list = toon_list.filter((toon) =>
-    toon.filterConditions?.includes("forUser")
-  );
 
   // effects
   React.useEffect(() => {
@@ -81,10 +78,6 @@ const Main = () => {
   const like_list = useSelector((state) => state.user.reviewLikeList);
 
   React.useEffect(() => {
-    if (is_login && !for_user_list.length) {
-      dispatch(webtoonActions.getForUserWebtoonList());
-    }
-
     if (is_login && !isShownWelcomeModal) {
       dispatch(modalActions.activeModal("welcome"));
     }
