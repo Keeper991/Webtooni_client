@@ -5,7 +5,7 @@ import { Button, Image } from "../../elements";
 import { useDispatch } from "react-redux";
 import { actionCreators as modalActions } from "../../redux/modules/modal";
 
-const AlertModal = ({ icon, children }) => {
+const AlertModal = ({ icon, children, handleConfirm }) => {
   const dispatch = useDispatch();
   return (
     <Container>
@@ -21,6 +21,7 @@ const AlertModal = ({ icon, children }) => {
           width="100%"
           border="none"
           _onClick={() => {
+            handleConfirm();
             dispatch(modalActions.inactiveModal());
           }}
         >
