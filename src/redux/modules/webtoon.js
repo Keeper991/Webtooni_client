@@ -181,6 +181,80 @@ const getToonOneServer = (webtoonId) => {
   };
 };
 
+// 웹툰리스트의 더보기 페이지를 위한 thunk
+// getWebtooniRank
+// getEndToonOffer
+// getBestReviewerOffer
+// getSimilarUserOffer
+const getWebtooniRank = () => async (dispatch) => {
+  try {
+    let { data: webtooniToons } = await webtoonAPI.getWebtooniRank();
+    webtooniToons = webtooniToons.map((toon) => {
+      toon.genres = toon.genres || [];
+      return toon;
+    });
+    dispatch(addToonList(webtooniToons, "webtooni"));
+  } catch (e) {
+    console.log(e);
+    alert("웹툰 리스트를 불러오는데에 실패했습니다.");
+  }
+};
+
+const getEndToonOffer = () => async (dispatch) => {
+  try {
+    const { data: endOfferToons } = await offerAPI.getEnd();
+    dispatch(addToonList(endOfferToons, "endOffer"));
+  } catch (e) {
+    console.log(e);
+    alert("웹툰 리스트를 불러오는데에 실패했습니다.");
+  }
+};
+
+const getBestReviewerOffer = () => async (dispatch) => {
+  try {
+    const {
+      data: {
+        userInfoOnlyResponseDto: bestReviewerOfferUserInfo,
+        webtoonAndGenreResponseDtos: bestReviewerOfferToons,
+      },
+    } = await offerAPI.getBestReviewersChoice();
+    dispatch(addToonList(bestReviewerOfferToons, "bestReviewerOffer"));
+    dispatch(
+      reviewerActions.setBestReviewerOfferUserInfo(bestReviewerOfferUserInfo)
+    );
+  } catch (e) {
+    console.log(e);
+    alert("웹툰 리스트를 불러오는데에 실패했습니다.");
+  }
+};
+
+const getSimilarUserOffer = () => async (dispatch) => {
+  try {
+    const { data: similarUserOfferToons } =
+      await offerAPI.getSimilarUsersChoice();
+    dispatch(addToonList(similarUserOfferToons, "similarUserOffer"));
+  } catch (e) {
+    console.log(e);
+    alert("웹툰 리스트를 불러오는데에 실패했습니다.");
+  }
+};
+
+const getSimilarGenre = (webtoonId) => async (dispatch) => {
+  try {
+    let { data: similarGenreToons } = await offerAPI.getSimilarGenre(webtoonId);
+    similarGenreToons = similarGenreToons.filter(
+      (toon, idx) =>
+        similarGenreToons.findIndex((_toon) => _toon.toonId === toon.toonId) ===
+        idx
+    );
+    similarGenreToons = similarGenreToons.map((toon) => {
+      toon.genres = toon.genres || [];
+      return toon;
+    });
+    dispatch(addToonList(similarGenreToons, webtoonId));
+  } catch (e) {}
+};
+
 const initialState = {
   toon_list: [],
   is_loading: false,
@@ -213,10 +287,14 @@ export default handleActions(
                   ) === idx
               );
             }
+            let genres = [...draft.toon_list[toonIdx].genres, ...toon.genres];
+            genres = genres.filter(
+              (genre, idx) => genres.indexOf(genre) === idx
+            );
             draft.toon_list[toonIdx] = {
               ...draft.toon_list[toonIdx],
               ...toon,
-              genres: [...draft.toon_list[toonIdx].genres, ...toon.genres],
+              genres,
             };
           }
         });
@@ -264,6 +342,11 @@ const actionCreators = {
   getToonOneServer,
   addToonList,
   setToonAvgPoint,
+  getWebtooniRank,
+  getEndToonOffer,
+  getBestReviewerOffer,
+  getSimilarUserOffer,
+  getSimilarGenre,
   // 미사용중..
   startLoading,
   endLoading,
