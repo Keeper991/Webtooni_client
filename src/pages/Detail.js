@@ -11,6 +11,11 @@ import { ReactComponent as FillStar } from "../images/FillStar.svg";
 import { history } from "../redux/configureStore";
 // import shootingStar from "../images/shootingStar.png";
 import { ReactComponent as ShootingStar } from "../images/ShootingStar.svg";
+import { ReactComponent as Pencil } from "../images/Pencil.svg";
+import { ReactComponent as Check } from "../images/Check.svg";
+import { ReactComponent as Plus } from "../images/Plus.svg";
+import { ReactComponent as DownArrow } from "../images/DownArrow.svg";
+import { ReactComponent as LeftArrow } from "../images/LeftArrow.svg";
 
 const Detail = (props) => {
   const dispatch = useDispatch();
@@ -30,13 +35,20 @@ const Detail = (props) => {
   const similarToons = toon_list.filter((toon) =>
     toon.filterConditions?.includes(webtoon_id)
   );
-  const toonReviews = review_list.filter(
+  let toonReviews = review_list.filter(
     (review) => review.toonId === webtoon_id
   );
   const reviewOne = toonReviews.find((review) => review.userName === userName);
+  toonReviews = toonReviews.filter((review) => review.userName !== userName); //다른 사람들의 리뷰
 
   const [myReview, setMyReview] = React.useState(initialState.current);
-  const [sortBy, setSortBy] = React.useState("createDate");
+
+  const startReviewNo = reviewOne?.reviewContent ? 1 : 2;
+  const [shownReview, addShownReview] = React.useState(startReviewNo);
+  const [sortByNew, isSortByNew] = React.useState(true);
+
+  const loading = useSelector((store) => store.review.is_loading_review);
+  const loading_user = useSelector((store) => store.user.is_loading);
 
   // slick swipe click prevent
   const [dragging, setDragging] = React.useState(false);
@@ -75,12 +87,32 @@ const Detail = (props) => {
     }
   }, [is_login, webtoon_id, reviewOne]);
 
+  //최신 순 리스트
+  const newReviews = toonReviews
+    .sort(function (a, b) {
+      return a.createDate < b.createDate ? 1 : -1;
+    })
+    .filter((_) => _.reviewContent);
+
+  //좋아요 순 리스트
+  const likeReviews = toonReviews
+    .sort(function (a, b) {
+      return a.likeCount > b.likeCount ? -1 : 1;
+    })
+    .filter((_) => _.reviewContent);
+
+  const countReview = reviewOne?.reviewContent
+    ? likeReviews.length + 1
+    : likeReviews.length; //리뷰 수
+
   //내 리스트에 추가하기(구독하기)
   const handleSubscribe = (webtoon_id, bool) => {
-    if (is_login) {
-      dispatch(userActions.subscribeServer(webtoon_id, bool));
-    } else {
+    if (!is_login) {
       alert("로그인하세요~");
+    } else if (loading_user) {
+      return;
+    } else {
+      dispatch(userActions.subscribeServer(webtoon_id, bool));
     }
   };
 
@@ -88,6 +120,8 @@ const Detail = (props) => {
   const handleStarClick = (userPointNumber) => {
     if (!is_login) {
       alert("로그인이 필요한 서비스입니다. 로그인해주세요.");
+    } else if (loading) {
+      return;
     } else {
       setMyReview({ ...myReview, userPointNumber });
       dispatch(reviewActions.putStarServer(webtoon_id, userPointNumber));
@@ -150,7 +184,6 @@ const Detail = (props) => {
                 )}
               </Grid>
             </Grid>
-
             {/* 별점 주기 */}
             <Grid display="flex" justify="center">
               <DetailStar
@@ -164,11 +197,19 @@ const Detail = (props) => {
                   shape="pill"
                   bgColor={Color.primary}
                   border={`1px solid ${Color.primary}`}
-                  color={Color.white}
                   margin="0 12px 0 0"
                   _onClick={() => handleSubscribe(webtoon_id, false)}
                 >
-                  구독중
+                  <Grid display="flex" justify="center" align="center">
+                    <Check />
+                    <Text
+                      margin="0 0 0 8px"
+                      fontWeight="medium"
+                      color={Color.white}
+                    >
+                      구독중
+                    </Text>
+                  </Grid>
                 </Button>
               ) : (
                 <Button
@@ -176,7 +217,16 @@ const Detail = (props) => {
                   margin="0 12px 0 0"
                   _onClick={() => handleSubscribe(webtoon_id, true)}
                 >
-                  구독하기
+                  <Grid display="flex" justify="center" align="center">
+                    <Plus />
+                    <Text
+                      margin="0 0 0 8px"
+                      fontWeight="medium"
+                      color={Color.gray800}
+                    >
+                      구독하기
+                    </Text>
+                  </Grid>
                 </Button>
               )}
               <Button
@@ -188,13 +238,28 @@ const Detail = (props) => {
                 }
                 shape="pill"
               >
-                리뷰등록
+                <Grid display="flex" justify="center" align="center">
+                  <Pencil />
+                  <Text
+                    margin="0 0 0 8px"
+                    fontWeight="medium"
+                    color={Color.gray800}
+                  >
+                    {reviewOne?.reviewContent ? "리뷰수정" : "리뷰등록"}
+                  </Text>
+                </Grid>
               </Button>
             </Grid>
             <Text fontWeight="medium" color={Color.gray500}>
               웹툰설명
             </Text>
-            <Text tag="p" margin="16px 0" whiteSpace="normal" lineHeight="22px">
+            <Text
+              color={Color.gray800}
+              tag="p"
+              margin="16px 0"
+              whiteSpace="normal"
+              lineHeight="22px"
+            >
               {toonOne.toonContent}
             </Text>
             <a
@@ -206,7 +271,8 @@ const Detail = (props) => {
                 width="100%"
                 shape="pill"
                 bgColor={Color.white}
-                padding="12px 16px"
+                padding="12px 10px 12px 16px"
+                margin="0 0 28px 0"
               >
                 <ShootingStar
                   style={{ width: "16px", height: "16px", marginRight: "8px" }}
@@ -219,43 +285,122 @@ const Detail = (props) => {
                 >
                   웹툰 바로 보러가기
                 </Text>
-                <Text
-                  tag="p"
-                  width="100%"
-                  textAlign="right"
-                  fontWeight="medium"
-                  color={Color.primary}
-                >
-                  {">"}
-                </Text>
+                <Grid width="100%" display="flex" justify="flex-end">
+                  <LeftArrow />
+                </Grid>
               </Button>
             </a>
+
+            {countReview !== 0 && (
+              <>
+                <Grid
+                  margin="0 0 4px 0"
+                  display="flex"
+                  justify="space-between"
+                  align="center"
+                >
+                  <Text
+                    tag="p"
+                    margin="0 0 14px 0"
+                    fontWeight="medium"
+                    color={Color.gray500}
+                  >
+                    리뷰&nbsp;{likeReviews.length}개
+                  </Text>
+                  {/* 리뷰 정렬하기 */}
+                  <SortGrid>
+                    <SortNew sort={sortByNew} onClick={() => isSortByNew(true)}>
+                      최신 순
+                    </SortNew>
+                    <SortLike
+                      sort={!sortByNew}
+                      onClick={() => isSortByNew(false)}
+                    >
+                      좋아요 순
+                    </SortLike>
+                  </SortGrid>
+                </Grid>
+                {/* 리뷰 목록 */}
+                {reviewOne?.reviewContent && (
+                  <DetailReview isMe={true} review={reviewOne} />
+                )}
+                {sortByNew
+                  ? newReviews.map((item, idx) => {
+                      if (idx < shownReview) {
+                        return <DetailReview key={idx} review={item} />;
+                      }
+                    })
+                  : likeReviews.map((item, idx) => {
+                      if (idx < shownReview) {
+                        return <DetailReview key={idx} review={item} />;
+                      }
+                    })}
+                {(likeReviews.length > shownReview ||
+                  likeReviews.length - 1 === shownReview) && (
+                  <Grid
+                    padding="14px"
+                    margin="0 0 20px 0"
+                    bgColor={Color.white}
+                    border={`1px solid ${Color.gray200}`}
+                    borderRadius="8px"
+                    display="flex"
+                    align="center"
+                    justify="center"
+                    onClick={() => {
+                      addShownReview(shownReview + 2);
+                      console.log(
+                        likeReviews,
+                        "likerevies",
+                        reviewOne,
+                        "reviewone"
+                      );
+                      console.log(shownReview, "shownrevies");
+                    }}
+                  >
+                    <Text
+                      margin="-4px 9px 0 0"
+                      fontWeight="medium"
+                      color={Color.gray800}
+                    >
+                      더보기
+                    </Text>
+                    <DownArrow />
+                  </Grid>
+                )}
+              </>
+            )}
+          </Grid>
+
+          <Grid
+            padding="22px 0 0 2px"
+            borderTop={`10px solid ${Color.gray100}`}
+          >
             <Grid display="flex" justify="space-between" align="center">
               <Text
-                margin="28px 0 16px 0"
+                padding="0 0 0 15px"
                 tag="p"
-                fontWeight="medium"
-                color={Color.gray500}
+                type="h2"
+                fontWeight="bold"
+                color={Color.gray800}
               >
-                리뷰
+                비슷한 장르의 웹툰 추천
               </Text>
-              {/* 리뷰 정렬하기 */}
-              {/* <Grid display="flex" justify="flex-end" gap="8px">
-                <Text _onClick={sortLike} cursor="pointer">
-                  최신 순
-                </Text>
-                <Text _onClick={sortNew} cursor="pointer">
-                  좋아요 순
-                </Text>
-              </Grid> */}
+              <Button
+                padding="0 17px 0 0"
+                border="none"
+                bgColor={Color.white}
+                color={Color.gray700}
+                fontSize="12px"
+                _onClick={() => {
+                  history.push({
+                    pathname: "/toonlist/similar_genre",
+                    state: { toon_id: webtoon_id },
+                  });
+                }}
+              >
+                더보기
+              </Button>
             </Grid>
-            {/* 리뷰 목록 */}
-            {toonReviews.map((item, idx) => (
-              <DetailReview key={idx} review={item} />
-            ))}
-            <Text tag="p" fontWeight="medium" color={Color.gray500}>
-              비슷한 장르의 웹툰
-            </Text>
 
             <Slick
               _afterChange={handleAfterChange}
@@ -291,6 +436,9 @@ const Grid = styled.div`
   background-color: ${(props) => props.bgColor || ""};
   ${(props) => (props.cursor ? "cursor: pointer" : "")};
   border-bottom: ${(props) => props.borderBottom || ""};
+  border-top: ${(props) => props.borderTop || ""};
+  border: ${(props) => props.border || ""};
+  border-radius: ${(props) => props.borderRadius || ""};
   ${(props) => props.gap && `gap: ${props.gap};`}
 `;
 
@@ -299,6 +447,23 @@ const SimContainer = styled.div`
   height: auto;
   padding: 10px;
   margin: 5px;
+`;
+
+const SortGrid = styled.div`
+  display: flex;
+  justify-content: flex-end;
+  gap: 8px;
+  margin: 3px;
+`;
+const SortNew = styled.p`
+  cursor: pointer;
+  color: ${(props) => (props.sort ? Color.primary : Color.gray800)};
+  font-size: 13px;
+`;
+const SortLike = styled.p`
+  cursor: pointer;
+  color: ${(props) => (props.sort ? Color.primary : Color.gray800)};
+  font-size: 13px;
 `;
 
 export default Detail;

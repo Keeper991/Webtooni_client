@@ -252,7 +252,10 @@ const getSimilarGenre = (webtoonId) => async (dispatch) => {
       return toon;
     });
     dispatch(addToonList(similarGenreToons, webtoonId));
-  } catch (e) {}
+  } catch (e) {
+    console.log(e);
+    alert("웹툰 리스트를 불러오는데에 실패했습니다.");
+  }
 };
 
 const initialState = {

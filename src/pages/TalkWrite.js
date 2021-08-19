@@ -10,6 +10,8 @@ import { ReactComponent as BackButton } from "../images/BackButton.svg";
 const TalkWrite = (props) => {
   const dispatch = useDispatch();
   const is_login = useSelector((store) => store.user.is_login);
+  const [contentAlert, isContentAlert] = React.useState(false);
+  const loading_talk = useSelector((store) => store.talk.is_loading);
 
   //톡 포스트 수정 시 기존 포스트 가져오기
   const post_id = props.match.params.id;
@@ -24,8 +26,6 @@ const TalkWrite = (props) => {
     postTitle: prevPost?.postTitle,
     postContent: prevPost?.postContent,
   });
-
-  const [contentAlert, isContentAlert] = React.useState(false);
 
   //상황 별 분기
   useEffect(() => {
@@ -50,6 +50,13 @@ const TalkWrite = (props) => {
 
   //포스트 등록
   const addPost = () => {
+    if (!is_login) {
+      alert("로그인하세요~");
+      return;
+    }
+    if (loading_talk) {
+      return;
+    }
     if (!post.postTitle || !post.postContent) {
       isContentAlert(true);
       setTimeout(function () {
@@ -57,14 +64,18 @@ const TalkWrite = (props) => {
       }, 2000);
       return;
     }
-    if (is_login) {
-      dispatch(talkActions.addPostServer(post.postTitle, post.postContent));
-    } else {
-      alert("로그인하세요~");
-    }
+
+    dispatch(talkActions.addPostServer(post.postTitle, post.postContent));
   };
   //포스트 수정
   const editPost = () => {
+    if (!is_login) {
+      alert("로그인하세요~");
+      return;
+    }
+    if (loading_talk) {
+      return;
+    }
     if (!post.postTitle || !post.postContent) {
       isContentAlert(true);
       setTimeout(function () {

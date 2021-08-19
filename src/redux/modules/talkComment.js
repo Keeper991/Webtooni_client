@@ -9,6 +9,7 @@ const ADD_COMMENT_ONE = "ADD_COMMENT_ONE";
 const EDIT_COMMENT_ONE = "EDIT_COMMENT_ONE";
 const DELETE_COMMENT_ONE = "DELETE_COMMENT_ONE";
 const RESET_COMMENT = "RESET_COMMENT";
+const LOADING = "talkComment/LOADING";
 
 const setCommentAll = createAction(SET_COMMENT_ALL, (commentList) => ({
   commentList,
@@ -27,6 +28,9 @@ const deleteCommentOne = createAction(DELETE_COMMENT_ONE, (commentId) => ({
   commentId,
 }));
 const resetComment = createAction(RESET_COMMENT, () => ({}));
+const loading = createAction(LOADING, (is_loading) => ({
+  is_loading,
+}));
 
 const initialState = {
   list: [
@@ -45,6 +49,7 @@ const initialState = {
     //   createDate: "1970-01-02T00:00:00",
     // },
   ],
+  is_loading: false,
 };
 
 //포스트 별 댓글 리스트 불러오기
@@ -63,6 +68,8 @@ const getCommentAllServer = (postId) => {
 const addCommentServer = (postId, commentContent, commentCount) => {
   return async function (dispatch, getState) {
     try {
+      dispatch(loading(true));
+
       const response = await talkAPI.addComment({ postId, commentContent });
 
       const { userImg, userName, userGrade } = getState().user.info; //유저 정보 가져오기
@@ -75,6 +82,7 @@ const addCommentServer = (postId, commentContent, commentCount) => {
       dispatch(
         talkActions.editPostOne({ ...post, commentCount: commentCount + 1 }) //댓글수 변수명 나중에 수정
       );
+      dispatch(loading(false));
     } catch (err) {
       console.log(err, "addCommentError");
       if (err.message === "Request failed with status code 401") {
@@ -82,6 +90,7 @@ const addCommentServer = (postId, commentContent, commentCount) => {
         alert("로그아웃 되었습니다");
         return;
       }
+      dispatch(loading(false));
     }
   };
 };
@@ -90,11 +99,14 @@ const addCommentServer = (postId, commentContent, commentCount) => {
 const editCommentServer = (commentId, commentContent) => {
   return async function (dispatch, getState) {
     try {
+      dispatch(loading(true));
+
       const response = await talkAPI.editComment({
         commentId,
         commentContent,
       });
       dispatch(editCommentOne(commentId, commentContent));
+      dispatch(loading(false));
     } catch (err) {
       console.log(err, "editCommentError");
       if (err.message === "Request failed with status code 401") {
@@ -102,6 +114,7 @@ const editCommentServer = (commentId, commentContent) => {
         alert("로그아웃 되었습니다");
         return;
       }
+      dispatch(loading(false));
     }
   };
 };
@@ -110,6 +123,8 @@ const editCommentServer = (commentId, commentContent) => {
 const deleteCommentServer = (postId, commentId, commentCount) => {
   return async function (dispatch, getState, { history }) {
     try {
+      dispatch(loading(true));
+
       const response = await talkAPI.deleteComment({ commentId });
       dispatch(deleteCommentOne(commentId));
       //톡 리듀서에서 포스트 댓글 수 수정
@@ -118,6 +133,7 @@ const deleteCommentServer = (postId, commentId, commentCount) => {
       dispatch(
         talkActions.editPostOne({ ...post, commentCount: commentCount - 1 })
       );
+      dispatch(loading(false));
     } catch (err) {
       console.log(err, "deleteCommentError");
       if (err.message === "Request failed with status code 401") {
@@ -126,6 +142,7 @@ const deleteCommentServer = (postId, commentId, commentCount) => {
         return;
       }
       alert("댓글 정보가 없어요");
+      dispatch(loading(false));
     }
   };
 };
@@ -158,6 +175,10 @@ export default handleActions(
     [RESET_COMMENT]: (state) =>
       produce(state, (draft) => {
         draft.list = [];
+      }),
+    [LOADING]: (state, action) =>
+      produce(state, (draft) => {
+        draft.is_loading = action.payload.is_loading;
       }),
   },
   initialState

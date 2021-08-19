@@ -11,6 +11,7 @@ import { ReactComponent as FillHeart } from "../images/FillHeart.svg";
 import { ReactComponent as Comment } from "../images/Comment.svg";
 import { ReactComponent as Delete } from "../images/Delete.svg";
 import { Permit, PermitStrict } from "../shared/PermitAuth";
+import profileImgList from "../images/profiles";
 
 const TalkDetail = (props) => {
   //톡 포스트 가져오기
@@ -38,20 +39,33 @@ const TalkDetail = (props) => {
   }, []);
 
   const is_login = useSelector((store) => store.user.is_login);
+  const userImg = useSelector((store) => store.user.info.userImg);
+  const loading_talk = useSelector((store) => store.talk.is_loading);
+  const loading_talkComment = useSelector(
+    (store) => store.talkComment.is_loading
+  );
 
   //포스트 삭제하기
   const [dltMsg, isDltMsg] = React.useState(false); //삭제 메세지
   const deletePost = () => {
-    dispatch(talkActions.deletePostServer(parseInt(post_id)));
-    return;
+    if (!is_login) {
+      alert("로그인하세요~");
+    } else if (loading_talk) {
+      return;
+    } else {
+      dispatch(talkActions.deletePostServer(parseInt(post_id)));
+      return;
+    }
   };
 
   //좋아요 토글
   const toggleLike = () => {
-    if (is_login) {
-      dispatch(talkActions.likePostServer(post_id));
-    } else {
+    if (!is_login) {
       alert("로그인하세요~");
+    } else if (loading_talk) {
+      return;
+    } else {
+      dispatch(talkActions.likePostServer(post_id));
     }
   };
 
@@ -72,6 +86,9 @@ const TalkDetail = (props) => {
     }
     if (!comment) {
       alert("내용을 입력하세요~");
+      return;
+    }
+    if (loading_talkComment) {
       return;
     }
     if (is_login) {
@@ -255,7 +272,11 @@ const TalkDetail = (props) => {
                 zIndex="2"
                 bgColor={Color.white}
               >
-                <Image size="28px" shape="circle" src={post.userImg}></Image>
+                <Image
+                  size="28px"
+                  shape="circle"
+                  src={profileImgList[userImg]}
+                ></Image>
                 <Input
                   multiLine
                   taRef={commentRef}

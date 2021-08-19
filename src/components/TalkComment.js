@@ -5,10 +5,13 @@ import { Button, Input, Text, Image } from "../elements";
 import { actionCreators as talkCommentActions } from "../redux/modules/talkComment";
 import { Color } from "../shared/common";
 import { Permit, PermitStrict } from "../shared/PermitAuth";
+import profileImgList from "../images/profiles";
 
 const TalkComment = (props) => {
   const dispatch = useDispatch();
-
+  const loading_talkComment = useSelector(
+    (store) => store.talkComment.is_loading
+  );
   const { comment_info, commentCount } = props;
   //댓글 수정 여부
   const [edit, isEdit] = React.useState(false);
@@ -20,7 +23,9 @@ const TalkComment = (props) => {
 
   //댓글 수정하기
   const editComment = () => {
-    console.log(comment_info.commentId, comment, "editcomment확인..");
+    if (loading_talkComment) {
+      return;
+    }
     dispatch(
       talkCommentActions.editCommentServer(
         parseInt(comment_info.commentId),
@@ -31,6 +36,9 @@ const TalkComment = (props) => {
   };
   //댓글 삭제하기
   const deleteComment = () => {
+    if (loading_talkComment) {
+      return;
+    }
     if (window.confirm("정말 삭제하시려고요?")) {
       dispatch(
         talkCommentActions.deleteCommentServer(
@@ -73,7 +81,7 @@ const TalkComment = (props) => {
             <Image
               size="28px"
               shape="circle"
-              src={comment_info.userImg}
+              src={profileImgList[comment_info.userImg]}
             ></Image>
             <Input
               width="95%"
@@ -104,7 +112,7 @@ const TalkComment = (props) => {
             <Image
               size="40px"
               shape="circle"
-              src={comment_info.userImg}
+              src={profileImgList[comment_info.userImg]}
             ></Image>
             <Grid padding="0 0 0 7px" width="100%">
               <Grid display="flex" justify="space-between" padding="0 0 8px 0">

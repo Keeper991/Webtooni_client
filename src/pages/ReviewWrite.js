@@ -12,9 +12,8 @@ import { ReactComponent as BackButton } from "../images/BackButton.svg";
 const ReviewWrite = (props) => {
   const dispatch = useDispatch();
   const is_login = useSelector((store) => store.user.is_login); //로그인 여부 판별
-
-  //로그인 유저 네임
-  const userName = useSelector((store) => store.user.info.userName);
+  const userName = useSelector((store) => store.user.info.userName); //로그인 유저 네임
+  const loading = useSelector((store) => store.review.is_loading_review);
 
   //별점 이력이 있으면 기존 별점 가져오기
   const webtoon_id = parseInt(props.match.params.webtoon_id);
@@ -52,6 +51,9 @@ const ReviewWrite = (props) => {
       setTimeout(function () {
         isContentAlert(false);
       }, 2000);
+      return;
+    }
+    if (loading) {
       return;
     }
 
@@ -133,10 +135,12 @@ const ReviewWrite = (props) => {
       <Grid padding="20px 20px 15px">
         <DetailStar
           onStarClick={(starPoint) => {
-            setStarPoint(starPoint);
-            dispatch(reviewActions.putStarServer(webtoon_id, starPoint));
+            if (!loading) {
+              setStarPoint(starPoint);
+              dispatch(reviewActions.putStarServer(webtoon_id, starPoint));
+              starPoint = { starPoint };
+            }
           }}
-          starPoint={starPoint}
         />
       </Grid>
 
