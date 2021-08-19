@@ -15,6 +15,7 @@ const SET_SUBSCRIBE_LIST = "user/SET_SUBSCRIBE";
 const SUBSCRIBE = "user/SUBSCRIBE";
 const UNSUBSCRIBE = "user/UNSUBSCRIBE";
 const SHOWN_WELCOME_MODAL = "user/SHOWN_WELCOME_MODAL";
+const SET_IS_CHECKING = "user/SET_IS_CHECKING";
 const ADD_STAR_POINT = "user/ADD_STAR_POINT";
 const EDIT_STAR_POINT = "user/EDIT_STAR_POINT";
 const EDIT_REVIEW = "user/EDIT_REVIEW";
@@ -41,6 +42,8 @@ const unsubscribe = createAction(UNSUBSCRIBE, (webtoonId) => ({
   webtoonId,
 }));
 const shownWelcomeModal = createAction(SHOWN_WELCOME_MODAL, () => ({}));
+
+const setIsChecking = createAction(SET_IS_CHECKING, () => ({}));
 
 ///////////////////////////////////////////////////////////
 // thunks
@@ -80,6 +83,8 @@ const loginCheck =
           alert("로그아웃 되었습니다");
           return;
         }
+      } finally {
+        dispatch(setIsChecking());
       }
     } else {
       dispatch(logOut());
@@ -130,6 +135,7 @@ const initialState = {
   userList: [],
   isRequestedUserPageInfo: false,
   is_login: false,
+  isChecking: true,
 };
 
 export default handleActions(
@@ -190,6 +196,10 @@ export default handleActions(
     [SHOWN_WELCOME_MODAL]: (state, action) =>
       produce(state, (draft) => {
         draft.info.isShownWelcomeModal = true;
+      }),
+    [SET_IS_CHECKING]: (state, action) =>
+      produce(state, (draft) => {
+        draft.isChecking = false;
       }),
   },
   initialState

@@ -1,12 +1,21 @@
-import React from "react";
+import React, { useEffect } from "react";
 import styled from "styled-components";
 import { Button, Text, Image } from "../elements";
 import { getKakaoAddr, getNaverAddr } from "../shared/API";
 import { kakao_symbol, naver_symbol } from "../images/symbols";
 import { Color } from "../shared/common";
 import title from "../images/title.png";
+import { useSelector } from "react-redux";
+import { history } from "../redux/configureStore";
 
-const Login = () => {
+const Login = (props) => {
+  const is_login = useSelector((state) => state.user.is_login);
+  useEffect(() => {
+    if (is_login) {
+      history.replace();
+    }
+  }, [is_login]);
+
   return (
     <React.Fragment>
       <Container>
@@ -20,8 +29,8 @@ const Login = () => {
               <Text fontWeight="medium">카카오 계정으로 로그인</Text>
             </Button>
           </a>
-          <a onClick={() => alert("서비스 준비중입니다.")}>
-            {/* <a href={getNaverAddr()}> */}
+          {/* <a onClick={() => alert("서비스 준비중입니다.")}> */}
+          <a href={getNaverAddr()}>
             <Button bgColor={Color.naverGreen} border="none">
               <Image src={naver_symbol} shape="square" size="24px" />
               <Text fontWeight="medium" color={Color.white}>

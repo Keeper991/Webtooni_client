@@ -29,6 +29,7 @@ const Taste = () => {
   const [tastes, setTastes] = useState([]);
 
   const is_login = useSelector((state) => state.user.is_login);
+  const isChecking = useSelector((state) => state.user.isChecking);
   const is_shown_modal = useSelector(
     (state) => state.user.info.isShownWelcomeModal
   );
@@ -36,11 +37,14 @@ const Taste = () => {
   useEffect(() => {
     const tasteDataLS = localStorage.getItem(TASTE_LS);
     tasteDataLS && setTastes(tasteDataLS.split(","));
-    if (!(is_login === true && is_shown_modal === false)) {
+  }, []);
+
+  useEffect(() => {
+    if (!isChecking && !(is_login === true && is_shown_modal === false)) {
       window.alert("잘못된 접근입니다.");
       history.push("/");
     }
-  }, []);
+  }, [is_login, isChecking]);
 
   const progressStepClickHandlers = [
     () => history.push("/taste"),
