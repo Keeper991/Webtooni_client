@@ -2,13 +2,20 @@ import React from "react";
 import styled from "styled-components";
 import { Image, Text } from "../elements";
 import { Color } from "../shared/common";
+import { history } from "../redux/configureStore";
 
 const OfferCard = (props) => {
-  console.log(props.user_name);
   return (
     <React.Fragment>
-      <Container>
-        <ToonImgGrid src={props.toonImg}></ToonImgGrid>
+      <Container
+        onClick={() => {
+          history.push(`/detail/${props.toonId}`);
+        }}
+      >
+        <ToonImgGrid>
+          <Image src={props.toonImg} width="100%" height="282px"></Image>
+        </ToonImgGrid>
+
         <InfoGrid>
           <Text
             type="h1"
@@ -35,11 +42,6 @@ const OfferCard = (props) => {
             </FlexGrid>
           </FlexGrid>
         </InfoGrid>
-        <BottomBox>
-          <Text type="caption" color={Color.white} fontWeight="bold">
-            😍 {props.user_name}님 만을 위한 추천
-          </Text>
-        </BottomBox>
       </Container>
     </React.Fragment>
   );
@@ -73,35 +75,12 @@ const ToonImgGrid = styled.div`
   }
 `;
 
-const BottomBox = styled.div`
-  width: 100%;
-  height: 32px;
-  position: absolute;
-  bottom: 0;
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  & > span {
-    z-index: 2;
-  }
-  &:before {
-    content: "";
-    width: 100%;
-    height: 100%;
-    position: absolute;
-    top: 0;
-    left: 0;
-    background-color: ${Color.black};
-    opacity: 0.5;
-    z-index: 1;
-  }
-`;
-
 const InfoGrid = styled.div`
   position: absolute;
   left: 20px;
   bottom: 60px;
   z-index: 2;
+  text-shadow: 2px 1px 10px rgba(0, 0, 0, 0.7);
 `;
 
 const FlexGrid = styled.div`

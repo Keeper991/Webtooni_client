@@ -43,7 +43,7 @@ const Recommendation = () => {
   );
   const for_user_list = toon_list.filter((toon) =>
     toon.filterConditions.includes("forUser")
-  )[0];
+  );
 
   const md_review = {
     userImg: "2",
@@ -70,7 +70,20 @@ const Recommendation = () => {
   if (is_login) {
     return (
       <React.Fragment>
-        <OfferCard {...for_user_list} user_name={user_name}></OfferCard>
+        <OfferSliderBox>
+          <Slick is_offer>
+            {for_user_list.map((_, idx) => {
+              return (
+                <OfferCard key={idx} {..._} user_name={user_name}></OfferCard>
+              );
+            })}
+          </Slick>
+          <BottomBox>
+            <Text type="caption" color={Color.white} fontWeight="bold">
+              😍 {user_name}님 만을 위한 추천 웹툰
+            </Text>
+          </BottomBox>
+        </OfferSliderBox>
 
         <BannerBox
           onClick={() => {
@@ -630,6 +643,35 @@ const SliderBox = styled.div`
   overflow: hidden;
   margin: 20px 0 50px 0;
   padding-left: 16px;
+`;
+
+const OfferSliderBox = styled.div`
+  margin: 20px 0 50px 0;
+  position: relative;
+`;
+
+const BottomBox = styled.div`
+  width: 100%;
+  height: 32px;
+  position: absolute;
+  bottom: 10px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  & > span {
+    z-index: 2;
+  }
+  &:before {
+    content: "";
+    width: 100%;
+    height: 100%;
+    position: absolute;
+    top: 0;
+    left: 0;
+    background-color: ${Color.black};
+    opacity: 0.5;
+    z-index: 1;
+  }
 `;
 
 const MdBox = styled.div`

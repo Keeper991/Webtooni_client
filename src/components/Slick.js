@@ -13,6 +13,7 @@ const Slick = ({
   is_variableWidth,
   is_infinite,
   is_center,
+  is_offer,
   ...props
 }) => {
   const CustomNextArrows = (props) => {
@@ -55,6 +56,18 @@ const Slick = ({
     );
   };
 
+  const offerMode = {
+    dots: true,
+    infinite: true,
+    slidesToShow: 1,
+    slidesToScroll: 1,
+    autoplay: true,
+    arrows: true,
+    speed: 700,
+    autoplaySpeed: 5000,
+    cssEase: "ease-in-out",
+  };
+
   const centerMode = {
     className: "center",
     centerMode: true,
@@ -65,6 +78,9 @@ const Slick = ({
     arrows: false,
   };
 
+  if (is_offer) {
+    return <OfferSliderWrap {...offerMode}>{children}</OfferSliderWrap>;
+  }
   if (custom_arrows) {
     return (
       <SliderWrap
@@ -108,6 +124,28 @@ Slick.defaultProps = {
 const SliderWrap = styled(Slider)`
   width: ${({ width }) => width};
   margin: 0 auto;
+`;
+
+const OfferSliderWrap = styled(Slider)`
+  width: 100%auto;
+  margin: 0 auto;
+
+  .slick-dots li {
+    margin: 0 2px !important;
+  }
+
+  .slick-dots li button:before {
+    color: ${Color.primary};
+  }
+
+  .slick-dots li.slick-active button:focus:before,
+  .slick-dots li button:hover:before {
+    opacity: 1;
+  }
+
+  .slick-dots li button:focus:before {
+    opacity: 0.25;
+  }
 `;
 
 const CenterSliderWrap = styled(Slider)`
