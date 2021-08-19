@@ -11,7 +11,7 @@ import {
   Review,
   ReviewSearch,
   Search,
-  MyPage,
+  User,
   Login,
   Talk,
   TalkWrite,
@@ -19,7 +19,7 @@ import {
   Taste,
   Profile,
   ToonList,
-  KakaoLogin,
+  SocialLogin,
   NaverLogin,
   ReviewWrite,
 } from "../pages/index";
@@ -49,13 +49,13 @@ function App() {
         <Route path="/review" exact component={Review} />
         <Route path="/review/search" exact component={ReviewSearch} />
         <Route path="/search" exact component={Search} />
-        <Route path="/mypage" exact component={MyPage} />
         <Route path="/talk" exact component={Talk} />
         <Route path="/talk/write" exact component={TalkWrite} />
         <Route path="/talk/write/:id" exact component={TalkWrite} />
         <Route path="/talk/detail/:id" exact component={TalkDetail} />
-        <Route path="/user/kakao" exact component={KakaoLogin} />
+        <Route path="/user/kakao" exact component={SocialLogin} />
         <Route path="/user/naver" exact component={NaverLogin} />
+        {/* <Route path="/user/:userName" exact component={User} /> */}
       </ConnectedRouter>
       <Modal />
     </>

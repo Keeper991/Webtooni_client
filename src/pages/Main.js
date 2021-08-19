@@ -27,6 +27,7 @@ const Main = () => {
   const toon_list = useSelector((state) => state.webtoon.toon_list);
   const is_loading = useSelector((state) => state.webtoon.is_loading);
   const is_login = useSelector((state) => state.user.is_login);
+  const userName = useSelector((state) => state.user.info.userName);
   const reviewer_list = useSelector((state) => state.reviewer.best_reviewer);
   const review_list = useSelector((state) => state.review.review_list);
   const isShownWelcomeModal = useSelector(
@@ -96,7 +97,7 @@ const Main = () => {
   const like_list = useSelector((state) => state.user.reviewLikeList);
 
   React.useEffect(() => {
-    if (is_login && !isShownWelcomeModal) {
+    if (is_login && !isShownWelcomeModal && userName) {
       dispatch(modalActions.activeModal("welcome"));
     }
   }, [is_login]);

@@ -51,7 +51,9 @@ const Header = (props) => {
   if (
     props.location.pathname === "/talk/write" ||
     props.location.pathname === "/review/search" ||
-    props.location.pathname.includes("/review/write/")
+    props.location.pathname.includes("/review/write/") ||
+    props.location.pathname === "/profile" ||
+    props.location.pathname === "/taste"
   ) {
     return null;
   }

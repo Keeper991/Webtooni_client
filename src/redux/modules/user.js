@@ -71,12 +71,17 @@ const loading = createAction(LOADING, (is_loading) => ({
 // thunks
 ///////////////////////////////////////////////////////////
 
-const kakaoLoginServer =
-  (code) =>
+const socialLoginServer =
+  (platform, code) =>
   async (dispatch, getState, { history }) => {
     try {
-      const res = await userAPI.kakaoLoginCallback(code);
-      setToken(res.data);
+      let res = {};
+      if (platform === "kakao") {
+        res = await userAPI.kakaoLoginCallback(code);
+      } else if (platform === "naver") {
+        res = await userAPI.naverLoginCallback(code);
+      }
+      res.data && setToken(res.data);
       const infoRes = await userAPI.getInfo();
       infoRes.data.isShownWelcomeModal = Boolean(infoRes.data.userName);
       dispatch(setUser(infoRes.data));
@@ -97,7 +102,7 @@ const loginCheck =
         const res = await userAPI.getInfo();
         res.data.isShownWelcomeModal = Boolean(res.data.userName);
         dispatch(setUser(res.data));
-        !res.data.userName && history.push("/taste");
+        !res.data.userName && history.replace("/taste");
       } catch (e) {
         console.log(e);
         if (e.message === "Request failed with status code 401") {
@@ -241,7 +246,7 @@ const actionCreators = {
   removeReviewLike,
   logOut,
   loginCheck,
-  kakaoLoginServer,
+  socialLoginServer,
   setSubscribeList,
   subscribeServer,
   setUserServer,

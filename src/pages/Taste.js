@@ -8,7 +8,7 @@ import { history } from "../redux/configureStore";
 import { ProgressStepBtns } from "../components";
 import { useSelector } from "react-redux";
 
-const MAX_SELECT_COUNT = 5;
+const SELECT_COUNT = 3;
 const TASTE_LS = "TASTE_LIST";
 
 const Taste = () => {
@@ -50,7 +50,7 @@ const Taste = () => {
     () => history.push("/taste"),
     () => {
       localStorage.setItem(TASTE_LS, tastes);
-      tastes.length > 0 && history.push("/profile");
+      tastes.length === SELECT_COUNT && history.push("/profile");
     },
   ];
 
@@ -68,7 +68,7 @@ const Taste = () => {
             취향을 알려주세요
           </Text>
           <Text>
-            최대 {MAX_SELECT_COUNT}개를 골라주세요.
+            장르 {SELECT_COUNT}개를 골라주세요.
             <br />
             분석하여 취향에 딱 맞는 웹툰을 추천해드릴게요.
           </Text>
@@ -82,7 +82,7 @@ const Taste = () => {
                 _onClick={() => {
                   if (tastes.includes(genre)) {
                     setTastes(tastes.filter((t) => t !== genre));
-                  } else if (tastes.length < MAX_SELECT_COUNT) {
+                  } else if (tastes.length < SELECT_COUNT) {
                     setTastes([...tastes, genre]);
                   } else {
                     return;
@@ -95,7 +95,7 @@ const Taste = () => {
           ))}
         </TasteArea>
       </ContentWrap>
-      {tastes.length < 1 ? (
+      {tastes.length < SELECT_COUNT ? (
         <Button width="100%" margin="0 auto" disabled>
           선택완료
         </Button>
