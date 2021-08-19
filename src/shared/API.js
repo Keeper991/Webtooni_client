@@ -100,7 +100,8 @@ const userAPI = {
     instance.post(`user/onBoarding`, { genres, userName, userImg }),
   kakaoLoginCallback: (code) =>
     instance.get(`user/kakao/callback`, { params: { code } }),
-  naverLoginCallback: () => instance.get(`user/naver/callback`),
+  naverLoginCallback: (code) =>
+    instance.get(`user/naver/callback`, { params: { code } }),
   search: (keyword) => instance.get(`search`, { params: { keyword } }),
   getUserPageInfo: (userName) =>
     instance.get(`user/infos`, { params: { user: userName } }),

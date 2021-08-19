@@ -4,7 +4,7 @@ import Review from "./Review";
 import ReviewSearch from "./ReviewSearch";
 import Detail from "./Detail";
 import Search from "./Search";
-import MyPage from "./MyPage";
+import User from "./User";
 import Login from "./Login";
 import Talk from "./Talk";
 import TalkWrite from "./TalkWrite";
@@ -12,8 +12,8 @@ import TalkDetail from "./TalkDetail";
 import Taste from "./Taste";
 import Profile from "./Profile";
 import ToonList from "./ToonList";
-import KakaoLogin from "./KakaoLogin";
-import NaverLogin from "./KakaoLogin";
+import SocialLogin from "./SocialLogin";
+import NaverLogin from "./NaverLogin";
 import ReviewWrite from "./ReviewWrite";
 
 export {
@@ -22,7 +22,7 @@ export {
   Review,
   Detail,
   Search,
-  MyPage,
+  User,
   Login,
   Talk,
   TalkWrite,
@@ -30,8 +30,8 @@ export {
   Taste,
   Profile,
   ToonList,
-  KakaoLogin,
   NaverLogin,
+  SocialLogin,
   ReviewWrite,
   ReviewSearch,
 };
