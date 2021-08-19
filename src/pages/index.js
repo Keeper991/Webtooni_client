@@ -4,7 +4,7 @@ import Review from "./Review";
 import ReviewSearch from "./ReviewSearch";
 import Detail from "./Detail";
 import Search from "./Search";
-import User from "./User";
+// import User from "./User";
 import Login from "./Login";
 import Talk from "./Talk";
 import TalkWrite from "./TalkWrite";
@@ -22,7 +22,7 @@ export {
   Review,
   Detail,
   Search,
-  User,
+  // User,
   Login,
   Talk,
   TalkWrite,
