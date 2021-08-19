@@ -20,7 +20,7 @@ const Review = () => {
 
   let review_list = useSelector((state) => state.review.review_list);
   review_list = [...review_list];
-  review_list.sort((a, b) => a.createDate - b.createDate);
+  review_list.sort((a, b) => b.createDate - a.createDate);
 
   const like_list = useSelector((state) => state.user.reviewLikeList);
 
