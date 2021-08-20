@@ -1,21 +1,23 @@
 import React, { useEffect } from "react";
 import { useSelector, useDispatch } from "react-redux";
 import styled from "styled-components";
-import { Text, Image, Button, Input } from "../elements";
+import { Text, Image, Button } from "../elements";
 import { WebToonCard, DetailReview, Slick, DetailStar } from "../components";
 import { actionCreators as webtoonActions } from "../redux/modules/webtoon";
 import { actionCreators as userActions } from "../redux/modules/user";
 import { actionCreators as reviewActions } from "../redux/modules/review";
 import { Color } from "../shared/common";
-import { ReactComponent as FillStar } from "../images/FillStar.svg";
-import { history } from "../redux/configureStore";
+import {
+  FillStar,
+  ShootingStar,
+  Pencil,
+  Check,
+  Plus,
+  DownArrow,
+  LeftArrow,
+} from "../images/icons";
 // import shootingStar from "../images/shootingStar.png";
-import { ReactComponent as ShootingStar } from "../images/ShootingStar.svg";
-import { ReactComponent as Pencil } from "../images/Pencil.svg";
-import { ReactComponent as Check } from "../images/Check.svg";
-import { ReactComponent as Plus } from "../images/Plus.svg";
-import { ReactComponent as DownArrow } from "../images/DownArrow.svg";
-import { ReactComponent as LeftArrow } from "../images/LeftArrow.svg";
+import { history } from "../redux/configureStore";
 
 const Detail = (props) => {
   const dispatch = useDispatch();
@@ -145,6 +147,7 @@ const Detail = (props) => {
               justify="center"
               align="center"
               margin="0 0 28px 0"
+              position="relative"
             >
               <Image
                 src={toonOne.toonImg}
@@ -167,25 +170,46 @@ const Detail = (props) => {
               >
                 <FillStar width="16px" height="16px" />
                 <Text
-                  margin="0 0 0 8px"
+                  margin="0 0 0 4px"
                   fontSize="16px"
                   type="num"
                   fontWeight="bold"
                   color={Color.gray700}
                 >
-                  &nbsp;{toonOne.toonAvgPoint}
+                  &nbsp;{toonOne.toonAvgPoint.toFixed(1)}
                 </Text>
-                <Text margin="0 10px" color={Color.primaryLight}>
-                  {toonOne.genres?.map((item) => "#" + item + " ")}
+                <Text margin="0" color={Color.primaryLight}>
+                  &nbsp;{toonOne.genres?.map((item) => "·" + item + " ")}
                 </Text>
 
                 {toonOne.finished ? (
-                  <Text color={Color.gray400}>완결</Text>
+                  <Text color={Color.gray400}>&nbsp;완결</Text>
                 ) : (
                   <Text color={Color.gray400}>
-                    {toonOne.toonWeekday}요 웹툰
+                    &nbsp;
+                    {toonOne.toonWeekday.length > 1
+                      ? "·" +
+                        toonOne.toonWeekday
+                          .split(",")
+                          .map((item) => item + "요")
+                          .join(" ·") +
+                        "웹툰"
+                      : "·" + toonOne.toonWeekday + "요 웹툰"}
                   </Text>
                 )}
+
+                <Grid position="absolute" right="0px" bottom="15px">
+                  <Image
+                    shape="square"
+                    size="12px"
+                    margin="0 3px"
+                    src={
+                      toonOne.toonPlatform === "네이버"
+                        ? "https://lh3.googleusercontent.com/pw/AM-JKLWCsjme2ZNKF3nOEAXrSzYgStfkJAcVZvk17v_KeIKxWNOMJIieajxO7a69mwuRMqSyzqmzCvs6Ltnu3UGFDH5WVOtg1LbHz1w5Pwnuh4utNPgkPm7inmkUX-5eDSRRwFa8HFQSfTb3Fngc2oY2cfyc=s12-no?authuser=0"
+                        : "https://lh3.googleusercontent.com/pw/AM-JKLW7PImSbXv8cZ3MOmgkjwKdGNaPHtZ0VG72ZeEv9LZMl89iivlbAcUBLL6fZ836fZHed6gJQNUhMr-12eZgqqFOd-XGWU06ZftPdRGgQnVtbhNGidtMMByNP7a184KzHyKcXLpjUyHS4CFGd6NSctFf=s12-no?authuser=0"
+                    }
+                  ></Image>
+                </Grid>
               </Grid>
             </Grid>
             {/* 별점 주기 */}
@@ -234,12 +258,19 @@ const Detail = (props) => {
                 </Button>
               )}
               <Button
-                _onClick={() =>
-                  history.push({
-                    pathname: `/review/write/${webtoon_id}`,
-                    state: { toonTitle: toonOne.toonTitle, from_detail: true },
-                  })
-                }
+                _onClick={() => {
+                  if (!is_login) {
+                    alert("로그인하세요~");
+                  } else {
+                    history.push({
+                      pathname: `/review/write/${webtoon_id}`,
+                      state: {
+                        toonTitle: toonOne.toonTitle,
+                        from_detail: true,
+                      },
+                    });
+                  }
+                }}
                 shape="pill"
               >
                 <Grid display="flex" justify="center" align="center">
