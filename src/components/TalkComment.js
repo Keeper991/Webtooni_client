@@ -13,18 +13,26 @@ const TalkComment = (props) => {
     (store) => store.talkComment.is_loading
   );
   const { comment_info, commentCount } = props;
-  //댓글 수정 여부
+
+  //댓글 수정
   const [edit, isEdit] = React.useState(false);
-  //댓글 수정 작성
   const [comment, setComment] = React.useState(comment_info.commentContent);
   const commentRef = React.useRef();
+  const selectEdit = () => {
+    isEdit(true);
+  };
+  useEffect(() => {
+    if (edit) {
+      commentRef.current.style.height = commentRef.current.scrollHeight + "px";
+    }
+  }, [edit]);
   const writeComment = React.useCallback((e) => {
     setComment(e.target.value);
     commentRef.current.style.height = "24px";
     commentRef.current.style.height = commentRef.current.scrollHeight + "px";
   }, []);
 
-  //댓글 수정하기
+  //댓글 수정 등록
   const editComment = () => {
     if (loading_talkComment) {
       return;
@@ -79,12 +87,11 @@ const TalkComment = (props) => {
           <Grid
             display="flex"
             justify="flex-start"
-            align="center"
+            align="flex-start"
             width="100%"
-            height="56px"
-            padding="20px"
-            borderTop={`1px solid ${Color.gray200}`}
-            borderBottom={`1px solid ${Color.gray200}`}
+            padding="0 5px"
+            // borderTop={`1px solid ${Color.gray200}`}
+            // borderBottom={`1px solid ${Color.gray200}`}
           >
             <Image
               size="28px"
@@ -94,7 +101,7 @@ const TalkComment = (props) => {
             <Input
               multiLine
               taRef={commentRef}
-              width="95%"
+              width="94%"
               margin="0 0 0 9px"
               padding="0"
               placeholder="내용을 입력해 주세요"
@@ -136,24 +143,39 @@ const TalkComment = (props) => {
                     : comment_info.createDate.substr(5, 5)}
                 </Text>
               </Grid>
-              <Text whiteSpace="normal" lineHeight="22px" color={Color.gray800}>
+              <Text
+                whiteSpace="pre-wrap"
+                wordBreak="break-all"
+                lineHeight="22px"
+                color={Color.gray800}
+              >
                 {comment_info.commentContent}
               </Text>
             </Grid>
           </Grid>
           <PermitStrict authorName={comment_info.userName}>
-            <Grid display="flex" justify="flex-end">
+            <Grid
+              display="flex"
+              justify="flex-end"
+              position="relative"
+              bottom="-5px"
+              right="3px"
+            >
               <Text
                 color={Color.gray600}
-                margin="0 24px 0 0"
-                _onClick={() => {
-                  isEdit(true);
-                }}
+                margin="0 20px 0 0"
+                _onClick={selectEdit}
                 cursor
+                type="caption"
               >
                 수정
               </Text>
-              <Text color={Color.gray600} _onClick={deleteComment} cursor>
+              <Text
+                color={Color.gray600}
+                _onClick={deleteComment}
+                cursor
+                type="caption"
+              >
                 삭제
               </Text>
             </Grid>
@@ -176,5 +198,7 @@ const Grid = styled.div`
   position: ${(props) => props.position || ""};
   background-color: ${(props) => props.bgColor || ""};
   border-bottom: ${(props) => props.borderBottom || ""};
+  bottom: ${(props) => props.bottom || ""};
+  right: ${(props) => props.right || ""};
 `;
 export default TalkComment;
