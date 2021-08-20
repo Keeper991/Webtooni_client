@@ -13,7 +13,7 @@ const WebToonCard = (props) => {
           history.push(`/detail/${props.toonId}`);
         }}
       >
-        <ImageGrid>
+        <ImageGrid index={props.index}>
           <Image
             src={props.toonImg}
             width="100%"
@@ -86,7 +86,7 @@ const Container = styled.div`
   height: 220px;
   background: ${Color.white};
   display: inline-block;
-  margin-right: 10px;
+  position: relative;
 `;
 
 const FlexGrid = styled.div`
@@ -108,6 +108,20 @@ const ContentsGrid = styled.div`
 const ImageGrid = styled.div`
   width: 150px;
   height: 140px;
+
+  &:before {
+    content: "${(props) => props.index}";
+    display: flex;
+    position: absolute;
+    width: 22px;
+    height: 22px;
+    background-color: ${Color.gray700};
+    font-size: 9px;
+    justify-content: center;
+    align-items: center;
+    color: #fff;
+    border-radius: 5px;
+  }
 `;
 
 const AuthorWrap = styled.div`

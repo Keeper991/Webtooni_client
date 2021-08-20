@@ -46,7 +46,7 @@ const ReviewCard = (props) => {
   if (!props.reviewContent) {
     return <></>;
   }
-
+  console.log(props.createDate);
   return (
     <React.Fragment>
       <Container main={props.main}>
@@ -245,7 +245,7 @@ const UserGrid = styled.div`
 
 const ReviewGrid = styled.div`
   width: 100%;
-  min-height: 80px;
+  min-height: 120px;
   height: auto;
   padding: 20px 0;
 `;
