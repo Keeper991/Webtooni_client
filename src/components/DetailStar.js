@@ -1,9 +1,6 @@
 import React from "react";
-
 import styled from "styled-components";
-import { ReactComponent as EmptyStar } from "../images/EmptyStar.svg";
-import { ReactComponent as FillStar } from "../images/FillStar.svg";
-// EmptyStar
+import { FillStar, EmptyStar } from "../images/icons";
 
 const DetailStar = ({ onStarClick, starPoint }) => {
   //별점 주기

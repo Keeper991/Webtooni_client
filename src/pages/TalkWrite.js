@@ -5,7 +5,7 @@ import { Button, Input, Text } from "../elements";
 import { actionCreators as talkActions } from "../redux/modules/talk";
 import { history } from "../redux/configureStore";
 import { Color } from "../shared/common";
-import { ReactComponent as BackButton } from "../images/BackButton.svg";
+import { BackButton } from "../images/icons";
 
 const TalkWrite = (props) => {
   const dispatch = useDispatch();
@@ -105,6 +105,7 @@ const TalkWrite = (props) => {
       >
         {/* 뒤로가기 */}
         <Grid
+          margin="5px 0 0 0"
           cursor
           onClick={() => {
             history.go(-1);

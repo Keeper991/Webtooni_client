@@ -4,7 +4,7 @@ import { Text } from "../elements";
 import { useDispatch, useSelector } from "react-redux";
 import { actionCreators as reviewAction } from "../redux/modules/review";
 import styled from "styled-components";
-import { ReactComponent as WriteButton } from "../images/WriteButton.svg";
+import { WriteButton } from "../images/icons";
 import { Color } from "../shared/common";
 import { history } from "../redux/configureStore";
 import InfinityScroll from "../shared/InfinityScroll";

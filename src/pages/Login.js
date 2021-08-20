@@ -4,7 +4,7 @@ import { Button, Text, Image } from "../elements";
 import { getKakaoAddr, getNaverAddr } from "../shared/API";
 import { kakao_symbol, naver_symbol } from "../images/symbols";
 import { Color } from "../shared/common";
-import title from "../images/title.png";
+import { title } from "../images/icons";
 import { useSelector } from "react-redux";
 import { history } from "../redux/configureStore";
 

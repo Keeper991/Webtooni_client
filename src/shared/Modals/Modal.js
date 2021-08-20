@@ -2,7 +2,7 @@ import React from "react";
 import styled from "styled-components";
 import { Color } from "../common";
 import { ConfirmModal, AlertModal } from ".";
-import { ReactComponent as Delete } from "../../images/Delete.svg";
+import { Delete } from "../../images/icons";
 import { useDispatch, useSelector } from "react-redux";
 import { actionCreators as userActions } from "../../redux/modules/user";
 import { actionCreators as modalActions } from "../../redux/modules/modal";
