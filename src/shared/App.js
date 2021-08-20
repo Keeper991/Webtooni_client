@@ -20,6 +20,7 @@ import {
   ToonList,
   SocialLogin,
   ReviewWrite,
+  MyPage,
 } from "../pages/index";
 import Header from "./Header";
 import GlobalStyle from "./GlobalStyle";

@@ -14,8 +14,10 @@ import Profile from "./Profile";
 import ToonList from "./ToonList";
 import SocialLogin from "./SocialLogin";
 import ReviewWrite from "./ReviewWrite";
+import MyPage from "./MyPage";
 
 export {
+  MyPage,
   Main,
   Recommendation,
   Review,
