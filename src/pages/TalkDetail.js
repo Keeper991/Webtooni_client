@@ -6,10 +6,7 @@ import { actionCreators as talkActions } from "../redux/modules/talk";
 import { actionCreators as talkCommentActions } from "../redux/modules/talkComment";
 import { TalkComment } from "../components";
 import { Color } from "../shared/common";
-import { ReactComponent as EmptyHeart } from "../images/EmptyHeart.svg";
-import { ReactComponent as FillHeart } from "../images/FillHeart.svg";
-import { ReactComponent as Comment } from "../images/Comment.svg";
-import { ReactComponent as Delete } from "../images/Delete.svg";
+import { EmptyHeart, FillHeart, Comment, Delete } from "../images/icons";
 import { Permit, PermitStrict } from "../shared/PermitAuth";
 import profileImgList from "../images/profiles";
 
@@ -101,6 +98,7 @@ const TalkDetail = (props) => {
         )
       );
       setComment("");
+      commentRef.current.style.height = "24px";
       // isCmtInp(false);
     }
   };
@@ -218,16 +216,18 @@ const TalkDetail = (props) => {
                       <Grid display="flex">
                         <Text
                           color={Color.gray600}
-                          margin="0 24px 0 0"
+                          margin="0 20px 0 0"
                           _onClick={() => {
                             props.history.push(`/talk/write/${post_id}`);
                           }}
                           cursor
+                          type="caption"
                         >
                           수정
                         </Text>
                         <Text
                           color={Color.gray600}
+                          type="caption"
                           _onClick={() => isDltMsg(true)}
                           cursor
                         >
@@ -280,9 +280,10 @@ const TalkDetail = (props) => {
                 <Input
                   multiLine
                   taRef={commentRef}
-                  width="95%"
+                  width="93%"
                   margin="0 0 0 9px"
                   padding="0"
+                  height="24px"
                   placeholder="내용을 입력해 주세요"
                   border="none"
                   color={Color.gray800}
@@ -385,7 +386,7 @@ const Grid = styled.div`
   border-top: ${(props) => props.borderTop || ""};
   border-radius: ${(props) => props.borderRadius || ""};
 
-  & textarea {
+  & > label > textarea {
     height: 24px;
     max-height: 58px;
   }
