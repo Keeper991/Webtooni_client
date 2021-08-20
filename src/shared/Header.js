@@ -7,9 +7,13 @@ import { Button, Image } from "../elements/index";
 import { withRouter } from "react-router";
 import { NavLink } from "react-router-dom";
 import { Color } from "./common";
-import title from "../images/title.png";
-
-import { UserOutlined, SearchOutlined, LeftOutlined } from "@ant-design/icons";
+import { title } from "../images/icons";
+import {
+  UserOutlined,
+  SearchOutlined,
+  LeftOutlined,
+  HomeOutlined,
+} from "@ant-design/icons";
 
 const Header = (props) => {
   const dispatch = useDispatch();
@@ -49,7 +53,7 @@ const Header = (props) => {
   }, [pageY]);
 
   if (
-    props.location.pathname === "/talk/write" ||
+    props.location.pathname.includes("/talk/write") ||
     props.location.pathname === "/review/search" ||
     props.location.pathname.includes("/review/write/") ||
     props.location.pathname === "/profile" ||
@@ -94,6 +98,11 @@ const Header = (props) => {
               }}
             ></LeftOutlined>
             <IconWrap>
+              <HomeOutlined
+                onClick={() => {
+                  history.push("/");
+                }}
+              />
               <SearchOutlined
                 onClick={() => {
                   history.push("/search");
