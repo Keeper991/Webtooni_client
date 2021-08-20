@@ -36,11 +36,15 @@ const Header = (props) => {
     const { pageYOffset } = window;
     const deltaY = pageYOffset - pageY;
     const hide = pageYOffset !== 0 && deltaY >= 0;
+
+    if (Math.abs(pageY - pageYOffset) < 50) {
+      return;
+    }
     setHide(hide);
     setPageY(pageYOffset);
   };
 
-  const throttleScroll = throttle(handleScroll, 50);
+  const throttleScroll = throttle(handleScroll, 100);
 
   React.useEffect(() => {
     documentRef.current.addEventListener("scroll", throttleScroll);
