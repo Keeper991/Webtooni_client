@@ -37,7 +37,7 @@ const InfinityScroll = (props) => {
 
     return () => window.removeEventListener("scroll", handleScroll);
   }, [is_next, loading]);
-
+  console.log("다음꺼?", is_next, "로딩중?", loading);
   return (
     <React.Fragment>
       {children}

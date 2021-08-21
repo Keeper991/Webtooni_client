@@ -6,6 +6,7 @@ import { actionCreators as userActions } from "./user";
 
 const ADD_REVIEW_LIST = "review/ADD_REVIEW_LIST";
 const SET_PAGE_NUM = "review/SET_PAGE_NUM";
+const SET_PAGE_NUM_BEST = "review/SET_PAGE_NUM_BEST";
 const SET_TOTAL_REVIEW_COUNT = "review/SET_TOTAL_REVIEW_COUNT";
 const IS_LAST = "review/IS_LAST";
 const LOADING = "review/LOADING";
@@ -33,9 +34,14 @@ const removeReviewLike = createAction(REMOVE_REVIEW_LIKE, (reviewId) => ({
   reviewId,
 }));
 
-const setPage = createAction(SET_PAGE_NUM, (page_num) => ({
-  page_num,
+const setPage = createAction(SET_PAGE_NUM, (new_page_num) => ({
+  new_page_num,
 }));
+
+const setPageBest = createAction(SET_PAGE_NUM_BEST, (best_page_num) => ({
+  best_page_num,
+}));
+
 const setTotalReviewCount = createAction(
   SET_TOTAL_REVIEW_COUNT,
   (total_review_count) => ({
@@ -135,7 +141,9 @@ const getReviewList = (page_num) => {
         data: { reviews, likeReviewIdList, postCount },
       } = await reviewAPI.getOrderByCreatedAt(page_num);
       if (reviews.length === 0) {
-        return dispatch(isLast(true));
+        dispatch(isLast(true));
+        dispatch(loading(false));
+        return;
       }
 
       dispatch(setPage(page_num + 1));
@@ -163,6 +171,53 @@ const getReviewList = (page_num) => {
         return review;
       });
       dispatch(addReviewList(reviews, "reviewPage"));
+      dispatch(setTotalReviewCount(postCount));
+      likeReviewIdList &&
+        dispatch(userActions.addReviewLikeList(likeReviewIdList));
+    } catch (err) {
+      console.log(err);
+    }
+  };
+};
+
+const getReviewListOrderByLike = (page_num) => {
+  return async function (dispatch, getState, { history }) {
+    try {
+      dispatch(loading(true));
+      let {
+        data: { reviews, likeReviewIdList, postCount },
+      } = await reviewAPI.getOrderByLike(page_num);
+      if (reviews.length === 0) {
+        dispatch(isLast(true));
+        dispatch(loading(false));
+        return;
+      }
+
+      dispatch(setPageBest(page_num + 1));
+      let reviewsToons = reviews.map((review) => {
+        return {
+          toonId: review.toonId,
+          toonTitle: review.toonTitle,
+          toonAuthor: review.toonAuthor,
+          toonAvgPoint: review.toonAvgPoint,
+          toonImg: review.toonImg,
+          toonPlatform: review.toonPlatform,
+          toonWeekday: review.toonWeekday,
+          genres: review.genres,
+        };
+      });
+      reviewsToons = reviewsToons.filter(
+        (reviewsToon, idx) =>
+          reviewsToons.findIndex(
+            (toon) => toon.toonId === reviewsToon.toonId
+          ) === idx
+      );
+      dispatch(webtoonActions.addToonList(reviewsToons, "reviewPageBest"));
+      reviews = reviews.map((review) => {
+        review.createDate = review.creatDate || review.createDate;
+        return review;
+      });
+      dispatch(addReviewList(reviews, "reviewPageBest"));
       dispatch(setTotalReviewCount(postCount));
       likeReviewIdList &&
         dispatch(userActions.addReviewLikeList(likeReviewIdList));
@@ -302,7 +357,8 @@ const removeReviewContentServer = (reviewId) => {
 ///////////////////////////////////////////////////////////
 const initialState = {
   review_list: [],
-  page_num: 1,
+  new_page_num: 1,
+  best_page_num: 1,
   total_review_count: 0,
   is_last: false,
   is_loading_review: false,
@@ -351,7 +407,11 @@ export default handleActions(
       }),
     [SET_PAGE_NUM]: (state, action) =>
       produce(state, (draft) => {
-        draft.page_num = action.payload.page_num;
+        draft.new_page_num = action.payload.new_page_num;
+      }),
+    [SET_PAGE_NUM_BEST]: (state, action) =>
+      produce(state, (draft) => {
+        draft.best_page_num = action.payload.best_page_num;
       }),
     [SET_TOTAL_REVIEW_COUNT]: (state, action) =>
       produce(state, (draft) => {
@@ -400,10 +460,12 @@ const actionCreators = {
   getMainReviewList,
   addReviewList,
   getReviewList,
+  getReviewListOrderByLike,
   likeReviewServer,
   putStarServer,
   updateReviewServer,
   removeReviewContentServer,
+  isLast,
 };
 
 export { actionCreators };
