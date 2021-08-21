@@ -72,7 +72,7 @@ const Slick = ({
   }
   if (custom_arrows) {
     return (
-      <SliderWrap
+      <ArrowSliderWrap
         infinite={is_infinite}
         speed={300}
         slidesToShow={1}
@@ -82,9 +82,10 @@ const Slick = ({
         prevArrow={<CustomPrevArrows></CustomPrevArrows>}
         beforeChange={_beforeChange}
         afterChange={_afterChange}
+        dots={true}
       >
         {children}
-      </SliderWrap>
+      </ArrowSliderWrap>
     );
   }
 
@@ -141,6 +142,28 @@ const centerMode = {
 const SliderWrap = styled(Slider)`
   width: ${({ width }) => width};
   margin: 0 auto;
+`;
+
+const ArrowSliderWrap = styled(Slider)`
+  width: 100%auto;
+  margin: 0 auto;
+
+  .slick-dots li {
+    margin: 0px !important;
+  }
+
+  .slick-dots li button:before {
+    color: ${Color.gray400};
+  }
+
+  .slick-dots li.slick-active button:focus:before,
+  .slick-dots li button:hover:before {
+    opacity: 0.6;
+  }
+
+  .slick-dots li button:focus:before {
+    opacity: 0.45;
+  }
 `;
 
 const OfferSliderWrap = styled(Slider)`

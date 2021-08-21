@@ -3,6 +3,7 @@ import styled from "styled-components";
 import { Text, Image } from "../elements";
 import { history } from "../redux/configureStore";
 import { Color } from "../shared/common";
+import { ReactComponent as FillStar } from "../images/FillStar.svg";
 
 const WebToonMonth = (props) => {
   return (
@@ -34,12 +35,11 @@ const WebToonMonth = (props) => {
               {props.toonAuthor}
             </Text>
             <FlexGrid>
-              <Image
-                shape="square"
-                margin="0 5px"
-                size="12px"
-                src="https://lh3.googleusercontent.com/pw/AM-JKLXIrRX56QwruA9no5dsQDpzLmNNgGigp4H-mNbe8Zll_MgRc1OVhN8nKaqDwTOSKiNGUT6bQ6O7sYRBDsPhnj49j7ACDz5qWrSeebdROovTQKhnt8O2jbq6QpskSozPMpq02E2hUQqTjg3gfLZpx-xv=s12-no?authuser=0"
-              ></Image>
+              <FillStar
+                width="12px"
+                height="12px"
+                style={{ margin: "0 5px" }}
+              />
               <Text type="num" fontSize="12px">
                 {props.toonAvgPoint}
               </Text>

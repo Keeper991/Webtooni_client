@@ -13,14 +13,25 @@ const WebToonCard = (props) => {
           history.push(`/detail/${props.toonId}`);
         }}
       >
-        <ImageGrid>
-          <Image
-            src={props.toonImg}
-            width="100%"
-            height="100%"
-            radius="5px"
-          ></Image>
-        </ImageGrid>
+        {props.index ? (
+          <RankImageGrid index={props.index} rank={props.rank}>
+            <Image
+              src={props.toonImg}
+              width="100%"
+              height="100%"
+              radius="5px"
+            ></Image>
+          </RankImageGrid>
+        ) : (
+          <ImageGrid index={props.index} rank={props.rank}>
+            <Image
+              src={props.toonImg}
+              width="100%"
+              height="100%"
+              radius="5px"
+            ></Image>
+          </ImageGrid>
+        )}
 
         <ContentsGrid>
           <FlexGrid>
@@ -86,7 +97,7 @@ const Container = styled.div`
   height: 220px;
   background: ${Color.white};
   display: inline-block;
-  margin-right: 10px;
+  position: relative;
 `;
 
 const FlexGrid = styled.div`
@@ -108,6 +119,25 @@ const ContentsGrid = styled.div`
 const ImageGrid = styled.div`
   width: 150px;
   height: 140px;
+`;
+
+const RankImageGrid = styled.div`
+  width: 150px;
+  height: 140px;
+
+  &:before {
+    content: "${(props) => props.index}";
+    display: flex;
+    position: absolute;
+    width: 22px;
+    height: 22px;
+    background-color: ${Color.gray700};
+    font-size: 9px;
+    justify-content: center;
+    align-items: center;
+    color: #fff;
+    border-radius: 5px;
+  }
 `;
 
 const AuthorWrap = styled.div`

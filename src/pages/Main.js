@@ -122,166 +122,176 @@ const Main = () => {
         </Button>
       </TitleGrid>
 
-      <SliderBox onClickCapture={handleOnItemClick}>
+      <SliderBox>
         {is_loading || webtooni_list.length === 0 ? (
-          <Slick>
+          <CardSliderBox>
             {Array.from({ length: 10 }).map((_, idx) => {
               return <SkeletonCard key={idx}></SkeletonCard>;
             })}
-          </Slick>
+          </CardSliderBox>
         ) : (
-          <Slick
-            _afterChange={handleAfterChange}
-            _beforeChange={handleBeforeChange}
-          >
+          <CardSliderBox>
             {webtooni_list?.map((_, idx) => {
-              return <WebToonCard key={idx} {..._}></WebToonCard>;
+              return (
+                <WebToonCard
+                  key={idx}
+                  index={idx + 1}
+                  {..._}
+                  rank
+                ></WebToonCard>
+              );
             })}
-          </Slick>
+            <DummyCard></DummyCard>
+          </CardSliderBox>
         )}
       </SliderBox>
+      <MonthContainer>
+        <Slick
+          custom_arrows
+          is_variableWidth={false}
+          is_infinite
+          _afterChange={handleAfterChange}
+          _beforeChange={handleBeforeChange}
+        >
+          <MonthBox onClickCapture={handleOnItemClick}>
+            <TextGrid>
+              <Text fontWeight="bold">네이버 웹툰</Text>
+              <Button
+                width="40px"
+                height="20px"
+                fontSize="10px"
+                fontWeight="bold"
+                borderRadius="27px"
+                padding="0px"
+                color={Color.white}
+                bgColor={Color.naverGreen}
+                border="none"
+                margin="0 0 0 5px"
+              >
+                Top 10
+              </Button>
+            </TextGrid>
+            {is_loading || naver_list.length === 0 ? (
+              <RankGrid>
+                {Array.from({ length: 5 }).map((_, idx) => {
+                  return <SkeletonCard key={idx} rank></SkeletonCard>;
+                })}
+              </RankGrid>
+            ) : (
+              <RankGrid>
+                {naver_list_1?.map((_, idx) => {
+                  return (
+                    <WebToonMonth key={idx} {..._} idx={idx}></WebToonMonth>
+                  );
+                })}
+              </RankGrid>
+            )}
+          </MonthBox>
+          <MonthBox onClickCapture={handleOnItemClick}>
+            <TextGrid>
+              <Text fontWeight="bold">네이버 웹툰</Text>
+              <Button
+                width="40px"
+                height="20px"
+                fontSize="10px"
+                fontWeight="bold"
+                borderRadius="27px"
+                padding="0px"
+                color={Color.white}
+                bgColor={Color.naverGreen}
+                border="none"
+                margin="0 0 0 5px"
+              >
+                Top 10
+              </Button>
+            </TextGrid>
+            {is_loading || naver_list.length === 0 ? (
+              <RankGrid>
+                {Array.from({ length: 5 }).map((_, idx) => {
+                  return <SkeletonCard key={idx} rank></SkeletonCard>;
+                })}
+              </RankGrid>
+            ) : (
+              <RankGrid>
+                {naver_list_2?.map((_, idx) => {
+                  return (
+                    <WebToonMonth key={idx} {..._} idx={idx + 5}></WebToonMonth>
+                  );
+                })}
+              </RankGrid>
+            )}
+          </MonthBox>
 
-      <Slick
-        custom_arrows
-        is_variableWidth={false}
-        is_infinite
-        _afterChange={handleAfterChange}
-        _beforeChange={handleBeforeChange}
-      >
-        <MonthBox onClickCapture={handleOnItemClick}>
-          <TextGrid>
-            <Text fontWeight="bold">네이버 웹툰</Text>
-            <Button
-              width="40px"
-              height="20px"
-              fontSize="10px"
-              fontWeight="bold"
-              borderRadius="27px"
-              padding="0px"
-              color={Color.white}
-              bgColor={Color.naverGreen}
-              border="none"
-              margin="0 0 0 5px"
-            >
-              Top 10
-            </Button>
-          </TextGrid>
-          {is_loading || naver_list.length === 0 ? (
-            <RankGrid>
-              {Array.from({ length: 5 }).map((_, idx) => {
-                return <SkeletonCard key={idx} rank></SkeletonCard>;
-              })}
-            </RankGrid>
-          ) : (
-            <RankGrid>
-              {naver_list_1?.map((_, idx) => {
-                return <WebToonMonth key={idx} {..._} idx={idx}></WebToonMonth>;
-              })}
-            </RankGrid>
-          )}
-        </MonthBox>
-        <MonthBox onClickCapture={handleOnItemClick}>
-          <TextGrid>
-            <Text fontWeight="bold">네이버 웹툰</Text>
-            <Button
-              width="40px"
-              height="20px"
-              fontSize="10px"
-              fontWeight="bold"
-              borderRadius="27px"
-              padding="0px"
-              color={Color.white}
-              bgColor={Color.naverGreen}
-              border="none"
-              margin="0 0 0 5px"
-            >
-              Top 10
-            </Button>
-          </TextGrid>
-          {is_loading || naver_list.length === 0 ? (
-            <RankGrid>
-              {Array.from({ length: 5 }).map((_, idx) => {
-                return <SkeletonCard key={idx} rank></SkeletonCard>;
-              })}
-            </RankGrid>
-          ) : (
-            <RankGrid>
-              {naver_list_2?.map((_, idx) => {
-                return (
-                  <WebToonMonth key={idx} {..._} idx={idx + 5}></WebToonMonth>
-                );
-              })}
-            </RankGrid>
-          )}
-        </MonthBox>
-
-        <MonthBox onClickCapture={handleOnItemClick}>
-          <TextGrid>
-            <Text fontWeight="bold">카카오 웹툰</Text>
-            <Button
-              width="40px"
-              height="20px"
-              fontSize="10px"
-              fontWeight="bold"
-              borderRadius="27px"
-              padding="0px"
-              color={Color.white}
-              bgColor={Color.kakaoYellow}
-              border="none"
-              margin="0 0 0 5px"
-            >
-              Top 10
-            </Button>
-          </TextGrid>
-          {is_loading || kakao_list.length === 0 ? (
-            <RankGrid>
-              {Array.from({ length: 5 }).map((_, idx) => {
-                return <SkeletonCard key={idx} rank></SkeletonCard>;
-              })}
-            </RankGrid>
-          ) : (
-            <RankGrid>
-              {kakao_list_1?.map((_, idx) => {
-                return <WebToonMonth key={idx} {..._} idx={idx}></WebToonMonth>;
-              })}
-            </RankGrid>
-          )}
-        </MonthBox>
-        <MonthBox onClickCapture={handleOnItemClick}>
-          <TextGrid>
-            <Text fontWeight="bold">카카오 웹툰</Text>
-            <Button
-              width="40px"
-              height="20px"
-              fontSize="10px"
-              fontWeight="bold"
-              borderRadius="27px"
-              padding="0px"
-              color={Color.white}
-              bgColor={Color.kakaoYellow}
-              border="none"
-              margin="0 0 0 5px"
-            >
-              Top 10
-            </Button>
-          </TextGrid>
-          {is_loading || kakao_list.length === 0 ? (
-            <RankGrid>
-              {Array.from({ length: 5 }).map((_, idx) => {
-                return <SkeletonCard key={idx} rank></SkeletonCard>;
-              })}
-            </RankGrid>
-          ) : (
-            <RankGrid>
-              {kakao_list_2?.map((_, idx) => {
-                return (
-                  <WebToonMonth key={idx} {..._} idx={idx + 5}></WebToonMonth>
-                );
-              })}
-            </RankGrid>
-          )}
-        </MonthBox>
-      </Slick>
+          <MonthBox onClickCapture={handleOnItemClick}>
+            <TextGrid>
+              <Text fontWeight="bold">카카오 웹툰</Text>
+              <Button
+                width="40px"
+                height="20px"
+                fontSize="10px"
+                fontWeight="bold"
+                borderRadius="27px"
+                padding="0px"
+                color={Color.white}
+                bgColor={Color.kakaoYellow}
+                border="none"
+                margin="0 0 0 5px"
+              >
+                Top 10
+              </Button>
+            </TextGrid>
+            {is_loading || kakao_list.length === 0 ? (
+              <RankGrid>
+                {Array.from({ length: 5 }).map((_, idx) => {
+                  return <SkeletonCard key={idx} rank></SkeletonCard>;
+                })}
+              </RankGrid>
+            ) : (
+              <RankGrid>
+                {kakao_list_1?.map((_, idx) => {
+                  return (
+                    <WebToonMonth key={idx} {..._} idx={idx}></WebToonMonth>
+                  );
+                })}
+              </RankGrid>
+            )}
+          </MonthBox>
+          <MonthBox onClickCapture={handleOnItemClick}>
+            <TextGrid>
+              <Text fontWeight="bold">카카오 웹툰</Text>
+              <Button
+                width="40px"
+                height="20px"
+                fontSize="10px"
+                fontWeight="bold"
+                borderRadius="27px"
+                padding="0px"
+                color={Color.white}
+                bgColor={Color.kakaoYellow}
+                border="none"
+                margin="0 0 0 5px"
+              >
+                Top 10
+              </Button>
+            </TextGrid>
+            {is_loading || kakao_list.length === 0 ? (
+              <RankGrid>
+                {Array.from({ length: 5 }).map((_, idx) => {
+                  return <SkeletonCard key={idx} rank></SkeletonCard>;
+                })}
+              </RankGrid>
+            ) : (
+              <RankGrid>
+                {kakao_list_2?.map((_, idx) => {
+                  return (
+                    <WebToonMonth key={idx} {..._} idx={idx + 5}></WebToonMonth>
+                  );
+                })}
+              </RankGrid>
+            )}
+          </MonthBox>
+        </Slick>
+      </MonthContainer>
 
       <BannerBox
         onClick={() => {
@@ -349,11 +359,7 @@ const Main = () => {
 
       {is_best ? (
         <SliderBox onClickCapture={handleOnItemClick}>
-          <Slick
-            is_infinite
-            _afterChange={handleAfterChange}
-            _beforeChange={handleBeforeChange}
-          >
+          <CardSliderBox>
             {best_review_list?.map((_, idx) => {
               return (
                 <ReviewCard
@@ -364,15 +370,11 @@ const Main = () => {
                 ></ReviewCard>
               );
             })}
-          </Slick>
+          </CardSliderBox>
         </SliderBox>
       ) : (
         <SliderBox onClickCapture={handleOnItemClick}>
-          <Slick
-            is_infinite
-            _afterChange={handleAfterChange}
-            _beforeChange={handleBeforeChange}
-          >
+          <CardSliderBox>
             {recent_review_list?.map((_, idx) => {
               return (
                 <ReviewCard
@@ -383,7 +385,7 @@ const Main = () => {
                 ></ReviewCard>
               );
             })}
-          </Slick>
+          </CardSliderBox>
         </SliderBox>
       )}
 
@@ -406,19 +408,19 @@ const Main = () => {
 const TitleGrid = styled.div`
   display: flex;
   width: 100%;
-  height: 35px;
+  height: 65px;
   margin-top: 30px;
-  padding: 0 16px;
+  padding: 10px 16px 0;
   align-items: center;
   justify-content: space-between;
+  border-top: 8px solid ${Color.gray100};
 `;
 
 const SliderBox = styled.div`
   width: 100%;
-  height: auto;
   white-space: nowrap;
   overflow: hidden;
-  margin: 10px 0 10px 0;
+  margin-top: 10px;
   padding: 0 0 0 16px;
 `;
 
@@ -437,6 +439,11 @@ const CenterSliderBox = styled.div`
   background-size: contain;
 `;
 
+const MonthContainer = styled.div`
+  padding-bottom: 40px;
+  border-bottom: 8px solid ${Color.gray100};
+`;
+
 const MonthBox = styled.div`
   width: 100%;
   height: auto;
@@ -445,7 +452,7 @@ const MonthBox = styled.div`
   flex-direction: column;
   align-items: center;
   justify-content: center;
-  margin: 30px 0 10px 0;
+  margin-top: 30px;
 `;
 
 const TextGrid = styled.div`
@@ -466,7 +473,7 @@ const RankGrid = styled.div`
   align-items: center;
   justify-content: center;
   padding: 0 16px;
-  margin: 15px 0;
+  margin: 20px 0;
 `;
 
 const ReviewTabGrid = styled.div`
@@ -478,7 +485,7 @@ const BannerBox = styled.div`
   height: 66px;
   background-color: ${Color.gray100};
   padding: 0 16px;
-  margin: 20px auto 30px;
+  margin: 40px auto 40px;
   border-radius: 8px;
   display: flex;
   flex-direction: column;
@@ -490,4 +497,27 @@ const FlexGrid = styled.div`
   align-items: center;
   margin: 5px 0;
 `;
+
+const CardSliderBox = styled.div`
+  display: flex;
+  flex-wrap: nowrap;
+  width: 100%;
+  overflow-x: scroll;
+
+  gap: 10px;
+  &::-webkit-scrollbar {
+    display: none;
+    width: 0 !important;
+  }
+  background-color: aliceblue;
+`;
+
+const DummyCard = styled.div`
+  width: 150px;
+  height: 220px;
+  background: ${Color.primaryLight};
+  display: inline-block;
+  position: relative;
+`;
+
 export default Main;

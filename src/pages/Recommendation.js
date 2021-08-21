@@ -8,6 +8,7 @@ import { Slick, WebToonCard, SkeletonCard } from "../components";
 import profileImgList from "../images/profiles";
 import { Color } from "../shared/common";
 import { history } from "../redux/configureStore";
+import { ReactComponent as FillStar } from "../images/FillStar.svg";
 
 const Recommendation = () => {
   const dispatch = useDispatch();
@@ -151,13 +152,13 @@ const Recommendation = () => {
 
         <SliderBox onClickCapture={handleOnItemClick}>
           {is_loading || similar_user_list.length === 0 ? (
-            <Slick is_infinite>
+            <CardSliderBox is_infinite>
               {Array.from({ length: 10 }).map((_, idx) => {
                 return <SkeletonCard key={idx}></SkeletonCard>;
               })}
-            </Slick>
+            </CardSliderBox>
           ) : (
-            <Slick
+            <CardSliderBox
               is_infinite
               _afterChange={handleAfterChange}
               _beforeChange={handleBeforeChange}
@@ -165,7 +166,7 @@ const Recommendation = () => {
               {similar_user_list?.map((_, idx) => {
                 return <WebToonCard key={idx} {..._}></WebToonCard>;
               })}
-            </Slick>
+            </CardSliderBox>
           )}
         </SliderBox>
 
@@ -190,7 +191,13 @@ const Recommendation = () => {
             ></Image>
           </PlatformImg>
         </MdBox>
-        <FlexToonGrid>
+        <FlexToonGrid
+          onClick={() => {
+            history.push(
+              `/detail/${md_offer_list && md_offer_list[0]?.toonId}`
+            );
+          }}
+        >
           <Image
             margin="0 7px"
             src={md_offer_list && md_offer_list[0]?.toonImg}
@@ -205,17 +212,13 @@ const Recommendation = () => {
               <Text type="caption" color={Color.gray400}>
                 {md_offer_list && md_offer_list[0]?.toonAuthor}
               </Text>
-              <Image
-                shape="square"
-                margin="0 5px 0 7px"
-                size="12px"
-                src="https://lh3.googleusercontent.com/pw/AM-JKLXIrRX56QwruA9no5dsQDpzLmNNgGigp4H-mNbe8Zll_MgRc1OVhN8nKaqDwTOSKiNGUT6bQ6O7sYRBDsPhnj49j7ACDz5qWrSeebdROovTQKhnt8O2jbq6QpskSozPMpq02E2hUQqTjg3gfLZpx-xv=s12-no?authuser=0"
-              ></Image>
+              <FillStar width="12px" height="12px" style={{ margin: "5px" }} />
               <Text
                 type="num"
                 fontSize="12px"
                 fontWeight="bold"
                 margin="0 10px 0 0"
+                color={Color.primary}
               >
                 {md_offer_list && md_offer_list[0]?.toonAvgPoint}
               </Text>
@@ -313,13 +316,13 @@ const Recommendation = () => {
 
         <SliderBox onClickCapture={handleOnItemClick}>
           {is_loading || best_reviewer_list.length === 0 ? (
-            <Slick>
+            <CardSliderBox>
               {Array.from({ length: 10 }).map((_, idx) => {
                 return <SkeletonCard key={idx}></SkeletonCard>;
               })}
-            </Slick>
+            </CardSliderBox>
           ) : (
-            <Slick
+            <CardSliderBox
               is_infinite
               _afterChange={handleAfterChange}
               _beforeChange={handleBeforeChange}
@@ -327,7 +330,7 @@ const Recommendation = () => {
               {best_reviewer_list?.map((_, idx) => {
                 return <WebToonCard key={idx} {..._}></WebToonCard>;
               })}
-            </Slick>
+            </CardSliderBox>
           )}
         </SliderBox>
 
@@ -350,13 +353,13 @@ const Recommendation = () => {
         </TitleGrid>
         <SliderBox onClickCapture={handleOnItemClick}>
           {is_loading || end_toon_list.length === 0 ? (
-            <Slick>
+            <CardSliderBox>
               {Array.from({ length: 10 }).map((_, idx) => {
                 return <SkeletonCard key={idx}></SkeletonCard>;
               })}
-            </Slick>
+            </CardSliderBox>
           ) : (
-            <Slick
+            <CardSliderBox
               is_infinite
               _afterChange={handleAfterChange}
               _beforeChange={handleBeforeChange}
@@ -364,7 +367,7 @@ const Recommendation = () => {
               {end_toon_list?.map((_, idx) => {
                 return <WebToonCard key={idx} {..._}></WebToonCard>;
               })}
-            </Slick>
+            </CardSliderBox>
           )}
         </SliderBox>
       </React.Fragment>
@@ -408,7 +411,11 @@ const Recommendation = () => {
           ></Image>
         </PlatformImg>
       </MdBox>
-      <FlexToonGrid>
+      <FlexToonGrid
+        onClick={() => {
+          history.push(`/detail/${md_offer_list && md_offer_list[0]?.toonId}`);
+        }}
+      >
         <Image
           margin="0 7px"
           src={md_offer_list && md_offer_list[0]?.toonImg}
@@ -529,23 +536,19 @@ const Recommendation = () => {
         </FlexInfoGrid>
       </FlexReviewerGrid>
 
-      <SliderBox onClickCapture={handleOnItemClick}>
+      <SliderBox>
         {is_loading || best_reviewer_list.length === 0 ? (
-          <Slick>
+          <CardSliderBox>
             {Array.from({ length: 10 }).map((_, idx) => {
               return <SkeletonCard key={idx}></SkeletonCard>;
             })}
-          </Slick>
+          </CardSliderBox>
         ) : (
-          <Slick
-            is_infinite
-            _afterChange={handleAfterChange}
-            _beforeChange={handleBeforeChange}
-          >
+          <CardSliderBox>
             {best_reviewer_list?.map((_, idx) => {
               return <WebToonCard key={idx} {..._}></WebToonCard>;
             })}
-          </Slick>
+          </CardSliderBox>
         )}
       </SliderBox>
 
@@ -566,23 +569,20 @@ const Recommendation = () => {
           더보기
         </Button>
       </TitleGrid>
-      <SliderBox onClickCapture={handleOnItemClick}>
+      <SliderBox>
         {is_loading || end_toon_list.length === 0 ? (
-          <Slick is_infinite>
+          <CardSliderBox is_infinite>
             {Array.from({ length: 10 }).map((_, idx) => {
               return <SkeletonCard key={idx}></SkeletonCard>;
             })}
-          </Slick>
+          </CardSliderBox>
         ) : (
-          <Slick
-            is_infinite
-            _afterChange={handleAfterChange}
-            _beforeChange={handleBeforeChange}
-          >
+          <CardSliderBox>
             {end_toon_list?.map((_, idx) => {
               return <WebToonCard key={idx} {..._}></WebToonCard>;
             })}
-          </Slick>
+            <DummyCard></DummyCard>
+          </CardSliderBox>
         )}
       </SliderBox>
 
@@ -752,11 +752,12 @@ const FlexGrid = styled.div`
 const TitleGrid = styled.div`
   display: flex;
   width: 100%;
-  height: 35px;
-  margin-top: 10px;
-  padding: 0 16px;
+  height: 65px;
+  margin-top: 30px;
+  padding: 10px 16px 0;
   align-items: center;
   justify-content: space-between;
+  border-top: 8px solid ${Color.gray100};
 `;
 
 const FlexToonGrid = styled.div`
@@ -884,5 +885,26 @@ const BlurText = styled.p`
   font-weight: bold;
   color: #fff;
   z-index: 5;
+`;
+
+const CardSliderBox = styled.div`
+  display: flex;
+  flex-wrap: nowrap;
+  width: 100%;
+  overflow-x: scroll;
+  -ms-overflow-style: none;
+  gap: 10px;
+  &::-webkit-scrollbar {
+    display: none;
+    width: 0 !important;
+  }
+`;
+
+const DummyCard = styled.div`
+  width: 150px;
+  height: 220px;
+  background: ${Color.naverGreen};
+  display: inline-block;
+  position: relative;
 `;
 export default Recommendation;
