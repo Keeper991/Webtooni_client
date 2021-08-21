@@ -8,7 +8,8 @@ import { HeartFilled } from "@ant-design/icons";
 import { history } from "../redux/configureStore";
 import { actionCreators as reviewActions } from "../redux/modules/review";
 import time from "../shared/time";
-import { ReactComponent as FillStar } from "../images/FillStar.svg";
+import { kakao_webtoon_symbol, naver_webtoon_symbol } from "../images/symbols";
+import Starts from "../images/icons/Stars.png";
 
 const ReviewCard = (props) => {
   const dispatch = useDispatch();
@@ -53,7 +54,7 @@ const ReviewCard = (props) => {
       <Container main={props.main}>
         <PaddingBox>
           <FlexGrid>
-            <UserGrid>
+            <FlexGrid>
               <Image
                 src={profileImgList[props.userImg]}
                 shape="circle"
@@ -61,27 +62,15 @@ const ReviewCard = (props) => {
               ></Image>
               <ColumnGrid>
                 <Text type="caption">{props.userName}</Text>
-                <FlexGrid>
-                  <FillStar
-                    width="12px"
-                    height="12px"
-                    style={{ marginRight: "5px" }}
-                  />
-                  <Text
-                    tag="p"
-                    margin="0 10px 0 0"
-                    type="num"
-                    fontWeight="bold"
-                    color={Color.primary}
-                  >
-                    {props.userPointNumber}
-                  </Text>
-                  <Text type="caption" color={Color.gray500}>
-                    {time(props.createDate)}
-                  </Text>
-                </FlexGrid>
+                <Text type="caption" color={Color.gray500}>
+                  {time(props.createDate)}
+                </Text>
               </ColumnGrid>
-            </UserGrid>
+            </FlexGrid>
+            <StarPoint
+              stars={Starts}
+              points={props.userPointNumber}
+            ></StarPoint>
           </FlexGrid>
 
           <ReviewGrid>
@@ -90,12 +79,12 @@ const ReviewCard = (props) => {
             ) : (
               <ReivewText>{props.reviewContent}</ReivewText>
             )}
-            {props.reviewContent.length >= 73 ? (
+            {props.reviewContent.length >= 67 ? (
               <Button
                 bgColor="transparent"
                 color={Color.gray400}
                 padding="0"
-                margin="5px 0 0 0"
+                margin="5px 0 0 4px"
                 fontSize="12px"
                 border="none"
                 _onClick={handleTextToggle}
@@ -145,8 +134,8 @@ const ReviewCard = (props) => {
         >
           <Image
             src={toonInfo.toonImg}
-            width="64px"
-            height="64px"
+            width="48px"
+            height="48px"
             radius="5px"
           ></Image>
           <InfoGrid>
@@ -159,29 +148,15 @@ const ReviewCard = (props) => {
                 {toonInfo.finished ? "완결" : toonInfo.toonWeekday}
               </Text>
             </FlexGrid>
-            <Text fontWeight="medium" color={Color.gray800}>
-              {toonInfo.toonTitle}
-            </Text>
+
             <FlexGrid>
-              <FlexGrid>
-                <Text type="caption" color={Color.gray400}>
-                  {toonInfo.toonAuthor}
-                </Text>
-              </FlexGrid>
-              {toonInfo.toonPlatform === "네이버" ? (
-                <Image
-                  shape="square"
-                  size="12px"
-                  margin="0 3px"
-                  src="https://lh3.googleusercontent.com/pw/AM-JKLWCsjme2ZNKF3nOEAXrSzYgStfkJAcVZvk17v_KeIKxWNOMJIieajxO7a69mwuRMqSyzqmzCvs6Ltnu3UGFDH5WVOtg1LbHz1w5Pwnuh4utNPgkPm7inmkUX-5eDSRRwFa8HFQSfTb3Fngc2oY2cfyc=s12-no?authuser=0"
-                ></Image>
+              <Text fontWeight="medium" color={Color.gray800}>
+                {toonInfo.toonTitle}
+              </Text>
+              {toonInfo.toonPlatform === "카카오" ? (
+                <KakaoLogo kakao={kakao_webtoon_symbol}></KakaoLogo>
               ) : (
-                <Image
-                  shape="square"
-                  size="12px"
-                  margin="0 3px"
-                  src="https://lh3.googleusercontent.com/pw/AM-JKLW7PImSbXv8cZ3MOmgkjwKdGNaPHtZ0VG72ZeEv9LZMl89iivlbAcUBLL6fZ836fZHed6gJQNUhMr-12eZgqqFOd-XGWU06ZftPdRGgQnVtbhNGidtMMByNP7a184KzHyKcXLpjUyHS4CFGd6NSctFf=s12-no?authuser=0"
-                ></Image>
+                <NaverLogo naver={naver_webtoon_symbol}></NaverLogo>
               )}
             </FlexGrid>
           </InfoGrid>
@@ -192,7 +167,7 @@ const ReviewCard = (props) => {
 };
 
 const Container = styled.div`
-  width: 100%;
+  width: 338px;
   height: auto;
   background: ${Color.gray100};
   display: block;
@@ -224,26 +199,21 @@ const InfoGrid = styled.div`
   display: flex;
   flex-direction: column;
   justify-content: space-around;
-  width: 220px;
-  height: 64px;
+  width: 80%;
+  height: 48px;
   margin-left: 10px;
-`;
-
-const UserGrid = styled.div`
-  display: flex;
-  align-items: center;
 `;
 
 const ReviewGrid = styled.div`
   width: 100%;
-  min-height: 120px;
+  min-height: 80px;
   height: auto;
   padding: 20px 0;
 `;
 
 const ReivewText = styled.div`
   width: 100%;
-  font-size: 12px;
+  font-size: 14px;
   white-space: normal;
   display: -webkit-box;
   -webkit-line-clamp: 3;
@@ -252,14 +222,16 @@ const ReivewText = styled.div`
   word-break: break-word;
   line-height: 1.6em;
   max-height: 4.8em;
+  padding: 0 4px;
 `;
 
 const ReivewTextMore = styled.div`
   width: 100%;
-  font-size: 12px;
+  font-size: 14px;
   white-space: normal;
   word-break: break-word;
   line-height: 1.6em;
+  padding: 0 4px;
 `;
 
 const ColumnGrid = styled.div`
@@ -270,4 +242,31 @@ const ColumnGrid = styled.div`
   margin: 0 10px;
 `;
 
+const KakaoLogo = styled.div`
+  width: 16px;
+  height: 16px;
+  background-image: url("${(props) => props.kakao}");
+  background-repeat: no-repeat;
+  background-position: center;
+  background-size: cover;
+`;
+
+const NaverLogo = styled.div`
+  width: 16px;
+  height: 16px;
+  background-image: url("${(props) => props.naver}");
+  background-repeat: no-repeat;
+  background-position: center;
+  background-size: cover;
+`;
+
+const StarPoint = styled.div`
+  background-image: url("${(props) => props.stars}");
+  width: 100px;
+  height: 18px;
+
+  background-position-y: ${(props) => (10 - props.points * 2) * 18 * -1}px;
+  background-repeat: no-repeat;
+  background-size: cover;
+`;
 export default ReviewCard;
