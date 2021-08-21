@@ -6,9 +6,7 @@ import { Color } from "../shared/common";
 import { history } from "../redux/configureStore";
 import { actionCreators as webtoonActions } from "../redux/modules/webtoon";
 import { actionCreators as reviewActions } from "../redux/modules/review";
-import { ReactComponent as FillStar } from "../images/FillStar.svg";
-import { ReactComponent as EmptyHeart } from "../images/EmptyHeart.svg";
-import { ReactComponent as FillHeart } from "../images/FillHeart.svg";
+import { FillStar, EmptyHeart, FillHeart } from "../images/icons";
 import { Permit, PermitStrict } from "../shared/PermitAuth";
 import time from "../shared/time";
 import profileImgList from "../images/profiles";
@@ -73,7 +71,7 @@ const DetailReview = (props) => {
               margin="0 0 0 4px"
               color={Color.gray700}
             >
-              {userPointNumber}
+              {userPointNumber.toFixed(1)}
             </Text>
             <Text type="small" margin="0 0 0 8px" color={Color.gray500}>
               {time(createDate)}
@@ -83,7 +81,8 @@ const DetailReview = (props) => {
       </Grid>
       <Text
         tag="p"
-        whiteSpace="normal"
+        whiteSpace="pre-wrap"
+        wordBreak="break-all"
         lineHeight="22px"
         color={Color.gray800}
         margin="16px 0 28px 0"
@@ -157,20 +156,4 @@ const Grid = styled.div`
   ${(props) => (props.cursor ? "cursor: pointer" : "")};
 `;
 
-const ItemContainer = styled.div`
-  background: #f1f1f1;
-  margin: 10px;
-  padding: 20px;
-  display: flex;
-  flex-direction: column;
-  justify-content: center;
-`;
-
-const LikeText = styled.p`
-  position: absolute;
-  z-index: 1;
-  font-size: 12px;
-  top: 10%;
-  left: 10%;
-`;
 export default DetailReview;

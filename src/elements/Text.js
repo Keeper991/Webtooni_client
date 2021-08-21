@@ -20,6 +20,7 @@ const Text = (props) => {
     cursor,
     textAlign,
     lineHeight,
+    wordBreak,
   } = props;
 
   const styles = {
@@ -34,6 +35,7 @@ const Text = (props) => {
     whiteSpace: whiteSpace,
     textAlign: textAlign,
     lineHeight: lineHeight,
+    wordBreak: wordBreak,
   };
 
   if (type === "num") {
@@ -94,6 +96,7 @@ Text.defaultProps = {
   cursor: "",
   textAlign: "",
   lineHeight: "",
+  wordBreak: "",
 };
 
 const ElNum = styled.span`
@@ -110,6 +113,7 @@ const ElNum = styled.span`
       : 400};
 
   white-space: ${(props) => props.whiteSpace};
+  word-break: ${(props) => props.wordBreak};
 `;
 
 const ElH1 = styled.h1`
@@ -128,6 +132,7 @@ const ElH1 = styled.h1`
       : 400};
 
   white-space: ${(props) => props.whiteSpace};
+  word-break: ${(props) => props.wordBreak};
 `;
 
 const ElH2 = styled.h2`
@@ -149,6 +154,7 @@ const ElH2 = styled.h2`
   text-align: ${(props) => props.textAlign};
   line-height: ${(props) => props.lineHeight};
   ${(props) => (props.cursor ? "cursor: pointer" : "")};
+  word-break: ${(props) => props.wordBreak};
 `;
 
 const ElP = styled.p`
@@ -175,6 +181,7 @@ const ElP = styled.p`
   text-align: ${(props) => props.textAlign};
   line-height: ${(props) => props.lineHeight};
   ${(props) => (props.cursor ? "cursor: pointer" : "")};
+  word-break: ${(props) => props.wordBreak};
 `;
 
 const ElSpan = styled.span`
@@ -199,6 +206,8 @@ const ElSpan = styled.span`
   text-align: ${(props) => props.textAlign};
   line-height: ${(props) => props.lineHeight};
   ${(props) => (props.cursor ? "cursor: pointer" : "")};
+
+  word-break: ${(props) => props.wordBreak};
 `;
 
 export default Text;

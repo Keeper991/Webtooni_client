@@ -3,7 +3,7 @@ import styled from "styled-components";
 import { Text, Image } from "../elements";
 import { history } from "../redux/configureStore";
 import { Color } from "../shared/common";
-import { ReactComponent as FillStar } from "../images/FillStar.svg";
+import { FillStar } from "../images/icons";
 
 const WebToonCard = (props) => {
   return (

@@ -190,13 +190,23 @@ export default handleActions(
     [SET_PAGE]: (state, action) =>
       produce(state, (draft) => {
         const _list = action.payload.post_list;
-        // 메인/상세 데이터 구분 -> 좋아요 데이터 여부 판별
+        // 메인/상세 데이터 구분 -> for 좋아요 데이터 여부 판별
         const __list = _list.map((_) => {
           _.is_main = true;
           return _;
         });
 
+        //기존 리스트와 중복되는 데이터 삭제 후 리스트 추가
+        const idx = __list.findIndex(
+          (_) =>
+            draft.post_list.find((__) => {
+              return _.postId === __.postId;
+            })?.postId === _.postId
+        );
+        __list.splice(idx, 1);
+
         draft.post_list.push(...__list);
+
         //최신 순 정렬
         draft.post_list.sort(function (a, b) {
           return a.createDate > b.createDate

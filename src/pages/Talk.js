@@ -2,11 +2,10 @@ import React, { useEffect } from "react";
 import { useSelector, useDispatch } from "react-redux";
 import styled from "styled-components";
 import { Text, Button } from "../elements";
-import { ReactComponent as WriteButton } from "../images/WriteButton.svg";
+import { WriteButton, Comment } from "../images/icons";
 import { actionCreators as talkActions } from "../redux/modules/talk";
 import { history } from "../redux/configureStore";
 import { Color } from "../shared/common";
-import { ReactComponent as Comment } from "../images/Comment.svg";
 import { Permit } from "../shared/PermitAuth";
 
 const Talk = () => {
@@ -179,7 +178,7 @@ const Talk = () => {
                       whiteSpace="nowrap"
                       color={Color.primary}
                     >
-                      {post.talkCommentCount}
+                      9+
                     </Text>
                   </Grid>
                 )}
