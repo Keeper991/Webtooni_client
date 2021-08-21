@@ -133,9 +133,15 @@ const Main = () => {
           <CardSliderBox>
             {webtooni_list?.map((_, idx) => {
               return (
-                <WebToonCard key={idx} index={idx + 1} {..._}></WebToonCard>
+                <WebToonCard
+                  key={idx}
+                  index={idx + 1}
+                  {..._}
+                  rank
+                ></WebToonCard>
               );
             })}
+            <DummyCard></DummyCard>
           </CardSliderBox>
         )}
       </SliderBox>
@@ -497,11 +503,21 @@ const CardSliderBox = styled.div`
   flex-wrap: nowrap;
   width: 100%;
   overflow-x: scroll;
-  -ms-overflow-style: none;
+
   gap: 10px;
   &::-webkit-scrollbar {
     display: none;
     width: 0 !important;
   }
+  background-color: aliceblue;
 `;
+
+const DummyCard = styled.div`
+  width: 150px;
+  height: 220px;
+  background: ${Color.primaryLight};
+  display: inline-block;
+  position: relative;
+`;
+
 export default Main;

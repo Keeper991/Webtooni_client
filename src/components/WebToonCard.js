@@ -13,14 +13,25 @@ const WebToonCard = (props) => {
           history.push(`/detail/${props.toonId}`);
         }}
       >
-        <ImageGrid index={props.index}>
-          <Image
-            src={props.toonImg}
-            width="100%"
-            height="100%"
-            radius="5px"
-          ></Image>
-        </ImageGrid>
+        {props.index ? (
+          <RankImageGrid index={props.index} rank={props.rank}>
+            <Image
+              src={props.toonImg}
+              width="100%"
+              height="100%"
+              radius="5px"
+            ></Image>
+          </RankImageGrid>
+        ) : (
+          <ImageGrid index={props.index} rank={props.rank}>
+            <Image
+              src={props.toonImg}
+              width="100%"
+              height="100%"
+              radius="5px"
+            ></Image>
+          </ImageGrid>
+        )}
 
         <ContentsGrid>
           <FlexGrid>
@@ -106,6 +117,11 @@ const ContentsGrid = styled.div`
 `;
 
 const ImageGrid = styled.div`
+  width: 150px;
+  height: 140px;
+`;
+
+const RankImageGrid = styled.div`
   width: 150px;
   height: 140px;
 
