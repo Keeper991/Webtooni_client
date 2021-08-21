@@ -10,6 +10,7 @@ import { Color } from "../shared/common";
 import { history } from "../redux/configureStore";
 import { ReactComponent as FillStar } from "../images/icons/FillStar.svg";
 import { NaverBigLogo } from "../images/symbols";
+
 const Recommendation = () => {
   const dispatch = useDispatch();
   // selectors

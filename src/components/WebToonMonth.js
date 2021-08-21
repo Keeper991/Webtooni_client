@@ -5,6 +5,7 @@ import { history } from "../redux/configureStore";
 import { Color } from "../shared/common";
 import { ReactComponent as FillStar } from "../images/icons/FillStar.svg";
 
+
 const WebToonMonth = (props) => {
   return (
     <React.Fragment>
