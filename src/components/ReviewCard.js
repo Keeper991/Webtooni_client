@@ -8,7 +8,7 @@ import { HeartFilled } from "@ant-design/icons";
 import { history } from "../redux/configureStore";
 import { actionCreators as reviewActions } from "../redux/modules/review";
 import time from "../shared/time";
-import { ReactComponent as FillStar } from "../images/FillStar.svg";
+import { FillStar } from "../images/icons";
 
 const ReviewCard = (props) => {
   const dispatch = useDispatch();

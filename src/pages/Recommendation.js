@@ -8,7 +8,7 @@ import { Slick, WebToonCard, SkeletonCard } from "../components";
 import profileImgList from "../images/profiles";
 import { Color } from "../shared/common";
 import { history } from "../redux/configureStore";
-import { ReactComponent as FillStar } from "../images/FillStar.svg";
+import { FillStar } from "../images/icons";
 
 const Recommendation = () => {
   const dispatch = useDispatch();
