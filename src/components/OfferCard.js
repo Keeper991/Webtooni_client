@@ -3,6 +3,7 @@ import styled from "styled-components";
 import { Image, Text } from "../elements";
 import { Color } from "../shared/common";
 import { history } from "../redux/configureStore";
+import { FillStar } from "../images/icons";
 
 const OfferCard = (props) => {
   return (
@@ -30,13 +31,17 @@ const OfferCard = (props) => {
               {props.toonAuthor}
             </Text>
             <FlexGrid>
-              <Image
-                shape="square"
-                margin="0 5px 0 10px"
-                size="12px"
-                src="https://lh3.googleusercontent.com/pw/AM-JKLXIrRX56QwruA9no5dsQDpzLmNNgGigp4H-mNbe8Zll_MgRc1OVhN8nKaqDwTOSKiNGUT6bQ6O7sYRBDsPhnj49j7ACDz5qWrSeebdROovTQKhnt8O2jbq6QpskSozPMpq02E2hUQqTjg3gfLZpx-xv=s12-no?authuser=0"
-              ></Image>
-              <Text type="num" color={Color.white} fontWeight="bold">
+              <FillStar
+                width="12px"
+                height="12px"
+                style={{ margin: "0 2px 0 7px" }}
+              ></FillStar>
+              <Text
+                type="num"
+                color={Color.white}
+                fontWeight="bold"
+                fontSize="12px"
+              >
                 {props.toonAvgPoint}
               </Text>
             </FlexGrid>
@@ -52,13 +57,14 @@ const Container = styled.div`
   height: 282px;
   position: relative;
   margin: 10px 0;
+  overflow: hidden;
 `;
 
 const ToonImgGrid = styled.div`
   width: 100%;
   height: 100%;
   background-image: url("${(props) => props.src}");
-
+  filter: blur(2px);
   background-size: cover;
   background-position: center;
 

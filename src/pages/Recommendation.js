@@ -8,8 +8,8 @@ import { Slick, WebToonCard, SkeletonCard } from "../components";
 import profileImgList from "../images/profiles";
 import { Color } from "../shared/common";
 import { history } from "../redux/configureStore";
-import { ReactComponent as FillStar } from "../images/FillStar.svg";
-
+import { ReactComponent as FillStar } from "../images/icons/FillStar.svg";
+import { NaverBigLogo } from "../images/symbols";
 const Recommendation = () => {
   const dispatch = useDispatch();
   // selectors
@@ -184,11 +184,7 @@ const Recommendation = () => {
             </Text>
           </MdInfoBox>
           <PlatformImg>
-            <Image
-              shape="square"
-              size="33px"
-              src="https://lh3.googleusercontent.com/pw/AM-JKLUzns3dJ9QMMvbc1SAKf7CNsU2e3HAN-XkY-qHk_1o5X_CskFJiSAwZ9F8lRBhNaRwxMMqOI32OBdJW3bPgupH1FAx-z9WI51FwqIiIC5ggfzfGxiIM47ux759UeRX5p1-7dv2Uf3GKP-NZ9hPi0cqR=s33-no?authuser=0"
-            ></Image>
+            <NaverBigLogo></NaverBigLogo>
           </PlatformImg>
         </MdBox>
         <FlexToonGrid
@@ -404,11 +400,7 @@ const Recommendation = () => {
           </Text>
         </MdInfoBox>
         <PlatformImg>
-          <Image
-            shape="square"
-            size="33px"
-            src="https://lh3.googleusercontent.com/pw/AM-JKLUzns3dJ9QMMvbc1SAKf7CNsU2e3HAN-XkY-qHk_1o5X_CskFJiSAwZ9F8lRBhNaRwxMMqOI32OBdJW3bPgupH1FAx-z9WI51FwqIiIC5ggfzfGxiIM47ux759UeRX5p1-7dv2Uf3GKP-NZ9hPi0cqR=s33-no?authuser=0"
-          ></Image>
+          <NaverBigLogo></NaverBigLogo>
         </PlatformImg>
       </MdBox>
       <FlexToonGrid
@@ -430,12 +422,7 @@ const Recommendation = () => {
             <Text type="caption" color={Color.gray400}>
               {md_offer_list && md_offer_list[0]?.toonAuthor}
             </Text>
-            <Image
-              shape="square"
-              margin="0 5px 0 7px"
-              size="12px"
-              src="https://lh3.googleusercontent.com/pw/AM-JKLXIrRX56QwruA9no5dsQDpzLmNNgGigp4H-mNbe8Zll_MgRc1OVhN8nKaqDwTOSKiNGUT6bQ6O7sYRBDsPhnj49j7ACDz5qWrSeebdROovTQKhnt8O2jbq6QpskSozPMpq02E2hUQqTjg3gfLZpx-xv=s12-no?authuser=0"
-            ></Image>
+            <FillStar width="12px" height="12px" style={{ margin: "5px" }} />
             <Text
               type="num"
               fontSize="12px"
@@ -581,7 +568,6 @@ const Recommendation = () => {
             {end_toon_list?.map((_, idx) => {
               return <WebToonCard key={idx} {..._}></WebToonCard>;
             })}
-            <DummyCard></DummyCard>
           </CardSliderBox>
         )}
       </SliderBox>
@@ -686,6 +672,7 @@ const SliderBox = styled.div`
 
 const OfferSliderBox = styled.div`
   margin: 20px 0 50px 0;
+
   position: relative;
 `;
 
@@ -693,7 +680,7 @@ const BottomBox = styled.div`
   width: 100%;
   height: 32px;
   position: absolute;
-  bottom: 10px;
+  bottom: 8px;
   display: flex;
   justify-content: center;
   align-items: center;
@@ -708,7 +695,7 @@ const BottomBox = styled.div`
     top: 0;
     left: 0;
     background-color: ${Color.black};
-    opacity: 0.5;
+    opacity: 0.7;
     z-index: 1;
   }
 `;
@@ -836,7 +823,7 @@ const MdInfoBox = styled.div`
   height: 90px;
   display: flex;
   position: absolute;
-  bottom: 15px;
+  bottom: 20px;
   flex-direction: column;
   justify-content: space-between;
   padding: 0 0 0 20px;
@@ -892,6 +879,7 @@ const CardSliderBox = styled.div`
   flex-wrap: nowrap;
   width: 100%;
   overflow-x: scroll;
+  padding-right: 150px;
   -ms-overflow-style: none;
   gap: 10px;
   &::-webkit-scrollbar {
@@ -900,11 +888,4 @@ const CardSliderBox = styled.div`
   }
 `;
 
-const DummyCard = styled.div`
-  width: 150px;
-  height: 220px;
-  background: ${Color.naverGreen};
-  display: inline-block;
-  position: relative;
-`;
 export default Recommendation;
