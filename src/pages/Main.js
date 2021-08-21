@@ -16,7 +16,7 @@ import {
 } from "../components";
 import { Button, Text, Image } from "../elements";
 import { Color } from "../shared/common";
-
+import BannerImg from "../images/banner.png";
 const Main = () => {
   const dispatch = useDispatch();
 
@@ -104,6 +104,7 @@ const Main = () => {
 
   return (
     <React.Fragment>
+      <TopBannerBox banner={BannerImg}></TopBannerBox>
       <TitleGrid>
         <Text type="h2" fontWeight="bold">
           이달의 웹투니버스 순위
@@ -141,7 +142,6 @@ const Main = () => {
                 ></WebToonCard>
               );
             })}
-            <DummyCard></DummyCard>
           </CardSliderBox>
         )}
       </SliderBox>
@@ -391,7 +391,7 @@ const Main = () => {
 
       <TitleGrid>
         <Text type="h2" fontWeight="bold">
-          베스트 리뷰어
+          베스트 리뷰어 🏆
         </Text>
       </TitleGrid>
       <CenterSliderBox>
@@ -404,6 +404,15 @@ const Main = () => {
     </React.Fragment>
   );
 };
+
+const TopBannerBox = styled.div`
+  width: 100%;
+  height: 146px;
+  background-image: url("${(props) => props.banner}");
+  margin-top: 10px;
+  background-size: cover;
+  background-position: center;
+`;
 
 const TitleGrid = styled.div`
   display: flex;
@@ -433,10 +442,6 @@ const CenterSliderBox = styled.div`
   justify-content: center;
   align-items: center;
   flex-direction: column;
-  background-image: url("https://lh3.googleusercontent.com/pw/AM-JKLURqrwtXPaJylOjAgW0GC_NFW7bwZg6PTmw7c_MTAfrn6mxU3rOLythCMjgdGSFi1WJ4KmcUqViPL_wmxJq_YiMTzp3ZlVwAUlrprH7G6xnZjvmFbUms5av9Xwak5qcWGKQsD7emBC4S0dZeCZUX1lS=w375-h300-no?authuser=0");
-  background-position: bottom;
-  background-repeat: no-repeat;
-  background-size: contain;
 `;
 
 const MonthContainer = styled.div`
@@ -503,21 +508,12 @@ const CardSliderBox = styled.div`
   flex-wrap: nowrap;
   width: 100%;
   overflow-x: scroll;
-
+  padding-right: 150px;
   gap: 10px;
   &::-webkit-scrollbar {
     display: none;
     width: 0 !important;
   }
-  background-color: aliceblue;
-`;
-
-const DummyCard = styled.div`
-  width: 150px;
-  height: 220px;
-  background: ${Color.primaryLight};
-  display: inline-block;
-  position: relative;
 `;
 
 export default Main;
