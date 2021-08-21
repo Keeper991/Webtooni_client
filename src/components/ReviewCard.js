@@ -8,6 +8,7 @@ import { HeartFilled } from "@ant-design/icons";
 import { history } from "../redux/configureStore";
 import { actionCreators as reviewActions } from "../redux/modules/review";
 import time from "../shared/time";
+import { ReactComponent as FillStar } from "../images/FillStar.svg";
 
 const ReviewCard = (props) => {
   const dispatch = useDispatch();
@@ -46,7 +47,7 @@ const ReviewCard = (props) => {
   if (!props.reviewContent) {
     return <></>;
   }
-  console.log(props.createDate);
+
   return (
     <React.Fragment>
       <Container main={props.main}>
@@ -61,12 +62,11 @@ const ReviewCard = (props) => {
               <ColumnGrid>
                 <Text type="caption">{props.userName}</Text>
                 <FlexGrid>
-                  <Image
-                    shape="square"
-                    margin="0 5px 0 0"
-                    size="12px"
-                    src="https://lh3.googleusercontent.com/pw/AM-JKLXIrRX56QwruA9no5dsQDpzLmNNgGigp4H-mNbe8Zll_MgRc1OVhN8nKaqDwTOSKiNGUT6bQ6O7sYRBDsPhnj49j7ACDz5qWrSeebdROovTQKhnt8O2jbq6QpskSozPMpq02E2hUQqTjg3gfLZpx-xv=s12-no?authuser=0"
-                  ></Image>
+                  <FillStar
+                    width="12px"
+                    height="12px"
+                    style={{ marginRight: "5px" }}
+                  />
                   <Text
                     tag="p"
                     margin="0 10px 0 0"
@@ -167,15 +167,6 @@ const ReviewCard = (props) => {
                 <Text type="caption" color={Color.gray400}>
                   {toonInfo.toonAuthor}
                 </Text>
-                <Image
-                  shape="square"
-                  margin="0 5px 0"
-                  size="12px"
-                  src="https://lh3.googleusercontent.com/pw/AM-JKLXIrRX56QwruA9no5dsQDpzLmNNgGigp4H-mNbe8Zll_MgRc1OVhN8nKaqDwTOSKiNGUT6bQ6O7sYRBDsPhnj49j7ACDz5qWrSeebdROovTQKhnt8O2jbq6QpskSozPMpq02E2hUQqTjg3gfLZpx-xv=s12-no?authuser=0"
-                ></Image>
-                <Text type="num" fontWeight="bold" color={Color.primary}>
-                  {toonInfo.toonAvgPoint}
-                </Text>
               </FlexGrid>
               {toonInfo.toonPlatform === "네이버" ? (
                 <Image
@@ -201,10 +192,10 @@ const ReviewCard = (props) => {
 };
 
 const Container = styled.div`
-  width: 328px;
+  width: 100%;
   height: auto;
   background: ${Color.gray100};
-  display: inline-block;
+  display: block;
   border-radius: 15px;
   border: 1px solid ${Color.gray200};
   ${(props) =>
