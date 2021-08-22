@@ -12,7 +12,7 @@ const TASTE_LS = "TASTE_LIST";
 const PROFILE_LS = "PROFILE";
 const USERNAME_LS = "USERNAME";
 
-const Profile = () => {
+const Profile = ({ location: { state } }) => {
   const [profile, setProfile] = useState(-1);
   const [userName, setUserName] = useState("");
   const dispatch = useDispatch();
@@ -23,8 +23,19 @@ const Profile = () => {
   );
   const isChecking = useSelector((state) => state.user.isChecking);
 
+  const isEditFromUserPage = state.editProfile;
+  const curUserName = useSelector((state) => state.user.info.userName);
+  const curUserImg = useSelector((state) => state.user.info.userImg);
+  const curGenres = useSelector((state) => state.user.info.genres);
+
   useEffect(() => {
     const tasteDataLS = localStorage.getItem(TASTE_LS);
+    if (isEditFromUserPage) {
+      setProfile(curUserImg);
+      setUserName(curUserName);
+      localStorage.setItem(TASTE_LS, curGenres);
+      return;
+    }
     if (!tasteDataLS) {
       history.replace("/taste");
     }
@@ -36,6 +47,9 @@ const Profile = () => {
   }, []);
 
   useEffect(() => {
+    if (isEditFromUserPage) {
+      return;
+    }
     if (!isChecking && !(isLogin === true && isShownWelcomeModal === false)) {
       window.alert("잘못된 접근입니다.");
       history.push("/");
@@ -56,24 +70,28 @@ const Profile = () => {
       genres: localStorage.getItem(TASTE_LS).split(","),
       userImg: profile,
       userName: userName,
-      isShownWelcomeModal: false,
+      isShownWelcomeModal: isEditFromUserPage,
     };
     const removeInfoData = () => {
       localStorage.removeItem(TASTE_LS);
       localStorage.removeItem(PROFILE_LS);
       localStorage.removeItem(USERNAME_LS);
     };
-    dispatch(userActions.setUserServer(data, removeInfoData));
+    dispatch(
+      userActions.setUserServer(data, removeInfoData, isEditFromUserPage)
+    );
   };
 
   return (
     <Container>
       <ContentWrap>
         <ProgressArea>
-          <ProgressStepBtns
-            currentPageNum={2}
-            clickHandlers={progressStepClickHandlers}
-          />
+          {!isEditFromUserPage && (
+            <ProgressStepBtns
+              currentPageNum={2}
+              clickHandlers={progressStepClickHandlers}
+            />
+          )}
         </ProgressArea>
         <TitleArea>
           <Text type="h1" fontWeight="bold">
@@ -143,7 +161,7 @@ const Profile = () => {
           color={Color.white}
           _onClick={submitUserInfo}
         >
-          가입완료
+          {isEditFromUserPage ? "수정완료" : "가입완료"}
         </Button>
       )}
     </Container>

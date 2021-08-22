@@ -20,7 +20,7 @@ import {
   ToonList,
   SocialLogin,
   ReviewWrite,
-  MyPage,
+  User,
 } from "../pages/index";
 import Header from "./Header";
 import GlobalStyle from "./GlobalStyle";
@@ -54,7 +54,7 @@ function App() {
         <Route path="/talk/detail/:id" exact component={TalkDetail} />
         <Route path="/user/kakao" exact component={SocialLogin} />
         <Route path="/user/naver" exact component={SocialLogin} />
-        {/* <Route path="/user/:userName" exact component={User} /> */}
+        <Route path="/userinfo/:userName" exact component={User} />
       </ConnectedRouter>
       <Modal />
     </>

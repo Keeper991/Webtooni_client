@@ -16,6 +16,7 @@ const ADD_STAR = "review/ADD_STAR";
 const UPDATE_STAR = "review/UPDATE_STAR";
 const UPDATE_REVIEW = "review/UPDATE_REVIEW";
 const REMOVE_REVIEW_CONTENT = "review/REMOVE_REVIEW_CONTENT";
+const CHANGE_AUTHOR_INFO = "review/CHANGE_AUTHOR_INFO";
 
 ///////////////////////////////////////////////////////////
 // action creators
@@ -73,6 +74,10 @@ const updateReview = createAction(
 const removeReviewContent = createAction(REMOVE_REVIEW_CONTENT, (reviewId) => ({
   reviewId,
 }));
+const changeAuthorInfo = createAction(
+  CHANGE_AUTHOR_INFO,
+  (curInfo, newInfo) => ({ curInfo, newInfo })
+);
 
 ///////////////////////////////////////////////////////////
 // thunks
@@ -132,6 +137,7 @@ const getMainReviewList = () => {
     }
   };
 };
+
 // 리뷰 페이지의 리뷰 불러오기(Pagination, Infinity Scroll)
 const getReviewList = (page_num) => {
   return async function (dispatch, getState, { history }) {
@@ -452,6 +458,15 @@ export default handleActions(
         draft.review_list[idx].createDate = "";
         draft.review_list[idx].reviewContent = "";
       }),
+    [CHANGE_AUTHOR_INFO]: (state, action) =>
+      produce(state, (draft) => {
+        draft.review_list.map((review) => {
+          if (review.userName === action.payload.curInfo.userName) {
+            review.userName = action.payload.newInfo.userName;
+            review.userImg = action.payload.newInfo.userImg;
+          }
+        });
+      }),
   },
   initialState
 );
@@ -466,6 +481,7 @@ const actionCreators = {
   updateReviewServer,
   removeReviewContentServer,
   isLast,
+  changeAuthorInfo,
 };
 
 export { actionCreators };

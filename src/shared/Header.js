@@ -19,6 +19,7 @@ const Header = (props) => {
   const dispatch = useDispatch();
 
   const is_login = useSelector((state) => state.user.is_login);
+  const userName = useSelector((state) => state.user.info.userName);
 
   const throttle = function (callback, waitTime) {
     let timerId = null;
@@ -111,7 +112,7 @@ const Header = (props) => {
               />
               {is_login ? (
                 <UserOutlined
-                  onClick={() => dispatch(modalActions.activeModal("logout"))}
+                  onClick={() => history.push(`/userinfo/${userName}`)}
                 />
               ) : (
                 <Button
@@ -159,7 +160,7 @@ const Header = (props) => {
             />
             {is_login ? (
               <UserOutlined
-                onClick={() => dispatch(modalActions.activeModal("logout"))}
+                onClick={() => history.push(`/userinfo/${userName}`)}
               />
             ) : (
               <Button
