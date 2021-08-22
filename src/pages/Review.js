@@ -30,8 +30,6 @@ const Review = () => {
     review.filterConditions.includes("reviewPageBest")
   );
 
-  console.log(best_review);
-
   let new_review_list = [...new_review];
   new_review_list.sort((a, b) => b.createDate - a.createDate);
 
