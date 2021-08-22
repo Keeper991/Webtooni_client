@@ -184,13 +184,16 @@ const Header = (props) => {
           props.location.pathname === "/taste"
         ) && (
           <PageBtnBox>
-            <StyleNavLink activeStyle={activeStyle} to="/recommendation">
+            <StyleNavLink activeStyle={activeStyle} exact to="/">
+              메인
+            </StyleNavLink>
+            <StyleNavLink activeStyle={activeStyle} exact to="/recommendation">
               추천
             </StyleNavLink>
-            <StyleNavLink activeStyle={activeStyle} to="/review">
+            <StyleNavLink activeStyle={activeStyle} exact to="/review">
               리뷰
             </StyleNavLink>
-            <StyleNavLink activeStyle={activeStyle} to="/talk">
+            <StyleNavLink activeStyle={activeStyle} exact to="/talk">
               톡톡
             </StyleNavLink>
           </PageBtnBox>
@@ -201,7 +204,7 @@ const Header = (props) => {
 };
 
 const StyleNavLink = styled(NavLink)`
-  width: 50px;
+  width: 40px;
   height: 55px;
   display: flex;
   align-items: center;

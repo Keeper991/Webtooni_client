@@ -3,7 +3,8 @@ import styled from "styled-components";
 import { Text, Image } from "../elements";
 import { history } from "../redux/configureStore";
 import { Color } from "../shared/common";
-import { FillStar } from "../images/icons";
+import { ReactComponent as FillStar } from "../images/icons/FillStar.svg";
+
 
 const WebToonMonth = (props) => {
   return (

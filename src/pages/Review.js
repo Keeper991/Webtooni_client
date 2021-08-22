@@ -22,21 +22,33 @@ const Review = () => {
 
   const review_list = useSelector((state) => state.review.review_list);
 
-  let new_review_list = [...review_list];
+  const new_review = review_list.filter((review) =>
+    review.filterConditions.includes("reviewPage")
+  );
+
+  const best_review = review_list.filter((review) =>
+    review.filterConditions.includes("reviewPageBest")
+  );
+
+  console.log(best_review);
+
+  let new_review_list = [...new_review];
   new_review_list.sort((a, b) => b.createDate - a.createDate);
 
-  let best_review_list = [...review_list];
+  let best_review_list = [...best_review];
   best_review_list.sort((a, b) => b.likeCount - a.likeCount);
 
   const like_list = useSelector((state) => state.user.reviewLikeList);
 
-  const page_num = useSelector((state) => state.review.page_num);
+  const new_page_num = useSelector((state) => state.review.new_page_num);
+  const best_page_num = useSelector((state) => state.review.best_page_num);
 
   const is_last = useSelector((state) => state.review.is_last);
 
   React.useEffect(() => {
-    if (page_num === 1) {
-      dispatch(reviewAction.getReviewList(page_num));
+    if (new_page_num === 1 || best_page_num === 1) {
+      dispatch(reviewAction.getReviewList(new_page_num));
+      dispatch(reviewAction.getReviewListOrderByLike(best_page_num));
     }
   }, []);
 
@@ -51,6 +63,7 @@ const Review = () => {
         <Button
           _onClick={() => {
             setIsBest(false);
+            dispatch(reviewAction.isLast(false));
           }}
           bgColor={Color.white}
           width="50px"
@@ -59,13 +72,14 @@ const Review = () => {
           fontWeight="bold"
           fontSize="14px"
           padding="0"
-          color={!is_best ? Color.black : Color.gray400}
+          color={!is_best ? Color.gray900 : Color.gray400}
         >
           최신순
         </Button>
         <Button
           _onClick={() => {
             setIsBest(true);
+            dispatch(reviewAction.isLast(false));
           }}
           bgColor={Color.white}
           width="50px"
@@ -74,45 +88,43 @@ const Review = () => {
           fontWeight="bold"
           fontSize="14px"
           padding="0"
-          color={is_best ? Color.black : Color.gray400}
+          color={is_best ? Color.gray900 : Color.gray400}
         >
           좋아요순
         </Button>
       </TabGrid>
       <Container>
-        <InfinityScroll
-          loading={is_loading_review}
-          callNext={() => {
-            dispatch(reviewAction.getReviewList(page_num));
-          }}
-          is_next={is_last ? false : true}
-        >
-          {is_best ? (
-            <div>
-              {best_review_list?.map((_, idx) => {
-                return (
-                  <ReviewCard
-                    key={idx}
-                    {..._}
-                    like_list={like_list}
-                  ></ReviewCard>
-                );
-              })}
-            </div>
-          ) : (
-            <div>
-              {new_review_list?.map((_, idx) => {
-                return (
-                  <ReviewCard
-                    key={idx}
-                    {..._}
-                    like_list={like_list}
-                  ></ReviewCard>
-                );
-              })}
-            </div>
-          )}
-        </InfinityScroll>
+        {is_best && (
+          <InfinityScroll
+            loading={is_loading_review}
+            callNext={() => {
+              dispatch(reviewAction.getReviewListOrderByLike(best_page_num));
+            }}
+            is_next={is_last ? false : true}
+          >
+            {best_review_list?.map((_, idx) => {
+              return (
+                <ReviewCard key={idx} {..._} like_list={like_list}></ReviewCard>
+              );
+            })}
+          </InfinityScroll>
+        )}
+
+        {!is_best && (
+          <InfinityScroll
+            loading={is_loading_review}
+            callNext={() => {
+              dispatch(reviewAction.getReviewList(new_page_num));
+            }}
+            is_next={is_last ? false : true}
+          >
+            {new_review_list?.map((_, idx) => {
+              return (
+                <ReviewCard key={idx} {..._} like_list={like_list}></ReviewCard>
+              );
+            })}
+          </InfinityScroll>
+        )}
       </Container>
       {is_login && (
         <WriteBtn>
@@ -144,6 +156,7 @@ const TabGrid = styled.div`
   width: 100%;
   height: 42px;
   padding: 0 16px;
+  margin: 10px 0;
   align-items: center;
   justify-content: flex-end;
   gap: 10px;

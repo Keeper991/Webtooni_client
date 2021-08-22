@@ -2,7 +2,7 @@ import React, { useEffect } from "react";
 import { useSelector, useDispatch } from "react-redux";
 import styled from "styled-components";
 import { Text, Image, Button } from "../elements";
-import { WebToonCard, DetailReview, Slick, DetailStar } from "../components";
+import { WebToonCard, DetailReview, DetailStar } from "../components";
 import { actionCreators as webtoonActions } from "../redux/modules/webtoon";
 import { actionCreators as userActions } from "../redux/modules/user";
 import { actionCreators as reviewActions } from "../redux/modules/review";
@@ -37,6 +37,7 @@ const Detail = (props) => {
   const similarToons = toon_list.filter((toon) =>
     toon.filterConditions?.includes(webtoon_id)
   );
+
   let toonReviews = review_list.filter(
     (review) => review.toonId === webtoon_id
   );
@@ -56,25 +57,10 @@ const Detail = (props) => {
   const loading = useSelector((store) => store.review.is_loading_review);
   const loading_user = useSelector((store) => store.user.is_loading);
 
-  // slick swipe click prevent
-  const [dragging, setDragging] = React.useState(false);
 
-  const handleBeforeChange = React.useCallback(() => {
-    setDragging(true);
-  }, [setDragging]);
-
-  const handleAfterChange = React.useCallback(() => {
-    setDragging(false);
-  }, [setDragging]);
-
-  const handleOnItemClick = React.useCallback(
-    (e) => {
-      if (dragging) e.stopPropagation();
-    },
-    [dragging]
-  );
 
   const [goTop, isGoTop] = React.useState(false);
+
 
   // effects
   useEffect(() => {
@@ -448,16 +434,13 @@ const Detail = (props) => {
               </Button>
             </Grid>
 
-            <Slick
-              _afterChange={handleAfterChange}
-              _beforeChange={handleBeforeChange}
-            >
-              {similarToons.map((item, idx) => (
-                <SimContainer key={idx} onClickCapture={handleOnItemClick}>
-                  <WebToonCard {...item} id={item.toonId} />
-                </SimContainer>
-              ))}
-            </Slick>
+            <SliderBox>
+              <CardSliderBox>
+                {similarToons.map((item, idx) => (
+                  <WebToonCard key={idx} {...item} id={item.toonId} />
+                ))}
+              </CardSliderBox>
+            </SliderBox>
           </Grid>
         </>
       )}
@@ -488,13 +471,6 @@ const Grid = styled.div`
   ${(props) => props.gap && `gap: ${props.gap};`}
 `;
 
-const SimContainer = styled.div`
-  width: 30vw;
-  height: auto;
-  padding: 10px;
-  margin: 5px;
-`;
-
 const SortGrid = styled.div`
   display: flex;
   justify-content: flex-end;
@@ -510,6 +486,26 @@ const SortLike = styled.p`
   cursor: pointer;
   color: ${(props) => (props.sort ? Color.primary : Color.gray800)};
   font-size: 13px;
+`;
+const SliderBox = styled.div`
+  white-space: nowrap;
+  overflow: hidden;
+  margin: 20px 0 50px 0;
+  padding-left: 16px;
+`;
+
+const CardSliderBox = styled.div`
+  display: flex;
+  flex-wrap: nowrap;
+  width: 100%;
+  overflow-x: scroll;
+  padding-right: 150px;
+  -ms-overflow-style: none;
+  gap: 10px;
+  &::-webkit-scrollbar {
+    display: none;
+    width: 0 !important;
+  }
 `;
 
 export default Detail;

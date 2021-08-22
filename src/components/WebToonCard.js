@@ -37,11 +37,10 @@ const WebToonCard = (props) => {
           <FlexGrid>
             <FlexGrid>
               <Text color={Color.primary} type="caption">
-                {props?.genres
-                  ? props.genres[props.genres.length - 1]
-                  : "추천!"}
+                {props?.genres && props.genres[props.genres.length - 1]}
+                {props?.genres.length === 0 && "추천!"}
               </Text>
-              <Text color={Color.gray400} type="caption" margin="0 0 0 10px">
+              <Text color={Color.gray400} type="caption" margin="0 0 0 7px">
                 {props.toonWeekday ? props.toonWeekday : "완결"}
               </Text>
             </FlexGrid>
