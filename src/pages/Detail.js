@@ -74,6 +74,8 @@ const Detail = (props) => {
     [dragging]
   );
 
+  const [goTop, isGoTop] = React.useState(false);
+
   // effects
   useEffect(() => {
     if (!toonOne || !toonOne.filterConditions?.includes("detail")) {
@@ -201,7 +203,7 @@ const Detail = (props) => {
                 <Grid position="absolute" right="0px" bottom="15px">
                   <Image
                     shape="square"
-                    size="12px"
+                    size="16px"
                     margin="0 3px"
                     src={
                       toonOne.toonPlatform === "네이버"
@@ -344,12 +346,21 @@ const Detail = (props) => {
                   </Text>
                   {/* 리뷰 정렬하기 */}
                   <SortGrid>
-                    <SortNew sort={sortByNew} onClick={() => isSortByNew(true)}>
+                    <SortNew
+                      sort={sortByNew}
+                      onClick={() => {
+                        isSortByNew(true);
+                        addShownReview(startReviewNo);
+                      }}
+                    >
                       최신 순
                     </SortNew>
                     <SortLike
                       sort={!sortByNew}
-                      onClick={() => isSortByNew(false)}
+                      onClick={() => {
+                        isSortByNew(false);
+                        addShownReview(startReviewNo);
+                      }}
                     >
                       좋아요 순
                     </SortLike>
@@ -362,7 +373,6 @@ const Detail = (props) => {
                 {sortByNew
                   ? newReviews.map((item, idx) => {
                       if (idx < shownReview) {
-                        console.log(item, "item");
                         return <DetailReview key={idx} review={item} />;
                       }
                     })
@@ -371,11 +381,17 @@ const Detail = (props) => {
                         return <DetailReview key={idx} review={item} />;
                       }
                     })}
+                {
+                  // goTop &&
+                  <a href="#">
+                    <Grid>goTop</Grid>
+                  </a>
+                }
                 {(likeReviews.length > shownReview ||
                   likeReviews.length - 1 === shownReview) && (
                   <Grid
                     padding="14px"
-                    margin="0 0 20px 0"
+                    margin="-4px 0 20px 0"
                     bgColor={Color.white}
                     border={`1px solid ${Color.gray200}`}
                     borderRadius="8px"
@@ -383,18 +399,12 @@ const Detail = (props) => {
                     align="center"
                     justify="center"
                     onClick={() => {
-                      addShownReview(shownReview + 2);
-                      console.log(
-                        likeReviews,
-                        "likerevies",
-                        reviewOne,
-                        "reviewone"
-                      );
-                      console.log(shownReview, "shownrevies");
+                      addShownReview(shownReview + 8);
+                      isGoTop(true);
                     }}
                   >
                     <Text
-                      margin="-4px 9px 0 0"
+                      margin="0 9px 0 0"
                       fontWeight="medium"
                       color={Color.gray800}
                     >
