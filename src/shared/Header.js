@@ -62,7 +62,8 @@ const Header = (props) => {
     props.location.pathname === "/review/search" ||
     props.location.pathname.includes("/review/write/") ||
     props.location.pathname === "/profile" ||
-    props.location.pathname === "/taste"
+    props.location.pathname === "/taste" ||
+    props.location.pathname.includes("/user/")
   ) {
     return null;
   }
