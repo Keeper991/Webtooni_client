@@ -120,7 +120,9 @@ const TalkDetail = (props) => {
               bgColor={Color.white}
               width="100%"
               height="auto"
+              margin="-60px 0 0 0"
               borderBottom={`10px solid ${Color.gray100}`}
+              borderTop={`10px solid ${Color.gray100}`}
             >
               <Grid
                 borderBottom={`1px solid ${Color.gray200}`}

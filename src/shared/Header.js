@@ -83,10 +83,7 @@ const Header = (props) => {
     );
   }
 
-  if (
-    props.location.pathname.includes("/detail") &&
-    !props.location.pathname.includes("/talk/detail")
-  ) {
+  if (props.location.pathname.includes("/detail")) {
     return (
       <React.Fragment>
         <SimpleContainer>
