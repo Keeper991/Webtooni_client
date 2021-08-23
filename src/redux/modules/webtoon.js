@@ -150,7 +150,10 @@ const getToonOneServer = (webtoonId) => {
           ) === idx
       );
       similarGenreToons = similarGenreToons.map((toon) => {
-        toon.genres = toon.genres || [];
+        toon.genres = (toon.genres || []).filter(
+          (genre) =>
+            genre !== "스토리" && genre !== "옴니버스" && genre !== "에피소드"
+        );
         return toon;
       });
       dispatch(addToonList(similarGenreToons, webtoonId));
@@ -293,6 +296,12 @@ export default handleActions(
             let genres = [...draft.toon_list[toonIdx].genres, ...toon.genres];
             genres = genres.filter(
               (genre, idx) => genres.indexOf(genre) === idx
+            );
+            genres = genres.filter(
+              (genre) =>
+                genre !== "스토리" &&
+                genre !== "옴니버스" &&
+                genre !== "에피소드"
             );
             draft.toon_list[toonIdx] = {
               ...draft.toon_list[toonIdx],
