@@ -116,6 +116,7 @@ const getMainReviewList = () => {
         review.createDate = Date.parse(review.creatDate || review.createDate);
         return review;
       });
+
       // 리뷰에서 웹툰 데이터 추출 후 웹툰 리스트에 추가
       let newReviewToons = newReview.map((review) => {
         return {
@@ -173,9 +174,10 @@ const getReviewList = (page_num) => {
       );
       dispatch(webtoonActions.addToonList(reviewsToons, "reviewPage"));
       reviews = reviews.map((review) => {
-        review.createDate = review.creatDate || review.createDate;
+        review.createDate = Date.parse(review.creatDate || review.createDate);
         return review;
       });
+
       dispatch(addReviewList(reviews, "reviewPage"));
       dispatch(setTotalReviewCount(postCount));
       likeReviewIdList &&
