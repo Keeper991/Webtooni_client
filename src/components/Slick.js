@@ -15,6 +15,7 @@ const Slick = ({
   is_infinite,
   is_center,
   is_offer,
+  is_banner,
   _beforeChange,
   _afterChange,
   ...props
@@ -89,6 +90,24 @@ const Slick = ({
     );
   }
 
+  if (is_banner) {
+    return (
+      <BannerSliderWrap
+        infinite={true}
+        speed={1000}
+        slidesToShow={1}
+        slidesToScroll={1}
+        adaptiveHeight={true}
+        draggable
+        dots={false}
+        autoplay={true}
+        autoplaySpeed={4000}
+      >
+        {children}
+      </BannerSliderWrap>
+    );
+  }
+
   if (is_center) {
     return <CenterSliderWrap {...centerMode}>{children}</CenterSliderWrap>;
   }
@@ -142,6 +161,21 @@ const centerMode = {
 const SliderWrap = styled(Slider)`
   width: ${({ width }) => width};
   margin: 0 auto;
+`;
+
+const BannerSliderWrap = styled(Slider)`
+  width: 100%auto;
+  margin: 0 auto;
+  position: relative;
+  &:before {
+    content: "";
+    width: 100%;
+    height: 8px;
+    background-color: ${Color.gray100};
+    position: absolute;
+    top: 2px;
+    left: 0;
+  }
 `;
 
 const ArrowSliderWrap = styled(Slider)`
