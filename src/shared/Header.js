@@ -92,7 +92,8 @@ const Header = (props) => {
       <React.Fragment>
         <SimpleContainer
           underThumbnail={!isTalk && pageY >= 250}
-          underTalk={isTalk && pageY >= 10}
+          underTalk={isTalk && pageY >= 5}
+          topTalk={isTalk && pageY < 5}
           toon={isTalk ? false : true}
           talk={isTalk ? true : false}
         >
@@ -212,7 +213,7 @@ const Header = (props) => {
 
   return (
     <React.Fragment>
-      <Container isHide={hide}>
+      <Container isHide={hide} topTalk={isTalk && pageY <= 10}>
         <HeaderWrap>
           <Button
             _onClick={() => {
@@ -316,8 +317,11 @@ const Container = styled.div`
   z-index: 90;
   position: fixed;
   transition: 0.4s ease;
-  box-shadow: rgba(0, 0, 0, 0.05) 0px 6px 24px 0px,
-    rgba(0, 0, 0, 0.08) 0px 0px 0px 1px;
+  box-shadow: ${(props) =>
+    props.topTalk
+      ? `0`
+      : `rgba(0, 0, 0, 0.05) 0px 6px 24px 0px,
+    rgba(0, 0, 0, 0.08) 0px 0px 0px 1px;`};
 
   ${({ isHide }) => isHide && "transform: translateY(-70px);"}
 `;
@@ -365,6 +369,10 @@ const SimpleContainer = styled.div`
     props.underThumbnail
       ? `border-bottom: 1px solid ${Color.gray100}; box-shadow: rgba(0, 0, 0, 0.05) 0px 6px 24px 0px,
     rgba(0, 0, 0, 0.08) 0px 0px 0px 1px; background-color: ${Color.white} `
+      : ""};
+  ${(props) =>
+    props.topTalk
+      ? `border-bottom:10px solid ${Color.gray100};box-sizing: content-box; `
       : ""};
   ${(props) =>
     props.underTalk
