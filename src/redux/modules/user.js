@@ -2,6 +2,8 @@ import { createAction, handleActions } from "redux-actions";
 import { produce } from "immer";
 import { userAPI } from "../../shared/API";
 import { setToken, getToken, removeToken } from "../../shared/PermitAuth";
+import { actionCreators as webtoonActions } from "./webtoon";
+import { actionCreators as reviewActions } from "./review";
 
 const ADD_REVIEW_LIKE_LIST = "user/ADD_REVIEW_LIKE_LIST";
 const ADD_REVIEW_LIKE = "user/ADD_REVIEW_LIKE";
@@ -15,6 +17,7 @@ const UNSUBSCRIBE = "user/UNSUBSCRIBE";
 const SHOWN_WELCOME_MODAL = "user/SHOWN_WELCOME_MODAL";
 const SET_IS_CHECKING = "user/SET_IS_CHECKING";
 const LOADING = "user/LOADING";
+const ADD_USER_DATA = "user/ADD_USER_DATA";
 
 const addReviewLikeList = createAction(ADD_REVIEW_LIKE_LIST, (reviewList) => ({
   reviewList,
@@ -45,6 +48,8 @@ const loading = createAction(LOADING, (is_loading) => ({
   is_loading,
 }));
 
+const addUserData = createAction(ADD_USER_DATA, (userData) => ({ userData }));
+
 ///////////////////////////////////////////////////////////
 // thunks
 ///////////////////////////////////////////////////////////
@@ -52,6 +57,7 @@ const loading = createAction(LOADING, (is_loading) => ({
 const socialLoginServer =
   (platform, code) =>
   async (dispatch, getState, { history }) => {
+    dispatch(loading(true));
     try {
       let res = {};
       if (platform === "kakao") {
@@ -64,9 +70,11 @@ const socialLoginServer =
       infoRes.data.isShownWelcomeModal = Boolean(infoRes.data.userName);
       dispatch(setUser(infoRes.data));
       infoRes.data.userName ? history.replace("/") : history.replace("/taste");
+      dispatch(loading(false));
     } catch (e) {
       console.log(e);
       alert("로그인에 실패했습니다.");
+      dispatch(loading(false));
       history.replace("/");
     }
   };
@@ -113,21 +121,78 @@ const subscribeServer = (webtoonId, bool) => async (dispatch, getState) => {
 };
 
 const setUserServer =
-  (info, callback) =>
+  (info, callback, isEdit) =>
   async (dispatch, getState, { history }) => {
     try {
-      await userAPI.putUserInfo(info);
+      isEdit
+        ? await userAPI.putInfo({
+            userName: info.userName,
+            userImg: info.userImg,
+          })
+        : await userAPI.putOnBoarding(info);
+      isEdit &&
+        dispatch(reviewActions.changeAuthorInfo(getState().user.info, info));
       dispatch(setUser(info));
       callback();
-      history.replace("/");
+      isEdit
+        ? history.push(`/userinfo/${info.userName}`)
+        : history.replace("/");
     } catch (e) {
-      if (e.response.status === 400) {
+      if (e.response?.status === 400) {
         alert("중복된 닉네임입니다.");
       } else {
         alert("회원정보 등록에 실패했습니다.");
       }
     }
   };
+
+const getUserPageInfoServer = (userName) => async (dispatch, getState) => {
+  try {
+    let {
+      data: {
+        myWebtoons,
+        myReviews,
+        userInfoResponseDto: { userImg, userGrade, genres },
+      },
+    } = await userAPI.getUserPageInfo(userName);
+    // 구독한 웹툰 리스트에 장르 추가.
+    dispatch(webtoonActions.addToonList(myWebtoons, "userPageSubscribe"));
+
+    // 내가 쓴 리뷰의 웹툰들
+    const toonListFilterByReview = myReviews.map((review) => review.webtoon);
+    dispatch(
+      webtoonActions.addToonList(toonListFilterByReview, "userPageReview")
+    );
+
+    // 내가 쓴 리뷰 추가
+    myReviews = myReviews.map((review) => {
+      review.toonId = review.webtoon.toonId;
+      review.userName = userName;
+      return review;
+    });
+    dispatch(reviewActions.addReviewList(myReviews, "userPageReview"));
+
+    // 구독한 웹툰의 아이디 리스트
+    const subscribeIdList = myWebtoons.map((toon) => toon.toonId);
+
+    const userData = {
+      userName,
+      userImg,
+      userGrade,
+      genre: genres,
+      subscribeList: subscribeIdList,
+    };
+    dispatch(addUserData(userData));
+
+    // 현재 로그인된 유저의 경우, 구독 리스트 추가.
+    if (userName === getState().user.info.userName) {
+      dispatch(setSubscribeList(subscribeIdList));
+    }
+  } catch (e) {
+    console.log(e);
+    alert("존재하지 않는 사용자입니다.");
+  }
+};
 
 const initialState = {
   info: {
@@ -140,7 +205,6 @@ const initialState = {
   reviewLikeList: [],
   postLikeList: [],
   userList: [],
-  isRequestedUserPageInfo: false,
   is_login: false,
   isChecking: true,
   is_loading: false,
@@ -191,6 +255,9 @@ export default handleActions(
     [SUBSCRIBE]: (state, action) =>
       produce(state, (draft) => {
         draft.subscribeList.push(action.payload.webtoonId);
+        draft.userList
+          .find((user) => user.userName === draft.info.userName)
+          ?.subscribeList.push(action.payload.webtoonId);
       }),
     [UNSUBSCRIBE]: (state, action) =>
       produce(state, (draft) => {
@@ -200,6 +267,14 @@ export default handleActions(
         const { subscribeList } = draft;
         subscribeList.includes(webtoonId) &&
           subscribeList.splice(subscribeList.indexOf(webtoonId), 1);
+        const subscribeListInUserList = draft.userList.find(
+          (user) => user.userName === draft.info.userName
+        ).subscribeList;
+        subscribeListInUserList.includes(webtoonId) &&
+          subscribeListInUserList.splice(
+            subscribeListInUserList.indexOf(webtoonId),
+            1
+          );
       }),
     [SHOWN_WELCOME_MODAL]: (state, action) =>
       produce(state, (draft) => {
@@ -212,6 +287,10 @@ export default handleActions(
     [LOADING]: (state, action) =>
       produce(state, (draft) => {
         draft.is_loading = action.payload.is_loading;
+      }),
+    [ADD_USER_DATA]: (state, action) =>
+      produce(state, (draft) => {
+        draft.userList.push(action.payload.userData);
       }),
   },
   initialState
@@ -230,6 +309,7 @@ const actionCreators = {
   subscribe,
   shownWelcomeModal,
   setUser,
+  getUserPageInfoServer,
 };
 
 export { actionCreators };

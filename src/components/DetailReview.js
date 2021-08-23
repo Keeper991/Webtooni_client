@@ -80,7 +80,11 @@ const DetailReview = (props) => {
       borderRadius="12px"
       position="relative"
     >
-      <Grid display="flex" position="relative">
+      <Grid
+        display="flex"
+        position="relative"
+        onClick={() => history.push(`/userinfo/${userName}`)}
+      >
         <Image size="40px" shape="circle" src={profileImgList[userImg]}></Image>
         <Grid padding="0 0 0 7px">
           <Text type="num" tag="p" fontSize="12px">

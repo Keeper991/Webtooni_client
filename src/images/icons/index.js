@@ -13,6 +13,7 @@ import { ReactComponent as Plus } from "./Plus.svg";
 import { ReactComponent as ShootingStar } from "./ShootingStar.svg";
 import title from "./title.png";
 import { ReactComponent as WriteButton } from "./WriteButton.svg";
+import { ReactComponent as Pen } from "./Pen.svg";
 import { ReactComponent as GoTop } from "./GoTop.svg";
 import { ReactComponent as TalkAlarm } from "./TalkAlarm.svg";
 import { ReactComponent as Stars } from "./TalkAlarm.svg";
@@ -33,6 +34,7 @@ export {
   ShootingStar,
   title,
   WriteButton,
+  Pen,
   GoTop,
   TalkAlarm,
   Stars,

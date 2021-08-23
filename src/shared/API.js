@@ -2,25 +2,24 @@ import axios from "axios";
 import { getToken } from "./PermitAuth";
 
 const isDevelopment = process.env.NODE_ENV === "development";
+const localHost = "http://localhost:3000";
+const deployHost =
+  "http://webtooniverse-host.s3-website.ap-northeast-2.amazonaws.com";
 
 const getKakaoAddr = () => {
-  const redirectURI = isDevelopment
-    ? "http://localhost:3000"
-    : "http://webtooniverse-host.s3-website.ap-northeast-2.amazonaws.com";
+  const redirectURI = isDevelopment ? localHost : deployHost;
   return `https://kauth.kakao.com/oauth/authorize?client_id=9bf8aff1cb1460ec63268cd09c603a1a&redirect_uri=${redirectURI}/user/kakao&response_type=code`;
 };
 
 const getNaverAddr = () => {
-  const redirectURI = isDevelopment
-    ? "http://localhost:3000"
-    : "http://webtooniverse-host.s3-website.ap-northeast-2.amazonaws.com";
+  const redirectURI = isDevelopment ? localHost : deployHost;
   return `https://nid.naver.com/oauth2.0/authorize?response_type=code&client_id=7RBFbToxSfOTA51ofOYj&redirect_uri=${redirectURI}/user/naver`;
 };
 
 const instance = axios.create({
   baseURL: isDevelopment
-    ? "http://34.64.193.34/api/v1/"
-    : "http://13.124.236.225/api/v1/",
+    ? "http://13.124.236.225/api/v1/"
+    : "http://34.64.193.34/api/v1/",
 });
 
 // 매 요청 전에 token 유무를 확인해서 header에 Authorization 추가.
@@ -96,7 +95,9 @@ const userAPI = {
   getReviews: () => instance.get(`user/me/reviews`),
   getLevel: () => instance.get(`user/me/level`),
   getInfo: () => instance.get(`user/info`),
-  putUserInfo: ({ genres, userName, userImg }) =>
+  putInfo: ({ userName, userImg }) =>
+    instance.put(`user/info`, { userName, userImg }),
+  putOnBoarding: ({ genres, userName, userImg }) =>
     instance.post(`user/onBoarding`, { genres, userName, userImg }),
   kakaoLoginCallback: (code) =>
     instance.get(`user/kakao/callback`, { params: { code } }),

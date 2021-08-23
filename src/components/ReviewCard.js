@@ -11,8 +11,6 @@ import time from "../shared/time";
 import { kakao_webtoon_symbol, naver_webtoon_symbol } from "../images/symbols";
 import Starts from "../images/icons/Stars.png";
 
-
-
 const ReviewCard = (props) => {
   const dispatch = useDispatch();
   const [showMore, setShowMore] = React.useState(false);
@@ -56,7 +54,9 @@ const ReviewCard = (props) => {
       <Container main={props.main}>
         <PaddingBox>
           <FlexGrid>
-            <FlexGrid>
+            <FlexGrid
+              onClick={() => history.push(`/userinfo/${props.userName}`)}
+            >
               <Image
                 src={profileImgList[props.userImg]}
                 shape="circle"

@@ -4,7 +4,7 @@ import Review from "./Review";
 import ReviewSearch from "./ReviewSearch";
 import Detail from "./Detail";
 import Search from "./Search";
-// import User from "./User";
+import User from "./User";
 import Login from "./Login";
 import Talk from "./Talk";
 import TalkWrite from "./TalkWrite";
@@ -14,16 +14,14 @@ import Profile from "./Profile";
 import ToonList from "./ToonList";
 import SocialLogin from "./SocialLogin";
 import ReviewWrite from "./ReviewWrite";
-import MyPage from "./MyPage";
 
 export {
-  MyPage,
   Main,
   Recommendation,
   Review,
   Detail,
   Search,
-  // User,
+  User,
   Login,
   Talk,
   TalkWrite,
