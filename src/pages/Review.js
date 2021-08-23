@@ -44,10 +44,8 @@ const Review = () => {
   const is_last = useSelector((state) => state.review.is_last);
 
   React.useEffect(() => {
-    if (new_page_num === 1 || best_page_num === 1) {
-      dispatch(reviewAction.getReviewList(new_page_num));
-      dispatch(reviewAction.getReviewListOrderByLike(best_page_num));
-    }
+    dispatch(reviewAction.getReviewList(new_page_num));
+    dispatch(reviewAction.getReviewListOrderByLike(best_page_num));
   }, []);
 
   return (
