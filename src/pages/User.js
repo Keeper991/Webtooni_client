@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from "react";
+import React, { useEffect, useRef, useState } from "react";
 import styled from "styled-components";
 import { Button, Image, Text } from "../elements";
 import { Color } from "../shared/common";
@@ -20,6 +20,8 @@ const User = (props) => {
   const toon_list = useSelector((state) => state.webtoon.toon_list);
   const review_list = useSelector((state) => state.review.review_list);
   const like_list = useSelector((state) => state.user.reviewLikeList);
+
+  const shareRef = useRef();
 
   const [userInfo, setUserInfo] = useState({
     userName: "",
@@ -202,7 +204,14 @@ const User = (props) => {
                 border="none"
                 margin="0 0 0 5px"
               >
-                <UploadOutlined />
+                <UploadOutlined
+                  onClick={() => {
+                    shareRef.current.select();
+                    document.execCommand("copy");
+                    shareRef.current.setSelectionRange(0, 0);
+                    alert("유저페이지 주소가 복사되었습니다.");
+                  }}
+                />
               </Button>
             </UserInfoHeaderCol>
             <UserInfoHeaderCol>
@@ -388,6 +397,12 @@ const User = (props) => {
           </SlideWrap>
         </ReviewListArea>
       </Container>
+      <input
+        ref={shareRef}
+        value={document.location.href}
+        style={{ position: "absolute", bottom: 0, opacity: 0 }}
+        readOnly
+      />
     </React.Fragment>
   );
 };
@@ -517,7 +532,7 @@ const PieChartWrap = styled.div`
 
 const BarChartWrap = styled.div`
   width: 300px;
-  height: 200px;
+  height: 150px;
 `;
 
 const SubscribeListArea = styled.section``;

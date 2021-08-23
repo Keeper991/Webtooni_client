@@ -19,7 +19,7 @@ const getNaverAddr = () => {
 const instance = axios.create({
   baseURL: isDevelopment
     ? "http://13.124.236.225/api/v1/"
-    : "http://34.64.193.34/api/v1/",
+    : "http://34.64.100.68/api/v1/",
 });
 
 // 매 요청 전에 token 유무를 확인해서 header에 Authorization 추가.

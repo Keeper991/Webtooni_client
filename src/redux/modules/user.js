@@ -69,8 +69,8 @@ const socialLoginServer =
       const infoRes = await userAPI.getInfo();
       infoRes.data.isShownWelcomeModal = Boolean(infoRes.data.userName);
       dispatch(setUser(infoRes.data));
-      infoRes.data.userName ? history.replace("/") : history.replace("/taste");
       dispatch(loading(false));
+      infoRes.data.userName ? history.go(-2) : history.replace("/taste");
     } catch (e) {
       console.log(e);
       alert("로그인에 실패했습니다.");
@@ -130,13 +130,15 @@ const setUserServer =
             userImg: info.userImg,
           })
         : await userAPI.putOnBoarding(info);
-      isEdit &&
-        dispatch(reviewActions.changeAuthorInfo(getState().user.info, info));
+
       dispatch(setUser(info));
       callback();
-      isEdit
-        ? history.push(`/userinfo/${info.userName}`)
-        : history.replace("/");
+      if (isEdit) {
+        dispatch(reviewActions.changeAuthorInfo(getState().user.info, info));
+        history.push(`/userinfo/${info.userName}`);
+      } else {
+        history.replace("/");
+      }
     } catch (e) {
       if (e.response?.status === 400) {
         alert("중복된 닉네임입니다.");
@@ -155,7 +157,7 @@ const getUserPageInfoServer = (userName) => async (dispatch, getState) => {
         userInfoResponseDto: { userImg, userGrade, genres },
       },
     } = await userAPI.getUserPageInfo(userName);
-    // 구독한 웹툰 리스트에 장르 추가.
+    // 구독한 웹툰 리스트 추가.
     dispatch(webtoonActions.addToonList(myWebtoons, "userPageSubscribe"));
 
     // 내가 쓴 리뷰의 웹툰들
@@ -234,6 +236,13 @@ export default handleActions(
       produce(state, (draft) => {
         draft.info = action.payload.info;
         draft.is_login = true;
+        const idx = draft.userList.findIndex(
+          (user) => user.userName === draft.info.userName
+        );
+        if (idx !== -1) {
+          draft.userList[idx].userName = action.payload.info.userName;
+          draft.userList[idx].userImg = action.payload.info.userImg;
+        }
       }),
     [LOG_OUT]: (state, action) =>
       produce(state, (draft) => {
