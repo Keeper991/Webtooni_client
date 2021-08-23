@@ -81,7 +81,7 @@ const ReviewCard = (props) => {
             ) : (
               <ReivewText>{props.reviewContent}</ReivewText>
             )}
-            {props.reviewContent.length >= 67 ? (
+            {props.reviewContent.length >= 47 ? (
               <Button
                 bgColor="transparent"
                 color={Color.gray400}
@@ -170,16 +170,16 @@ const ReviewCard = (props) => {
 
 const Container = styled.div`
   width: 338px;
-  height: auto;
+  height: 100%;
   background: ${Color.gray100};
   display: block;
   border-radius: 15px;
   border: 1px solid ${Color.gray200};
-  ${(props) =>
-    props.main ? `margin: 10px 20px 20px 0` : `margin: 0 0 20px 0`};
+  ${(props) => (props.main ? `margin: 0px` : `margin: 0 0 20px 0`)};
 `;
 
 const PaddingBox = styled.div`
+  width: 338px;
   padding: 16px;
 `;
 
@@ -192,6 +192,8 @@ const FlexGrid = styled.div`
 
 const FlexToonGrid = styled.div`
   display: flex;
+  width: 100%;
+  height: 80px;
   align-items: center;
   border-top: 1px solid ${Color.gray200};
   padding: 16px;
@@ -208,9 +210,8 @@ const InfoGrid = styled.div`
 
 const ReviewGrid = styled.div`
   width: 100%;
-  min-height: 80px;
-  height: auto;
-  padding: 20px 0;
+  min-height: 100px;
+  padding: 20px 0 5px 0;
 `;
 
 const ReivewText = styled.div`
@@ -218,12 +219,12 @@ const ReivewText = styled.div`
   font-size: 14px;
   white-space: normal;
   display: -webkit-box;
-  -webkit-line-clamp: 3;
+  -webkit-line-clamp: 2;
   -webkit-box-orient: vertical;
   overflow: hidden;
   word-break: break-word;
   line-height: 1.6em;
-  max-height: 4.8em;
+  max-height: 3.2em;
   padding: 0 4px;
 `;
 

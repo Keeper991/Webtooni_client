@@ -74,7 +74,7 @@ const ToonList = (props) => {
                 }}
               ></LeftOutlined>
               <Text type="h2" fontWeight="bold">
-                이달의 웹투니버스 순위
+                금주의 웹투니버스 순위
               </Text>
             </FlexGrid>
             <SliderBox>
@@ -93,7 +93,7 @@ const ToonList = (props) => {
                 }}
               ></LeftOutlined>
               <Text type="h2" fontWeight="bold">
-                이달의 웹투니버스 순위
+                금주의 웹투니버스 순위
               </Text>
             </FlexGrid>
             <SliderBox>
@@ -199,52 +199,6 @@ const ToonList = (props) => {
     );
   }
 
-  if (toon_list_name === "user_offer") {
-    return (
-      <React.Fragment>
-        {is_loading || for_user_list.length === 0 ? (
-          <Container>
-            <FlexGrid>
-              <LeftOutlined
-                style={{ margin: "0 5px" }}
-                onClick={() => {
-                  history.goBack();
-                }}
-              ></LeftOutlined>
-              <Text type="h2" fontWeight="bold">
-                {user_info.userName}님만을 위한 추천 웹툰
-              </Text>
-            </FlexGrid>
-            <SliderBox>
-              {Array.from({ length: 10 }).map((_, idx) => {
-                return <SkeletonCard key={idx} more></SkeletonCard>;
-              })}
-            </SliderBox>
-          </Container>
-        ) : (
-          <Container>
-            <FlexGrid>
-              <LeftOutlined
-                style={{ margin: "0 5px" }}
-                onClick={() => {
-                  history.goBack();
-                }}
-              ></LeftOutlined>
-              <Text type="h2" fontWeight="bold">
-                {user_info.userName}님만을 위한 추천 웹툰
-              </Text>
-            </FlexGrid>
-            <SliderBox>
-              {for_user_list?.map((_, idx) => {
-                return <ToonListCard key={idx} {..._} is_user></ToonListCard>;
-              })}
-            </SliderBox>
-          </Container>
-        )}
-      </React.Fragment>
-    );
-  }
-
   if (toon_list_name === "similar_toon") {
     return (
       <React.Fragment>
@@ -258,7 +212,7 @@ const ToonList = (props) => {
                 }}
               ></LeftOutlined>
               <Text type="h2" fontWeight="bold">
-                {user_info.userName}님과 비슷한 취향의 유저가 본
+                {user_info.userName}님과 비슷한 취향의 사용자가 본
               </Text>
             </FlexGrid>
             <SliderBox>
@@ -277,7 +231,7 @@ const ToonList = (props) => {
                 }}
               ></LeftOutlined>
               <Text type="h2" fontWeight="bold">
-                {user_info.userName}님과 비슷한 취향의 유저가 본
+                {user_info.userName}님과 비슷한 취향의 사용자가 본
               </Text>
             </FlexGrid>
             <SliderBox>
@@ -332,7 +286,7 @@ const ToonList = (props) => {
             </FlexGrid>
             <SliderBox>
               {similar_genre_list?.map((_, idx) => {
-                return <ToonListCard key={idx} {..._}></ToonListCard>;
+                return <ToonListCard key={idx} {..._} detail></ToonListCard>;
               })}
             </SliderBox>
           </Container>

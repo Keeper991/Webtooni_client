@@ -4,6 +4,7 @@ import { Text, Image } from "../elements";
 import { history } from "../redux/configureStore";
 import { Color } from "../shared/common";
 import { FillStar } from "../images/icons";
+import { kakao_webtoon_symbol, naver_webtoon_symbol } from "../images/symbols";
 
 const WebToonCard = (props) => {
   return (
@@ -35,15 +36,20 @@ const WebToonCard = (props) => {
 
         <ContentsGrid>
           <FlexGrid>
-            <FlexGrid>
+            {props?.detail ? (
               <Text color={Color.primary} type="caption">
-                {props?.genres && props.genres[props.genres.length - 1]}
-                {props?.genres.length === 0 && "추천!"}
-              </Text>
-              <Text color={Color.gray400} type="caption" margin="0 0 0 7px">
                 {props.toonWeekday ? props.toonWeekday : "완결"}
               </Text>
-            </FlexGrid>
+            ) : (
+              <FlexGrid>
+                <Text color={Color.primary} type="caption">
+                  {props?.genres && props.genres[props.genres.length - 1]}
+                </Text>
+                <Text color={Color.gray400} type="caption" margin="0 0 0 7px">
+                  {props.toonWeekday ? props.toonWeekday : "완결"}
+                </Text>
+              </FlexGrid>
+            )}
             <FlexGrid>
               <FillStar
                 width="12px"
@@ -71,18 +77,10 @@ const WebToonCard = (props) => {
                 {props.toonAuthor}
               </Text>
             </AuthorWrap>
-            {props.toonPlatform === "네이버" ? (
-              <Image
-                shape="square"
-                size="12px"
-                src="https://lh3.googleusercontent.com/pw/AM-JKLWCsjme2ZNKF3nOEAXrSzYgStfkJAcVZvk17v_KeIKxWNOMJIieajxO7a69mwuRMqSyzqmzCvs6Ltnu3UGFDH5WVOtg1LbHz1w5Pwnuh4utNPgkPm7inmkUX-5eDSRRwFa8HFQSfTb3Fngc2oY2cfyc=s12-no?authuser=0"
-              ></Image>
+            {props.toonPlatform === "카카오" ? (
+              <KakaoLogo kakao={kakao_webtoon_symbol}></KakaoLogo>
             ) : (
-              <Image
-                shape="square"
-                size="12px"
-                src="https://lh3.googleusercontent.com/pw/AM-JKLW7PImSbXv8cZ3MOmgkjwKdGNaPHtZ0VG72ZeEv9LZMl89iivlbAcUBLL6fZ836fZHed6gJQNUhMr-12eZgqqFOd-XGWU06ZftPdRGgQnVtbhNGidtMMByNP7a184KzHyKcXLpjUyHS4CFGd6NSctFf=s12-no?authuser=0"
-              ></Image>
+              <NaverLogo naver={naver_webtoon_symbol}></NaverLogo>
             )}
           </FlexGrid>
         </ContentsGrid>
@@ -157,5 +155,25 @@ const TitleWrap = styled.div`
     text-overflow: ellipsis;
     white-space: nowrap;
   }
+`;
+
+const KakaoLogo = styled.div`
+  width: 16px;
+  height: 16px;
+  background-image: url("${(props) => props.kakao}");
+  background-repeat: no-repeat;
+  background-position: center;
+  background-size: cover;
+  border-radius: 3px;
+`;
+
+const NaverLogo = styled.div`
+  width: 16px;
+  height: 16px;
+  background-image: url("${(props) => props.naver}");
+  background-repeat: no-repeat;
+  background-position: center;
+  background-size: cover;
+  border-radius: 3px;
 `;
 export default WebToonCard;

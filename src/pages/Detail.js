@@ -467,7 +467,7 @@ const Detail = (props) => {
             <SliderBox>
               <CardSliderBox>
                 {similarToons.map((item, idx) => (
-                  <WebToonCard key={idx} {...item} id={item.toonId} />
+                  <WebToonCard key={idx} {...item} id={item.toonId} detail />
                 ))}
               </CardSliderBox>
             </SliderBox>

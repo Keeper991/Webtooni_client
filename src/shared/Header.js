@@ -42,6 +42,9 @@ const Header = (props) => {
     const deltaY = pageYOffset - pageY;
     const hide = pageYOffset !== 0 && deltaY >= 0;
 
+    if (pageYOffset === 0) {
+      setHide(false);
+    }
     if (Math.abs(pageY - pageYOffset) < 50) {
       return;
     }

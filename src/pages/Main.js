@@ -16,7 +16,9 @@ import {
 } from "../components";
 import { Button, Text, Image } from "../elements";
 import { Color } from "../shared/common";
-import BannerImg from "../images/banner.png";
+import BannerImg1 from "../images/banner1.jpg";
+import BannerImg2 from "../images/banner2.jpg";
+
 const Main = () => {
   const dispatch = useDispatch();
 
@@ -34,13 +36,18 @@ const Main = () => {
     (state) => state.user.info.isShownWelcomeModal
   );
   // review lists
-
-  const best_review_list = review_list.filter((review) =>
-    review.filterConditions.includes("bestReview")
-  );
-  const recent_review_list = review_list.filter((review) =>
+  const new_review = review_list.filter((review) =>
     review.filterConditions.includes("newReview")
   );
+  const best_review = review_list.filter((review) =>
+    review.filterConditions.includes("bestReview")
+  );
+
+  let new_review_list = [...new_review];
+  new_review_list.sort((a, b) => b.createDate - a.createDate);
+
+  let best_review_list = [...best_review];
+  best_review_list.sort((a, b) => b.likeCount - a.likeCount);
 
   // webtoon lists
   const webtooni_list = toon_list.filter((toon) =>
@@ -83,7 +90,7 @@ const Main = () => {
       dispatch(reviewerActions.getBestReviewer());
     }
 
-    if (!best_review_list.length || !recent_review_list.length) {
+    if (!best_review_list.length || !new_review_list.length) {
       dispatch(reviewActions.getMainReviewList());
     }
   }, []);
@@ -104,10 +111,16 @@ const Main = () => {
 
   return (
     <React.Fragment>
-      <TopBannerBox banner={BannerImg}></TopBannerBox>
-      <TitleGrid>
+      <BannerSliderBox>
+        <Slick is_banner>
+          <TopBannerBox banner={BannerImg1}></TopBannerBox>
+          <TopBannerBox banner={BannerImg2}></TopBannerBox>
+        </Slick>
+      </BannerSliderBox>
+
+      <TitleGrid no_margin>
         <Text type="h2" fontWeight="bold">
-          이달의 웹투니버스 순위
+          금주의 웹투니버스 순위
         </Text>
         <Button
           border="none"
@@ -375,7 +388,7 @@ const Main = () => {
       ) : (
         <SliderBox onClickCapture={handleOnItemClick}>
           <CardSliderBox>
-            {recent_review_list?.map((_, idx) => {
+            {new_review_list?.map((_, idx) => {
               return (
                 <ReviewCard
                   key={idx}
@@ -407,7 +420,7 @@ const Main = () => {
 
 const TopBannerBox = styled.div`
   width: 100%;
-  height: 146px;
+  height: 140px;
   background-image: url("${(props) => props.banner}");
   margin-top: 10px;
   background-size: cover;
@@ -418,7 +431,7 @@ const TitleGrid = styled.div`
   display: flex;
   width: 100%;
   height: 65px;
-  margin-top: 30px;
+  ${(props) => (props.no_margin ? "margin-top: -1px" : "margin-top: 30px")};
   padding: 10px 16px 0;
   align-items: center;
   justify-content: space-between;
@@ -431,6 +444,13 @@ const SliderBox = styled.div`
   overflow: hidden;
   margin-top: 10px;
   padding: 0 0 0 16px;
+`;
+
+const BannerSliderBox = styled.div`
+  width: 100%;
+  white-space: nowrap;
+  overflow: hidden;
+  margin-top: 10px;
 `;
 
 const CenterSliderBox = styled.div`
@@ -506,6 +526,7 @@ const FlexGrid = styled.div`
 const CardSliderBox = styled.div`
   display: flex;
   flex-wrap: nowrap;
+  flex-direction: row;
   width: 100%;
   overflow-x: scroll;
   padding-right: 150px;
