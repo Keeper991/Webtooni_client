@@ -50,7 +50,6 @@ const Header = (props) => {
     }
     setHide(hide);
     setPageY(pageYOffset);
-    console.log(pageY);
   };
 
   const throttleScroll = throttle(handleScroll, 100);
