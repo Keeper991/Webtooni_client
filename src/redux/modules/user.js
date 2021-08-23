@@ -130,13 +130,15 @@ const setUserServer =
             userImg: info.userImg,
           })
         : await userAPI.putOnBoarding(info);
-      isEdit &&
-        dispatch(reviewActions.changeAuthorInfo(getState().user.info, info));
+
       dispatch(setUser(info));
       callback();
-      isEdit
-        ? history.push(`/userinfo/${info.userName}`)
-        : history.replace("/");
+      if (isEdit) {
+        dispatch(reviewActions.changeAuthorInfo(getState().user.info, info));
+        history.push(`/userinfo/${info.userName}`);
+      } else {
+        history.replace("/");
+      }
     } catch (e) {
       if (e.response?.status === 400) {
         alert("중복된 닉네임입니다.");
@@ -234,6 +236,13 @@ export default handleActions(
       produce(state, (draft) => {
         draft.info = action.payload.info;
         draft.is_login = true;
+        const idx = draft.userList.findIndex(
+          (user) => user.userName === draft.info.userName
+        );
+        if (idx !== -1) {
+          draft.userList[idx].userName = action.payload.info.userName;
+          draft.userList[idx].userImg = action.payload.info.userImg;
+        }
       }),
     [LOG_OUT]: (state, action) =>
       produce(state, (draft) => {
