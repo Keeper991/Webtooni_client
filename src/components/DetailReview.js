@@ -4,10 +4,9 @@ import { useSelector, useDispatch } from "react-redux";
 import { Image, Text, Button } from "../elements";
 import { Color } from "../shared/common";
 import { history } from "../redux/configureStore";
-import { actionCreators as webtoonActions } from "../redux/modules/webtoon";
 import { actionCreators as reviewActions } from "../redux/modules/review";
-import { FillStar, EmptyHeart, FillHeart, Stars } from "../images/icons";
-import { Permit, PermitStrict } from "../shared/PermitAuth";
+import { EmptyHeart, FillHeart, Stars } from "../images/icons";
+import { PermitStrict } from "../shared/PermitAuth";
 import time from "../shared/time";
 import profileImgList from "../images/profiles";
 
@@ -102,19 +101,11 @@ const DetailReview = (props) => {
           justify="flex-end"
           padding="6px 0 8px 0"
         >
-          {/* <FillStar width="12px" height="12px" />
-          <Text
-            type="num"
-            fontSize="12px"
-            margin="0 0 0 4px"
-            color={Color.gray700}
-          > */}
           <StarPoint stars={Stars} points={userPointNumber}></StarPoint>
-          {/* </Text> */}
         </Grid>
       </Grid>
       <Grid
-        margin="16px 0 28px 0"
+        margin="16px 0 30px 0"
         padding="0 4px"
         height={reviewHeight}
         overflow="hidden"
@@ -133,17 +124,17 @@ const DetailReview = (props) => {
       </Grid>
       {showBtn &&
         (showMore ? (
-          <Grid position="absolute" bottom="36px" left="21px">
-            <Text>&nbsp;...</Text>
-            <br />
+          <Grid position="absolute" bottom="45px" left="21px">
+            {/* <Text>&nbsp;...</Text>
+            <br /> */}
             <Text color={Color.gray400} _onClick={showAll}>
-              더보기{" "}
+              &nbsp;... 더보기{" "}
             </Text>
           </Grid>
         ) : (
-          <Grid position="absolute" bottom="41px" left="21px">
+          <Grid position="absolute" bottom="45px" left="21px">
             <Text color={Color.gray400} _onClick={showAll}>
-              줄이기
+              &nbsp;줄이기
             </Text>
           </Grid>
         ))}
