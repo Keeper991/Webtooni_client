@@ -47,6 +47,7 @@ const Header = (props) => {
     }
     setHide(hide);
     setPageY(pageYOffset);
+    console.log(pageY);
   };
 
   const throttleScroll = throttle(handleScroll, 100);
@@ -91,6 +92,7 @@ const Header = (props) => {
       <React.Fragment>
         <SimpleContainer
           underThumbnail={!isTalk && pageY >= 250}
+          underTalk={isTalk && pageY >= 10}
           toon={isTalk ? false : true}
           talk={isTalk ? true : false}
         >
@@ -364,7 +366,11 @@ const SimpleContainer = styled.div`
       ? `border-bottom: 1px solid ${Color.gray100}; box-shadow: rgba(0, 0, 0, 0.05) 0px 6px 24px 0px,
     rgba(0, 0, 0, 0.08) 0px 0px 0px 1px; background-color: ${Color.white} `
       : ""};
-  ${(props) => (props.talk ? `border-bottom: 1px solid ${Color.gray100}` : "")};
+  ${(props) =>
+    props.underTalk
+      ? `border-bottom:0.5px solid ${Color.gray100}; box-shadow: rgba(0, 0, 0, 0.05) 0px 6px 24px 0px,
+    rgba(0, 0, 0, 0.08) 0px 0px 0px 1px;`
+      : ""};
 `;
 
 export default withRouter(Header);
