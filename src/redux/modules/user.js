@@ -69,8 +69,8 @@ const socialLoginServer =
       const infoRes = await userAPI.getInfo();
       infoRes.data.isShownWelcomeModal = Boolean(infoRes.data.userName);
       dispatch(setUser(infoRes.data));
-      infoRes.data.userName ? history.replace("/") : history.replace("/taste");
       dispatch(loading(false));
+      infoRes.data.userName ? history.go(-2) : history.replace("/taste");
     } catch (e) {
       console.log(e);
       alert("로그인에 실패했습니다.");
@@ -155,7 +155,7 @@ const getUserPageInfoServer = (userName) => async (dispatch, getState) => {
         userInfoResponseDto: { userImg, userGrade, genres },
       },
     } = await userAPI.getUserPageInfo(userName);
-    // 구독한 웹툰 리스트에 장르 추가.
+    // 구독한 웹툰 리스트 추가.
     dispatch(webtoonActions.addToonList(myWebtoons, "userPageSubscribe"));
 
     // 내가 쓴 리뷰의 웹툰들
