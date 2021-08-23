@@ -21,6 +21,7 @@ const Text = (props) => {
     textAlign,
     lineHeight,
     wordBreak,
+    _ref,
   } = props;
 
   const styles = {
@@ -65,7 +66,7 @@ const Text = (props) => {
   if (tag === "p") {
     return (
       <React.Fragment>
-        <ElP {...styles} type={type}>
+        <ElP {...styles} type={type} ref={_ref}>
           {children}
         </ElP>
       </React.Fragment>
@@ -97,6 +98,7 @@ Text.defaultProps = {
   textAlign: "",
   lineHeight: "",
   wordBreak: "",
+  _ref: null,
 };
 
 const ElNum = styled.span`

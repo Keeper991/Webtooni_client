@@ -5,7 +5,7 @@ import { FillStar, EmptyStar } from "../images/icons";
 const DetailStar = ({ onStarClick, starPoint }) => {
   //별점 주기
   const starScores = [1, 2, 3, 4, 5];
-  const starWidth = 40;
+  const starWidth = 32;
   const hideEmptyStar = (starWidth + 8) * starPoint; //선택한 별 보이기(빈 별 감추기)
 
   return (
@@ -14,7 +14,7 @@ const DetailStar = ({ onStarClick, starPoint }) => {
         <FillStarGrid>
           {starScores.map((score, idx) => (
             <StarPartGrid key={idx}>
-              <FillStar width="40px" height="40px" />
+              <FillStar width="32px" height="32px" />
 
               <StarPart1
                 onClick={() => {
@@ -33,7 +33,7 @@ const DetailStar = ({ onStarClick, starPoint }) => {
         <EmptyStarGrid hideEmptyStar={hideEmptyStar}>
           {starScores.map((score, idx) => (
             <StarPartGrid key={idx}>
-              <EmptyStar width="40px" height="40px" />
+              <EmptyStar width="32px" height="32px" />
 
               <StarPart1
                 onClick={() => {
@@ -55,13 +55,13 @@ const DetailStar = ({ onStarClick, starPoint }) => {
 
 const StarContainer = styled.div`
   position: relative;
-  width: 240px;
-  height: 40px;
+  width: 200px;
+  height: 32px;
 `;
 
 const FillStarGrid = styled.div`
   display: flex;
-  width: 240px;
+  width: 200px;
   justify-content: space-around;
 `;
 
@@ -73,32 +73,33 @@ const EmptyStarGrid = styled.div`
   display: flex;
   clip: ${(props) =>
     props.hideEmptyStar
-      ? `rect(0px, 240px, 40px, ${props.hideEmptyStar}px)`
+      ? `rect(0px, 200px, 32px, ${props.hideEmptyStar}px)`
       : `auto`};
-  width: 240px;
+  width: 200px;
   justify-content: space-around;
 `;
 
 const StarPartGrid = styled.div`
   position: relative;
-  width: 40px;
-  height: 40px;
+  width: 32px;
+  height: 32px;
+  margin: "0 4px";
 `;
 
 const StarPart1 = styled.div`
   position: absolute;
   top: 0;
   left: 0;
-  width: 20px;
-  height: 40px;
+  width: 16px;
+  height: 32px;
   background-color: transparent;
 `;
 const StarPart2 = styled.div`
   position: absolute;
   top: 0;
-  left: 20px;
-  width: 20px;
-  height: 40px;
+  left: 16px;
+  width: 16px;
+  height: 32px;
   background-color: transparent;
 `;
 

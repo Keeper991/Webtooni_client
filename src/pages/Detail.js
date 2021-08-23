@@ -15,6 +15,7 @@ import {
   Plus,
   DownArrow,
   LeftArrow,
+  GoTop,
 } from "../images/icons";
 // import shootingStar from "../images/shootingStar.png";
 import { history } from "../redux/configureStore";
@@ -57,10 +58,7 @@ const Detail = (props) => {
   const loading = useSelector((store) => store.review.is_loading_review);
   const loading_user = useSelector((store) => store.user.is_loading);
 
-
-
   const [goTop, isGoTop] = React.useState(false);
-
 
   // effects
   useEffect(() => {
@@ -126,28 +124,50 @@ const Detail = (props) => {
     <React.Fragment>
       {toonOne && (
         <>
-          <Grid padding="20px" margin="-70px 0 0 0">
+          <Grid position="absolute" top="0" width="100%" zIndex="0">
+            <ToonBackground src={toonOne.toonImg} />
+          </Grid>
+          <Grid
+            position="absolute"
+            top="0"
+            width="100%"
+            height=""
+            bgColor="rgba(0,0,0,0.4)"
+            height="337px"
+            zIndex="1"
+          ></Grid>
+          <Grid
+            position="absolute"
+            top="0"
+            width="100%"
+            height=""
+            bg="linear-gradient(transparent, rgba(0,0,0,0.4))"
+            height="337px"
+            zIndex="2"
+          ></Grid>
+          <Grid padding="0 20px 20px 20px" margin="-50px 0 0 0" zIndex="2">
             {/* 웹툰 정보 */}
             <Grid
-              borderBottom={`1px solid ${Color.gray100}`}
+              // borderBottom={`1px solid ${Color.gray100}`}
               display="flex"
               flexDir="column"
               justify="center"
               align="center"
               margin="0 0 28px 0"
               position="relative"
+              zIndex="4"
             >
-              <Image
-                src={toonOne.toonImg}
-                width="150px"
-                height="150px"
-                padding="35px 0 18px 0"
-              ></Image>
+              <Image src={toonOne.toonImg} width="150px" height="150px"></Image>
 
-              <Text margin="18px 0 10px 0" type="h1" fontWeight="bold">
+              <Text
+                color={Color.white}
+                margin="13px 0 8px 0"
+                type="h1"
+                fontWeight="bold"
+              >
                 {toonOne.toonTitle}
               </Text>
-              <Text margin="0 0 7px 0" type="caption" color={Color.gray400}>
+              <Text margin="0 0 13px 0" type="caption" color={Color.gray300}>
                 {toonOne.toonAuthor}
               </Text>
               <Grid
@@ -162,18 +182,18 @@ const Detail = (props) => {
                   fontSize="16px"
                   type="num"
                   fontWeight="bold"
-                  color={Color.gray700}
+                  color={Color.primary}
                 >
                   &nbsp;{toonOne.toonAvgPoint.toFixed(1)}
                 </Text>
-                <Text margin="0" color={Color.primaryLight}>
+                <Text margin="0" color={Color.white}>
                   &nbsp;{toonOne.genres?.map((item) => "·" + item + " ")}
                 </Text>
 
                 {toonOne.finished ? (
-                  <Text color={Color.gray400}>&nbsp;완결</Text>
+                  <Text color={Color.gray300}>&nbsp;완결</Text>
                 ) : (
-                  <Text color={Color.gray400}>
+                  <Text color={Color.gray300}>
                     &nbsp;
                     {toonOne.toonWeekday.length > 1
                       ? "·" +
@@ -201,7 +221,7 @@ const Detail = (props) => {
               </Grid>
             </Grid>
             {/* 별점 주기 */}
-            <Grid display="flex" justify="center">
+            <Grid display="flex" justify="center" margin="38px 0 0 0">
               <DetailStar
                 starPoint={myReview.userPointNumber}
                 onStarClick={handleStarClick}
@@ -370,7 +390,14 @@ const Detail = (props) => {
                 {
                   // goTop &&
                   <a href="#">
-                    <Grid>goTop</Grid>
+                    <Grid
+                      position="fixed"
+                      bottom="40px"
+                      right="36px"
+                      zIndex="2"
+                    >
+                      <GoTop />
+                    </Grid>
                   </a>
                 }
                 {(likeReviews.length > shownReview ||
@@ -462,13 +489,23 @@ const Grid = styled.div`
   top: ${(props) => props.top || ""};
   left: ${(props) => props.left || ""};
   right: ${(props) => props.right || ""};
+  z-index: ${(props) => props.zIndex || ""};
   background-color: ${(props) => props.bgColor || ""};
+  background: ${(props) => props.bg || ""};
   ${(props) => (props.cursor ? "cursor: pointer" : "")};
   border-bottom: ${(props) => props.borderBottom || ""};
   border-top: ${(props) => props.borderTop || ""};
   border: ${(props) => props.border || ""};
   border-radius: ${(props) => props.borderRadius || ""};
   ${(props) => props.gap && `gap: ${props.gap};`}
+`;
+const ToonBackground = styled.div`
+  width: 100%;
+  height: 337px;
+  background-image: url(${(props) => props.src});
+  background-size: cover;
+  background-position: center;
+  filter: blur(6px);
 `;
 
 const SortGrid = styled.div`
