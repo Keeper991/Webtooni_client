@@ -93,11 +93,13 @@ const TalkComment = (props) => {
             // borderTop={`1px solid ${Color.gray200}`}
             // borderBottom={`1px solid ${Color.gray200}`}
           >
-            <Image
-              size="28px"
-              shape="circle"
-              src={profileImgList[comment_info.userImg]}
-            ></Image>
+            <Grid flex="0 0 28px" display="flex">
+              <Image
+                size="28px"
+                shape="circle"
+                src={profileImgList[comment_info.userImg]}
+              ></Image>
+            </Grid>
             <Input
               multiLine
               taRef={commentRef}
@@ -113,6 +115,7 @@ const TalkComment = (props) => {
               value={comment}
             ></Input>
             <Text
+              margin="6px auto"
               width="26px"
               type="p"
               fontWeight="bold"
@@ -126,11 +129,13 @@ const TalkComment = (props) => {
         <>
           {/* 기존 댓글 */}
           <Grid display="flex">
-            <Image
-              size="40px"
-              shape="circle"
-              src={profileImgList[comment_info.userImg]}
-            ></Image>
+            <Grid flex="0 0 40px" display="flex">
+              <Image
+                size="40px"
+                shape="circle"
+                src={profileImgList[comment_info.userImg]}
+              ></Image>
+            </Grid>
             <Grid padding="0 0 0 7px" width="100%">
               <Grid display="flex" justify="space-between" padding="0 0 8px 0">
                 <Text color={Color.gray800} type="num" fontSize="12px">
@@ -200,5 +205,6 @@ const Grid = styled.div`
   border-bottom: ${(props) => props.borderBottom || ""};
   bottom: ${(props) => props.bottom || ""};
   right: ${(props) => props.right || ""};
+  flex: ${(props) => props.flex || ""};
 `;
 export default TalkComment;

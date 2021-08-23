@@ -203,7 +203,7 @@ const Detail = (props) => {
                 ) : (
                   <Text color={Color.gray300}>
                     &nbsp;
-                    {toonOne.toonWeekday.length > 1
+                    {toonOne.toonWeekday?.length > 1
                       ? "·" +
                         toonOne.toonWeekday
                           .split(",")
