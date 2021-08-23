@@ -57,6 +57,7 @@ const Header = (props) => {
       documentRef.current.removeEventListener("scroll", throttleScroll);
   }, [pageY]);
 
+  const isTalk = props.location.pathname.includes("talk");
   if (
     props.location.pathname.includes("/talk/write") ||
     props.location.pathname === "/review/search" ||
@@ -88,48 +89,119 @@ const Header = (props) => {
   if (props.location.pathname.includes("/detail")) {
     return (
       <React.Fragment>
-        <SimpleContainer>
-          <HeaderWrap is_simple>
-            <LeftOutlined
-              style={{ fontSize: "18px", margin: "25px 0" }}
-              onClick={() => {
-                if (props.location.state?.from_detail) {
-                  history.go(-3);
-                } else {
-                  history.goBack();
-                }
-              }}
-            ></LeftOutlined>
-            <IconWrap>
-              <HomeOutlined
-                onClick={() => {
-                  history.push("/");
-                }}
-              />
-              <SearchOutlined
-                onClick={() => {
-                  history.push("/search");
-                }}
-              />
-              {is_login ? (
-                <UserOutlined
-                  onClick={() => history.push(`/userinfo/${userName}`)}
-                />
-              ) : (
-                <Button
-                  bgColor="transparent"
-                  color={Color.black}
-                  fontSize="12px"
-                  border={`1px solid ${Color.gray200}`}
-                  padding="7px 16px"
-                  _onClick={() => {
-                    history.push("/login");
+        <SimpleContainer
+          underThumbnail={!isTalk && pageY >= 250}
+          toon={isTalk ? false : true}
+          talk={isTalk ? true : false}
+        >
+          <HeaderWrap is_simple bgColor={isTalk ? Color.white : "transparent"}>
+            {isTalk || pageY >= 250 ? (
+              // 톡톡 & 웹툰 상세 썸네일 이후 헤더
+              <>
+                <LeftOutlined
+                  style={{ fontSize: "18px", margin: "25px 0" }}
+                  onClick={() => {
+                    if (props.location.state?.from_detail) {
+                      history.go(-3);
+                    } else {
+                      history.goBack();
+                    }
                   }}
-                >
-                  로그인
-                </Button>
-              )}
-            </IconWrap>
+                ></LeftOutlined>
+                <IconWrap>
+                  <HomeOutlined
+                    onClick={() => {
+                      history.push("/");
+                    }}
+                  />
+                  <SearchOutlined
+                    onClick={() => {
+                      history.push("/search");
+                    }}
+                  />
+                  {is_login ? (
+                    <UserOutlined
+                      onClick={() =>
+                        dispatch(() => history.push(`/userinfo/${userName}`))
+                      }
+                    />
+                  ) : (
+                    <Button
+                      bgColor="transparent"
+                      color={Color.black}
+                      fontSize="12px"
+                      border={`1px solid ${Color.gray200}`}
+                      padding="7px 16px"
+                      _onClick={() => {
+                        history.push("/login");
+                      }}
+                    >
+                      로그인
+                    </Button>
+                  )}
+                </IconWrap>
+              </>
+            ) : (
+              // 웹툰 상세 썸네일 영역 헤더
+              <>
+                {" "}
+                <LeftOutlined
+                  style={{
+                    fontSize: "18px",
+                    margin: "25px 0",
+                    color: "white",
+                  }}
+                  onClick={() => {
+                    if (props.location.state?.from_detail) {
+                      history.go(-3);
+                    } else {
+                      history.goBack();
+                    }
+                  }}
+                ></LeftOutlined>
+                <IconWrap>
+                  <HomeOutlined
+                    onClick={() => {
+                      history.push("/");
+                    }}
+                    style={{
+                      color: "white",
+                    }}
+                  />
+                  <SearchOutlined
+                    onClick={() => {
+                      history.push("/search");
+                    }}
+                    style={{
+                      color: "white",
+                    }}
+                  />
+                  {is_login ? (
+                    <UserOutlined
+                      onClick={() =>
+                        dispatch(() => history.push(`/userinfo/${userName}`))
+                      }
+                      style={{
+                        color: "white",
+                      }}
+                    />
+                  ) : (
+                    <Button
+                      bgColor="transparent"
+                      color={Color.white}
+                      fontSize="12px"
+                      border={`1px solid ${Color.white}`}
+                      padding="7px 16px"
+                      _onClick={() => {
+                        history.push("/login");
+                      }}
+                    >
+                      로그인
+                    </Button>
+                  )}
+                </IconWrap>{" "}
+              </>
+            )}
           </HeaderWrap>
         </SimpleContainer>
       </React.Fragment>
@@ -256,7 +328,7 @@ const HeaderWrap = styled.div`
   height: 70px;
   padding: 0 16px;
   transition: 0.4s ease;
-  background-color: ${Color.white};
+  background-color: ${(props) => (props.bgColor ? props.bgColor : Color.white)};
   display: flex;
   align-items: center;
   justify-content: space-between;
@@ -277,7 +349,7 @@ const IconWrap = styled.div`
 `;
 
 const SimpleContainer = styled.div`
-  position: absolute;
+  position: ${(props) => (props.talk || props.toon ? "fixed" : "absolute")};
   top: 0;
   left: 0;
   width: 100%;
@@ -285,5 +357,14 @@ const SimpleContainer = styled.div`
   display: flex;
   align-items: center;
   justify-content: space-between;
+  z-index: 5;
+
+  ${(props) =>
+    props.underThumbnail
+      ? `border-bottom: 1px solid ${Color.gray100}; box-shadow: rgba(0, 0, 0, 0.05) 0px 6px 24px 0px,
+    rgba(0, 0, 0, 0.08) 0px 0px 0px 1px; background-color: ${Color.white} `
+      : ""};
+  ${(props) => (props.talk ? `border-bottom: 1px solid ${Color.gray100}` : "")};
 `;
+
 export default withRouter(Header);

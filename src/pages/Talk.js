@@ -2,7 +2,7 @@ import React, { useEffect } from "react";
 import { useSelector, useDispatch } from "react-redux";
 import styled from "styled-components";
 import { Text, Button } from "../elements";
-import { WriteButton, Comment } from "../images/icons";
+import { WriteButton, Comment, TalkAlarm } from "../images/icons";
 import { actionCreators as talkActions } from "../redux/modules/talk";
 import { history } from "../redux/configureStore";
 import { Color } from "../shared/common";
@@ -59,7 +59,7 @@ const Talk = () => {
   const day = ("0" + date.getDate()).slice(-2);
   const today = year + "-" + month + "-" + day;
   return (
-    <Grid bgColor={Color.gray100}>
+    <>
       {/* 포스트 작성 버튼 */}
       <Permit>
         <Grid
@@ -74,39 +74,33 @@ const Talk = () => {
         </Grid>
       </Permit>
       <Grid
-        padding="16px"
-        bgColor={Color.white}
-        borderBottom={`1px solid ${Color.gray200}`}
+        position="relative"
+        height="66px"
+        padding="24px 0 24px 20px"
+        margin="20px"
         display="flex"
-        justify="flex-end"
+        align="center"
+        borderRadius="8px"
+        bgColor={Color.gray100}
       >
-        <Grid
-          width="128px"
-          height="36px"
-          display="flex"
-          justify="center"
-          align="center"
-          bgColor={Color.white}
-          border={`1px solid ${Color.gray200}`}
-          borderRadius="27px"
-          padding="9px 12px"
-        >
-          <Text
-            type="caption"
-            fontWeight="medium"
-            color={Color.gray600}
-            textAlign="justify"
-            width="auto"
-          >
-            최신순
-          </Text>
+        <Text fontWeight="medium" color={Color.gray800}>
+          웹툰 추천과 감상을 공유해보세요
+        </Text>
+        <Grid position="absolute" top="5" right="0">
+          <TalkAlarm />
         </Grid>
       </Grid>
+
       {/* 포스트 리스트 */}
-      <Grid bgColor={Color.white} padding="20px">
+      <Grid
+        bgColor={Color.white}
+        margin="42px 0 0 0"
+        padding="0 20px 20px 20px"
+        borderTop={`2px solid ${Color.gray100}`}
+      >
         {post_list.map((post, idx) => (
           <Grid
-            borderBottom={`1px solid ${Color.gray200}`}
+            borderBottom={`1px solid ${Color.gray100}`}
             padding="20px 0 10px"
             cursor
             onClick={() => history.push(`/talk/detail/${post.postId}`)}
@@ -247,7 +241,7 @@ const Talk = () => {
           )}
         </Grid>
       </Grid>
-    </Grid>
+    </>
   );
 };
 
@@ -268,6 +262,7 @@ const Grid = styled.div`
   z-index: ${(props) => props.zIndex || ""};
   background-color: ${(props) => props.bgColor || ""};
   ${(props) => (props.cursor ? "cursor: pointer" : "")};
+  border-top: ${(props) => props.borderTop || ""};
   border-bottom: ${(props) => props.borderBottom || ""};
   border: ${(props) => props.border || ""};
   border-radius: ${(props) => props.borderRadius || ""};
