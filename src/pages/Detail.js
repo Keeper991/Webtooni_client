@@ -17,6 +17,7 @@ import {
   LeftArrow,
   GoTop,
 } from "../images/icons";
+import { kakao_webtoon_symbol, naver_webtoon_symbol } from "../images/symbols";
 // import shootingStar from "../images/shootingStar.png";
 import { history } from "../redux/configureStore";
 
@@ -124,7 +125,14 @@ const Detail = (props) => {
     <React.Fragment>
       {toonOne && (
         <>
-          <Grid position="absolute" top="0" width="100%" zIndex="0">
+          <Grid
+            position="absolute"
+            overflow="hidden"
+            top="0"
+            width="100%"
+            height="337px"
+            zIndex="0"
+          >
             <ToonBackground src={toonOne.toonImg} />
           </Grid>
           <Grid
@@ -132,7 +140,7 @@ const Detail = (props) => {
             top="0"
             width="100%"
             height=""
-            bgColor="rgba(0,0,0,0.4)"
+            bgColor="rgba(0,0,0,0.3)"
             height="337px"
             zIndex="1"
           ></Grid>
@@ -141,7 +149,7 @@ const Detail = (props) => {
             top="0"
             width="100%"
             height=""
-            bg="linear-gradient(transparent, rgba(0,0,0,0.4))"
+            bg="linear-gradient(transparent, rgba(0,0,0,0.5))"
             height="337px"
             zIndex="2"
           ></Grid>
@@ -206,17 +214,12 @@ const Detail = (props) => {
                   </Text>
                 )}
 
-                <Grid position="absolute" right="0px" bottom="15px">
-                  <Image
-                    shape="square"
-                    size="16px"
-                    margin="0 3px"
-                    src={
-                      toonOne.toonPlatform === "네이버"
-                        ? "https://lh3.googleusercontent.com/pw/AM-JKLWCsjme2ZNKF3nOEAXrSzYgStfkJAcVZvk17v_KeIKxWNOMJIieajxO7a69mwuRMqSyzqmzCvs6Ltnu3UGFDH5WVOtg1LbHz1w5Pwnuh4utNPgkPm7inmkUX-5eDSRRwFa8HFQSfTb3Fngc2oY2cfyc=s12-no?authuser=0"
-                        : "https://lh3.googleusercontent.com/pw/AM-JKLW7PImSbXv8cZ3MOmgkjwKdGNaPHtZ0VG72ZeEv9LZMl89iivlbAcUBLL6fZ836fZHed6gJQNUhMr-12eZgqqFOd-XGWU06ZftPdRGgQnVtbhNGidtMMByNP7a184KzHyKcXLpjUyHS4CFGd6NSctFf=s12-no?authuser=0"
-                    }
-                  ></Image>
+                <Grid position="absolute" right="3px" bottom="15px">
+                  {toonOne.toonPlatform === "카카오" ? (
+                    <KakaoLogo kakao={kakao_webtoon_symbol}></KakaoLogo>
+                  ) : (
+                    <NaverLogo naver={naver_webtoon_symbol}></NaverLogo>
+                  )}
                 </Grid>
               </Grid>
             </Grid>
@@ -497,17 +500,38 @@ const Grid = styled.div`
   border-top: ${(props) => props.borderTop || ""};
   border: ${(props) => props.border || ""};
   border-radius: ${(props) => props.borderRadius || ""};
+  overflow: ${(props) => props.overflow || ""};
   ${(props) => props.gap && `gap: ${props.gap};`}
 `;
 const ToonBackground = styled.div`
-  width: 100%;
-  height: 337px;
+  width: 102%;
+  height: 342px;
   background-image: url(${(props) => props.src});
   background-size: cover;
   background-position: center;
-  filter: blur(6px);
+  filter: blur(5px);
+  -webkit-filter: blur(5px);
+  margin-left: -5px;
+  margin-top: -5px;
 `;
 
+const KakaoLogo = styled.div`
+  width: 16px;
+  height: 16px;
+  background-image: url("${(props) => props.kakao}");
+  background-repeat: no-repeat;
+  background-position: center;
+  background-size: cover;
+`;
+
+const NaverLogo = styled.div`
+  width: 16px;
+  height: 16px;
+  background-image: url("${(props) => props.naver}");
+  background-repeat: no-repeat;
+  background-position: center;
+  background-size: cover;
+`;
 const SortGrid = styled.div`
   display: flex;
   justify-content: flex-end;
