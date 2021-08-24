@@ -123,6 +123,9 @@ const Header = (props) => {
                     onClick={() => {
                       history.push("/search");
                     }}
+                    style={{
+                      margin: "0 18px 0 20px",
+                    }}
                   />
                   {is_login ? (
                     <UserOutlined
@@ -179,6 +182,7 @@ const Header = (props) => {
                     }}
                     style={{
                       color: "white",
+                      margin: "0 18px 0 20px",
                     }}
                   />
                   {is_login ? (
@@ -228,12 +232,20 @@ const Header = (props) => {
             borderRadius="none"
             padding="0"
           >
-            <Image width="100%" height="25px" src={title}></Image>
+            <Image
+              width="100%"
+              height="25px"
+              margin="-7px 0 0 0"
+              src={title}
+            ></Image>
           </Button>
           <IconWrap>
             <SearchOutlined
               onClick={() => {
                 history.push("/search");
+              }}
+              style={{
+                margin: "0 18px 0 0",
               }}
             />
             {is_login ? (
@@ -353,7 +365,8 @@ const IconWrap = styled.div`
   align-items: center;
   justify-content: space-between;
   font-size: 20px;
-  gap: 16px;
+
+  margin-right: 4px;
 `;
 
 const SimpleContainer = styled.div`
