@@ -10,7 +10,7 @@ const BestReveiwerCard = (props) => {
     <React.Fragment>
       <Container
         onClick={() => {
-          history.push(`/userinfo/${props.userName}`);
+          history.push(`/userinfo/${props.user.userName}`);
         }}
       >
         <Image
