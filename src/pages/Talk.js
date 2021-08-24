@@ -172,7 +172,7 @@ const Talk = () => {
                       whiteSpace="nowrap"
                       color={Color.primary}
                     >
-                      9+
+                      {post.talkCommentCount}
                     </Text>
                   </Grid>
                 )}

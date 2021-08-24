@@ -65,6 +65,7 @@ const FlexGrid = styled.div`
   justify-content: space-between;
   flex-direction: column;
   padding: 5px;
+  gap: 5px;
 `;
 
 export default BestReveiwerCard;

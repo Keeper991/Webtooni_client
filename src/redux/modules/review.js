@@ -222,7 +222,7 @@ const getReviewListOrderByLike = (page_num) => {
       );
       dispatch(webtoonActions.addToonList(reviewsToons, "reviewPageBest"));
       reviews = reviews.map((review) => {
-        review.createDate = review.creatDate || review.createDate;
+        review.createDate = Date.parse(review.creatDate || review.createDate);
         return review;
       });
       dispatch(addReviewList(reviews, "reviewPageBest"));

@@ -408,7 +408,6 @@ const Recommendation = () => {
             </Text>
           </TextGrid>
 
-          <Text></Text>
         </InfoGrid>
       </FlexToonGrid>
 
@@ -641,7 +640,6 @@ const FlexInfoGrid = styled.div`
   width: 70%;
   height: 48px;
   justify-content: space-around;
-
   padding: 4px;
 `;
 

@@ -151,7 +151,7 @@ const TabGrid = styled.div`
   display: flex;
   width: 100%;
   height: 42px;
-  padding: 0 16px;
+  padding: 0 20px;
   margin: 10px 0;
   align-items: center;
   justify-content: flex-end;

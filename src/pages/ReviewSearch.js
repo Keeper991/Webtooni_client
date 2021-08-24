@@ -76,10 +76,11 @@ const ReviewSearch = () => {
           검색 결과
         </Text>
       </Container>
-
-      {search_result?.map((_, idx) => {
-        return <ToonListCard key={idx} {..._} review search></ToonListCard>;
-      })}
+      <ListBox>
+        {search_result?.map((_, idx) => {
+          return <ToonListCard key={idx} {..._} review search></ToonListCard>;
+        })}
+      </ListBox>
       {search_result.length === 0 ? (
         <TitleGrid>
           <Text tag="p" margin="10px 0 30px 0" color={Color.gray400}>
@@ -94,9 +95,11 @@ const ReviewSearch = () => {
             : "리뷰 작성을 기다리는 웹툰"}
         </Text>
       </Container>
-      {unwritten_list?.map((_, idx) => {
-        return <ToonListCard key={idx} {..._} search></ToonListCard>;
-      })}
+      <ListBox>
+        {unwritten_list?.map((_, idx) => {
+          return <ToonListCard key={idx} {..._} search></ToonListCard>;
+        })}
+      </ListBox>
     </React.Fragment>
   );
 };
@@ -104,6 +107,8 @@ const ReviewSearch = () => {
 const Container = styled.div`
   padding: 16px;
 `;
+
+const ListBox = styled.div``;
 
 const HeaderGrid = styled.div`
   position: absolute;

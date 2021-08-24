@@ -232,43 +232,55 @@ const Detail = (props) => {
             </Grid>
             <Grid display="flex" justify="center" margin="28px 0 40px 0">
               {subscribeList.includes(webtoon_id) ? (
-                <Button
-                  shape="pill"
-                  bgColor={Color.primary}
-                  border={`1px solid ${Color.primary}`}
-                  margin="0 12px 0 0"
-                  _onClick={() => handleSubscribe(webtoon_id, false)}
-                >
-                  <Grid display="flex" justify="center" align="center">
-                    <Check />
-                    <Text
-                      margin="0 0 0 8px"
-                      fontWeight="medium"
-                      color={Color.white}
-                    >
-                      구독중
-                    </Text>
-                  </Grid>
-                </Button>
-              ) : (
-                <Button
-                  shape="pill"
+                <Grid
                   margin="0 12px 0 0"
                   _onClick={() => handleSubscribe(webtoon_id, true)}
+                  cursor
+                  height="40px"
+                  display="flex"
+                  justify="center"
+                  align="center"
+                  borderRadius="36px"
+                  padding="13px 16px"
+                  bgColor={Color.primary}
+                  border={`1px solid ${Color.primary}`}
+                  onClick={() => handleSubscribe(webtoon_id, false)}
                 >
-                  <Grid display="flex" justify="center" align="center">
-                    <Plus />
-                    <Text
-                      margin="0 0 0 8px"
-                      fontWeight="medium"
-                      color={Color.gray800}
-                    >
-                      구독하기
-                    </Text>
-                  </Grid>
-                </Button>
+                  <Check />
+                  <Text
+                    margin="0 0 0 8px"
+                    fontWeight="medium"
+                    color={Color.white}
+                  >
+                    구독중
+                  </Text>
+                </Grid>
+              ) : (
+                <Grid
+                  margin="0 12px 0 0"
+                  _onClick={() => handleSubscribe(webtoon_id, true)}
+                  cursor
+                  height="40px"
+                  display="flex"
+                  justify="center"
+                  align="center"
+                  bgColor={Color.white}
+                  border={`1px solid ${Color.gray200}`}
+                  borderRadius="36px"
+                  padding="13px 16px"
+                >
+                  <Plus />
+                  <Text
+                    margin="0 0 0 8px"
+                    fontWeight="medium"
+                    color={Color.gray800}
+                  >
+                    구독하기
+                  </Text>
+                </Grid>
               )}
-              <Button
+
+              <Grid
                 _onClick={() => {
                   if (!is_login) {
                     alert("로그인하세요~");
@@ -282,20 +294,27 @@ const Detail = (props) => {
                     });
                   }
                 }}
-                shape="pill"
+                cursor
+                height="40px"
+                display="flex"
+                justify="center"
+                align="center"
+                bgColor={Color.white}
+                border={`1px solid ${Color.gray200}`}
+                borderRadius="36px"
+                padding="13px 16px"
               >
-                <Grid display="flex" justify="center" align="center">
-                  <Pencil />
-                  <Text
-                    margin="0 0 0 8px"
-                    fontWeight="medium"
-                    color={Color.gray800}
-                  >
-                    {reviewOne?.reviewContent ? "리뷰수정" : "리뷰등록"}
-                  </Text>
-                </Grid>
-              </Button>
+                <Pencil />
+                <Text
+                  margin="0 0 0 8px"
+                  fontWeight="medium"
+                  color={Color.gray800}
+                >
+                  {reviewOne?.reviewContent ? "리뷰수정" : "리뷰등록"}
+                </Text>
+              </Grid>
             </Grid>
+
             <Text fontWeight="medium" color={Color.gray500}>
               웹툰설명
             </Text>
@@ -313,12 +332,18 @@ const Detail = (props) => {
               target="_blank"
               rel="noopener noreferrer"
             >
-              <Button
+              <Grid
+                cursor
                 width="100%"
-                shape="pill"
+                height="40px"
+                display="flex"
+                justify="center"
+                align="center"
                 bgColor={Color.white}
+                border={`1px solid ${Color.gray200}`}
+                borderRadius="36px"
                 padding="12px 10px 12px 16px"
-                margin="0 0 28px 0"
+                margin="0 0 36px 0"
               >
                 <ShootingStar
                   style={{ width: "16px", height: "16px", marginRight: "8px" }}
@@ -334,7 +359,7 @@ const Detail = (props) => {
                 <Grid width="100%" display="flex" justify="flex-end">
                   <LeftArrow />
                 </Grid>
-              </Button>
+              </Grid>
             </a>
 
             {countReview !== 0 && (
@@ -344,13 +369,9 @@ const Detail = (props) => {
                   display="flex"
                   justify="space-between"
                   align="center"
+                  margin="0 0 14px 0"
                 >
-                  <Text
-                    tag="p"
-                    margin="0 0 14px 0"
-                    fontWeight="medium"
-                    color={Color.gray500}
-                  >
+                  <Text tag="p" fontWeight="medium" color={Color.gray500}>
                     리뷰&nbsp;{countReview}개
                   </Text>
                   {/* 리뷰 정렬하기 */}
@@ -452,7 +473,7 @@ const Detail = (props) => {
                 border="none"
                 bgColor={Color.white}
                 color={Color.gray700}
-                fontSize="12px"
+                fontSize="13px"
                 _onClick={() => {
                   history.push({
                     pathname: "/toonlist/similar_genre",
@@ -535,8 +556,9 @@ const NaverLogo = styled.div`
 const SortGrid = styled.div`
   display: flex;
   justify-content: flex-end;
+  align-items: flex-start;
   gap: 8px;
-  margin: 3px;
+  margin: -5px 3px 0 0;
 `;
 const SortNew = styled.p`
   cursor: pointer;

@@ -5,7 +5,6 @@ import { history } from "../redux/configureStore";
 import { Color } from "../shared/common";
 import { ReactComponent as FillStar } from "../images/icons/FillStar.svg";
 
-
 const WebToonMonth = (props) => {
   return (
     <React.Fragment>
@@ -75,7 +74,8 @@ const InfoGrid = styled.div`
   display: flex;
   flex-direction: column;
   height: 36px;
-  margin-left: 5px;
+  margin-left: 10px;
+  padding: 2px 0;
   justify-content: space-between;
 `;
 

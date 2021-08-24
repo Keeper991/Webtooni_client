@@ -73,7 +73,7 @@ const WebToonCard = (props) => {
           </TitleWrap>
           <FlexGrid>
             <AuthorWrap>
-              <Text tag="p" type="small" color={Color.gray400}>
+              <Text tag="p" type="caption" color={Color.gray400}>
                 {props.toonAuthor}
               </Text>
             </AuthorWrap>
@@ -107,7 +107,7 @@ const FlexGrid = styled.div`
 const ContentsGrid = styled.div`
   padding: 0 5px;
   width: 100%;
-  height: 80px;
+  height: 76px;
   display: flex;
   flex-direction: column;
   justify-content: space-around;
