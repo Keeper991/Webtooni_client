@@ -378,7 +378,6 @@ const SimpleContainer = styled.div`
   display: flex;
   align-items: center;
   justify-content: space-between;
-  margin-top: -1px;
   z-index: 5;
   border-top: 1px solid white;
   ${(props) =>
