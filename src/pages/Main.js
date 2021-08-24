@@ -50,15 +50,15 @@ const Main = () => {
   best_review_list.sort((a, b) => b.likeCount - a.likeCount);
 
   // webtoon lists
-  const webtooni_list = toon_list.filter((toon) =>
-    toon.filterConditions.includes("webtooni")
-  );
-  const naver_list = toon_list.filter((toon) =>
-    toon.filterConditions.includes("naver")
-  );
-  const kakao_list = toon_list.filter((toon) =>
-    toon.filterConditions.includes("kakao")
-  );
+  const webtooni_list = toon_list
+    .filter((toon) => toon.filterConditions.includes("webtooni"))
+    .sort((a, b) => a.rank - b.rank);
+  const naver_list = toon_list
+    .filter((toon) => toon.filterConditions.includes("naver"))
+    .sort((a, b) => a.rank - b.rank);
+  const kakao_list = toon_list
+    .filter((toon) => toon.filterConditions.includes("kakao"))
+    .sort((a, b) => a.rank - b.rank);
 
   // slick swipe click prevent
   const [dragging, setDragging] = React.useState(false);
