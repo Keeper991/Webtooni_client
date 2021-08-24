@@ -4,7 +4,7 @@ import { useDispatch, useSelector } from "react-redux";
 import { actionCreators as webtoonActions } from "../redux/modules/webtoon";
 import { OfferCard } from "../components";
 import { Text, Image, Button } from "../elements";
-import { Slick, WebToonCard, SkeletonCard } from "../components";
+import { Slick, WebToonCard, SkeletonCard, ReviewCard } from "../components";
 import profileImgList from "../images/profiles";
 import { Color } from "../shared/common";
 import { history } from "../redux/configureStore";
@@ -47,13 +47,15 @@ const Recommendation = () => {
     toon.filterConditions.includes("forUser")
   );
 
-  const md_review = {
-    userImg: "2",
-    userName: "MD김투니",
-    createDate: "08.18",
-    reviewContent:
-      "판타지 장르 중에서는 최고로 꼽힐만한 작품 중 하나라고 생각합니다. 굉장히 넓은 세계관을 유지하면서도 세계관이 무너지지 않고 있습니다. 또한 그 넓은 이야기를 굉장히 높은 퀄리티의 그림과 연출로 풀어내고 있죠. 오랜기간 동안 사랑을 받은 이유가 분명히 있습니다.",
-  };
+  const md_review = [
+    {
+      userImg: "2",
+      userName: "MD김투니",
+      createDate: "08.18",
+      reviewContent:
+        "판타지 장르 중에서는 최고로 꼽힐만한 작품 중 하나라고 생각합니다. 굉장히 넓은 세계관을 유지하면서도 세계관이 무너지지 않고 있습니다. 또한 그 넓은 이야기를 굉장히 높은 퀄리티의 그림과 연출로 풀어내고 있죠. 오랜기간 동안 사랑을 받은 이유가 분명히 있습니다.",
+    },
+  ];
 
   // slick swipe click prevent
   const [dragging, setDragging] = React.useState(false);
@@ -115,11 +117,11 @@ const Recommendation = () => {
             history.push("/review/search");
           }}
         >
-          <Text margin="5px 0 0 0" type="small" color={Color.gray700}>
+          <Text margin="0 0 5px 0" type="small" color={Color.gray700}>
             좋아하실만한 웹툰을 추천해 드릴게요.
           </Text>
           <FlexGrid>
-            <Text fontWeight="bold" color={Color.gray700}>
+            <Text tag="p" fontWeight="bold" color={Color.gray700}>
               재밌게 본 웹툰의 리뷰를 등록해보세요!
             </Text>
             <Image
@@ -140,7 +142,7 @@ const Recommendation = () => {
               border="none"
               bgColor={Color.white}
               color={Color.gray700}
-              fontSize="12px"
+              fontSize="13px"
               width="50px"
               _onClick={() => {
                 history.push("/toonlist/similar_toon");
@@ -174,7 +176,7 @@ const Recommendation = () => {
         <MdBox>
           <BookMark></BookMark>
           <MdInfoBox>
-            <Text type="small" color={Color.primary}>
+            <Text type="caption" fontWeight="bold" color={Color.primary}>
               #MD추천
             </Text>
             <Text type="h1" color={Color.white} fontWeight="bold">
@@ -228,12 +230,10 @@ const Recommendation = () => {
                 긴 호흡을 지닌 네이버 웹툰 3대장!
               </Text>
             </TextGrid>
-
-            <Text></Text>
           </InfoGrid>
         </FlexToonGrid>
-        <MdCommentBox>
-          <FlexGrid>
+        {/* <MdCommentBox> */}
+        {/* <FlexGrid>
             <Image
               size="32px"
               shape="circle"
@@ -266,8 +266,13 @@ const Recommendation = () => {
                 {showMore ? "줄이기" : "더보기"}
               </Button>
             ) : null}
-          </ReviewGrid>
-        </MdCommentBox>
+          </ReviewGrid> */}
+        <ReviewGrid>
+          {md_review.map((_, idx) => {
+            return <ReviewCard md {..._} key={idx}></ReviewCard>;
+          })}
+        </ReviewGrid>
+        {/* </MdCommentBox> */}
 
         <TitleGrid>
           <Text type="h2" fontWeight="bold" color={Color.gray800}>
@@ -277,7 +282,7 @@ const Recommendation = () => {
             border="none"
             bgColor={Color.white}
             color={Color.gray700}
-            fontSize="12px"
+            fontSize="13px"
             width="50px"
             _onClick={() => {
               history.push("/toonlist/best_reviewer");
@@ -339,7 +344,7 @@ const Recommendation = () => {
             border="none"
             bgColor={Color.white}
             color={Color.gray700}
-            fontSize="12px"
+            fontSize="13px"
             width="50px"
             _onClick={() => {
               history.push("/toonlist/end_toon");
@@ -348,7 +353,7 @@ const Recommendation = () => {
             더보기
           </Button>
         </TitleGrid>
-        <SliderBox onClickCapture={handleOnItemClick}>
+        <SliderBox margin_bottom>
           {is_loading || end_toon_list.length === 0 ? (
             <CardSliderBox>
               {Array.from({ length: 10 }).map((_, idx) => {
@@ -356,11 +361,7 @@ const Recommendation = () => {
               })}
             </CardSliderBox>
           ) : (
-            <CardSliderBox
-              is_infinite
-              _afterChange={handleAfterChange}
-              _beforeChange={handleBeforeChange}
-            >
+            <CardSliderBox>
               {end_toon_list?.map((_, idx) => {
                 return <WebToonCard key={idx} {..._}></WebToonCard>;
               })}
@@ -378,7 +379,7 @@ const Recommendation = () => {
           history.push("/login");
         }}
       >
-        <Text margin="5px 0 0 0" type="small" color={Color.gray700}>
+        <Text margin="0 0 5px 0" type="small" color={Color.gray700}>
           좋아하실만한 웹툰을 추천해 드릴게요.
         </Text>
         <FlexGrid>
@@ -490,7 +491,7 @@ const Recommendation = () => {
           border="none"
           bgColor={Color.white}
           color={Color.gray700}
-          fontSize="12px"
+          fontSize="13px"
           width="50px"
           _onClick={() => {
             history.push("/toonlist/best_reviewer");
@@ -548,7 +549,7 @@ const Recommendation = () => {
           border="none"
           bgColor={Color.white}
           color={Color.gray700}
-          fontSize="12px"
+          fontSize="13px"
           width="50px"
           _onClick={() => {
             history.push("/toonlist/end_toon");
@@ -557,7 +558,7 @@ const Recommendation = () => {
           더보기
         </Button>
       </TitleGrid>
-      <SliderBox>
+      <SliderBox margin_bottom>
         {is_loading || end_toon_list.length === 0 ? (
           <CardSliderBox is_infinite>
             {Array.from({ length: 10 }).map((_, idx) => {
@@ -653,11 +654,11 @@ const Recommendation = () => {
 };
 
 const BannerBox = styled.div`
-  width: 320px;
+  width: 100%auto;
   height: 66px;
   background-color: ${Color.gray100};
   padding: 0 16px;
-  margin: 30px auto;
+  margin: 40px 20px 40px;
   border-radius: 8px;
   display: flex;
   flex-direction: column;
@@ -665,15 +666,18 @@ const BannerBox = styled.div`
 `;
 
 const SliderBox = styled.div`
+  width: 100%;
   white-space: nowrap;
   overflow: hidden;
-  margin: 20px 0 50px 0;
-  padding-left: 16px;
+  margin-top: 10px;
+  padding: 0 0 0 16px;
+  ${(props) => (props.margin_bottom ? "margin-bottom: 30px" : null)};
 `;
 
 const OfferSliderBox = styled.div`
-  margin: 20px 0 50px 0;
-
+  width: 100%;
+  margin: -4px 0 50px 0;
+  border-top: 8px solid ${Color.gray100};
   position: relative;
 `;
 
@@ -703,9 +707,9 @@ const BottomBox = styled.div`
 
 const MdBox = styled.div`
   width: 100%;
-  height: 200px;
+  height: 208px;
   background-color: ${Color.gray800};
-  margin: 20px 0;
+  margin: 22px 0 0 0;
   display: flex;
   flex-direction: column;
   justify-content: space-around;
@@ -714,6 +718,7 @@ const MdBox = styled.div`
   background-position: center;
   background-size: cover;
   position: relative;
+  border-top: 8px solid ${Color.gray100};
 `;
 
 const PlatformImg = styled.div`
@@ -734,14 +739,13 @@ const BookMark = styled.div`
 const FlexGrid = styled.div`
   display: flex;
   align-items: center;
-  margin: 5px 0;
 `;
 
 const TitleGrid = styled.div`
   display: flex;
   width: 100%;
   height: 65px;
-  margin-top: 30px;
+  ${(props) => (props.no_margin ? "margin-top: -1px" : "margin-top: 30px")};
   padding: 10px 16px 0;
   align-items: center;
   justify-content: space-between;
@@ -759,7 +763,7 @@ const FlexReviewerGrid = styled.div`
   display: flex;
   align-items: center;
   width: 100%;
-  margin: 20px 0 30px;
+  margin: 20px 0;
   padding: 0 16px;
 `;
 
@@ -778,7 +782,8 @@ const FlexInfoGrid = styled.div`
   width: 70%;
   height: 48px;
   justify-content: space-around;
-  padding: 3px;
+
+  padding: 4px;
 `;
 
 const MdCommentBox = styled.div`
@@ -795,13 +800,13 @@ const MdCommentBox = styled.div`
 
 const ReviewGrid = styled.div`
   width: 100%;
+  padding: 0 16px;
   height: auto;
-  padding: 20px 0;
 `;
 
 const ReivewText = styled.div`
   width: 100%;
-  font-size: 12px;
+  font-size: 14px;
   white-space: normal;
   display: -webkit-box;
   -webkit-line-clamp: 3;
@@ -814,7 +819,7 @@ const ReivewText = styled.div`
 
 const ReivewTextMore = styled.div`
   width: 100%;
-  font-size: 12px;
+  font-size: 14px;
   white-space: normal;
   word-break: break-word;
   line-height: 1.6em;
@@ -883,6 +888,7 @@ const CardSliderBox = styled.div`
   padding-right: 150px;
   -ms-overflow-style: none;
   gap: 10px;
+
   &::-webkit-scrollbar {
     display: none;
     width: 0 !important;
