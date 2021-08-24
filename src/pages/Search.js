@@ -49,9 +49,11 @@ const Search = () => {
           검색 결과
         </Text>
       </Container>
-      {search_result?.map((_, idx) => {
-        return <ToonListCard key={idx} {..._}></ToonListCard>;
-      })}
+      <ListBox>
+        {search_result?.map((_, idx) => {
+          return <ToonListCard key={idx} {..._}></ToonListCard>;
+        })}
+      </ListBox>
       <Container>
         {search_result.length === 0 ? (
           <TitleGrid>
@@ -63,6 +65,7 @@ const Search = () => {
   );
 };
 
+const ListBox = styled.section``;
 const Container = styled.div`
   padding: 16px;
 `;
