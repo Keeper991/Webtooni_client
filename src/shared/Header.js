@@ -374,12 +374,13 @@ const SimpleContainer = styled.div`
   top: 0;
   left: 0;
   width: 100%;
-  height: 72px;
+  height: 70px;
   display: flex;
   align-items: center;
   justify-content: space-between;
+  margin-top: -1px;
   z-index: 5;
-
+  border-top: 1px solid white;
   ${(props) =>
     props.underThumbnail
       ? `border-bottom: 1px solid ${Color.gray100}; box-shadow: rgba(0, 0, 0, 0.05) 0px 6px 24px 0px,
