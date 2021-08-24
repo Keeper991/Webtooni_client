@@ -379,18 +379,18 @@ const SimpleContainer = styled.div`
   align-items: center;
   justify-content: space-between;
   z-index: 5;
-  border-top: 1px solid white;
+  ${(props) => (props.talk ? `border-top: 1px solid white;` : "")}
   ${(props) =>
     props.underThumbnail
       ? `border-bottom: 1px solid ${Color.gray100}; box-shadow: rgba(0, 0, 0, 0.05) 0px 6px 24px 0px,
-    rgba(0, 0, 0, 0.08) 0px 0px 0px 1px; background-color: ${Color.white} `
-      : ""};
+    rgba(0, 0, 0, 0.08) 0px 0px 0px 1px; background-color: ${Color.white}; `
+      : ""}
 
   ${(props) =>
     props.underTalk
       ? `border-bottom:0.5px solid ${Color.gray100}; box-shadow: rgba(0, 0, 0, 0.05) 0px 6px 24px 0px,
     rgba(0, 0, 0, 0.08) 0px 0px 0px 1px;`
-      : ""};
+      : ""}
 `;
 
 export default withRouter(Header);
