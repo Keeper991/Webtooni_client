@@ -3,11 +3,16 @@ import styled from "styled-components";
 import { Text, Image } from "../elements";
 import { Color } from "../shared/common";
 import profileImgList from "../images/profiles";
+import { history } from "../redux/configureStore";
 
 const BestReveiwerCard = (props) => {
   return (
     <React.Fragment>
-      <Container>
+      <Container
+        onClick={() => {
+          history.push(`/userinfo/${props.userName}`);
+        }}
+      >
         <Image
           src={profileImgList[props.user.userImg]}
           shape="circle"
