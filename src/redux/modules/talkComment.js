@@ -3,6 +3,7 @@ import { produce } from "immer";
 import { talkAPI } from "../../shared/API";
 import { actionCreators as talkActions } from "./talk";
 import { actionCreators as userActions } from "./user";
+import { actionCreators as modalActions } from "./modal";
 
 const SET_COMMENT_ALL = "SET_COMMENT_ALL";
 const ADD_COMMENT_ONE = "ADD_COMMENT_ONE";
@@ -141,7 +142,7 @@ const deleteCommentServer = (postId, commentId, commentCount) => {
         alert("로그아웃 되었습니다");
         return;
       }
-      alert("댓글 정보가 없어요");
+      dispatch(modalActions.activeModal("error"));
       dispatch(loading(false));
     }
   };

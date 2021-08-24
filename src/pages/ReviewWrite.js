@@ -5,6 +5,7 @@ import { Button, Input, Text } from "../elements";
 import { DetailStar } from "../components";
 import { actionCreators as reviewActions } from "../redux/modules/review";
 import { actionCreators as webtoonActions } from "../redux/modules/webtoon";
+import { actionCreators as modalActions } from "../redux/modules/modal";
 import { history } from "../redux/configureStore";
 import { Color } from "../shared/common";
 import { LeftOutlined } from "@ant-design/icons";
@@ -66,7 +67,7 @@ const ReviewWrite = (props) => {
         )
       );
     } else {
-      alert("로그인하세요~");
+      dispatch(modalActions.activeModal("needLogin"));
     }
   };
 
@@ -147,9 +148,9 @@ const ReviewWrite = (props) => {
               setStarPoint(starPoint);
               dispatch(reviewActions.putStarServer(webtoon_id, starPoint));
             } else if (loading && is_login) {
-              alert("응답 대기중입니다. 잠시만 기다려주세요.");
+              dispatch(modalActions.activeModal("wait"));
             } else {
-              alert("로그인이 필요한 서비스입니다. 로그인해주세요.");
+              dispatch(modalActions.activeModal("needLogin"));
             }
           }}
         />

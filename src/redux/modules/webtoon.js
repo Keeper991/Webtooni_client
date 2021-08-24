@@ -4,6 +4,7 @@ import { webtoonAPI, offerAPI } from "../../shared/API";
 import { actionCreators as userActions } from "./user";
 import { actionCreators as reviewActions } from "./review";
 import { actionCreators as reviewerActions } from "./reviewer";
+import { actionCreators as modalActions } from "./modal";
 
 const ADD_TOON_LIST = "webtoon/ADD_TOON_LIST";
 const ADD_TOON_ONE = "webtoon/ADD_TOON_ONE";
@@ -66,7 +67,7 @@ const getRankWebtoonList = () => async (dispatch, getState) => {
     dispatch(addToonList(kakaoToons, "kakao"));
   } catch (e) {
     console.log(e);
-    alert("웹툰 리스트를 불러오는데에 실패했습니다.");
+    dispatch(modalActions.activeModal("failLoad"));
   }
 };
 
@@ -89,7 +90,7 @@ const getForUserWebtoonList = () => async (dispatch, getState) => {
       alert("로그아웃 되었습니다");
       return;
     }
-    alert("웹툰 리스트를 불러오는데에 실패했습니다.");
+    dispatch(modalActions.activeModal("failLoad"));
   }
 };
 
@@ -119,7 +120,7 @@ const getOfferWebtoonListForLogin = () => {
         alert("로그아웃 되었습니다");
         return;
       }
-      alert("웹툰 리스트를 불러오는데에 실패했습니다.");
+      dispatch(modalActions.activeModal("failLoad"));
     }
   };
 };
@@ -178,7 +179,7 @@ const getToonOneServer = (webtoonId) => {
       }
     } catch (err) {
       console.log(err, "getToonOneError");
-      // alert("게시글 정보가 없어요");
+      dispatch(modalActions.activeModal("failLoad"));
       // history.replace("/");
     }
   };
@@ -199,7 +200,7 @@ const getWebtooniRank = () => async (dispatch) => {
     dispatch(addToonList(webtooniToons, "webtooni"));
   } catch (e) {
     console.log(e);
-    alert("웹툰 리스트를 불러오는데에 실패했습니다.");
+    dispatch(modalActions.activeModal("failLoad"));
   }
 };
 
@@ -209,7 +210,7 @@ const getEndToonOffer = () => async (dispatch) => {
     dispatch(addToonList(endOfferToons, "endOffer"));
   } catch (e) {
     console.log(e);
-    alert("웹툰 리스트를 불러오는데에 실패했습니다.");
+    dispatch(modalActions.activeModal("failLoad"));
   }
 };
 
@@ -227,7 +228,7 @@ const getBestReviewerOffer = () => async (dispatch) => {
     );
   } catch (e) {
     console.log(e);
-    alert("웹툰 리스트를 불러오는데에 실패했습니다.");
+    dispatch(modalActions.activeModal("failLoad"));
   }
 };
 
@@ -238,7 +239,7 @@ const getSimilarUserOffer = () => async (dispatch) => {
     dispatch(addToonList(similarUserOfferToons, "similarUserOffer"));
   } catch (e) {
     console.log(e);
-    alert("웹툰 리스트를 불러오는데에 실패했습니다.");
+    dispatch(modalActions.activeModal("failLoad"));
   }
 };
 
@@ -257,7 +258,7 @@ const getSimilarGenre = (webtoonId) => async (dispatch) => {
     dispatch(addToonList(similarGenreToons, webtoonId));
   } catch (e) {
     console.log(e);
-    alert("웹툰 리스트를 불러오는데에 실패했습니다.");
+    dispatch(modalActions.activeModal("failLoad"));
   }
 };
 

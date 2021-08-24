@@ -6,7 +6,9 @@ import { Color } from "../shared/common";
 
 import { history } from "../redux/configureStore";
 import { ProgressStepBtns } from "../components";
-import { useSelector } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
+
+import { actionCreators as modalActions } from "../redux/modules/modal";
 
 const SELECT_COUNT = 3;
 const TASTE_LS = "TASTE_LIST";
@@ -26,6 +28,7 @@ const Taste = () => {
     "로맨스 판타지",
     "액션 무협",
   ];
+  const dispatch = useDispatch();
   const [tastes, setTastes] = useState([]);
 
   const is_login = useSelector((state) => state.user.is_login);
@@ -41,8 +44,7 @@ const Taste = () => {
 
   useEffect(() => {
     if (!isChecking && !(is_login === true && is_shown_modal === false)) {
-      window.alert("잘못된 접근입니다.");
-      history.push("/");
+      dispatch(modalActions.activeModal("noAuth"));
     }
   }, [is_login, isChecking]);
 

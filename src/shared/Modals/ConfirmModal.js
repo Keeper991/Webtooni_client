@@ -5,13 +5,21 @@ import { Button, Image } from "../../elements";
 import { useDispatch } from "react-redux";
 import { actionCreators as modalActions } from "../../redux/modules/modal";
 
-const ConfirmModal = ({ icon, children, handleConfirm }) => {
+const ConfirmModal = ({ img, Icon, children, handleConfirm }) => {
   const dispatch = useDispatch();
   return (
     <Container>
-      <IconArea>
-        <Image src={icon} shape="circle" size="52px" />
-      </IconArea>
+      {img ? (
+        <ImgArea>
+          <Image src={img} shape="circle" size="52px" />
+        </ImgArea>
+      ) : Icon ? (
+        <IconArea>
+          <Icon />
+        </IconArea>
+      ) : (
+        ""
+      )}
       <MessageArea>{children}</MessageArea>
       <BtnArea>
         <Button
@@ -63,11 +71,30 @@ const MessageArea = styled.div`
   flex-basis: 100%;
 `;
 
+const ImgArea = styled.div`
+  position: absolute;
+  top: -28px;
+  left: 104px;
+  z-index: 2;
+`;
+
 const IconArea = styled.div`
   position: absolute;
   top: -28px;
   left: 104px;
   z-index: 2;
+  width: 52px;
+  height: 52px;
+  background-color: ${Color.gray100};
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  border-radius: 50%;
+  & svg {
+    width: 25px;
+    height: 25px;
+    color: ${Color.primary};
+  }
 `;
 
 const BtnArea = styled.div`

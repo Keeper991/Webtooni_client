@@ -1,10 +1,11 @@
 import axios from "axios";
+import store from "../redux/configureStore";
 import { getToken } from "./PermitAuth";
+import { actionCreators as userActions } from "../redux/modules/user";
 
 const isDevelopment = process.env.NODE_ENV === "development";
 const localHost = "http://localhost:3000";
-const deployHost =
-  "http://webtooniverse-host.s3-website.ap-northeast-2.amazonaws.com";
+const deployHost = "http://webtooni.co.kr";
 
 const getKakaoAddr = () => {
   const redirectURI = isDevelopment ? localHost : deployHost;
@@ -30,7 +31,10 @@ instance.interceptors.request.use((config) => {
 });
 
 instance.interceptors.response.use(null, (error) => {
-  console.log(error);
+  const { dispatch } = store;
+  if (error.response.status === 401) {
+    dispatch(userActions.logOut());
+  }
   return Promise.reject(error);
 });
 

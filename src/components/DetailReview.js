@@ -5,6 +5,7 @@ import { Image, Text, Button } from "../elements";
 import { Color } from "../shared/common";
 import { history } from "../redux/configureStore";
 import { actionCreators as reviewActions } from "../redux/modules/review";
+import { actionCreators as modalActions } from "../redux/modules/modal";
 import { EmptyHeart, FillHeart, Stars } from "../images/icons";
 import { PermitStrict } from "../shared/PermitAuth";
 import time from "../shared/time";
@@ -45,9 +46,6 @@ const DetailReview = (props) => {
       setReviewHeight("44px");
       isShowMore(true);
     }
-    console.log(reviewRef, "reviewRef");
-
-    // reviewGridRef.current.style.height = "auto";
   };
 
   //좋아요 토글
@@ -63,7 +61,7 @@ const DetailReview = (props) => {
         )
       );
     } else {
-      alert("로그인하세요~");
+      dispatch(modalActions.activeModal("needLogin"));
     }
   };
 

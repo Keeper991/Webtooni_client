@@ -29,7 +29,6 @@ const Login = (props) => {
               <Text fontWeight="medium">카카오 계정으로 로그인</Text>
             </Button>
           </a>
-          {/* <a onClick={() => alert("서비스 준비중입니다.")}> */}
           <a href={getNaverAddr()}>
             <Button bgColor={Color.naverGreen} border="none">
               <Image src={naver_symbol} shape="square" size="24px" />

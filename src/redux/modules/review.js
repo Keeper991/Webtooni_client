@@ -3,6 +3,7 @@ import { produce } from "immer";
 import { reviewAPI } from "../../shared/API";
 import { actionCreators as webtoonActions } from "./webtoon";
 import { actionCreators as userActions } from "./user";
+import { actionCreators as modalActions } from "./modal";
 
 const ADD_REVIEW_LIST = "review/ADD_REVIEW_LIST";
 const SET_PAGE_NUM = "review/SET_PAGE_NUM";
@@ -353,7 +354,7 @@ const removeReviewContentServer = (reviewId) => {
         alert("로그아웃 되었습니다");
       } else {
         console.log(err, "removeReviewError");
-        alert("리뷰 정보가 없어요");
+        dispatch(modalActions.activeModal("error"));
       }
       dispatch(loading(false));
     }

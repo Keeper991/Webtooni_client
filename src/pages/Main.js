@@ -422,8 +422,9 @@ const TopBannerBox = styled.div`
   width: 100%;
   height: 140px;
   background-image: url("${(props) => props.banner}");
-  margin-top: 0px;
-  background-size: cover;
+  margin-top: 10px;
+  background-size: contain;
+  background-repeat: no-repeat;
   background-position: center;
 `;
 

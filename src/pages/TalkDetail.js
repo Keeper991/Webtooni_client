@@ -4,6 +4,7 @@ import styled from "styled-components";
 import { Input, Text, Image } from "../elements";
 import { actionCreators as talkActions } from "../redux/modules/talk";
 import { actionCreators as talkCommentActions } from "../redux/modules/talkComment";
+import { actionCreators as modalActions } from "../redux/modules/modal";
 import { TalkComment } from "../components";
 import { Color } from "../shared/common";
 import { EmptyHeart, FillHeart, Comment, Delete } from "../images/icons";
@@ -46,7 +47,7 @@ const TalkDetail = (props) => {
   const [dltMsg, isDltMsg] = React.useState(false); //삭제 메세지
   const deletePost = () => {
     if (!is_login) {
-      alert("로그인하세요~");
+      dispatch(modalActions.activeModal("needLogin"));
     } else if (loading_talk) {
       return;
     } else {
@@ -58,7 +59,7 @@ const TalkDetail = (props) => {
   //좋아요 토글
   const toggleLike = () => {
     if (!is_login) {
-      alert("로그인하세요~");
+      dispatch(modalActions.activeModal("needLogin"));
     } else if (loading_talk) {
       return;
     } else {
@@ -78,11 +79,11 @@ const TalkDetail = (props) => {
 
   const uploadCmt = () => {
     if (!is_login) {
-      alert("로그인하세요~");
+      dispatch(modalActions.activeModal("needLogin"));
       return;
     }
     if (!comment) {
-      alert("내용을 입력하세요~");
+      dispatch(modalActions.activeModal("emptyContent"));
       return;
     }
     if (loading_talkComment) {
