@@ -134,7 +134,7 @@ const DetailReview = (props) => {
         ) : (
           <Grid position="absolute" bottom="45px" left="21px">
             <Text color={Color.gray400} _onClick={showAll}>
-              &nbsp;줄이기
+              &nbsp;&nbsp;줄이기
             </Text>
           </Grid>
         ))}
