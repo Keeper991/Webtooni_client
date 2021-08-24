@@ -114,7 +114,7 @@ const Main = () => {
       <BannerSliderBox>
         <Slick is_banner>
           <TopBannerBox banner={BannerImg1}></TopBannerBox>
-          <TopBannerBox banner={BannerImg2}></TopBannerBox>
+          <TopBannerBox green banner={BannerImg2}></TopBannerBox>
         </Slick>
       </BannerSliderBox>
 
@@ -426,6 +426,7 @@ const TopBannerBox = styled.div`
   background-size: contain;
   background-repeat: no-repeat;
   background-position: center;
+  ${(props) => (props.green ? `background-color: #01d358` : null)};
 `;
 
 const TitleGrid = styled.div`
@@ -451,8 +452,7 @@ const BannerSliderBox = styled.div`
   width: 100%;
   white-space: nowrap;
   overflow: hidden;
-  margin-top: -4px;
-  border-top: 8px solid ${Color.gray100};
+  margin-top: -6px;
 `;
 
 const CenterSliderBox = styled.div`
