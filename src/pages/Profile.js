@@ -24,7 +24,7 @@ const Profile = ({ location: { state } }) => {
   );
   const isChecking = useSelector((state) => state.user.isChecking);
 
-  const isEditFromUserPage = state.editProfile;
+  const isEditFromUserPage = state?.editProfile;
   const curUserName = useSelector((state) => state.user.info.userName);
   const curUserImg = useSelector((state) => state.user.info.userImg);
   const curGenres = useSelector((state) => state.user.info.genres);
