@@ -74,7 +74,7 @@ const socialLoginServer =
       infoRes.data.userName ? history.go(-2) : history.replace("/taste");
     } catch (e) {
       console.log(e);
-      dispatch(modalActions.activeModal("failLoadRedirect"));
+      dispatch(modalActions.activeModal("error"));
       dispatch(loading(false));
     }
   };

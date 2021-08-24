@@ -22,32 +22,40 @@ import profile_21 from "./profile_21.png";
 import profile_22 from "./profile_22.png";
 import profile_23 from "./profile_23.png";
 import profile_24 from "./profile_24.png";
+import profile_25 from "./profile_25.png";
+import profile_26 from "./profile_26.png";
+import profile_27 from "./profile_27.png";
+import profile_28 from "./profile_28.png";
 
 const profileImgList = [
   profile_1,
   profile_2,
   profile_3,
   profile_4,
-  profile_5,
+  // profile_5,
   profile_6,
-  profile_7,
+  // profile_7,
   profile_8,
   profile_9,
   profile_10,
   profile_11,
   profile_12,
   profile_13,
-  profile_14,
+  // profile_14,
   profile_15,
   profile_16,
-  profile_17,
+  // profile_17,
   profile_18,
   profile_19,
   profile_20,
-  profile_21,
+  // profile_21,
   profile_22,
   profile_23,
   profile_24,
+  // profile_25,
+  profile_26,
+  profile_27,
+  profile_28,
 ];
 
 export default profileImgList;

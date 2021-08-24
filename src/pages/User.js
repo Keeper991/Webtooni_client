@@ -196,7 +196,7 @@ const User = (props) => {
                 {userInfo.userName}
               </Text>
               <Text type="h2" color={Color.gray800}>
-                의 마이페이지
+                의 유저페이지
               </Text>
               <Button
                 padding="0"
@@ -209,7 +209,7 @@ const User = (props) => {
                     shareRef.current.select();
                     document.execCommand("copy");
                     shareRef.current.setSelectionRange(0, 0);
-                    alert("유저페이지 주소가 복사되었습니다.");
+                    dispatch(modalActions.activeModal("copyUrl"));
                   }}
                 />
               </Button>

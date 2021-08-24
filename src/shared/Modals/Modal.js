@@ -22,7 +22,10 @@ const Modal = () => {
   const { userName, userImg } = useSelector((state) => state.user.info);
   const { isActiveModal, modalKind } = useSelector((state) => state.modal);
   const handlers = {
-    logout: () => dispatch(userActions.logOut()),
+    logout: () => {
+      dispatch(userActions.logOut());
+      history.push("/");
+    },
     welcome: () => dispatch(userActions.shownWelcomeModal()),
     needLogin: () => history.push("/login"),
     noAuth: () => history.replace("/"),
