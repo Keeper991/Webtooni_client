@@ -250,13 +250,17 @@ const TalkDetail = (props) => {
               position="relative"
             >
               {/* 댓글 목록 */}
-              {comment_list.map((_, idx) => (
-                <TalkComment
-                  key={idx}
-                  comment_info={_}
-                  commentCount={post.talkCommentCount}
-                ></TalkComment>
-              ))}
+              {comment_list
+                .sort(function (a, b) {
+                  return a.createDate > b.createDate ? 1 : -1;
+                })
+                .map((_, idx) => (
+                  <TalkComment
+                    key={idx}
+                    comment_info={_}
+                    commentCount={post.talkCommentCount}
+                  ></TalkComment>
+                ))}
 
               {/* 댓글 작성 */}
               {/* {cmtInp && ( */}
@@ -265,7 +269,7 @@ const TalkDetail = (props) => {
                 justify="flex-start"
                 align="center"
                 width="100vw"
-                padding="10px 16px"
+                padding="13px 16px"
                 borderTop={`1px solid ${Color.gray200}`}
                 borderBottom={`1px solid ${Color.gray200}`}
                 position="fixed"
@@ -285,7 +289,7 @@ const TalkDetail = (props) => {
                   multiLine
                   taRef={commentRef}
                   width="93%"
-                  margin="0 0 0 9px"
+                  margin="-2px 0 0 9px"
                   padding="0"
                   height="24px"
                   placeholder="내용을 입력해 주세요"
@@ -296,7 +300,11 @@ const TalkDetail = (props) => {
                   _onChange={writeComment}
                   value={comment}
                 ></Input>
-                <Text fontWeight="medium" _onClick={uploadCmt}>
+                <Text
+                  margin="2px 0 0 0"
+                  fontWeight="medium"
+                  _onClick={uploadCmt}
+                >
                   작성
                 </Text>
               </Grid>
