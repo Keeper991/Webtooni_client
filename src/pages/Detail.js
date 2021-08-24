@@ -238,8 +238,8 @@ const Detail = (props) => {
               {subscribeList.includes(webtoon_id) ? (
                 <Grid
                   margin="0 12px 0 0"
-                  onClick={() => handleSubscribe(webtoon_id, true)}
-                  cursor
+                  onClick={() => handleSubscribe(webtoon_id, false)}
+                  cursor="true"
                   height="40px"
                   display="flex"
                   justify="center"
@@ -248,7 +248,6 @@ const Detail = (props) => {
                   padding="13px 16px"
                   bgColor={Color.primary}
                   border={`1px solid ${Color.primary}`}
-                  onClick={() => handleSubscribe(webtoon_id, false)}
                 >
                   <Check />
                   <Text
@@ -263,7 +262,7 @@ const Detail = (props) => {
                 <Grid
                   margin="0 12px 0 0"
                   onClick={() => handleSubscribe(webtoon_id, true)}
-                  cursor
+                  cursor="true"
                   height="40px"
                   display="flex"
                   justify="center"
@@ -298,7 +297,7 @@ const Detail = (props) => {
                     });
                   }
                 }}
-                cursor
+                cursor="true"
                 height="40px"
                 display="flex"
                 justify="center"
@@ -337,7 +336,7 @@ const Detail = (props) => {
               rel="noopener noreferrer"
             >
               <Grid
-                cursor
+                cursor="true"
                 width="100%"
                 height="40px"
                 display="flex"
