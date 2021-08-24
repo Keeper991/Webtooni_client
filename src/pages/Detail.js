@@ -458,10 +458,7 @@ const Detail = (props) => {
             )}
           </Grid>
 
-          <Grid
-            padding="22px 0 0 2px"
-            borderTop={`10px solid ${Color.gray100}`}
-          >
+          <Grid padding="22px 0 0 2px" borderTop={`8px solid ${Color.gray100}`}>
             <Grid display="flex" justify="space-between" align="center">
               <Text
                 padding="0 0 0 15px"

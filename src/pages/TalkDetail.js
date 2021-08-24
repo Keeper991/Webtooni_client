@@ -116,17 +116,17 @@ const TalkDetail = (props) => {
       {post && (
         <>
           <Grid
-            margin="-50px 0 0 0"
+            margin="-60px 0 0 0"
             bgColor={Color.gray100}
             position="relative"
-            // borderTop={`10px solid ${Color.gray100}`}
+            borderTop={`8px solid ${Color.gray100}`}
           >
             {/* 게시글 내용 */}
             <Grid
               bgColor={Color.white}
               width="100%"
               height="auto"
-              borderBottom={`10px solid ${Color.gray100}`}
+              borderBottom={`8px solid ${Color.gray100}`}
             >
               <Grid borderBottom={`1px solid ${Color.gray200}`} padding="20px">
                 <Text type="h2" color={Color.gray800}>

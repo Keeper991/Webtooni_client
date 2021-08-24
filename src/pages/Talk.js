@@ -59,7 +59,7 @@ const Talk = () => {
   const day = ("0" + date.getDate()).slice(-2);
   const today = year + "-" + month + "-" + day;
   return (
-    <Grid margin="-4px 0 0 0" borderTop={`10px solid ${Color.gray100}`}>
+    <Grid margin="-4px 0 0 0" borderTop={`8px solid ${Color.gray100}`}>
       {/* 포스트 작성 버튼 */}
       <Permit>
         <Grid
