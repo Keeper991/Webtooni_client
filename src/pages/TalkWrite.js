@@ -3,6 +3,7 @@ import { useSelector, useDispatch } from "react-redux";
 import styled from "styled-components";
 import { Button, Input, Text } from "../elements";
 import { actionCreators as talkActions } from "../redux/modules/talk";
+import { actionCreators as modalActions } from "../redux/modules/modal";
 import { history } from "../redux/configureStore";
 import { Color } from "../shared/common";
 import { BackButton } from "../images/icons";
@@ -31,14 +32,12 @@ const TalkWrite = (props) => {
   useEffect(() => {
     //로그인 안 했으면 메인으로 이동
     if (!is_login) {
-      alert("로그인 후 이용하세요~");
-      history.replace("/talk");
+      dispatch(modalActions.activeModal("needLogin"));
       return;
     }
     //유저가 포스트 작성자가 아닐 때 메인으로 이동
     if (post_id && userName !== prevPost.userName) {
-      alert("다른 사람의 글이에요");
-      history.replace("/talk");
+      dispatch(modalActions.activeModal("noAuth"));
       return;
     }
     //기존 포스트 상세 정보가 없으면 서버에 요청
@@ -51,7 +50,7 @@ const TalkWrite = (props) => {
   //포스트 등록
   const addPost = () => {
     if (!is_login) {
-      alert("로그인하세요~");
+      dispatch(modalActions.activeModal("needLogin"));
       return;
     }
     if (loading_talk) {
@@ -70,7 +69,7 @@ const TalkWrite = (props) => {
   //포스트 수정
   const editPost = () => {
     if (!is_login) {
-      alert("로그인하세요~");
+      dispatch(modalActions.activeModal("needLogin"));
       return;
     }
     if (loading_talk) {

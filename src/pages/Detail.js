@@ -6,6 +6,7 @@ import { WebToonCard, DetailReview, DetailStar } from "../components";
 import { actionCreators as webtoonActions } from "../redux/modules/webtoon";
 import { actionCreators as userActions } from "../redux/modules/user";
 import { actionCreators as reviewActions } from "../redux/modules/review";
+import { actionCreators as modalActions } from "../redux/modules/modal";
 import { Color } from "../shared/common";
 import {
   FillStar,
@@ -101,7 +102,7 @@ const Detail = (props) => {
   //내 리스트에 추가하기(구독하기)
   const handleSubscribe = (webtoon_id, bool) => {
     if (!is_login) {
-      alert("로그인하세요~");
+      dispatch(modalActions.activeModal("needLogin"));
     } else if (loading_user) {
       return;
     } else {
@@ -112,7 +113,7 @@ const Detail = (props) => {
   // 별 클릭 시, 내가 작성한 리뷰에 세팅.
   const handleStarClick = (userPointNumber) => {
     if (!is_login) {
-      alert("로그인이 필요한 서비스입니다. 로그인해주세요.");
+      dispatch(modalActions.activeModal("needLogin"));
     } else if (loading) {
       return;
     } else {
@@ -129,6 +130,7 @@ const Detail = (props) => {
             position="absolute"
             overflow="hidden"
             top="0"
+            left="0"
             width="100%"
             height="337px"
             zIndex="0"
@@ -138,6 +140,7 @@ const Detail = (props) => {
           <Grid
             position="absolute"
             top="0"
+            left="0"
             width="100%"
             height=""
             bgColor="rgba(0,0,0,0.3)"
@@ -147,6 +150,7 @@ const Detail = (props) => {
           <Grid
             position="absolute"
             top="0"
+            left="0"
             width="100%"
             height=""
             bg="linear-gradient(transparent, rgba(0,0,0,0.5))"
@@ -283,7 +287,7 @@ const Detail = (props) => {
               <Grid
                 _onClick={() => {
                   if (!is_login) {
-                    alert("로그인하세요~");
+                    dispatch(modalActions.activeModal("needLogin"));
                   } else {
                     history.push({
                       pathname: `/review/write/${webtoon_id}`,

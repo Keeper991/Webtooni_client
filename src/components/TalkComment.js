@@ -3,6 +3,7 @@ import { useSelector, useDispatch } from "react-redux";
 import styled from "styled-components";
 import { Button, Input, Text, Image } from "../elements";
 import { actionCreators as talkCommentActions } from "../redux/modules/talkComment";
+import { actionCreators as modalActions } from "../redux/modules/modal";
 import { Color } from "../shared/common";
 import { Permit, PermitStrict } from "../shared/PermitAuth";
 import profileImgList from "../images/profiles";
@@ -38,7 +39,7 @@ const TalkComment = (props) => {
       return;
     }
     if (!comment) {
-      alert("내용을 입력하세요~");
+      dispatch(modalActions.activeModal("emptyContent"));
       return;
     }
 

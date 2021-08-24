@@ -1,4 +1,5 @@
 import React from "react";
+import styled from "styled-components";
 import { ConnectedRouter } from "connected-react-router";
 import { Route } from "react-router-dom";
 import { history } from "../redux/configureStore";
@@ -37,28 +38,39 @@ function App() {
         <GlobalStyle></GlobalStyle>
         <ScrollToTop></ScrollToTop>
         <Header></Header>
-        <Route path="/" exact component={Main} />
-        <Route path="/detail/:id" exact component={Detail} />
-        <Route path="/toonlist/:id" exact component={ToonList} />
-        <Route path="/login" exact component={Login} />
-        <Route path="/taste" exact component={Taste} />
-        <Route path="/profile" exact component={Profile} />
-        <Route path="/recommendation" exact component={Recommendation} />
-        <Route path="/review/write/:webtoon_id" exact component={ReviewWrite} />
-        <Route path="/review" exact component={Review} />
-        <Route path="/review/search" exact component={ReviewSearch} />
-        <Route path="/search" exact component={Search} />
-        <Route path="/talk" exact component={Talk} />
-        <Route path="/talk/write" exact component={TalkWrite} />
-        <Route path="/talk/write/:id" exact component={TalkWrite} />
-        <Route path="/talk/detail/:id" exact component={TalkDetail} />
-        <Route path="/user/kakao" exact component={SocialLogin} />
-        <Route path="/user/naver" exact component={SocialLogin} />
-        <Route path="/userinfo/:userName" exact component={User} />
+        <Content>
+          <Route path="/" exact component={Main} />
+          <Route path="/detail/:id" exact component={Detail} />
+          <Route path="/toonlist/:id" exact component={ToonList} />
+          <Route path="/login" exact component={Login} />
+          <Route path="/taste" exact component={Taste} />
+          <Route path="/profile" exact component={Profile} />
+          <Route path="/recommendation" exact component={Recommendation} />
+          <Route
+            path="/review/write/:webtoon_id"
+            exact
+            component={ReviewWrite}
+          />
+          <Route path="/review" exact component={Review} />
+          <Route path="/review/search" exact component={ReviewSearch} />
+          <Route path="/search" exact component={Search} />
+          <Route path="/talk" exact component={Talk} />
+          <Route path="/talk/write" exact component={TalkWrite} />
+          <Route path="/talk/write/:id" exact component={TalkWrite} />
+          <Route path="/talk/detail/:id" exact component={TalkDetail} />
+          <Route path="/user/kakao" exact component={SocialLogin} />
+          <Route path="/user/naver" exact component={SocialLogin} />
+          <Route path="/userinfo/:userName" exact component={User} />
+        </Content>
       </ConnectedRouter>
       <Modal />
     </>
   );
 }
+
+const Content = styled.section`
+  max-width: 700px;
+  margin: 0 auto;
+`;
 
 export default App;

@@ -7,6 +7,7 @@ import { useDispatch, useSelector } from "react-redux";
 import { EmptyHeart, FillHeart, Stars } from "../images/icons";
 import { history } from "../redux/configureStore";
 import { actionCreators as reviewActions } from "../redux/modules/review";
+import { actionCreators as modalActions } from "../redux/modules/modal";
 import time from "../shared/time";
 import { kakao_webtoon_symbol, naver_webtoon_symbol } from "../images/symbols";
 import { over } from "lodash";
@@ -45,6 +46,7 @@ const ReviewCard = (props) => {
   };
 
   const handleLike = () => {
+    if (document.location.href.includes("userinfo")) return;
     if (is_login) {
       dispatch(
         reviewActions.likeReviewServer(
@@ -53,7 +55,7 @@ const ReviewCard = (props) => {
         )
       );
     } else {
-      alert("로그인이 필요한 서비스입니다.");
+      dispatch(modalActions.activeModal("needLogin"));
     }
   };
 

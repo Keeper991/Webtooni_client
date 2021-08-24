@@ -4,6 +4,7 @@ import { userAPI } from "../../shared/API";
 import { setToken, getToken, removeToken } from "../../shared/PermitAuth";
 import { actionCreators as webtoonActions } from "./webtoon";
 import { actionCreators as reviewActions } from "./review";
+import { actionCreators as modalActions } from "./modal";
 
 const ADD_REVIEW_LIKE_LIST = "user/ADD_REVIEW_LIKE_LIST";
 const ADD_REVIEW_LIKE = "user/ADD_REVIEW_LIKE";
@@ -73,9 +74,8 @@ const socialLoginServer =
       infoRes.data.userName ? history.go(-2) : history.replace("/taste");
     } catch (e) {
       console.log(e);
-      alert("로그인에 실패했습니다.");
+      dispatch(modalActions.activeModal("failLoadRedirect"));
       dispatch(loading(false));
-      history.replace("/");
     }
   };
 
@@ -143,7 +143,7 @@ const setUserServer =
       if (e.response?.status === 400) {
         alert("중복된 닉네임입니다.");
       } else {
-        alert("회원정보 등록에 실패했습니다.");
+        dispatch(modalActions.activeModal("error"));
       }
     }
   };
@@ -192,7 +192,7 @@ const getUserPageInfoServer = (userName) => async (dispatch, getState) => {
     }
   } catch (e) {
     console.log(e);
-    alert("존재하지 않는 사용자입니다.");
+    dispatch(modalActions.activeModal("failLoadRedirect"));
   }
 };
 

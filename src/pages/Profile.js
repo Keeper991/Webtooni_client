@@ -7,6 +7,7 @@ import profileImgList from "../images/profiles";
 import { ProgressStepBtns } from "../components";
 import { useDispatch, useSelector } from "react-redux";
 import { actionCreators as userActions } from "../redux/modules/user";
+import { actionCreators as modalActions } from "../redux/modules/modal";
 
 const TASTE_LS = "TASTE_LIST";
 const PROFILE_LS = "PROFILE";
@@ -51,7 +52,7 @@ const Profile = ({ location: { state } }) => {
       return;
     }
     if (!isChecking && !(isLogin === true && isShownWelcomeModal === false)) {
-      window.alert("잘못된 접근입니다.");
+      dispatch(modalActions.activeModal("noAuth"));
       history.push("/");
     }
   }, [isLogin, isChecking]);

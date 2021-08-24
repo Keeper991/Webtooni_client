@@ -3,6 +3,7 @@ import { produce } from "immer";
 import { talkAPI } from "../../shared/API";
 import { actionCreators as talkCommentActions } from "./talkComment";
 import { actionCreators as userActions } from "./user";
+import { actionCreators as modalActions } from "./modal";
 
 const SET_PAGE = "talk/SET_PAGE";
 const ADD_POST_ONE = "talk/ADD_POST_ONE";
@@ -142,8 +143,7 @@ const deletePostServer = (postId) => {
         alert("로그아웃 되었습니다");
         return;
       }
-      alert("포스트 정보가 없어요");
-      history.replace("/talk");
+      dispatch(modalActions.activeModal("error"));
       dispatch(loading(false));
     }
   };
@@ -159,8 +159,7 @@ const getPostOneServer = (post_id) => {
       dispatch(addPostOne(post, is_detail));
     } catch (err) {
       console.log(err, "getTalkOneError");
-      alert("게시글 정보가 없어요");
-      history.replace("/talk");
+      dispatch(modalActions.activeModal("failLoad"));
     }
   };
 };
