@@ -234,7 +234,7 @@ const Detail = (props) => {
               {subscribeList.includes(webtoon_id) ? (
                 <Grid
                   margin="0 12px 0 0"
-                  _onClick={() => handleSubscribe(webtoon_id, true)}
+                  onClick={() => handleSubscribe(webtoon_id, true)}
                   cursor
                   height="40px"
                   display="flex"
@@ -258,7 +258,7 @@ const Detail = (props) => {
               ) : (
                 <Grid
                   margin="0 12px 0 0"
-                  _onClick={() => handleSubscribe(webtoon_id, true)}
+                  onClick={() => handleSubscribe(webtoon_id, true)}
                   cursor
                   height="40px"
                   display="flex"
@@ -281,7 +281,7 @@ const Detail = (props) => {
               )}
 
               <Grid
-                _onClick={() => {
+                onClick={() => {
                   if (!is_login) {
                     alert("로그인하세요~");
                   } else {
