@@ -427,6 +427,11 @@ const TopBannerBox = styled.div`
   background-repeat: no-repeat;
   background-position: center;
   ${(props) => (props.green ? `background-color: #01d358` : null)};
+  image-rendering: -moz-crisp-edges;
+  image-rendering: -o-crisp-edges;
+  image-rendering: -webkit-optimize-contrast;
+  image-rendering: crisp-edges;
+  -ms-interpolation-mode: nearest-neighbor;
 `;
 
 const TitleGrid = styled.div`
