@@ -313,7 +313,7 @@ const InfoGrid = styled.div`
 
 const ReviewGrid = styled.div`
   width: 100%;
-  min-height: 100px;
+  min-height: 107px;
   ${(props) =>
     props.md ? `padding: 10px 0 10px 0` : `padding: 20px 0 20px 0`};
 `;

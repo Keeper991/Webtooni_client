@@ -37,7 +37,7 @@ const Search = () => {
 
   return (
     <React.Fragment>
-      <Container>
+      <Container border>
         <Input
           type="text"
           _onChange={handleSearch}
@@ -75,6 +75,8 @@ const BorderLine = styled.div`
 `;
 const Container = styled.div`
   padding: 16px;
+  ${(props) =>
+    props.border && `border-top: 8px solid ${Color.gray100}; margin-top: -4px;`}
 `;
 
 const TitleGrid = styled.div`
