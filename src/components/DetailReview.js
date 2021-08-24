@@ -160,7 +160,7 @@ const DetailReview = (props) => {
             type="caption"
             _onClick={() =>
               !loading &&
-              dispatch(reviewActions.removeReviewContentServer(reviewId))
+              dispatch(modalActions.activeModal("deleteReview", reviewId))
             }
             cursor="true"
           >

@@ -143,9 +143,13 @@ const Profile = ({ location: { state } }) => {
                 value={userName}
                 _onChange={(e) => setUserName(e.target.value)}
                 placeholder="닉네임 입력"
+                margin="0 0 5px 0"
               >
                 닉네임
               </Input>
+              <Text type="caption" color={Color.gray300} padding="0 0 0 5px">
+                닉네임은 3~8자리의 한글, 숫자, 영어, _만 사용가능합니다.
+              </Text>
             </UserNameArea>
           </>
         )}
@@ -171,6 +175,8 @@ const Profile = ({ location: { state } }) => {
 
 const Container = styled.div`
   max-width: 360px;
+  position: relative;
+  top: -50px;
   height: 502px;
   margin: 0 auto;
   display: flex;

@@ -271,13 +271,20 @@ export default handleActions(
   {
     [ADD_TOON_LIST]: (state, action) =>
       produce(state, (draft) => {
-        action.payload.toons.map((toon) => {
+        action.payload.toons.map((toon, index) => {
           const toonIdx = draft.toon_list.findIndex(
             (totalToon) => totalToon.toonId === toon.toonId
           );
           if (toonIdx === -1) {
             if (action.payload.category) {
               toon.filterConditions = [action.payload.category];
+            }
+            if (
+              action.payload.category === "webtooni" ||
+              action.payload.category === "naver" ||
+              action.payload.category === "kakao"
+            ) {
+              toon.rank = index;
             }
             draft.toon_list.push(toon);
           } else {
@@ -293,7 +300,15 @@ export default handleActions(
                     condition
                   ) === idx
               );
+              if (
+                action.payload.category === "webtooni" ||
+                action.payload.category === "naver" ||
+                action.payload.category === "kakao"
+              ) {
+                draft.toon_list[toonIdx].rank = index;
+              }
             }
+
             let genres = [...draft.toon_list[toonIdx].genres, ...toon.genres];
             genres = genres.filter(
               (genre, idx) => genres.indexOf(genre) === idx

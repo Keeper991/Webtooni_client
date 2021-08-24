@@ -34,6 +34,7 @@ instance.interceptors.response.use(null, (error) => {
   const { dispatch } = store;
   if (error.response.status === 401) {
     dispatch(userActions.logOut());
+    return;
   }
   return Promise.reject(error);
 });
