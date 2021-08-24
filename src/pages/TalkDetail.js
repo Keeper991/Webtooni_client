@@ -193,7 +193,14 @@ const TalkDetail = (props) => {
                 </Grid>
               </Grid>
               <Grid bgColor={Color.white} padding="28px 20px 24px" width="100%">
-                <Text color={Color.gray800} type="h2" padding="0 32px 55px 0">
+                <Text
+                  whiteSpace="pre-wrap"
+                  wordBreak="break-all"
+                  lineHeight="24px"
+                  color={Color.gray800}
+                  type="h2"
+                  padding="0 32px 55px 0"
+                >
                   {post.postContent}
                 </Text>
                 <Grid
