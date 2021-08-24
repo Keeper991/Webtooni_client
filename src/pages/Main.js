@@ -126,7 +126,7 @@ const Main = () => {
           border="none"
           bgColor={Color.white}
           color={Color.gray700}
-          fontSize="12px"
+          fontSize="13px"
           width="50px"
           _onClick={() => {
             history.push("/toonlist/webtooniverse_rank");
@@ -360,7 +360,7 @@ const Main = () => {
           border="none"
           bgColor={Color.white}
           color={Color.gray700}
-          fontSize="12px"
+          fontSize="13px"
           width="50px"
           _onClick={() => {
             history.push("/review");
@@ -371,7 +371,7 @@ const Main = () => {
       </TitleGrid>
 
       {is_best ? (
-        <SliderBox onClickCapture={handleOnItemClick}>
+        <SliderBox>
           <CardSliderBox>
             {best_review_list?.map((_, idx) => {
               return (
@@ -386,7 +386,7 @@ const Main = () => {
           </CardSliderBox>
         </SliderBox>
       ) : (
-        <SliderBox onClickCapture={handleOnItemClick}>
+        <SliderBox>
           <CardSliderBox>
             {new_review_list?.map((_, idx) => {
               return (
@@ -422,7 +422,7 @@ const TopBannerBox = styled.div`
   width: 100%;
   height: 140px;
   background-image: url("${(props) => props.banner}");
-  margin-top: 10px;
+  margin-top: 0px;
   background-size: cover;
   background-position: center;
 `;
@@ -450,12 +450,13 @@ const BannerSliderBox = styled.div`
   width: 100%;
   white-space: nowrap;
   overflow: hidden;
-  margin-top: 10px;
+  margin-top: -4px;
+  border-top: 8px solid ${Color.gray100};
 `;
 
 const CenterSliderBox = styled.div`
   width: 100%;
-  height: 300px;
+  height: 250px;
   padding-top: 10px;
   overflow: hidden;
   display: flex;
@@ -506,11 +507,11 @@ const ReviewTabGrid = styled.div`
 `;
 
 const BannerBox = styled.div`
-  width: 320px;
+  width: 100%auto;
   height: 66px;
   background-color: ${Color.gray100};
   padding: 0 16px;
-  margin: 40px auto 40px;
+  margin: 40px 20px 40px;
   border-radius: 8px;
   display: flex;
   flex-direction: column;

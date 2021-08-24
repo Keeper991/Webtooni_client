@@ -4,24 +4,37 @@ import { Text, Image, Button } from "../elements";
 import { Color } from "../shared/common";
 import profileImgList from "../images/profiles";
 import { useDispatch, useSelector } from "react-redux";
-import { HeartFilled } from "@ant-design/icons";
+import { EmptyHeart, FillHeart, Stars } from "../images/icons";
 import { history } from "../redux/configureStore";
 import { actionCreators as reviewActions } from "../redux/modules/review";
 import time from "../shared/time";
 import { kakao_webtoon_symbol, naver_webtoon_symbol } from "../images/symbols";
-import Starts from "../images/icons/Stars.png";
+import { over } from "lodash";
 
 const ReviewCard = (props) => {
   const dispatch = useDispatch();
   const [showMore, setShowMore] = React.useState(false);
-
+  const [overflowActive, setOverflowActive] = React.useState(false);
   const is_login = useSelector((state) => state.user.is_login);
   const toon_list = useSelector((state) => state.webtoon.toon_list);
   const toonInfo = toon_list.find((toon) => toon.toonId === props.toonId);
+  const textRef = React.useRef();
+
+  const is_ellipsis_active = (e) => {
+    return e?.offsetHeight < e?.scrollHeight || e?.offsetWidth < e?.scrollWidth;
+  };
 
   React.useEffect(() => {
     setShowMore(false);
   }, []);
+
+  React.useEffect(() => {
+    if (is_ellipsis_active(textRef.current)) {
+      setOverflowActive(true);
+      return;
+    }
+    setOverflowActive(false);
+  }, [is_ellipsis_active]);
 
   const handleTextToggle = () => {
     if (showMore) {
@@ -49,6 +62,65 @@ const ReviewCard = (props) => {
     return <></>;
   }
 
+  if (props.md) {
+    return (
+      <React.Fragment>
+        <MdContainer>
+          <PaddingBox md>
+            <FlexGrid>
+              <FlexGrid>
+                <Image
+                  src={profileImgList[props.userImg]}
+                  shape="circle"
+                  size="40px"
+                ></Image>
+                <Text type="caption" margin="0 10px">
+                  {props.userName}
+                </Text>
+                <Text type="caption" color={Color.gray500}>
+                  {props.createDate}
+                </Text>
+              </FlexGrid>
+            </FlexGrid>
+
+            <ReviewGrid md>
+              {showMore ? (
+                <div>
+                  <ReivewTextMore>{props.reviewContent}</ReivewTextMore>
+                  <Button
+                    bgColor="transparent"
+                    color={Color.gray400}
+                    padding="0"
+                    margin="5px 0 5px 4px"
+                    fontSize="12px"
+                    border="none"
+                    _onClick={handleTextToggle}
+                  >
+                    줄이기
+                  </Button>
+                </div>
+              ) : (
+                <ReivewText ref={textRef}>{props.reviewContent}</ReivewText>
+              )}
+              {overflowActive && !showMore ? (
+                <Button
+                  bgColor="transparent"
+                  color={Color.gray400}
+                  padding="0"
+                  margin="5px 0 0 4px"
+                  fontSize="12px"
+                  border="none"
+                  _onClick={handleTextToggle}
+                >
+                  더보기
+                </Button>
+              ) : null}
+            </ReviewGrid>
+          </PaddingBox>
+        </MdContainer>
+      </React.Fragment>
+    );
+  }
   return (
     <React.Fragment>
       <Container main={props.main}>
@@ -69,19 +141,29 @@ const ReviewCard = (props) => {
                 </Text>
               </ColumnGrid>
             </FlexGrid>
-            <StarPoint
-              stars={Starts}
-              points={props.userPointNumber}
-            ></StarPoint>
+            <StarPoint stars={Stars} points={props.userPointNumber}></StarPoint>
           </FlexGrid>
 
           <ReviewGrid>
             {showMore ? (
-              <ReivewTextMore>{props.reviewContent}</ReivewTextMore>
+              <div>
+                <ReivewTextMore>{props.reviewContent}</ReivewTextMore>
+                <Button
+                  bgColor="transparent"
+                  color={Color.gray400}
+                  padding="0"
+                  margin="5px 0 5px 4px"
+                  fontSize="12px"
+                  border="none"
+                  _onClick={handleTextToggle}
+                >
+                  줄이기
+                </Button>
+              </div>
             ) : (
-              <ReivewText>{props.reviewContent}</ReivewText>
+              <ReivewText ref={textRef}>{props.reviewContent}</ReivewText>
             )}
-            {props.reviewContent.length >= 47 ? (
+            {overflowActive && !showMore ? (
               <Button
                 bgColor="transparent"
                 color={Color.gray400}
@@ -91,39 +173,49 @@ const ReviewCard = (props) => {
                 border="none"
                 _onClick={handleTextToggle}
               >
-                {showMore ? "줄이기" : "더보기"}
+                더보기
               </Button>
             ) : null}
           </ReviewGrid>
-
-          {props.like_list?.indexOf(props.reviewId) === -1 ? (
+          {props.main ? (
             <FlexGrid flexStart>
-              <HeartFilled
-                onClick={handleLike}
+              <FillHeart
                 style={{
-                  fontSize: "18px",
-                  color: ` ${Color.gray200}`,
                   marginRight: "5px",
                 }}
-              ></HeartFilled>
-              <Text type="num" fontSize="12px" color={Color.gray800}>
-                {props.likeCount}
-              </Text>
-            </FlexGrid>
-          ) : (
-            <FlexGrid flexStart>
-              <HeartFilled
-                onClick={handleLike}
-                style={{
-                  fontSize: "18px",
-                  color: ` ${Color.primary}`,
-                  marginRight: "5px",
-                }}
-              ></HeartFilled>
+              ></FillHeart>
               <Text type="num" fontSize="12px" color={Color.primary}>
                 {props.likeCount}
               </Text>
             </FlexGrid>
+          ) : (
+            <div>
+              {props.like_list?.indexOf(props.reviewId) === -1 ? (
+                <FlexGrid flexStart>
+                  <EmptyHeart
+                    onClick={handleLike}
+                    style={{
+                      marginRight: "5px",
+                    }}
+                  ></EmptyHeart>
+                  <Text type="num" fontSize="12px" color={Color.gray800}>
+                    {props.likeCount}
+                  </Text>
+                </FlexGrid>
+              ) : (
+                <FlexGrid flexStart>
+                  <FillHeart
+                    onClick={handleLike}
+                    style={{
+                      marginRight: "5px",
+                    }}
+                  ></FillHeart>
+                  <Text type="num" fontSize="12px" color={Color.primary}>
+                    {props.likeCount}
+                  </Text>
+                </FlexGrid>
+              )}
+            </div>
           )}
         </PaddingBox>
         <FlexToonGrid
@@ -178,8 +270,17 @@ const Container = styled.div`
   ${(props) => (props.main ? `margin: 0px` : `margin: 0 0 20px 0`)};
 `;
 
+const MdContainer = styled.div`
+  width: 100%;
+  height: 100%;
+  background: ${Color.gray100};
+  display: block;
+  border-radius: 15px;
+  border: 1px solid ${Color.gray200};
+`;
+
 const PaddingBox = styled.div`
-  width: 338px;
+  ${(props) => (props.md ? `width: 100%` : `width: 338px`)};
   padding: 16px;
 `;
 
@@ -211,10 +312,11 @@ const InfoGrid = styled.div`
 const ReviewGrid = styled.div`
   width: 100%;
   min-height: 100px;
-  padding: 20px 0 5px 0;
+  ${(props) =>
+    props.md ? `padding: 10px 0 10px 0` : `padding: 20px 0 20px 0`};
 `;
 
-const ReivewText = styled.div`
+const ReivewText = styled.p`
   width: 100%;
   font-size: 14px;
   white-space: normal;
@@ -228,7 +330,7 @@ const ReivewText = styled.div`
   padding: 0 4px;
 `;
 
-const ReivewTextMore = styled.div`
+const ReivewTextMore = styled.p`
   width: 100%;
   font-size: 14px;
   white-space: normal;

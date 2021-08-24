@@ -18,34 +18,37 @@ const OfferCard = (props) => {
         </ToonImgGrid>
 
         <InfoGrid>
-          <Text
-            type="h1"
-            fontWeight="bold"
-            color={Color.white}
-            margin="0 0 8px 0"
-          >
-            {props.toonTitle}
-          </Text>
-          <FlexGrid flexStart>
-            <Text type="caption" color={Color.white}>
-              {props.toonAuthor}
+          <Image src={props.toonImg} width="120px" height="120px"></Image>
+          <DDD>
+            <Text
+              type="h1"
+              fontWeight="bold"
+              color={Color.white}
+              margin="0 0 8px 0"
+            >
+              {props.toonTitle}
             </Text>
-            <FlexGrid>
-              <FillStar
-                width="12px"
-                height="12px"
-                style={{ margin: "0 2px 0 7px" }}
-              ></FillStar>
-              <Text
-                type="num"
-                color={Color.white}
-                fontWeight="bold"
-                fontSize="12px"
-              >
-                {props.toonAvgPoint}
+            <FlexGrid flexStart>
+              <Text type="caption" color={Color.white}>
+                {props.toonAuthor}
               </Text>
+              <FlexGrid>
+                <FillStar
+                  width="12px"
+                  height="12px"
+                  style={{ margin: "0 2px 0 7px" }}
+                ></FillStar>
+                <Text
+                  type="num"
+                  color={Color.white}
+                  fontWeight="bold"
+                  fontSize="12px"
+                >
+                  {props.toonAvgPoint}
+                </Text>
+              </FlexGrid>
             </FlexGrid>
-          </FlexGrid>
+          </DDD>
         </InfoGrid>
       </Container>
     </React.Fragment>
@@ -54,9 +57,9 @@ const OfferCard = (props) => {
 
 const Container = styled.div`
   width: 100%;
-  height: 282px;
+  height: 280px;
   position: relative;
-  margin: 10px 0;
+  margin: 8px 0;
   overflow: hidden;
 `;
 
@@ -64,7 +67,7 @@ const ToonImgGrid = styled.div`
   width: 100%;
   height: 100%;
   background-image: url("${(props) => props.src}");
-  filter: blur(2px);
+  filter: blur(5px);
   background-size: cover;
   background-position: center;
 
@@ -84,9 +87,14 @@ const ToonImgGrid = styled.div`
 const InfoGrid = styled.div`
   position: absolute;
   left: 20px;
-  bottom: 60px;
+  bottom: 50px;
   z-index: 2;
   text-shadow: 2px 1px 10px rgba(0, 0, 0, 0.7);
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  background-color: rgba(0, 0, 0, 0.7);
+  width: 100%;
 `;
 
 const FlexGrid = styled.div`
@@ -94,4 +102,7 @@ const FlexGrid = styled.div`
   justify-content: space-between;
   ${(props) => props.flexStart && `justify-content: start;`};
 `;
+
+const DDD = styled.div``;
+
 export default OfferCard;
