@@ -139,7 +139,7 @@ const FlexGrid = styled.div`
   display: flex;
   width: 100%;
   height: 72px;
-  margin-top: 20px;
+  margin-top: -4px;
   padding: 0 16px;
   align-items: center;
   justify-content: space-between;
