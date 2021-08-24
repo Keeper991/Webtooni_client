@@ -171,7 +171,7 @@ const TalkComment = (props) => {
                 color={Color.gray600}
                 margin="0 20px 0 0"
                 _onClick={selectEdit}
-                cursor
+                cursor="true"
                 type="caption"
               >
                 수정
@@ -179,7 +179,7 @@ const TalkComment = (props) => {
               <Text
                 color={Color.gray600}
                 _onClick={deleteComment}
-                cursor
+                cursor="true"
                 type="caption"
               >
                 삭제

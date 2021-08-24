@@ -7,12 +7,14 @@ import {
   MehOutlined,
   WarningOutlined,
   LockOutlined,
+  DeleteOutlined,
   LoadingOutlined,
   CheckOutlined,
 } from "@ant-design/icons";
 import { useDispatch, useSelector } from "react-redux";
 import { actionCreators as userActions } from "../../redux/modules/user";
 import { actionCreators as modalActions } from "../../redux/modules/modal";
+import { actionCreators as talkActions } from "../../redux/modules/talk";
 import profileImgList from "../../images/profiles";
 import { Text } from "../../elements";
 import { history } from "../../redux/configureStore";
@@ -20,7 +22,9 @@ import { history } from "../../redux/configureStore";
 const Modal = () => {
   const dispatch = useDispatch();
   const { userName, userImg } = useSelector((state) => state.user.info);
-  const { isActiveModal, modalKind } = useSelector((state) => state.modal);
+  const { isActiveModal, modalKind, data } = useSelector(
+    (state) => state.modal
+  );
   const handlers = {
     logout: () => {
       dispatch(userActions.logOut());
@@ -30,6 +34,7 @@ const Modal = () => {
     needLogin: () => history.push("/login"),
     noAuth: () => history.replace("/"),
     failLoadRedirect: () => history.goBack(),
+    deletePost: () => dispatch(talkActions.deletePostServer(data)),
   };
   const kinds = {
     logout: (
@@ -97,6 +102,11 @@ const Modal = () => {
         <br />
         <Text>새로고침 후 다시 시도해주세요.</Text>
       </AlertModal>
+    ),
+    deletePost: (
+      <ConfirmModal Icon={DeleteOutlined} handleConfirm={handlers[modalKind]}>
+        <Text>게시글을 삭제하시겠습니까?</Text>
+      </ConfirmModal>
     ),
   };
   return (

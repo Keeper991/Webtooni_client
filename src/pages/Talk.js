@@ -66,7 +66,7 @@ const Talk = () => {
           position="fixed"
           bottom="10px"
           right="10px"
-          cursor
+          cursor="true"
           zIndex="2"
           onClick={() => history.push("/talk/write")}
         >
@@ -100,9 +100,10 @@ const Talk = () => {
       >
         {post_list.map((post, idx) => (
           <Grid
+            key={idx}
             borderBottom={`1px solid ${Color.gray100}`}
             padding="20px 0 10px"
-            cursor
+            cursor="true"
             onClick={() => history.push(`/talk/detail/${post.postId}`)}
           >
             <Text color={Color.gray800}>{post?.postTitle}</Text>
@@ -207,6 +208,7 @@ const Talk = () => {
               if (page_btn_no <= last_page) {
                 return (
                   <Button
+                    key={idx}
                     shape="circle"
                     size="32px"
                     margin="5px"

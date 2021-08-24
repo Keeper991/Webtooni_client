@@ -177,7 +177,7 @@ const TalkDetail = (props) => {
                     align="center"
                     bgColor={Color.white}
                     onClick={toggleLike}
-                    cursor
+                    cursor="true"
                   >
                     {post.ilike && is_login ? <FillHeart /> : <EmptyHeart />}{" "}
                     <Text
@@ -223,7 +223,7 @@ const TalkDetail = (props) => {
                           _onClick={() => {
                             props.history.push(`/talk/write/${post_id}`);
                           }}
-                          cursor
+                          cursor="true"
                           type="caption"
                         >
                           수정
@@ -231,8 +231,15 @@ const TalkDetail = (props) => {
                         <Text
                           color={Color.gray600}
                           type="caption"
-                          _onClick={() => isDltMsg(true)}
-                          cursor
+                          _onClick={() =>
+                            dispatch(
+                              modalActions.activeModal(
+                                "deletePost",
+                                parseInt(post_id)
+                              )
+                            )
+                          }
+                          cursor="true"
                         >
                           삭제
                         </Text>

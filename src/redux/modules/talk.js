@@ -111,7 +111,7 @@ const editPostServer = (postId, postTitle, postContent) => {
       });
       const post_one = { postId, postTitle, postContent };
       dispatch(editPostOne(post_one));
-      history.replace("/talk");
+      history.replace(`/talk/detail/${postId}`);
       dispatch(loading(false));
     } catch (err) {
       console.log(err, "editTalkError");

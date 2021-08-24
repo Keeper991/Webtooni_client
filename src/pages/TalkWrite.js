@@ -105,7 +105,7 @@ const TalkWrite = (props) => {
         {/* 뒤로가기 */}
         <Grid
           margin="5px 0 0 0"
-          cursor
+          cursor="true"
           onClick={() => {
             history.go(-1);
           }}
