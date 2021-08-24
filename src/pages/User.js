@@ -408,11 +408,12 @@ const User = (props) => {
 };
 
 const Container = styled.section`
+  margin: -4px;
   background-color: ${Color.gray100};
   border-top: 0.1px solid ${Color.gray100};
   & > section {
     padding: 19px 16px;
-    margin-top: 10px;
+    margin-top: 8px;
     background-color: ${Color.white};
   }
 `;

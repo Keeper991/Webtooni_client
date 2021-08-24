@@ -219,7 +219,7 @@ const Header = (props) => {
 
   return (
     <React.Fragment>
-      <Container isHide={hide} topTalk={isTalk && pageY <= 10}>
+      <Container isHide={hide} isTop={pageY <= 10}>
         <HeaderWrap>
           <Button
             _onClick={() => {
@@ -332,7 +332,7 @@ const Container = styled.div`
   position: fixed;
   transition: 0.4s ease;
   box-shadow: ${(props) =>
-    props.topTalk
+    props.isTop
       ? `0`
       : `rgba(0, 0, 0, 0.05) 0px 6px 24px 0px,
     rgba(0, 0, 0, 0.08) 0px 0px 0px 1px;`};
@@ -386,10 +386,7 @@ const SimpleContainer = styled.div`
       ? `border-bottom: 1px solid ${Color.gray100}; box-shadow: rgba(0, 0, 0, 0.05) 0px 6px 24px 0px,
     rgba(0, 0, 0, 0.08) 0px 0px 0px 1px; background-color: ${Color.white} `
       : ""};
-  ${(props) =>
-    props.topTalk
-      ? `border-bottom:10px solid ${Color.gray100};box-sizing: content-box; `
-      : ""};
+
   ${(props) =>
     props.underTalk
       ? `border-bottom:0.5px solid ${Color.gray100}; box-shadow: rgba(0, 0, 0, 0.05) 0px 6px 24px 0px,
