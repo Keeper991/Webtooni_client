@@ -232,47 +232,12 @@ const Recommendation = () => {
             </TextGrid>
           </InfoGrid>
         </FlexToonGrid>
-        {/* <MdCommentBox> */}
-        {/* <FlexGrid>
-            <Image
-              size="32px"
-              shape="circle"
-              src={profileImgList[md_review.userImg]}
-            ></Image>
-            <Text type="caption" margin="0 7px">
-              {md_review.userName}
-            </Text>
-            <Text type="caption" color={Color.gray400}>
-              {md_review.createDate}
-            </Text>
-          </FlexGrid>
 
-          <ReviewGrid>
-            {showMore ? (
-              <ReivewTextMore>{md_review?.reviewContent}</ReivewTextMore>
-            ) : (
-              <ReivewText>{md_review?.reviewContent}</ReivewText>
-            )}
-            {md_review.reviewContent?.length >= 73 ? (
-              <Button
-                bgColor="transparent"
-                color={Color.gray400}
-                padding="0"
-                margin="10px 0 0 0"
-                fontSize="12px"
-                border="none"
-                _onClick={handleTextToggle}
-              >
-                {showMore ? "줄이기" : "더보기"}
-              </Button>
-            ) : null}
-          </ReviewGrid> */}
         <ReviewGrid>
           {md_review.map((_, idx) => {
             return <ReviewCard md {..._} key={idx}></ReviewCard>;
           })}
         </ReviewGrid>
-        {/* </MdCommentBox> */}
 
         <TitleGrid>
           <Text type="h2" fontWeight="bold" color={Color.gray800}>
@@ -443,45 +408,14 @@ const Recommendation = () => {
             </Text>
           </TextGrid>
 
-          <Text></Text>
         </InfoGrid>
       </FlexToonGrid>
-      <MdCommentBox>
-        <FlexGrid>
-          <Image
-            size="32px"
-            shape="circle"
-            src={profileImgList[md_review.userImg]}
-          ></Image>
-          <Text type="caption" margin="0 7px">
-            {md_review.userName}
-          </Text>
-          <Text type="caption" color={Color.gray400}>
-            {md_review.createDate}
-          </Text>
-        </FlexGrid>
 
-        <ReviewGrid>
-          {showMore ? (
-            <ReivewTextMore>{md_review?.reviewContent}</ReivewTextMore>
-          ) : (
-            <ReivewText>{md_review?.reviewContent}</ReivewText>
-          )}
-          {md_review.reviewContent?.length >= 73 ? (
-            <Button
-              bgColor="transparent"
-              color={Color.gray400}
-              padding="0"
-              margin="5px 0 0 0"
-              fontSize="12px"
-              border="none"
-              _onClick={handleTextToggle}
-            >
-              {showMore ? "줄이기" : "더보기"}
-            </Button>
-          ) : null}
-        </ReviewGrid>
-      </MdCommentBox>
+      <ReviewGrid>
+        {md_review.map((_, idx) => {
+          return <ReviewCard md {..._} key={idx}></ReviewCard>;
+        })}
+      </ReviewGrid>
 
       <TitleGrid>
         <Text type="h2" fontWeight="bold" color={Color.gray800}>
@@ -573,82 +507,6 @@ const Recommendation = () => {
           </CardSliderBox>
         )}
       </SliderBox>
-
-      {/* <OfferCard {...for_user_list} user_name={user_name}></OfferCard>
-
-      <BannerBox>
-        <Text margin="5px 0 0 0" type="small" color={Color.gray700}>
-          좋아하실만한 웹툰을 추천해 드릴게요.
-        </Text>
-        <FlexGrid>
-          <Text fontWeight="bold" color={Color.gray700}>
-            재밌게 본 웹툰의 리뷰를 등록해보세요!
-          </Text>
-          <Image
-            shape="square"
-            size="16px"
-            margin="0 5px"
-            src="https://lh3.googleusercontent.com/pw/AM-JKLWPhtnQViH6A2gkyW-RSm0DPzry9dNgxBNfUplfxinXpWyXDHotbccu1JiRG8NoxAgreYwSXnKylBkgJ2OUew1FEhCanaMevg_G-Prks9-3ooXIluMWS9n6q-j2m4PAe4IY9o6t5Vcg6F51UfY7x2ms=w16-h17-no?authuser=0"
-          ></Image>
-        </FlexGrid>
-      </BannerBox>
-
-      <TitleGrid>
-        <Text type="h2" fontWeight="bold" color={Color.gray800}>
-          비슷한 취향의 사용자가 본 웹툰
-        </Text>
-        {is_login ? (
-          <Button
-            border="none"
-            bgColor={Color.white}
-            color={Color.gray700}
-            fontSize="12px"
-            width="50px"
-            _onClick={() => {
-              history.push("/toonlist/similar_toon");
-            }}
-          >
-            더보기
-          </Button>
-        ) : null}
-      </TitleGrid>
-
-      {is_login ? (
-        <SliderBox>
-          {is_loading || similar_user_list.length === 0 ? (
-            <Slick is_infinite>
-              {Array.from({ length: 10 }).map((_, idx) => {
-                return <SkeletonCard key={idx}></SkeletonCard>;
-              })}
-            </Slick>
-          ) : (
-            <Slick is_infinite>
-              {similar_user_list?.map((_, idx) => {
-                return <WebToonCard key={idx} {..._}></WebToonCard>;
-              })}
-            </Slick>
-          )}
-        </SliderBox>
-      ) : (
-        <HiddenBlurBox>
-          <BlurText>지금 로그인하고 맞춤 웹툰 추천 받기!</BlurText>
-          <BlurBox>
-            {is_loading || similar_user_list.length === 0 ? (
-              <Slick is_infinite>
-                {Array.from({ length: 10 }).map((_, idx) => {
-                  return <SkeletonCard key={idx}></SkeletonCard>;
-                })}
-              </Slick>
-            ) : (
-              <Slick is_infinite>
-                {similar_user_list?.map((_, idx) => {
-                  return <WebToonCard key={idx} {..._}></WebToonCard>;
-                })}
-              </Slick>
-            )}
-          </BlurBox>
-        </HiddenBlurBox>
-      )} */}
     </React.Fragment>
   );
 };
@@ -763,7 +621,7 @@ const FlexReviewerGrid = styled.div`
   display: flex;
   align-items: center;
   width: 100%;
-  margin: 20px 0;
+  margin: 10px 0 20px 0;
   padding: 0 16px;
 `;
 
@@ -782,47 +640,13 @@ const FlexInfoGrid = styled.div`
   width: 70%;
   height: 48px;
   justify-content: space-around;
-
   padding: 4px;
-`;
-
-const MdCommentBox = styled.div`
-  width: 100%auto;
-  min-height: 100px;
-  padding: 16px;
-  background-color: ${Color.gray100};
-  margin: 20px 16px 40px;
-  border-radius: 8px;
-  display: flex;
-  flex-direction: column;
-  justify-content: center;
 `;
 
 const ReviewGrid = styled.div`
   width: 100%;
   padding: 0 16px;
   height: auto;
-`;
-
-const ReivewText = styled.div`
-  width: 100%;
-  font-size: 14px;
-  white-space: normal;
-  display: -webkit-box;
-  -webkit-line-clamp: 3;
-  -webkit-box-orient: vertical;
-  overflow: hidden;
-  word-break: break-word;
-  line-height: 1.6em;
-  max-height: 4.8em;
-`;
-
-const ReivewTextMore = styled.div`
-  width: 100%;
-  font-size: 14px;
-  white-space: normal;
-  word-break: break-word;
-  line-height: 1.6em;
 `;
 
 const MdInfoBox = styled.div`
@@ -835,27 +659,40 @@ const MdInfoBox = styled.div`
   padding: 0 0 0 20px;
 `;
 
-const HiddenBlurBox = styled.div`
-  position: relative;
-  white-space: nowrap;
-  overflow: hidden;
-  margin: 10px 0 50px 0;
+// const HiddenBlurBox = styled.div`
+//   position: relative;
+//   white-space: nowrap;
+//   overflow: hidden;
+//   margin: 10px 0 50px 0;
 
-  &:before {
-    content: "";
-    display: block;
-    position: absolute;
-    z-index: 1;
-    width: 100%;
-    height: 100%;
-    background-color: ${Color.black};
-    opacity: 0.5;
-  }
-`;
+//   &:before {
+//     content: "";
+//     display: block;
+//     position: absolute;
+//     z-index: 1;
+//     width: 100%;
+//     height: 100%;
+//     background-color: ${Color.black};
+//     opacity: 0.5;
+//   }
+// `;
 
-const BlurBox = styled.div`
-  filter: blur(1.5px);
-`;
+// const BlurBox = styled.div`
+//   filter: blur(1.5px);
+// `;
+
+// const BlurText = styled.p`
+//   width: 100%;
+//   height: 100%;
+//   display: flex;
+//   position: absolute;
+//   justify-content: center;
+//   align-items: center;
+//   font-size: 16px;
+//   font-weight: bold;
+//   color: #fff;
+//   z-index: 5;
+// `;
 
 const TextGrid = styled.div`
   width: 100%;
@@ -865,19 +702,6 @@ const TextGrid = styled.div`
     text-overflow: ellipsis;
     white-space: nowrap;
   }
-`;
-
-const BlurText = styled.p`
-  width: 100%;
-  height: 100%;
-  display: flex;
-  position: absolute;
-  justify-content: center;
-  align-items: center;
-  font-size: 16px;
-  font-weight: bold;
-  color: #fff;
-  z-index: 5;
 `;
 
 const CardSliderBox = styled.div`
