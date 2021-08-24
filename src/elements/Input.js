@@ -90,7 +90,7 @@ const ElLabel = styled.label`
   display: flex;
   flex-direction: column;
   & > span {
-    margin-bottom: 4px;
+    margin-bottom: 8px;
   }
   width: ${(props) => props.width};
 `;
