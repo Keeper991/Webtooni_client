@@ -220,6 +220,10 @@ const OfferSliderWrap = styled(Slider)`
   .slick-dots li button:focus:before {
     opacity: 0.25;
   }
+
+  .slick-slide {
+    margin-top: -10px !important;
+  }
 `;
 
 const CenterSliderWrap = styled(Slider)`
