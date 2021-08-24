@@ -3,8 +3,7 @@ import { getToken } from "./PermitAuth";
 
 const isDevelopment = process.env.NODE_ENV === "development";
 const localHost = "http://localhost:3000";
-const deployHost =
-  "http://webtooniverse-host.s3-website.ap-northeast-2.amazonaws.com";
+const deployHost = "http://webtooni.co.kr";
 
 const getKakaoAddr = () => {
   const redirectURI = isDevelopment ? localHost : deployHost;
