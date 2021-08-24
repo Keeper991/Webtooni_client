@@ -44,11 +44,12 @@ const Search = () => {
           value={search_value}
           placeholder="웹툰명을 검색해주세요"
         ></Input>
-
-        <Text tag="p" fontWeight="bold" margin="30px 0 0 0">
+      </Container>
+      <BorderLine>
+        <Text tag="p" fontWeight="bold">
           검색 결과
         </Text>
-      </Container>
+      </BorderLine>
       <ListBox>
         {search_result?.map((_, idx) => {
           return <ToonListCard key={idx} {..._}></ToonListCard>;
@@ -66,6 +67,12 @@ const Search = () => {
 };
 
 const ListBox = styled.section``;
+
+const BorderLine = styled.div`
+  margin-top: 10px;
+  border-top: 1px solid ${Color.gray100};
+  padding: 16px;
+`;
 const Container = styled.div`
   padding: 16px;
 `;

@@ -6,6 +6,7 @@ import { actionCreators as webtoonActions } from "../redux/modules/webtoon";
 import { SkeletonCard, ToonListCard } from "../components";
 import { LeftOutlined } from "@ant-design/icons";
 import { history } from "../redux/configureStore";
+import { Color } from "../shared/common";
 
 const ToonList = (props) => {
   const toon_list_name = props.match.params.id;
@@ -299,6 +300,8 @@ const ToonList = (props) => {
 
 const Container = styled.div`
   width: 100%;
+  margin-top: -4px;
+  border-top: 8px solid ${Color.gray100};
 `;
 
 const FlexGrid = styled.div`

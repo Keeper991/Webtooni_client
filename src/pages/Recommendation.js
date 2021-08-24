@@ -20,15 +20,6 @@ const Recommendation = () => {
   const best_reviewer_info = useSelector(
     (state) => state.reviewer.best_reviewer_offer_user_info
   );
-  const [showMore, setShowMore] = React.useState(false);
-
-  const handleTextToggle = () => {
-    if (showMore) {
-      setShowMore(false);
-    } else {
-      setShowMore(true);
-    }
-  };
 
   // webtoon lists
   const best_reviewer_list = toon_list.filter((toon) =>
@@ -339,20 +330,23 @@ const Recommendation = () => {
 
   return (
     <React.Fragment>
-      <BannerBox
-        onClick={() => {
-          history.push("/login");
-        }}
-      >
-        <Text margin="0 0 5px 0" type="small" color={Color.gray700}>
-          좋아하실만한 웹툰을 추천해 드릴게요.
-        </Text>
-        <FlexGrid>
-          <Text fontWeight="bold" color={Color.gray700}>
-            로그인 후 취향 저격 웹툰 추천받기! 🥰
+      <BorderLine>
+        <BannerBox
+          onClick={() => {
+            history.push("/login");
+          }}
+        >
+          <Text margin="0 0 5px 0" type="small" color={Color.gray700}>
+            좋아하실만한 웹툰을 추천해 드릴게요.
           </Text>
-        </FlexGrid>
-      </BannerBox>
+          <FlexGrid>
+            <Text fontWeight="bold" color={Color.gray700}>
+              로그인 후 취향 저격 웹툰 추천받기! 🥰
+            </Text>
+          </FlexGrid>
+        </BannerBox>
+      </BorderLine>
+
       <MdBox>
         <BookMark></BookMark>
         <MdInfoBox>
@@ -407,7 +401,6 @@ const Recommendation = () => {
               긴 호흡을 지닌 네이버 웹툰 3대장!
             </Text>
           </TextGrid>
-
         </InfoGrid>
       </FlexToonGrid>
 
@@ -510,6 +503,12 @@ const Recommendation = () => {
     </React.Fragment>
   );
 };
+
+const BorderLine = styled.div`
+  width: 100%;
+  margin-top: -4px;
+  border-top: 8px solid ${Color.gray100};
+`;
 
 const BannerBox = styled.div`
   width: 100%auto;

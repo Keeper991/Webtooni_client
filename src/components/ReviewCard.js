@@ -186,7 +186,7 @@ const ReviewCard = (props) => {
                   marginRight: "5px",
                 }}
               ></FillHeart>
-              <Text type="num" fontSize="12px" color={Color.primary}>
+              <Text type="num" fontSize="14px" color={Color.gray800}>
                 {props.likeCount}
               </Text>
             </FlexGrid>
@@ -200,7 +200,7 @@ const ReviewCard = (props) => {
                       marginRight: "5px",
                     }}
                   ></EmptyHeart>
-                  <Text type="num" fontSize="12px" color={Color.gray800}>
+                  <Text type="num" fontSize="14px" color={Color.gray800}>
                     {props.likeCount}
                   </Text>
                 </FlexGrid>
@@ -212,7 +212,7 @@ const ReviewCard = (props) => {
                       marginRight: "5px",
                     }}
                   ></FillHeart>
-                  <Text type="num" fontSize="12px" color={Color.primary}>
+                  <Text type="num" fontSize="14px" color={Color.gray800}>
                     {props.likeCount}
                   </Text>
                 </FlexGrid>

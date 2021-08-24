@@ -18,18 +18,18 @@ const OfferCard = (props) => {
         </ToonImgGrid>
 
         <InfoGrid>
-          <Image src={props.toonImg} width="120px" height="120px"></Image>
-          <DDD>
+          <Image src={props.toonImg} width="100px" height="100px"></Image>
+          <ToonBox>
             <Text
               type="h1"
               fontWeight="bold"
               color={Color.white}
-              margin="0 0 8px 0"
+              margin="0 0 12px 0"
             >
               {props.toonTitle}
             </Text>
             <FlexGrid flexStart>
-              <Text type="caption" color={Color.white}>
+              <Text type="caption" color={Color.white} margin="0 0 0 2px">
                 {props.toonAuthor}
               </Text>
               <FlexGrid>
@@ -48,7 +48,7 @@ const OfferCard = (props) => {
                 </Text>
               </FlexGrid>
             </FlexGrid>
-          </DDD>
+          </ToonBox>
         </InfoGrid>
       </Container>
     </React.Fragment>
@@ -86,7 +86,7 @@ const ToonImgGrid = styled.div`
 
 const InfoGrid = styled.div`
   position: absolute;
-  left: 20px;
+  left: 25px;
   bottom: 50px;
   z-index: 2;
   text-shadow: 2px 1px 10px rgba(0, 0, 0, 0.7);
@@ -103,6 +103,6 @@ const FlexGrid = styled.div`
   ${(props) => props.flexStart && `justify-content: start;`};
 `;
 
-const DDD = styled.div``;
+const ToonBox = styled.div``;
 
 export default OfferCard;
