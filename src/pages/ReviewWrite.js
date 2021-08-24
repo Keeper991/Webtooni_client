@@ -84,12 +84,7 @@ const ReviewWrite = (props) => {
         margin="-130px 0 0 0"
       >
         {/* 뒤로가기 */}
-        <Grid
-          cursor="true"
-          onClick={() => {
-            history.go(-1);
-          }}
-        >
+        <Grid cursor="true">
           <LeftOutlined
             style={{ fontSize: "18px", margin: "25px 0" }}
             onClick={() => {
