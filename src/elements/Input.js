@@ -106,6 +106,9 @@ const ElInput = styled.input`
   font-weight: ${(props) => props.fontWeight};
   border: ${(props) => props.border};
   border-radius: 8px;
+  appearance: none;
+  -webkit-appearance: none;
+  -moz-appearance: none;
   font-family: "Noto Sans KR", -apple-system, BlinkMacSystemFont, "Segoe UI",
     "Roboto", "Oxygen", "Ubuntu", "Cantarell", "Fira Sans", "Droid Sans",
     "Helvetica Neue", sans-serif;
@@ -134,6 +137,9 @@ const ElTextArea = styled.textarea`
   border: ${(props) => props.border};
   border-radius: 4px;
   resize: none;
+  appearance: none;
+  -webkit-appearance: none;
+  -moz-appearance: none;
   font-family: "Noto Sans KR", -apple-system, BlinkMacSystemFont, "Segoe UI",
     "Roboto", "Oxygen", "Ubuntu", "Cantarell", "Fira Sans", "Droid Sans",
     "Helvetica Neue", sans-serif;
