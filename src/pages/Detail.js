@@ -32,6 +32,7 @@ const Detail = (props) => {
   });
   // 로그인 유무와 로그인한 유저정보 가져오기
   const is_login = useSelector((store) => store.user.is_login);
+  const is_loading = useSelector((store) => store.user.is_loading);
   const userName = useSelector((store) => store.user.info.userName);
   const subscribeList = useSelector((store) => store.user.subscribeList);
   const toon_list = useSelector((store) => store.webtoon.toon_list);
@@ -106,7 +107,9 @@ const Detail = (props) => {
     } else if (loading_user) {
       return;
     } else {
-      dispatch(userActions.subscribeServer(webtoon_id, bool));
+      if (!is_loading) {
+        dispatch(userActions.subscribeServer(webtoon_id, bool));
+      }
     }
   };
 
@@ -142,7 +145,6 @@ const Detail = (props) => {
             top="0"
             left="0"
             width="100%"
-            height=""
             bgColor="rgba(0,0,0,0.3)"
             height="337px"
             zIndex="1"
@@ -152,7 +154,6 @@ const Detail = (props) => {
             top="0"
             left="0"
             width="100%"
-            height=""
             bg="linear-gradient(transparent, rgba(0,0,0,0.5))"
             height="337px"
             zIndex="2"
@@ -368,7 +369,6 @@ const Detail = (props) => {
             {countReview !== 0 && (
               <>
                 <Grid
-                  margin="0 0 4px 0"
                   display="flex"
                   justify="space-between"
                   align="center"
@@ -414,19 +414,17 @@ const Detail = (props) => {
                         return <DetailReview key={idx} review={item} />;
                       }
                     })}
-                {
-                  // goTop &&
-                  <a href="#">
-                    <Grid
-                      position="fixed"
-                      bottom="40px"
-                      right="36px"
-                      zIndex="2"
-                    >
-                      <GoTop />
-                    </Grid>
-                  </a>
-                }
+
+                <Grid
+                  position="fixed"
+                  bottom="40px"
+                  right="36px"
+                  zIndex="2"
+                  onClick={() => window.scrollTo(0, 0)}
+                >
+                  <GoTop />
+                </Grid>
+
                 {(likeReviews.length > shownReview ||
                   likeReviews.length - 1 === shownReview) && (
                   <Grid
