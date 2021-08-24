@@ -75,8 +75,9 @@ const BtnGrid = styled.div`
     box-shadow: rgba(0, 0, 0, 0.15) 0px 3px 3px 0px;
     & > div {
       position: absolute;
-      top: 10px;
+      top: 50%;
       left: 16px;
+      transform: translateY(-50%);
     }
   }
 `;
