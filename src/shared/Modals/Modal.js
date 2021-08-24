@@ -13,6 +13,7 @@ import {
 } from "@ant-design/icons";
 import { useDispatch, useSelector } from "react-redux";
 import { actionCreators as userActions } from "../../redux/modules/user";
+import { actionCreators as reviewActions } from "../../redux/modules/review";
 import { actionCreators as modalActions } from "../../redux/modules/modal";
 import { actionCreators as talkActions } from "../../redux/modules/talk";
 import profileImgList from "../../images/profiles";
@@ -35,6 +36,7 @@ const Modal = () => {
     noAuth: () => history.replace("/"),
     failLoadRedirect: () => history.goBack(),
     deletePost: () => dispatch(talkActions.deletePostServer(data)),
+    deleteReview: () => dispatch(reviewActions.removeReviewContentServer(data)),
   };
   const kinds = {
     logout: (
@@ -106,6 +108,23 @@ const Modal = () => {
     deletePost: (
       <ConfirmModal Icon={DeleteOutlined} handleConfirm={handlers[modalKind]}>
         <Text>게시글을 삭제하시겠습니까?</Text>
+      </ConfirmModal>
+    ),
+    deleteReview: (
+      <ConfirmModal Icon={DeleteOutlined} handleConfirm={handlers[modalKind]}>
+        <Text>리뷰내용을 삭제하시겠습니까?</Text>
+        <br />
+        <Text>(별점은 유지됩니다.)</Text>
+      </ConfirmModal>
+    ),
+    duplicateName: (
+      <ConfirmModal Icon={MehOutlined} handleConfirm={handlers[modalKind]}>
+        <Text>중복된 닉네임입니다.</Text>
+      </ConfirmModal>
+    ),
+    invalidName: (
+      <ConfirmModal Icon={FrownOutlined} handleConfirm={handlers[modalKind]}>
+        <Text>닉네임 조건에 맞지 않습니다.</Text>
       </ConfirmModal>
     ),
   };
