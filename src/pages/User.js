@@ -46,6 +46,11 @@ const User = (props) => {
       totalToonList.findIndex((_toon) => _toon.toonId === toon.toonId) === idx
   );
 
+  const reviewCount = reviewList.filter(
+    (review) => review.reviewContent
+  ).length;
+  const pointCount = reviewList.length - reviewCount;
+
   const [dragging, setDragging] = React.useState(false);
 
   const handleBeforeChange = React.useCallback(() => {
@@ -272,20 +277,29 @@ const User = (props) => {
           </UserNameAndGrade>
           <UserReviewAndLikeCount>
             <UserReviewAndLikeCountCol>
-              <Text fontWeight="bold" color={Color.gray400}>
-                리뷰 수
-              </Text>
               <Text type="num" fontSize="20px">
-                {reviewList.length}
+                {pointCount}
+              </Text>
+              <Text fontWeight="bold" color={Color.gray400}>
+                평가한 웹툰
               </Text>
             </UserReviewAndLikeCountCol>
             <SeparateLine />
             <UserReviewAndLikeCountCol>
-              <Text fontWeight="bold" color={Color.gray400}>
-                좋아요 수
+              <Text type="num" fontSize="20px">
+                {reviewCount}
               </Text>
+              <Text fontWeight="bold" color={Color.gray400}>
+                작성한 리뷰
+              </Text>
+            </UserReviewAndLikeCountCol>
+            <SeparateLine />
+            <UserReviewAndLikeCountCol>
               <Text type="num" fontSize="20px">
                 {reviewList.reduce((a, c) => a + c.likeCount, 0)}
+              </Text>
+              <Text fontWeight="bold" color={Color.gray400}>
+                받은 좋아요
               </Text>
             </UserReviewAndLikeCountCol>
           </UserReviewAndLikeCount>
