@@ -118,14 +118,14 @@ const Modal = () => {
       </ConfirmModal>
     ),
     duplicateName: (
-      <ConfirmModal Icon={MehOutlined} handleConfirm={handlers[modalKind]}>
+      <AlertModal Icon={MehOutlined}>
         <Text>중복된 닉네임입니다.</Text>
-      </ConfirmModal>
+      </AlertModal>
     ),
     invalidName: (
-      <ConfirmModal Icon={FrownOutlined} handleConfirm={handlers[modalKind]}>
+      <AlertModal Icon={FrownOutlined}>
         <Text>닉네임 조건에 맞지 않습니다.</Text>
-      </ConfirmModal>
+      </AlertModal>
     ),
   };
   return (
