@@ -158,7 +158,7 @@ const Detail = (props) => {
             height="337px"
             zIndex="2"
           ></Grid>
-          <Grid padding="0 20px 20px 20px" margin="-50px 0 0 0" zIndex="2">
+          <Grid padding="0 20px" margin="-50px 0 0 0" zIndex="2">
             {/* 웹툰 정보 */}
             <Grid
               // borderBottom={`1px solid ${Color.gray100}`}
@@ -367,7 +367,7 @@ const Detail = (props) => {
             </a>
 
             {countReview !== 0 && (
-              <>
+              <Grid padding="0 0 20px 0">
                 <Grid
                   display="flex"
                   justify="space-between"
@@ -451,7 +451,7 @@ const Detail = (props) => {
                     <DownArrow />
                   </Grid>
                 )}
-              </>
+              </Grid>
             )}
           </Grid>
 
