@@ -34,8 +34,7 @@
     "start": "react-scripts start",
     "build": "react-scripts build",
     "test": "react-scripts test",
-    "eject": "react-scripts eject",
-    "js-start": "node jsonServer.js"
+    "eject": "react-scripts eject"
   },
   "eslintConfig": {
     "extends": [
@@ -55,7 +54,5 @@
       "last 1 safari version"
     ]
   },
-  "devDependencies": {
-    "json-server": "^0.16.3"
-  }
+  "devDependencies": {}
 }
