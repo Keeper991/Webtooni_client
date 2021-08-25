@@ -51,7 +51,7 @@ const User = (props) => {
   ).length;
   const pointCount = reviewList.length - reviewCount;
 
-  const [dragging, setDragging] = React.useState(false);
+  const [dragging, setDragging] = useState(false);
 
   const handleBeforeChange = React.useCallback(() => {
     setDragging(true);
@@ -67,6 +67,18 @@ const User = (props) => {
     },
     [dragging]
   );
+
+  const [windowSize, setWindowSize] = useState(window.innerWidth);
+  const handleWindowResize = React.useCallback((event) => {
+    setWindowSize(window.innerWidth);
+  }, []);
+
+  useEffect(() => {
+    window.addEventListener("resize", handleWindowResize);
+    return () => {
+      window.removeEventListener("resize", handleWindowResize);
+    };
+  }, [handleWindowResize]);
 
   const getRatioByGenre = (toonList) => {
     const genreList = toonList.map((toon) => toon.genres).flat();
@@ -395,22 +407,46 @@ const User = (props) => {
           >
             작성한 리뷰
           </Text>
-          <SlideWrap>
-            {reviewList.length ? (
-              reviewList.map((review, idx) => (
-                <ReviewCard
-                  key={idx}
-                  userImg={userInfo.userImg}
-                  {...review}
-                  like_list={like_list}
-                />
-              ))
-            ) : (
-              <EmptyInformationGuide>
-                작성된 리뷰가 없습니다.
-              </EmptyInformationGuide>
-            )}
-          </SlideWrap>
+          {windowSize < 500 ? (
+            <SlideWrap>
+              {reviewList.length ? (
+                reviewList.map((review, idx) => (
+                  <ReviewCard
+                    key={idx}
+                    userImg={userInfo.userImg}
+                    {...review}
+                    like_list={like_list}
+                  />
+                ))
+              ) : (
+                <EmptyInformationGuide>
+                  작성된 리뷰가 없습니다.
+                </EmptyInformationGuide>
+              )}
+            </SlideWrap>
+          ) : (
+            <div onClickCapture={handleOnItemClick}>
+              <Slick
+                _afterChange={handleAfterChange}
+                _beforeChange={handleBeforeChange}
+              >
+                {reviewList.length ? (
+                  reviewList.map((review, idx) => (
+                    <ReviewCard
+                      key={idx}
+                      userImg={userInfo.userImg}
+                      {...review}
+                      like_list={like_list}
+                    />
+                  ))
+                ) : (
+                  <EmptyInformationGuide>
+                    작성된 리뷰가 없습니다.
+                  </EmptyInformationGuide>
+                )}
+              </Slick>
+            </div>
+          )}
         </ReviewListArea>
       </Container>
       <input

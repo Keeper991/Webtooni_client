@@ -109,7 +109,15 @@ const Slick = ({
   }
 
   if (is_center) {
-    return <CenterSliderWrap {...centerMode}>{children}</CenterSliderWrap>;
+    return (
+      <CenterSliderWrap
+        {...centerMode}
+        beforeChange={_beforeChange}
+        afterChange={_afterChange}
+      >
+        {children}
+      </CenterSliderWrap>
+    );
   }
 
   return (
@@ -117,11 +125,13 @@ const Slick = ({
       infinite={is_infinite}
       speed={300}
       slidesToShow={1}
+      slidesToScroll={1}
       draggable
       variableWidth={is_variableWidth}
       arrows={false}
       beforeChange={_beforeChange}
       afterChange={_afterChange}
+      swipeToSlide={true}
     >
       {children}
     </SliderWrap>
@@ -161,6 +171,9 @@ const centerMode = {
 const SliderWrap = styled(Slider)`
   width: ${({ width }) => width};
   margin: 0 auto;
+  .slick-slide {
+    margin-right: 10px;
+  }
 `;
 
 const BannerSliderWrap = styled(Slider)`

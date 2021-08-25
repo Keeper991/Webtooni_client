@@ -22,6 +22,19 @@ import BannerImg2 from "../images/banner2.jpg";
 const Main = () => {
   const dispatch = useDispatch();
 
+  // window size
+  const [windowSize, setWindowSize] = React.useState(window.innerWidth);
+  const handleWindowResize = React.useCallback((event) => {
+    setWindowSize(window.innerWidth);
+  }, []);
+
+  React.useEffect(() => {
+    window.addEventListener("resize", handleWindowResize);
+    return () => {
+      window.removeEventListener("resize", handleWindowResize);
+    };
+  }, [handleWindowResize]);
+
   // states
   const [is_best, setIsBest] = React.useState(true);
 
@@ -135,28 +148,57 @@ const Main = () => {
         </Button>
       </TitleGrid>
 
-      <SliderBox>
-        {is_loading || webtooni_list.length === 0 ? (
-          <CardSliderBox>
-            {Array.from({ length: 10 }).map((_, idx) => {
-              return <SkeletonCard key={idx}></SkeletonCard>;
-            })}
-          </CardSliderBox>
-        ) : (
-          <CardSliderBox>
-            {webtooni_list?.map((_, idx) => {
-              return (
-                <WebToonCard
-                  key={idx}
-                  index={idx + 1}
-                  {..._}
-                  rank
-                ></WebToonCard>
-              );
-            })}
-          </CardSliderBox>
-        )}
-      </SliderBox>
+      {windowSize < 500 ? (
+        <SliderBox>
+          {is_loading || webtooni_list.length === 0 ? (
+            <CardSliderBox>
+              {Array.from({ length: 10 }).map((_, idx) => {
+                return <SkeletonCard key={idx}></SkeletonCard>;
+              })}
+            </CardSliderBox>
+          ) : (
+            <CardSliderBox>
+              {webtooni_list?.map((_, idx) => {
+                return (
+                  <WebToonCard
+                    key={idx}
+                    index={idx + 1}
+                    {..._}
+                    rank
+                  ></WebToonCard>
+                );
+              })}
+            </CardSliderBox>
+          )}
+        </SliderBox>
+      ) : (
+        <SliderBox onClickCapture={handleOnItemClick}>
+          {is_loading || webtooni_list.length === 0 ? (
+            <Slick>
+              {Array.from({ length: 10 }).map((_, idx) => {
+                return <SkeletonCard key={idx}></SkeletonCard>;
+              })}
+            </Slick>
+          ) : (
+            <Slick
+              _afterChange={handleAfterChange}
+              _beforeChange={handleBeforeChange}
+            >
+              {webtooni_list?.map((_, idx) => {
+                return (
+                  <WebToonCard
+                    key={idx}
+                    index={idx + 1}
+                    {..._}
+                    rank
+                  ></WebToonCard>
+                );
+              })}
+            </Slick>
+          )}
+        </SliderBox>
+      )}
+
       <MonthContainer>
         <Slick
           custom_arrows
@@ -369,36 +411,80 @@ const Main = () => {
         </Button>
       </TitleGrid>
 
-      {is_best ? (
-        <SliderBox>
-          <CardSliderBox>
-            {best_review_list?.map((_, idx) => {
-              return (
-                <ReviewCard
-                  key={idx}
-                  {..._}
-                  main
-                  like_list={like_list}
-                ></ReviewCard>
-              );
-            })}
-          </CardSliderBox>
-        </SliderBox>
+      {windowSize < 500 ? (
+        <div>
+          {is_best ? (
+            <SliderBox>
+              <CardSliderBox>
+                {best_review_list?.map((_, idx) => {
+                  return (
+                    <ReviewCard
+                      key={idx}
+                      {..._}
+                      main
+                      like_list={like_list}
+                    ></ReviewCard>
+                  );
+                })}
+              </CardSliderBox>
+            </SliderBox>
+          ) : (
+            <SliderBox>
+              <CardSliderBox>
+                {new_review_list?.map((_, idx) => {
+                  return (
+                    <ReviewCard
+                      key={idx}
+                      {..._}
+                      main
+                      like_list={like_list}
+                    ></ReviewCard>
+                  );
+                })}
+              </CardSliderBox>
+            </SliderBox>
+          )}
+        </div>
       ) : (
-        <SliderBox>
-          <CardSliderBox>
-            {new_review_list?.map((_, idx) => {
-              return (
-                <ReviewCard
-                  key={idx}
-                  {..._}
-                  main
-                  like_list={like_list}
-                ></ReviewCard>
-              );
-            })}
-          </CardSliderBox>
-        </SliderBox>
+        <div>
+          {is_best ? (
+            <SliderBox onClickCapture={handleOnItemClick}>
+              <Slick
+                _afterChange={handleAfterChange}
+                _beforeChange={handleBeforeChange}
+              >
+                {best_review_list?.map((_, idx) => {
+                  return (
+                    <ReviewCard
+                      key={idx}
+                      {..._}
+                      main
+                      like_list={like_list}
+                    ></ReviewCard>
+                  );
+                })}
+              </Slick>
+            </SliderBox>
+          ) : (
+            <SliderBox>
+              <Slick
+                _afterChange={handleAfterChange}
+                _beforeChange={handleBeforeChange}
+              >
+                {new_review_list?.map((_, idx) => {
+                  return (
+                    <ReviewCard
+                      key={idx}
+                      {..._}
+                      main
+                      like_list={like_list}
+                    ></ReviewCard>
+                  );
+                })}
+              </Slick>
+            </SliderBox>
+          )}
+        </div>
       )}
 
       <TitleGrid>
@@ -406,8 +492,12 @@ const Main = () => {
           베스트 리뷰어 🏆
         </Text>
       </TitleGrid>
-      <CenterSliderBox>
-        <Slick is_center>
+      <CenterSliderBox onClickCapture={handleOnItemClick}>
+        <Slick
+          is_center
+          _afterChange={handleAfterChange}
+          _beforeChange={handleBeforeChange}
+        >
           {reviewer_list?.map((_, idx) => {
             return <BestReveiwerCard key={idx} {..._}></BestReveiwerCard>;
           })}
@@ -537,6 +627,7 @@ const CardSliderBox = styled.div`
   overflow-x: scroll;
   padding-right: 150px;
   gap: 10px;
+
   &::-webkit-scrollbar {
     display: none;
     width: 0 !important;

@@ -13,6 +13,20 @@ import { NaverBigLogo } from "../images/symbols";
 
 const Recommendation = () => {
   const dispatch = useDispatch();
+
+  // window size
+  const [windowSize, setWindowSize] = React.useState(window.innerWidth);
+  const handleWindowResize = React.useCallback((event) => {
+    setWindowSize(window.innerWidth);
+  }, []);
+
+  React.useEffect(() => {
+    window.addEventListener("resize", handleWindowResize);
+    return () => {
+      window.removeEventListener("resize", handleWindowResize);
+    };
+  }, [handleWindowResize]);
+
   // selectors
   const is_login = useSelector((state) => state.user.is_login);
   const user_name = useSelector((state) => state.user.info.userName);
@@ -144,25 +158,42 @@ const Recommendation = () => {
           ) : null}
         </TitleGrid>
 
-        <SliderBox onClickCapture={handleOnItemClick}>
-          {is_loading || similar_user_list.length === 0 ? (
-            <CardSliderBox is_infinite>
-              {Array.from({ length: 10 }).map((_, idx) => {
-                return <SkeletonCard key={idx}></SkeletonCard>;
-              })}
-            </CardSliderBox>
-          ) : (
-            <CardSliderBox
-              is_infinite
-              _afterChange={handleAfterChange}
-              _beforeChange={handleBeforeChange}
-            >
-              {similar_user_list?.map((_, idx) => {
-                return <WebToonCard key={idx} {..._}></WebToonCard>;
-              })}
-            </CardSliderBox>
-          )}
-        </SliderBox>
+        {windowSize < 500 ? (
+          <SliderBox>
+            {is_loading || similar_user_list.length === 0 ? (
+              <CardSliderBox>
+                {Array.from({ length: 10 }).map((_, idx) => {
+                  return <SkeletonCard key={idx}></SkeletonCard>;
+                })}
+              </CardSliderBox>
+            ) : (
+              <CardSliderBox>
+                {similar_user_list?.map((_, idx) => {
+                  return <WebToonCard key={idx} {..._}></WebToonCard>;
+                })}
+              </CardSliderBox>
+            )}
+          </SliderBox>
+        ) : (
+          <SliderBox onClickCapture={handleOnItemClick}>
+            {is_loading || similar_user_list.length === 0 ? (
+              <Slick>
+                {Array.from({ length: 10 }).map((_, idx) => {
+                  return <SkeletonCard key={idx}></SkeletonCard>;
+                })}
+              </Slick>
+            ) : (
+              <Slick
+                _afterChange={handleAfterChange}
+                _beforeChange={handleBeforeChange}
+              >
+                {similar_user_list?.map((_, idx) => {
+                  return <WebToonCard key={idx} {..._}></WebToonCard>;
+                })}
+              </Slick>
+            )}
+          </SliderBox>
+        )}
 
         <MdBox>
           <BookMark></BookMark>
@@ -272,25 +303,42 @@ const Recommendation = () => {
           </FlexInfoGrid>
         </FlexReviewerGrid>
 
-        <SliderBox onClickCapture={handleOnItemClick}>
-          {is_loading || best_reviewer_list.length === 0 ? (
-            <CardSliderBox>
-              {Array.from({ length: 10 }).map((_, idx) => {
-                return <SkeletonCard key={idx}></SkeletonCard>;
-              })}
-            </CardSliderBox>
-          ) : (
-            <CardSliderBox
-              is_infinite
-              _afterChange={handleAfterChange}
-              _beforeChange={handleBeforeChange}
-            >
-              {best_reviewer_list?.map((_, idx) => {
-                return <WebToonCard key={idx} {..._}></WebToonCard>;
-              })}
-            </CardSliderBox>
-          )}
-        </SliderBox>
+        {windowSize < 500 ? (
+          <SliderBox>
+            {is_loading || best_reviewer_list.length === 0 ? (
+              <CardSliderBox>
+                {Array.from({ length: 10 }).map((_, idx) => {
+                  return <SkeletonCard key={idx}></SkeletonCard>;
+                })}
+              </CardSliderBox>
+            ) : (
+              <CardSliderBox>
+                {best_reviewer_list?.map((_, idx) => {
+                  return <WebToonCard key={idx} {..._}></WebToonCard>;
+                })}
+              </CardSliderBox>
+            )}
+          </SliderBox>
+        ) : (
+          <SliderBox onClickCapture={handleOnItemClick}>
+            {is_loading || best_reviewer_list.length === 0 ? (
+              <Slick>
+                {Array.from({ length: 10 }).map((_, idx) => {
+                  return <SkeletonCard key={idx}></SkeletonCard>;
+                })}
+              </Slick>
+            ) : (
+              <Slick
+                _afterChange={handleAfterChange}
+                _beforeChange={handleBeforeChange}
+              >
+                {best_reviewer_list?.map((_, idx) => {
+                  return <WebToonCard key={idx} {..._}></WebToonCard>;
+                })}
+              </Slick>
+            )}
+          </SliderBox>
+        )}
 
         <TitleGrid>
           <Text type="h2" fontWeight="bold" color={Color.gray800}>
@@ -309,21 +357,42 @@ const Recommendation = () => {
             더보기
           </Button>
         </TitleGrid>
-        <SliderBox margin_bottom>
-          {is_loading || end_toon_list.length === 0 ? (
-            <CardSliderBox>
-              {Array.from({ length: 10 }).map((_, idx) => {
-                return <SkeletonCard key={idx}></SkeletonCard>;
-              })}
-            </CardSliderBox>
-          ) : (
-            <CardSliderBox>
-              {end_toon_list?.map((_, idx) => {
-                return <WebToonCard key={idx} {..._}></WebToonCard>;
-              })}
-            </CardSliderBox>
-          )}
-        </SliderBox>
+        {windowSize < 500 ? (
+          <SliderBox margin_bottom>
+            {is_loading || end_toon_list.length === 0 ? (
+              <CardSliderBox is_infinite>
+                {Array.from({ length: 10 }).map((_, idx) => {
+                  return <SkeletonCard key={idx}></SkeletonCard>;
+                })}
+              </CardSliderBox>
+            ) : (
+              <CardSliderBox>
+                {end_toon_list?.map((_, idx) => {
+                  return <WebToonCard key={idx} {..._}></WebToonCard>;
+                })}
+              </CardSliderBox>
+            )}
+          </SliderBox>
+        ) : (
+          <SliderBox margin_bottom onClickCapture={handleOnItemClick}>
+            {is_loading || end_toon_list.length === 0 ? (
+              <Slick>
+                {Array.from({ length: 10 }).map((_, idx) => {
+                  return <SkeletonCard key={idx}></SkeletonCard>;
+                })}
+              </Slick>
+            ) : (
+              <Slick
+                _afterChange={handleAfterChange}
+                _beforeChange={handleBeforeChange}
+              >
+                {end_toon_list?.map((_, idx) => {
+                  return <WebToonCard key={idx} {..._}></WebToonCard>;
+                })}
+              </Slick>
+            )}
+          </SliderBox>
+        )}
       </React.Fragment>
     );
   }
@@ -452,21 +521,42 @@ const Recommendation = () => {
         </FlexInfoGrid>
       </FlexReviewerGrid>
 
-      <SliderBox>
-        {is_loading || best_reviewer_list.length === 0 ? (
-          <CardSliderBox>
-            {Array.from({ length: 10 }).map((_, idx) => {
-              return <SkeletonCard key={idx}></SkeletonCard>;
-            })}
-          </CardSliderBox>
-        ) : (
-          <CardSliderBox>
-            {best_reviewer_list?.map((_, idx) => {
-              return <WebToonCard key={idx} {..._}></WebToonCard>;
-            })}
-          </CardSliderBox>
-        )}
-      </SliderBox>
+      {windowSize < 500 ? (
+        <SliderBox>
+          {is_loading || best_reviewer_list.length === 0 ? (
+            <CardSliderBox>
+              {Array.from({ length: 10 }).map((_, idx) => {
+                return <SkeletonCard key={idx}></SkeletonCard>;
+              })}
+            </CardSliderBox>
+          ) : (
+            <CardSliderBox>
+              {best_reviewer_list?.map((_, idx) => {
+                return <WebToonCard key={idx} {..._}></WebToonCard>;
+              })}
+            </CardSliderBox>
+          )}
+        </SliderBox>
+      ) : (
+        <SliderBox onClickCapture={handleOnItemClick}>
+          {is_loading || best_reviewer_list.length === 0 ? (
+            <Slick>
+              {Array.from({ length: 10 }).map((_, idx) => {
+                return <SkeletonCard key={idx}></SkeletonCard>;
+              })}
+            </Slick>
+          ) : (
+            <Slick
+              _afterChange={handleAfterChange}
+              _beforeChange={handleBeforeChange}
+            >
+              {best_reviewer_list?.map((_, idx) => {
+                return <WebToonCard key={idx} {..._}></WebToonCard>;
+              })}
+            </Slick>
+          )}
+        </SliderBox>
+      )}
 
       <TitleGrid>
         <Text type="h2" fontWeight="bold" color={Color.gray800}>
@@ -485,21 +575,43 @@ const Recommendation = () => {
           더보기
         </Button>
       </TitleGrid>
-      <SliderBox margin_bottom>
-        {is_loading || end_toon_list.length === 0 ? (
-          <CardSliderBox is_infinite>
-            {Array.from({ length: 10 }).map((_, idx) => {
-              return <SkeletonCard key={idx}></SkeletonCard>;
-            })}
-          </CardSliderBox>
-        ) : (
-          <CardSliderBox>
-            {end_toon_list?.map((_, idx) => {
-              return <WebToonCard key={idx} {..._}></WebToonCard>;
-            })}
-          </CardSliderBox>
-        )}
-      </SliderBox>
+
+      {windowSize < 500 ? (
+        <SliderBox margin_bottom>
+          {is_loading || end_toon_list.length === 0 ? (
+            <CardSliderBox is_infinite>
+              {Array.from({ length: 10 }).map((_, idx) => {
+                return <SkeletonCard key={idx}></SkeletonCard>;
+              })}
+            </CardSliderBox>
+          ) : (
+            <CardSliderBox>
+              {end_toon_list?.map((_, idx) => {
+                return <WebToonCard key={idx} {..._}></WebToonCard>;
+              })}
+            </CardSliderBox>
+          )}
+        </SliderBox>
+      ) : (
+        <SliderBox margin_bottom onClickCapture={handleOnItemClick}>
+          {is_loading || end_toon_list.length === 0 ? (
+            <Slick>
+              {Array.from({ length: 10 }).map((_, idx) => {
+                return <SkeletonCard key={idx}></SkeletonCard>;
+              })}
+            </Slick>
+          ) : (
+            <Slick
+              _afterChange={handleAfterChange}
+              _beforeChange={handleBeforeChange}
+            >
+              {end_toon_list?.map((_, idx) => {
+                return <WebToonCard key={idx} {..._}></WebToonCard>;
+              })}
+            </Slick>
+          )}
+        </SliderBox>
+      )}
     </React.Fragment>
   );
 };
