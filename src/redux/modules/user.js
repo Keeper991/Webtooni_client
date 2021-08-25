@@ -140,8 +140,13 @@ const setUserServer =
         history.replace("/");
       }
     } catch (e) {
-      if (e.response?.status === 400) {
-        alert("중복된 닉네임입니다.");
+      if (
+        e.response?.status === 400 &&
+        e.response?.data.message === "중복된 닉네임을 가진 유저가 존재합니다"
+      ) {
+        dispatch(modalActions.activeModal("duplicateName"));
+      } else if (e.response?.status === 400) {
+        dispatch(modalActions.activeModal("invalidName"));
       } else {
         dispatch(modalActions.activeModal("error"));
       }

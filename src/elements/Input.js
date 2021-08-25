@@ -20,6 +20,7 @@ const Input = (props) => {
     multiLine,
     children,
     taRef,
+    maxLength,
   } = props;
 
   const styles = {
@@ -61,6 +62,7 @@ const Input = (props) => {
           placeholder={placeholder}
           onChange={_onChange}
           value={value}
+          maxLength={maxLength}
         ></ElInput>
       </ElLabel>
     </React.Fragment>
@@ -84,6 +86,7 @@ Input.defaultProps = {
   value: "",
   children: "",
   taRef: null,
+  maxLength: -1,
 };
 
 const ElLabel = styled.label`

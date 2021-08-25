@@ -67,6 +67,10 @@ const Profile = ({ location: { state } }) => {
   ];
 
   const submitUserInfo = () => {
+    if (!/^[a-zA-Z0-9가-힣_]{3,8}$/.test(userName)) {
+      dispatch(modalActions.activeModal("invalidName"));
+      return;
+    }
     const data = {
       genres: localStorage.getItem(TASTE_LS).split(","),
       userImg: profile,
@@ -78,9 +82,7 @@ const Profile = ({ location: { state } }) => {
       localStorage.removeItem(PROFILE_LS);
       localStorage.removeItem(USERNAME_LS);
     };
-    dispatch(
-      userActions.setUserServer(data, removeInfoData, isEditFromUserPage)
-    );
+    dispatch(userActions.setUserServer(data, removeInfoData, true));
   };
 
   return (
@@ -142,6 +144,7 @@ const Profile = ({ location: { state } }) => {
               <Input
                 value={userName}
                 _onChange={(e) => setUserName(e.target.value)}
+                maxLength={8}
                 placeholder="닉네임 입력"
                 margin="0 0 5px 0"
               >
