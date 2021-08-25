@@ -71,7 +71,9 @@ const User = (props) => {
   const getRatioByGenre = (toonList) => {
     const genreList = toonList.map((toon) => toon.genres).flat();
     const genreCases = genreList.filter(
-      (genre, idx) => genreList.indexOf(genre) === idx
+      (genre, idx) =>
+        genreList.indexOf(genre) === idx &&
+        !(genre === "스토리" || genre === "옴니버스" || genre === "에피소드")
     );
     const result = {};
     genreList.map((genre) => {
