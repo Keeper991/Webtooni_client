@@ -499,7 +499,9 @@ const Main = () => {
           _beforeChange={handleBeforeChange}
         >
           {reviewer_list?.map((_, idx) => {
-            return <BestReveiwerCard key={idx} {..._}></BestReveiwerCard>;
+            return (
+              <BestReveiwerCard key={idx} {..._} index={idx}></BestReveiwerCard>
+            );
           })}
         </Slick>
       </CenterSliderBox>
