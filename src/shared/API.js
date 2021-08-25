@@ -5,7 +5,7 @@ import { actionCreators as userActions } from "../redux/modules/user";
 
 const isDevelopment = process.env.NODE_ENV === "development";
 const localHost = "http://localhost:3000";
-const deployHost = "http://webtooni.co.kr";
+const deployHost = "https://www.webtooni.co.kr";
 
 const getKakaoAddr = () => {
   const redirectURI = isDevelopment ? localHost : deployHost;
@@ -20,7 +20,7 @@ const getNaverAddr = () => {
 const instance = axios.create({
   baseURL: isDevelopment
     ? "http://13.124.236.225/api/v1/"
-    : "http://34.64.100.68/api/v1/",
+    : "https://api.webtooni.co.kr/api/v1/",
 });
 
 // 매 요청 전에 token 유무를 확인해서 header에 Authorization 추가.
