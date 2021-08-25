@@ -45,8 +45,7 @@ const Login = (props) => {
 
 const Container = styled.div`
   width: 100%;
-  height: 360px;
-  margin-top: 50px;
+  margin-top: 69px;
   display: flex;
   flex-direction: column;
   justify-content: space-between;
@@ -65,9 +64,10 @@ const ImageWrap = styled.div`
 `;
 
 const BtnGrid = styled.div`
+  padding-top: 165px;
   display: flex;
   flex-direction: column;
-  gap: 1em;
+  gap: 12px;
 
   & button {
     width: 300px;

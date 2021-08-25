@@ -424,10 +424,12 @@ const User = (props) => {
 };
 
 const Container = styled.section`
-  margin: -4px;
+  width: 100%;
+  margin: -4px 0 0 0;
   background-color: ${Color.gray100};
   border-top: 0.1px solid ${Color.gray100};
   & > section {
+    width: 100%;
     padding: 19px 16px;
     margin-top: 8px;
     background-color: ${Color.white};
