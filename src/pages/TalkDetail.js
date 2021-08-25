@@ -282,7 +282,7 @@ const TalkDetail = (props) => {
               <Grid
                 display="flex"
                 justify="flex-start"
-                align="center"
+                align="flex-start"
                 width="100vw"
                 padding="13px 16px"
                 borderTop={`1px solid ${Color.gray200}`}
@@ -303,9 +303,9 @@ const TalkDetail = (props) => {
                 <Input
                   multiLine
                   taRef={commentRef}
-                  width="93%"
-                  margin="-2px 0 0 9px"
-                  padding="0"
+                  width="96%"
+                  margin="-6px 0 0 9px"
+                  padding="0 8px 0 0"
                   height="24px"
                   placeholder="내용을 입력해 주세요"
                   border="none"
@@ -316,7 +316,7 @@ const TalkDetail = (props) => {
                   value={comment}
                 ></Input>
                 <Text
-                  margin="2px 0 0 0"
+                  margin="7px 0 0 0"
                   fontWeight="medium"
                   _onClick={uploadCmt}
                 >
