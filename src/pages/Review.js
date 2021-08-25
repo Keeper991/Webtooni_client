@@ -22,18 +22,10 @@ const Review = () => {
 
   const review_list = useSelector((state) => state.review.review_list);
 
-  const new_review = review_list.filter((review) =>
-    review.filterConditions.includes("reviewPage")
-  );
-
-  const best_review = review_list.filter((review) =>
-    review.filterConditions.includes("reviewPageBest")
-  );
-
-  let new_review_list = [...new_review];
+  let new_review_list = [...review_list];
   new_review_list.sort((a, b) => b.createDate - a.createDate);
 
-  let best_review_list = [...best_review];
+  let best_review_list = [...review_list];
   best_review_list.sort((a, b) => b.likeCount - a.likeCount);
 
   const like_list = useSelector((state) => state.user.reviewLikeList);

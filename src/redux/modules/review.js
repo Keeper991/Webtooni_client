@@ -319,7 +319,9 @@ const updateReviewServer = (reviewId, reviewContent, from_detail) => {
       const { toonId } = getState().review.review_list.find(
         (review) => review.reviewId === reviewId
       );
-      dispatch(updateReview(reviewId, reviewContent, createDate));
+      let createDateParse = Date.parse(createDate);
+      dispatch(updateReview(reviewId, reviewContent, createDateParse));
+
       if (from_detail) {
         history.push({
           pathname: `/detail/${toonId}`,

@@ -35,18 +35,12 @@ const Main = () => {
   const isShownWelcomeModal = useSelector(
     (state) => state.user.info.isShownWelcomeModal
   );
-  // review lists
-  const new_review = review_list.filter((review) =>
-    review.filterConditions.includes("newReview")
-  );
-  const best_review = review_list.filter((review) =>
-    review.filterConditions.includes("bestReview")
-  );
 
-  let new_review_list = [...new_review];
+  // review lists
+  let new_review_list = [...review_list];
   new_review_list.sort((a, b) => b.createDate - a.createDate);
 
-  let best_review_list = [...best_review];
+  let best_review_list = [...review_list];
   best_review_list.sort((a, b) => b.likeCount - a.likeCount);
 
   // webtoon lists
