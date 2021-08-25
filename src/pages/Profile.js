@@ -82,7 +82,9 @@ const Profile = ({ location: { state } }) => {
       localStorage.removeItem(PROFILE_LS);
       localStorage.removeItem(USERNAME_LS);
     };
-    dispatch(userActions.setUserServer(data, removeInfoData, true));
+    dispatch(
+      userActions.setUserServer(data, removeInfoData, isEditFromUserPage)
+    );
   };
 
   return (

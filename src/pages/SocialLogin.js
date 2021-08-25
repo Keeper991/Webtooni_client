@@ -10,17 +10,14 @@ const SocialLogin = (props) => {
   const platform = props.location.pathname
     .split("user/")[1]
     .split("/callback")[0];
-  const loading = useSelector((state) => state.user.is_loading);
 
   useEffect(() => {
-    if (!loading) {
-      let code = props.location.search.split("code=")[1];
-      if (platform === "naver") {
-        code = code.split("&state")[0];
-      }
-      dispatch(userActions.socialLoginServer(platform, code));
+    let code = props.location.search.split("code=")[1];
+    if (platform === "naver") {
+      code = code.split("&state")[0];
     }
-  }, [loading]);
+    dispatch(userActions.socialLoginServer(platform, code));
+  }, []);
 
   return (
     <Container>
