@@ -73,6 +73,11 @@ const Main = () => {
   );
 
   // effects
+
+  React.useEffect(() => {
+    dispatch(reviewerActions.getBestReviewer());
+  }, []);
+
   React.useEffect(() => {
     if (
       !webtooni_list.length ||
