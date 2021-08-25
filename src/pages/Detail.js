@@ -199,6 +199,10 @@ const Detail = (props) => {
                 >
                   &nbsp;{toonOne.toonAvgPoint.toFixed(1)}
                 </Text>
+                <Text margin="0 0 1.5px 0" color={Color.gray300}>
+                  &nbsp;({toonReviews.length})
+                </Text>
+
                 <Text margin="0" color={Color.white}>
                   &nbsp;{toonOne.genres?.map((item) => "·" + item + " ")}
                 </Text>
