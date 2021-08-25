@@ -124,6 +124,7 @@ const ReviewWrite = (props) => {
           padding="9px 12px"
         >
           <Text
+            margin="2px 0 0 0"
             type="p"
             fontWeight="medium"
             color={Color.gray700}
