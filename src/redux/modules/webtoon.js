@@ -284,7 +284,7 @@ export default handleActions(
               action.payload.category === "naver" ||
               action.payload.category === "kakao"
             ) {
-              toon.rank = index;
+              toon[action.payload.category[0] + "Rank"] = index;
             }
             draft.toon_list.push(toon);
           } else {
@@ -305,7 +305,7 @@ export default handleActions(
                 action.payload.category === "naver" ||
                 action.payload.category === "kakao"
               ) {
-                draft.toon_list[toonIdx].rank = index;
+                toon[action.payload.category[0] + "Rank"] = index;
               }
             }
 

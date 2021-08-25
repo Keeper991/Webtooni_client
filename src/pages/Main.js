@@ -52,13 +52,13 @@ const Main = () => {
   // webtoon lists
   const webtooni_list = toon_list
     .filter((toon) => toon.filterConditions.includes("webtooni"))
-    .sort((a, b) => a.rank - b.rank);
+    .sort((a, b) => a.wRank - b.wRank);
   const naver_list = toon_list
     .filter((toon) => toon.filterConditions.includes("naver"))
-    .sort((a, b) => a.rank - b.rank);
+    .sort((a, b) => a.nRank - b.nRank);
   const kakao_list = toon_list
     .filter((toon) => toon.filterConditions.includes("kakao"))
-    .sort((a, b) => a.rank - b.rank);
+    .sort((a, b) => a.kRank - b.kRank);
 
   // slick swipe click prevent
   const [dragging, setDragging] = React.useState(false);
