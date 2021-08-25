@@ -18,6 +18,7 @@ import { Button, Text, Image } from "../elements";
 import { Color } from "../shared/common";
 import BannerImg1 from "../images/banner1.jpg";
 import BannerImg2 from "../images/banner2.jpg";
+import BannerImg3 from "../images/banner3.png";
 
 const Main = () => {
   const dispatch = useDispatch();
@@ -125,6 +126,14 @@ const Main = () => {
     <React.Fragment>
       <BannerSliderBox>
         <Slick is_banner>
+          <a
+            href={"https://forms.gle/PHvvMnmSscUL7JLT9"}
+            target="_blank"
+            rel="noopener noreferrer"
+          >
+            <TopBannerBox mint banner={BannerImg3}></TopBannerBox>
+          </a>
+
           <TopBannerBox banner={BannerImg1}></TopBannerBox>
           <TopBannerBox green banner={BannerImg2}></TopBannerBox>
         </Slick>
@@ -368,7 +377,7 @@ const Main = () => {
         </FlexGrid>
       </BannerBox>
 
-      <TitleGrid>
+      <ReviewTitleGrid>
         <ReviewTabGrid>
           <Button
             _onClick={() => {
@@ -409,7 +418,7 @@ const Main = () => {
         >
           더보기
         </Button>
-      </TitleGrid>
+      </ReviewTitleGrid>
 
       {windowSize < 500 ? (
         <div>
@@ -517,7 +526,8 @@ const TopBannerBox = styled.div`
   background-size: contain;
   background-repeat: no-repeat;
   background-position: center;
-  ${(props) => (props.green ? `background-color: #01d358` : null)};
+  ${(props) => props.green && `background-color: #01d358`};
+  ${(props) => props.mint && `background-color: #B2F1E6`};
   image-rendering: -moz-crisp-edges;
   image-rendering: -o-crisp-edges;
   image-rendering: -webkit-optimize-contrast;
@@ -530,10 +540,19 @@ const TitleGrid = styled.div`
   width: 100%;
   height: 65px;
   ${(props) => (props.no_margin ? "margin-top: -1px" : "margin-top: 30px")};
+  border-top: 8px solid ${Color.gray100};
   padding: 10px 16px 0;
   align-items: center;
   justify-content: space-between;
-  border-top: 8px solid ${Color.gray100};
+`;
+
+const ReviewTitleGrid = styled.div`
+  display: flex;
+  width: 100%;
+  height: 65px;
+  padding: 0 16px;
+  align-items: center;
+  justify-content: space-between;
 `;
 
 const SliderBox = styled.div`
@@ -608,7 +627,7 @@ const BannerBox = styled.div`
   height: 66px;
   background-color: ${Color.gray100};
   padding: 0 16px;
-  margin: 40px 20px 40px;
+  margin: 40px 20px 20px;
   border-radius: 8px;
   display: flex;
   flex-direction: column;
