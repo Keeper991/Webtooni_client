@@ -42,11 +42,13 @@ const Detail = (props) => {
     toon.filterConditions?.includes(webtoon_id)
   );
 
-  let toonReviews = review_list.filter(
+  const _toonReviews = review_list.filter(
     (review) => review.toonId === webtoon_id
   );
-  const reviewOne = toonReviews.find((review) => review.userName === userName);
-  toonReviews = toonReviews.filter((review) => review.userName !== userName);
+  const reviewOne = _toonReviews.find((review) => review.userName === userName);
+  const toonReviews = _toonReviews.filter(
+    (review) => review.userName !== userName
+  );
 
   const [myReview, setMyReview] = React.useState(initialState.current);
 
@@ -200,7 +202,7 @@ const Detail = (props) => {
                   &nbsp;{toonOne.toonAvgPoint.toFixed(1)}
                 </Text>
                 <Text margin="0 0 1.5px 0" color={Color.gray300}>
-                  &nbsp;({toonReviews.length})
+                  &nbsp;({_toonReviews.length})
                 </Text>
 
                 <Text margin="0" color={Color.white}>
