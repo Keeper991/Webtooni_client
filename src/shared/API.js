@@ -5,7 +5,9 @@ import { actionCreators as userActions } from "../redux/modules/user";
 
 const isDevelopment = process.env.NODE_ENV === "development";
 const localHost = "http://localhost:3000";
-const deployHost = "https://www.webtooni.co.kr";
+const deployHost = window.location.href.includes("www")
+  ? "https://www.webtooni.co.kr"
+  : "https://webtooni.co.kr";
 
 const getKakaoAddr = () => {
   const redirectURI = isDevelopment ? localHost : deployHost;
