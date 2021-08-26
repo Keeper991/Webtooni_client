@@ -13,9 +13,11 @@ const OfferCard = (props) => {
           history.push(`/detail/${props.toonId}`);
         }}
       >
-        <ToonImgGrid>
-          <Image src={props.toonImg} width="100%" height="282px"></Image>
-        </ToonImgGrid>
+        <ToonImgBorderBox>
+          <ToonImgGrid>
+            <Image src={props.toonImg} width="100%" height="282px"></Image>
+          </ToonImgGrid>
+        </ToonImgBorderBox>
 
         <InfoGrid>
           <Image src={props.toonImg} width="112px" height="112px"></Image>
@@ -67,16 +69,16 @@ const Container = styled.div`
   height: auto;
   position: relative;
   cursor: pointer;
-  overflow: hidden;
 `;
 
 const ToonImgGrid = styled.div`
-  width: 100%;
-  height: 100%;
+  width: 102%;
+  height: 282px;
   background-image: url("${(props) => props.src}");
   filter: blur(6px);
   background-size: cover;
   background-position: center;
+  margin: 0 auto;
 
   &:before {
     content: "";
@@ -89,6 +91,13 @@ const ToonImgGrid = styled.div`
     opacity: 0.6;
     z-index: 1;
   }
+`;
+
+const ToonImgBorderBox = styled.div`
+  width: 100%;
+  height: 282px;
+
+  margin: 0 auto;
 `;
 
 const InfoGrid = styled.div`
