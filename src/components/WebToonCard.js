@@ -67,13 +67,13 @@ const WebToonCard = (props) => {
             </FlexGrid>
           </FlexGrid>
           <TitleWrap>
-            <Text fontWeight="medium" color={Color.gray800}>
+            <Text tag="p" fontWeight="medium" color={Color.gray800}>
               {props.toonTitle}
             </Text>
           </TitleWrap>
           <FlexGrid>
             <AuthorWrap>
-              <Text type="caption" color={Color.gray400}>
+              <Text tag="p" type="caption" color={Color.gray400}>
                 {props.toonAuthor}
               </Text>
             </AuthorWrap>
