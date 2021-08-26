@@ -406,8 +406,12 @@ const Main = () => {
           베스트 리뷰어 🏆
         </Text>
       </TitleGrid>
-      <CenterSliderBox>
-        <Slick is_center>
+      <CenterSliderBox onClickCapture={handleOnItemClick}>
+        <Slick
+          is_center
+          _afterChange={handleAfterChange}
+          _beforeChange={handleBeforeChange}
+        >
           {reviewer_list?.map((_, idx) => {
             return <BestReveiwerCard key={idx} {..._}></BestReveiwerCard>;
           })}
