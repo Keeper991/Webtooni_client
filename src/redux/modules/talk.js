@@ -202,7 +202,7 @@ export default handleActions(
               return _.postId === __.postId;
             })?.postId === _.postId
         );
-        __list.splice(idx, 1);
+        if(idx!==-1) {  __list.splice(idx, 1); }
 
         draft.post_list.push(...__list);
 

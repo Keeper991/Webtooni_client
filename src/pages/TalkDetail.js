@@ -280,6 +280,7 @@ const TalkDetail = (props) => {
               {/* 댓글 작성 */}
               {/* {cmtInp && ( */}
               <Grid
+                cmtInpt
                 display="flex"
                 justify="flex-start"
                 align="flex-start"
@@ -395,6 +396,18 @@ const TalkDetail = (props) => {
 };
 
 const Grid = styled.div`
+  max-width: 700px;
+  ${(props) =>
+    props.cmtInpt
+      ? `
+  margin:  0 auto;
+    left:  0;
+    right: 0;
+    border-left: 1px solid ${Color.gray100};
+    border-right: 1px solid ${Color.gray100};
+    `
+      : ""};
+
   width: ${(props) => props.width || "auto"};
   height: ${(props) => props.height || "auto"};
   display: ${(props) => (props.display ? props.display : "")};
