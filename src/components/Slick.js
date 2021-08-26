@@ -147,7 +147,6 @@ Slick.defaultProps = {
 };
 
 const offerMode = {
-  dots: true,
   infinite: true,
   slidesToShow: 1,
   slidesToScroll: 1,
@@ -217,25 +216,9 @@ const OfferSliderWrap = styled(Slider)`
   width: 100%auto;
   margin: 0 auto;
 
-  .slick-dots li {
-    margin: 0 2px !important;
-  }
-
-  .slick-dots li button:before {
-    color: ${Color.primary};
-  }
-
-  .slick-dots li.slick-active button:focus:before,
-  .slick-dots li button:hover:before {
-    opacity: 1;
-  }
-
-  .slick-dots li button:focus:before {
-    opacity: 0.25;
-  }
-
   .slick-slide {
     margin-top: -10px !important;
+    margin-bottom: -10px !important;
   }
 `;
 

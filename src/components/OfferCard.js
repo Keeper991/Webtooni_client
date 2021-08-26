@@ -18,25 +18,25 @@ const OfferCard = (props) => {
         </ToonImgGrid>
 
         <InfoGrid>
-          <Image src={props.toonImg} width="100px" height="100px"></Image>
+          <Image src={props.toonImg} width="112px" height="112px"></Image>
           <ToonBox>
             <Text
               type="h1"
               fontWeight="bold"
               color={Color.white}
-              margin="0 0 12px 0"
+              margin="17px 0 8px 0"
             >
               {props.toonTitle}
             </Text>
             <FlexGrid flexStart>
-              <Text type="caption" color={Color.white} margin="0 0 0 2px">
+              <Text type="caption" color={Color.white}>
                 {props.toonAuthor}
               </Text>
               <FlexGrid>
                 <FillStar
                   width="12px"
                   height="12px"
-                  style={{ margin: "0 2px 0 7px" }}
+                  style={{ margin: "0 4px 0 7px" }}
                 ></FillStar>
                 <Text
                   type="num"
@@ -50,6 +50,13 @@ const OfferCard = (props) => {
             </FlexGrid>
           </ToonBox>
         </InfoGrid>
+        {props.dummy ? null : (
+          <Count>
+            <Text color={Color.white} type="num" fontSize="10px">
+              {props.index} / {props.total_index}
+            </Text>
+          </Count>
+        )}
       </Container>
     </React.Fragment>
   );
@@ -57,9 +64,9 @@ const OfferCard = (props) => {
 
 const Container = styled.div`
   width: 100%;
-  height: 280px;
+  height: auto;
   position: relative;
-  margin: 8px 0;
+
   overflow: hidden;
 `;
 
@@ -67,7 +74,7 @@ const ToonImgGrid = styled.div`
   width: 100%;
   height: 100%;
   background-image: url("${(props) => props.src}");
-  filter: blur(5px);
+  filter: blur(6px);
   background-size: cover;
   background-position: center;
 
@@ -79,21 +86,20 @@ const ToonImgGrid = styled.div`
     top: 0;
     left: 0;
     background-color: ${Color.black};
-    opacity: 0.4;
+    opacity: 0.6;
     z-index: 1;
   }
 `;
 
 const InfoGrid = styled.div`
   position: absolute;
-  left: 25px;
+  left: 20px;
   bottom: 50px;
   z-index: 2;
-  text-shadow: 2px 1px 10px rgba(0, 0, 0, 0.7);
+  text-shadow: 2px 1px 10px rgba(0, 0, 0, 0.3);
   display: flex;
-  align-items: center;
-  gap: 10px;
-  background-color: rgba(0, 0, 0, 0.7);
+  align-items: flex-start;
+  gap: 15px;
   width: 100%;
 `;
 
@@ -101,6 +107,19 @@ const FlexGrid = styled.div`
   display: flex;
   justify-content: space-between;
   ${(props) => props.flexStart && `justify-content: start;`};
+`;
+
+const Count = styled.div`
+  width: 36px;
+  height: 18px;
+  border-radius: 36px;
+  background-color: ${Color.gray900};
+  position: absolute;
+  bottom: 60px;
+  right: 20px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
 `;
 
 const ToonBox = styled.div``;
