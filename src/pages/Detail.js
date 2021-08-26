@@ -2,7 +2,13 @@ import React, { useEffect } from "react";
 import { useSelector, useDispatch } from "react-redux";
 import styled from "styled-components";
 import { Text, Image, Button } from "../elements";
-import { WebToonCard, DetailReview, DetailStar } from "../components";
+import {
+  WebToonCard,
+  DetailReview,
+  DetailStar,
+  SkeletonCard,
+  Slick,
+} from "../components";
 import { actionCreators as webtoonActions } from "../redux/modules/webtoon";
 import { actionCreators as userActions } from "../redux/modules/user";
 import { actionCreators as reviewActions } from "../redux/modules/review";
@@ -82,6 +88,37 @@ const Detail = (props) => {
       setMyReview(initialState.current);
     }
   }, [is_login, webtoon_id, reviewOne]);
+
+  // window size
+  const [windowSize, setWindowSize] = React.useState(window.innerWidth);
+  const handleWindowResize = React.useCallback((event) => {
+    setWindowSize(window.innerWidth);
+  }, []);
+
+  React.useEffect(() => {
+    window.addEventListener("resize", handleWindowResize);
+    return () => {
+      window.removeEventListener("resize", handleWindowResize);
+    };
+  }, [handleWindowResize]);
+
+  // slick swipe click prevent
+  const [dragging, setDragging] = React.useState(false);
+
+  const handleBeforeChange = React.useCallback(() => {
+    setDragging(true);
+  }, [setDragging]);
+
+  const handleAfterChange = React.useCallback(() => {
+    setDragging(false);
+  }, [setDragging]);
+
+  const handleOnItemClick = React.useCallback(
+    (e) => {
+      if (dragging) e.stopPropagation();
+    },
+    [dragging]
+  );
 
   //최신 순 리스트
   const newReviews = toonReviews
@@ -494,13 +531,42 @@ const Detail = (props) => {
               </Button>
             </Grid>
 
-            <SliderBox>
-              <CardSliderBox>
-                {similarToons.map((item, idx) => (
-                  <WebToonCard key={idx} {...item} id={item.toonId} detail />
-                ))}
-              </CardSliderBox>
-            </SliderBox>
+            {windowSize < 500 ? (
+              <SliderBox>
+                {is_loading || similarToons.length === 0 ? (
+                  <CardSliderBox>
+                    {Array.from({ length: 10 }).map((_, idx) => {
+                      return <SkeletonCard key={idx}></SkeletonCard>;
+                    })}
+                  </CardSliderBox>
+                ) : (
+                  <CardSliderBox>
+                    {similarToons?.map((_, idx) => {
+                      return <WebToonCard key={idx} {..._}></WebToonCard>;
+                    })}
+                  </CardSliderBox>
+                )}
+              </SliderBox>
+            ) : (
+              <SliderBox onClickCapture={handleOnItemClick}>
+                {is_loading || similarToons.length === 0 ? (
+                  <Slick>
+                    {Array.from({ length: 10 }).map((_, idx) => {
+                      return <SkeletonCard key={idx}></SkeletonCard>;
+                    })}
+                  </Slick>
+                ) : (
+                  <Slick
+                    _afterChange={handleAfterChange}
+                    _beforeChange={handleBeforeChange}
+                  >
+                    {similarToons?.map((_, idx) => {
+                      return <WebToonCard key={idx} {..._}></WebToonCard>;
+                    })}
+                  </Slick>
+                )}
+              </SliderBox>
+            )}
           </Grid>
         </Grid>
       )}

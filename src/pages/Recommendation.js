@@ -10,9 +10,24 @@ import { Color } from "../shared/common";
 import { history } from "../redux/configureStore";
 import { ReactComponent as FillStar } from "../images/icons/FillStar.svg";
 import { NaverBigLogo } from "../images/symbols";
+import { DownArrowPrimary, TalkBubble } from "../images/icons";
 
 const Recommendation = () => {
   const dispatch = useDispatch();
+
+  // window size
+  const [windowSize, setWindowSize] = React.useState(window.innerWidth);
+  const handleWindowResize = React.useCallback((event) => {
+    setWindowSize(window.innerWidth);
+  }, []);
+
+  React.useEffect(() => {
+    window.addEventListener("resize", handleWindowResize);
+    return () => {
+      window.removeEventListener("resize", handleWindowResize);
+    };
+  }, [handleWindowResize]);
+
   // selectors
   const is_login = useSelector((state) => state.user.is_login);
   const user_name = useSelector((state) => state.user.info.userName);
@@ -45,6 +60,21 @@ const Recommendation = () => {
       createDate: "08.18",
       reviewContent:
         "판타지 장르 중에서는 최고로 꼽힐만한 작품 중 하나라고 생각합니다. 굉장히 넓은 세계관을 유지하면서도 세계관이 무너지지 않고 있습니다. 또한 그 넓은 이야기를 굉장히 높은 퀄리티의 그림과 연출로 풀어내고 있죠. 오랜기간 동안 사랑을 받은 이유가 분명히 있습니다.",
+    },
+  ];
+
+  const dummy_toon = [
+    {
+      finished: false,
+      genres: ["액션 무협"],
+      toonAuthor: "민(meen) / 백승훈",
+      toonAvgPoint: 0,
+      toonId: 776,
+      toonImg:
+        "https://kr-a.kakaopagecdn.com/P/C/2306/c2/2x/24186843-8ca9-4a1d-af95-fc4310c05c7a.png",
+      toonPlatform: "카카오",
+      toonTitle: "독고3 [완전판]",
+      toonWeekday: "월",
     },
   ];
 
@@ -92,7 +122,13 @@ const Recommendation = () => {
           >
             {for_user_list.map((_, idx) => {
               return (
-                <OfferCard key={idx} {..._} user_name={user_name}></OfferCard>
+                <OfferCard
+                  key={idx}
+                  {..._}
+                  user_name={user_name}
+                  index={idx}
+                  total_index={for_user_list.length}
+                ></OfferCard>
               );
             })}
           </Slick>
@@ -124,7 +160,7 @@ const Recommendation = () => {
           </FlexGrid>
         </BannerBox>
 
-        <TitleGrid>
+        <TitleGrid no_border>
           <Text type="h2" fontWeight="bold" color={Color.gray800}>
             비슷한 취향의 사용자가 본 웹툰
           </Text>
@@ -144,25 +180,42 @@ const Recommendation = () => {
           ) : null}
         </TitleGrid>
 
-        <SliderBox onClickCapture={handleOnItemClick}>
-          {is_loading || similar_user_list.length === 0 ? (
-            <CardSliderBox is_infinite>
-              {Array.from({ length: 10 }).map((_, idx) => {
-                return <SkeletonCard key={idx}></SkeletonCard>;
-              })}
-            </CardSliderBox>
-          ) : (
-            <CardSliderBox
-              is_infinite
-              _afterChange={handleAfterChange}
-              _beforeChange={handleBeforeChange}
-            >
-              {similar_user_list?.map((_, idx) => {
-                return <WebToonCard key={idx} {..._}></WebToonCard>;
-              })}
-            </CardSliderBox>
-          )}
-        </SliderBox>
+        {windowSize < 500 ? (
+          <SliderBox>
+            {is_loading || similar_user_list.length === 0 ? (
+              <CardSliderBox>
+                {Array.from({ length: 10 }).map((_, idx) => {
+                  return <SkeletonCard key={idx}></SkeletonCard>;
+                })}
+              </CardSliderBox>
+            ) : (
+              <CardSliderBox>
+                {similar_user_list?.map((_, idx) => {
+                  return <WebToonCard key={idx} {..._}></WebToonCard>;
+                })}
+              </CardSliderBox>
+            )}
+          </SliderBox>
+        ) : (
+          <SliderBox onClickCapture={handleOnItemClick}>
+            {is_loading || similar_user_list.length === 0 ? (
+              <Slick>
+                {Array.from({ length: 10 }).map((_, idx) => {
+                  return <SkeletonCard key={idx}></SkeletonCard>;
+                })}
+              </Slick>
+            ) : (
+              <Slick
+                _afterChange={handleAfterChange}
+                _beforeChange={handleBeforeChange}
+              >
+                {similar_user_list?.map((_, idx) => {
+                  return <WebToonCard key={idx} {..._}></WebToonCard>;
+                })}
+              </Slick>
+            )}
+          </SliderBox>
+        )}
 
         <MdBox>
           <BookMark></BookMark>
@@ -270,27 +323,60 @@ const Recommendation = () => {
               </Text>
             </FlexGrid>
           </FlexInfoGrid>
+          <FlexGrid>
+            <TalkBubble></TalkBubble>
+            <Button
+              width="118px"
+              height="28px"
+              padding="0"
+              borderRadius="4px"
+              bgColor={Color.primary}
+              border="none"
+              color={Color.white}
+              fontSize="12px"
+              fontWeight="bold"
+            >
+              이번 주 댓글 수 TOP
+            </Button>
+          </FlexGrid>
         </FlexReviewerGrid>
 
-        <SliderBox onClickCapture={handleOnItemClick}>
-          {is_loading || best_reviewer_list.length === 0 ? (
-            <CardSliderBox>
-              {Array.from({ length: 10 }).map((_, idx) => {
-                return <SkeletonCard key={idx}></SkeletonCard>;
-              })}
-            </CardSliderBox>
-          ) : (
-            <CardSliderBox
-              is_infinite
-              _afterChange={handleAfterChange}
-              _beforeChange={handleBeforeChange}
-            >
-              {best_reviewer_list?.map((_, idx) => {
-                return <WebToonCard key={idx} {..._}></WebToonCard>;
-              })}
-            </CardSliderBox>
-          )}
-        </SliderBox>
+        {windowSize < 500 ? (
+          <SliderBox>
+            {is_loading || best_reviewer_list.length === 0 ? (
+              <CardSliderBox>
+                {Array.from({ length: 10 }).map((_, idx) => {
+                  return <SkeletonCard key={idx}></SkeletonCard>;
+                })}
+              </CardSliderBox>
+            ) : (
+              <CardSliderBox>
+                {best_reviewer_list?.map((_, idx) => {
+                  return <WebToonCard key={idx} {..._}></WebToonCard>;
+                })}
+              </CardSliderBox>
+            )}
+          </SliderBox>
+        ) : (
+          <SliderBox onClickCapture={handleOnItemClick}>
+            {is_loading || best_reviewer_list.length === 0 ? (
+              <Slick>
+                {Array.from({ length: 10 }).map((_, idx) => {
+                  return <SkeletonCard key={idx}></SkeletonCard>;
+                })}
+              </Slick>
+            ) : (
+              <Slick
+                _afterChange={handleAfterChange}
+                _beforeChange={handleBeforeChange}
+              >
+                {best_reviewer_list?.map((_, idx) => {
+                  return <WebToonCard key={idx} {..._}></WebToonCard>;
+                })}
+              </Slick>
+            )}
+          </SliderBox>
+        )}
 
         <TitleGrid>
           <Text type="h2" fontWeight="bold" color={Color.gray800}>
@@ -309,21 +395,42 @@ const Recommendation = () => {
             더보기
           </Button>
         </TitleGrid>
-        <SliderBox margin_bottom>
-          {is_loading || end_toon_list.length === 0 ? (
-            <CardSliderBox>
-              {Array.from({ length: 10 }).map((_, idx) => {
-                return <SkeletonCard key={idx}></SkeletonCard>;
-              })}
-            </CardSliderBox>
-          ) : (
-            <CardSliderBox>
-              {end_toon_list?.map((_, idx) => {
-                return <WebToonCard key={idx} {..._}></WebToonCard>;
-              })}
-            </CardSliderBox>
-          )}
-        </SliderBox>
+        {windowSize < 500 ? (
+          <SliderBox margin_bottom>
+            {is_loading || end_toon_list.length === 0 ? (
+              <CardSliderBox is_infinite>
+                {Array.from({ length: 10 }).map((_, idx) => {
+                  return <SkeletonCard key={idx}></SkeletonCard>;
+                })}
+              </CardSliderBox>
+            ) : (
+              <CardSliderBox>
+                {end_toon_list?.map((_, idx) => {
+                  return <WebToonCard key={idx} {..._}></WebToonCard>;
+                })}
+              </CardSliderBox>
+            )}
+          </SliderBox>
+        ) : (
+          <SliderBox margin_bottom onClickCapture={handleOnItemClick}>
+            {is_loading || end_toon_list.length === 0 ? (
+              <Slick>
+                {Array.from({ length: 10 }).map((_, idx) => {
+                  return <SkeletonCard key={idx}></SkeletonCard>;
+                })}
+              </Slick>
+            ) : (
+              <Slick
+                _afterChange={handleAfterChange}
+                _beforeChange={handleBeforeChange}
+              >
+                {end_toon_list?.map((_, idx) => {
+                  return <WebToonCard key={idx} {..._}></WebToonCard>;
+                })}
+              </Slick>
+            )}
+          </SliderBox>
+        )}
       </React.Fragment>
     );
   }
@@ -335,6 +442,7 @@ const Recommendation = () => {
           onClick={() => {
             history.push("/login");
           }}
+          margin
         >
           <Text margin="0 0 5px 0" type="small" color={Color.gray700}>
             좋아하실만한 웹툰을 추천해 드릴게요.
@@ -450,23 +558,60 @@ const Recommendation = () => {
             </Text>
           </FlexGrid>
         </FlexInfoGrid>
+        <FlexGrid>
+          <TalkBubble></TalkBubble>
+          <Button
+            width="118px"
+            height="28px"
+            padding="0"
+            borderRadius="4px"
+            bgColor={Color.primary}
+            border="none"
+            color={Color.white}
+            fontSize="12px"
+            fontWeight="bold"
+          >
+            이번 주 댓글 수 TOP
+          </Button>
+        </FlexGrid>
       </FlexReviewerGrid>
 
-      <SliderBox>
-        {is_loading || best_reviewer_list.length === 0 ? (
-          <CardSliderBox>
-            {Array.from({ length: 10 }).map((_, idx) => {
-              return <SkeletonCard key={idx}></SkeletonCard>;
-            })}
-          </CardSliderBox>
-        ) : (
-          <CardSliderBox>
-            {best_reviewer_list?.map((_, idx) => {
-              return <WebToonCard key={idx} {..._}></WebToonCard>;
-            })}
-          </CardSliderBox>
-        )}
-      </SliderBox>
+      {windowSize < 500 ? (
+        <SliderBox>
+          {is_loading || best_reviewer_list.length === 0 ? (
+            <CardSliderBox>
+              {Array.from({ length: 10 }).map((_, idx) => {
+                return <SkeletonCard key={idx}></SkeletonCard>;
+              })}
+            </CardSliderBox>
+          ) : (
+            <CardSliderBox>
+              {best_reviewer_list?.map((_, idx) => {
+                return <WebToonCard key={idx} {..._}></WebToonCard>;
+              })}
+            </CardSliderBox>
+          )}
+        </SliderBox>
+      ) : (
+        <SliderBox onClickCapture={handleOnItemClick}>
+          {is_loading || best_reviewer_list.length === 0 ? (
+            <Slick>
+              {Array.from({ length: 10 }).map((_, idx) => {
+                return <SkeletonCard key={idx}></SkeletonCard>;
+              })}
+            </Slick>
+          ) : (
+            <Slick
+              _afterChange={handleAfterChange}
+              _beforeChange={handleBeforeChange}
+            >
+              {best_reviewer_list?.map((_, idx) => {
+                return <WebToonCard key={idx} {..._}></WebToonCard>;
+              })}
+            </Slick>
+          )}
+        </SliderBox>
+      )}
 
       <TitleGrid>
         <Text type="h2" fontWeight="bold" color={Color.gray800}>
@@ -485,21 +630,119 @@ const Recommendation = () => {
           더보기
         </Button>
       </TitleGrid>
-      <SliderBox margin_bottom>
-        {is_loading || end_toon_list.length === 0 ? (
-          <CardSliderBox is_infinite>
-            {Array.from({ length: 10 }).map((_, idx) => {
-              return <SkeletonCard key={idx}></SkeletonCard>;
-            })}
-          </CardSliderBox>
-        ) : (
+
+      {windowSize < 500 ? (
+        <SliderBox margin_bottom>
+          {is_loading || end_toon_list.length === 0 ? (
+            <CardSliderBox is_infinite>
+              {Array.from({ length: 10 }).map((_, idx) => {
+                return <SkeletonCard key={idx}></SkeletonCard>;
+              })}
+            </CardSliderBox>
+          ) : (
+            <CardSliderBox>
+              {end_toon_list?.map((_, idx) => {
+                return <WebToonCard key={idx} {..._}></WebToonCard>;
+              })}
+            </CardSliderBox>
+          )}
+        </SliderBox>
+      ) : (
+        <SliderBox margin_bottom onClickCapture={handleOnItemClick}>
+          {is_loading || end_toon_list.length === 0 ? (
+            <Slick>
+              {Array.from({ length: 10 }).map((_, idx) => {
+                return <SkeletonCard key={idx}></SkeletonCard>;
+              })}
+            </Slick>
+          ) : (
+            <Slick
+              _afterChange={handleAfterChange}
+              _beforeChange={handleBeforeChange}
+            >
+              {end_toon_list?.map((_, idx) => {
+                return <WebToonCard key={idx} {..._}></WebToonCard>;
+              })}
+            </Slick>
+          )}
+        </SliderBox>
+      )}
+      <PositionGrid>
+        <BlurBox>
+          <BlurContentBox>
+            <FlexGrid button>
+              <DownArrowPrimary
+                style={{ margin: "20px 0 40px" }}
+              ></DownArrowPrimary>
+            </FlexGrid>
+
+            <Text type="h1" fontWeight="medium" margin="15px 0">
+              취향저격,
+            </Text>
+            <Text type="h1" fontWeight="medium">
+              더 많은 웹툰 추천을 받고 싶다면? 👀
+            </Text>
+            <FlexGrid button>
+              <Button
+                width="110px"
+                height="56px"
+                padding="0"
+                borderRadius="50px"
+                bgColor={Color.primary}
+                border="none"
+                color={Color.white}
+                fontSize="14px"
+                margin="60px 0 0 0"
+                _onClick={() => {
+                  history.push("/login");
+                }}
+              >
+                로그인하기
+              </Button>
+            </FlexGrid>
+          </BlurContentBox>
+        </BlurBox>
+        <OfferSliderBox md_bottom>
+          {dummy_toon.map((_, idx) => {
+            return (
+              <OfferCard
+                key={idx}
+                {..._}
+                user_name={user_name}
+                dummy
+              ></OfferCard>
+            );
+          })}
+
+          <BottomBox bottom>
+            <Text type="caption" color={Color.white} fontWeight="bold">
+              😍 김투니님 만을 위한 추천 웹툰
+            </Text>
+          </BottomBox>
+        </OfferSliderBox>
+
+        <TitleGrid no_border no_margin>
+          <Text type="h2" fontWeight="bold" color={Color.gray800}>
+            비슷한 취향의 사용자가 본 웹툰
+          </Text>
+          <Button
+            border="none"
+            bgColor={Color.white}
+            color={Color.gray700}
+            fontSize="13px"
+            width="50px"
+          >
+            더보기
+          </Button>
+        </TitleGrid>
+        <SliderBox margin_bottom>
           <CardSliderBox>
-            {end_toon_list?.map((_, idx) => {
+            {best_reviewer_list?.map((_, idx) => {
               return <WebToonCard key={idx} {..._}></WebToonCard>;
             })}
           </CardSliderBox>
-        )}
-      </SliderBox>
+        </SliderBox>
+      </PositionGrid>
     </React.Fragment>
   );
 };
@@ -515,11 +758,13 @@ const BannerBox = styled.div`
   height: 66px;
   background-color: ${Color.gray100};
   padding: 0 16px;
-  margin: 40px 20px 40px;
+  margin: 40px 20px 20px;
   border-radius: 8px;
   display: flex;
   flex-direction: column;
   justify-content: center;
+  ${(props) =>
+    props.margin ? "margin: 20px 20px 20px" : "margin: 40px 20px 20px"};
 `;
 
 const SliderBox = styled.div`
@@ -533,8 +778,9 @@ const SliderBox = styled.div`
 
 const OfferSliderBox = styled.div`
   width: 100%;
-  margin: -4px 0 50px 0;
+  ${(props) => (props.md_bottom ? "margin: 0" : "margin: -4px 0 20px 0")};
   border-top: 8px solid ${Color.gray100};
+  border-bottom: 8px solid ${Color.gray100};
   position: relative;
 `;
 
@@ -542,7 +788,7 @@ const BottomBox = styled.div`
   width: 100%;
   height: 32px;
   position: absolute;
-  bottom: 8px;
+  bottom: 0px;
   display: flex;
   justify-content: center;
   align-items: center;
@@ -596,6 +842,7 @@ const BookMark = styled.div`
 const FlexGrid = styled.div`
   display: flex;
   align-items: center;
+  ${(props) => props.button && "justify-content: center"};
 `;
 
 const TitleGrid = styled.div`
@@ -603,10 +850,11 @@ const TitleGrid = styled.div`
   width: 100%;
   height: 65px;
   ${(props) => (props.no_margin ? "margin-top: -1px" : "margin-top: 30px")};
+  ${(props) =>
+    props.no_border ? null : ` border-top: 8px solid ${Color.gray100}`};
   padding: 10px 16px 0;
   align-items: center;
   justify-content: space-between;
-  border-top: 8px solid ${Color.gray100};
 `;
 
 const FlexToonGrid = styled.div`
@@ -636,7 +884,7 @@ const InfoGrid = styled.div`
 const FlexInfoGrid = styled.div`
   display: flex;
   flex-direction: column;
-  width: 70%;
+  margin-right: 5px;
   height: 48px;
   justify-content: space-around;
   padding: 4px;
@@ -658,40 +906,49 @@ const MdInfoBox = styled.div`
   padding: 0 0 0 20px;
 `;
 
-// const HiddenBlurBox = styled.div`
-//   position: relative;
-//   white-space: nowrap;
-//   overflow: hidden;
-//   margin: 10px 0 50px 0;
+const PositionGrid = styled.div`
+  position: relative;
+  width: 100%;
+`;
 
-//   &:before {
-//     content: "";
-//     display: block;
-//     position: absolute;
-//     z-index: 1;
-//     width: 100%;
-//     height: 100%;
-//     background-color: ${Color.black};
-//     opacity: 0.5;
-//   }
-// `;
+const BlurBox = styled.div`
+  width: 100%;
+  height: 900px;
+  background: -moz-linear-gradient(
+    top,
+    rgba(255, 255, 255, 0) 0%,
+    rgba(255, 255, 255, 1) 48%,
+    rgba(255, 255, 255, 1) 56%,
+    rgba(255, 255, 255, 1) 99%
+  );
+  background: -webkit-linear-gradient(
+    top,
+    rgba(255, 255, 255, 0) 0%,
+    rgba(255, 255, 255, 1) 48%,
+    rgba(255, 255, 255, 1) 56%,
+    rgba(255, 255, 255, 1) 99%
+  );
+  background: linear-gradient(
+    to bottom,
+    rgba(255, 255, 255, 0) 0%,
+    rgba(255, 255, 255, 1) 48%,
+    rgba(255, 255, 255, 1) 56%,
+    rgba(255, 255, 255, 1) 99%
+  );
+  filter: progid:DXImageTransform.Microsoft.gradient( startColorstr='#00ffffff', endColorstr='#ffffff',GradientType=0 ); /* IE6-9 */
 
-// const BlurBox = styled.div`
-//   filter: blur(1.5px);
-// `;
+  z-index: 3;
+  position: absolute;
+`;
 
-// const BlurText = styled.p`
-//   width: 100%;
-//   height: 100%;
-//   display: flex;
-//   position: absolute;
-//   justify-content: center;
-//   align-items: center;
-//   font-size: 16px;
-//   font-weight: bold;
-//   color: #fff;
-//   z-index: 5;
-// `;
+const BlurContentBox = styled.div`
+  width: 100%;
+  padding: 0 28px;
+  position: absolute;
+  bottom: 220px;
+  display: flex;
+  flex-direction: column;
+`;
 
 const TextGrid = styled.div`
   width: 100%;

@@ -16,6 +16,9 @@ import { ReactComponent as WriteButton } from "./WriteButton.svg";
 import { ReactComponent as Pen } from "./Pen.svg";
 import { ReactComponent as GoTop } from "./GoTop.svg";
 import { ReactComponent as TalkAlarm } from "./TalkAlarm.svg";
+import { ReactComponent as Medal } from "./Medal.svg";
+import { ReactComponent as DownArrowPrimary } from "./DownArrowPrimary.svg";
+import { ReactComponent as TalkBubble } from "./TalkBubble.svg";
 import Stars from "./Stars.png";
 
 export {
@@ -38,4 +41,7 @@ export {
   GoTop,
   TalkAlarm,
   Stars,
+  Medal,
+  DownArrowPrimary,
+  TalkBubble,
 };

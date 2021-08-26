@@ -4,8 +4,16 @@ import { Text, Image } from "../elements";
 import { Color } from "../shared/common";
 import profileImgList from "../images/profiles";
 import { history } from "../redux/configureStore";
-
+import { Medal } from "../images/icons";
 const BestReveiwerCard = (props) => {
+  const [first, setFirst] = React.useState(false);
+
+  React.useEffect(() => {
+    if (props.index === 0) {
+      setFirst(true);
+    }
+  }, []);
+
   return (
     <React.Fragment>
       <Container
@@ -13,6 +21,11 @@ const BestReveiwerCard = (props) => {
           history.push(`/userinfo/${props.user.userName}`);
         }}
       >
+        {first && (
+          <MedalGrid>
+            <Medal></Medal>
+          </MedalGrid>
+        )}
         <Image
           src={profileImgList[props.user.userImg]}
           shape="circle"
@@ -56,6 +69,7 @@ const Container = styled.div`
   align-items: center;
   border-radius: 5px;
   padding: 0px;
+  position: relative;
 `;
 
 const BottomGrid = styled.div`
@@ -71,6 +85,14 @@ const FlexGrid = styled.div`
   flex-direction: column;
   padding: 5px;
   gap: 5px;
+`;
+
+const MedalGrid = styled.div`
+  width: 27px;
+  height: 40px;
+  position: absolute;
+  top: -5px;
+  left: 7px;
 `;
 
 export default BestReveiwerCard;
