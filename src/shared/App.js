@@ -81,6 +81,7 @@ const Container = styled.section`
   margin: 0 auto;
   padding-top: 130px;
   max-width: 700px;
+  min-height: 100vh;
   @media only screen and (min-width: 700px) {
     border-left: 1px solid ${Color.gray100};
     border-right: 1px solid ${Color.gray100};
