@@ -19,7 +19,7 @@ export const Color = {
   white: "#ffffff",
   primary: "#fc5c2b",
   primaryLight: "#ff8159",
-  kakaoYellow: "#FEE500",
+  kakaoYellow: "#FFCD00",
   naverGreen: "#02C759",
   로맨스: "#F88384",
   일상: "#FFCD6F",

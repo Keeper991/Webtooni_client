@@ -225,7 +225,7 @@ const Main = () => {
                 fontSize="10px"
                 fontWeight="bold"
                 borderRadius="27px"
-                padding="0px"
+                padding="0 0 2px 0"
                 color={Color.white}
                 bgColor={Color.naverGreen}
                 border="none"
@@ -259,7 +259,7 @@ const Main = () => {
                 fontSize="10px"
                 fontWeight="bold"
                 borderRadius="27px"
-                padding="0px"
+                padding="0 0 2px 0"
                 color={Color.white}
                 bgColor={Color.naverGreen}
                 border="none"
@@ -294,7 +294,7 @@ const Main = () => {
                 fontSize="10px"
                 fontWeight="bold"
                 borderRadius="27px"
-                padding="0px"
+                padding="0 0 2px 0"
                 color={Color.white}
                 bgColor={Color.kakaoYellow}
                 border="none"
@@ -328,7 +328,7 @@ const Main = () => {
                 fontSize="10px"
                 fontWeight="bold"
                 borderRadius="27px"
-                padding="0px"
+                padding="0 0 2px 0"
                 color={Color.white}
                 bgColor={Color.kakaoYellow}
                 border="none"
