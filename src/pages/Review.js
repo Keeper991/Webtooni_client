@@ -137,7 +137,6 @@ const FlexGrid = styled.div`
   align-items: center;
   justify-content: space-between;
   border-top: 8px solid ${Color.gray100};
-  border-bottom: 8px solid ${Color.gray100};
 `;
 
 const TabGrid = styled.div`
@@ -156,6 +155,7 @@ const Container = styled.div`
   flex-direction: column;
   align-items: center;
   padding: 0 16px;
+  margin-top: 20px;
 `;
 
 const WriteBtn = styled.div`
