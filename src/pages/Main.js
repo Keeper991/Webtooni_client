@@ -311,7 +311,7 @@ const Main = () => {
                 borderRadius="27px"
                 padding="0 0 2px 0"
                 color={Color.white}
-                bgColor={Color.kakaoYellow}
+                bgColor={Color.kakaoDarkYellow}
                 border="none"
                 margin="0 0 0 5px"
               >
@@ -345,7 +345,7 @@ const Main = () => {
                 borderRadius="27px"
                 padding="0 0 2px 0"
                 color={Color.white}
-                bgColor={Color.kakaoYellow}
+                bgColor={Color.kakaoDarkYellow}
                 border="none"
                 margin="0 0 0 5px"
               >
