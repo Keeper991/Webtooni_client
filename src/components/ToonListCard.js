@@ -43,7 +43,7 @@ const ToonListCard = (props) => {
             <FlexGrid>
               <FlexGrid>
                 <AuthorWrap>
-                  <Text tag="p" type="caption" color={Color.gray400}>
+                  <Text type="caption" color={Color.gray400}>
                     {props.toonAuthor}
                   </Text>
                 </AuthorWrap>
@@ -118,7 +118,7 @@ const ToonListCard = (props) => {
           <FlexGrid>
             <FlexGrid>
               <AuthorWrap>
-                <Text tag="p" type="caption" color={Color.gray400}>
+                <Text type="caption" color={Color.gray400}>
                   {props.toonAuthor}
                 </Text>
               </AuthorWrap>

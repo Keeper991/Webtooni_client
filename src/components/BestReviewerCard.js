@@ -31,15 +31,15 @@ const BestReveiwerCard = (props) => {
           shape="circle"
           size="64px"
         ></Image>
-        <Text tag="p" type="medium" fontWeight="bold" color={Color.gray800}>
+        <Text type="medium" fontWeight="bold" color={Color.gray800}>
           {props.user.userName ? props.user.userName : "null"}
         </Text>
-        <Text tag="p" type="caption" color={Color.gray600}>
+        <Text type="caption" color={Color.gray600}>
           {props.user.userGrade ? props.user.userGrade : "null"}
         </Text>
         <BottomGrid>
           <FlexGrid>
-            <Text tag="p" type="small" fontWeight="bold" color={Color.gray400}>
+            <Text type="small" fontWeight="bold" color={Color.gray400}>
               리뷰 수
             </Text>
             <Text type="num" fontSize="14px" fontWeight="bold">
@@ -47,7 +47,7 @@ const BestReveiwerCard = (props) => {
             </Text>
           </FlexGrid>
           <FlexGrid>
-            <Text tag="p" type="small" fontWeight="bold" color={Color.gray400}>
+            <Text type="small" fontWeight="bold" color={Color.gray400}>
               좋아요 수
             </Text>
             <Text type="num" fontSize="14px" fontWeight="bold">

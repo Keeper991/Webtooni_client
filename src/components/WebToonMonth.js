@@ -26,12 +26,10 @@ const WebToonMonth = (props) => {
         </ImageGrid>
 
         <InfoGrid>
-          <Text tag="p" fontWeight="medium">
-            {props.toonTitle}
-          </Text>
+          <Text fontWeight="medium">{props.toonTitle}</Text>
 
           <FlexGrid flexStart>
-            <Text tag="p" type="caption" color={Color.gray500}>
+            <Text type="caption" color={Color.gray500}>
               {props.toonAuthor}
             </Text>
             <FlexGrid>
