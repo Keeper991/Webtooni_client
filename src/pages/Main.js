@@ -654,7 +654,6 @@ const ReviewTabGrid = styled.div`
 `;
 
 const BannerBox = styled.div`
-  width: 100%;
   height: 66px;
   background-color: ${Color.gray100};
   padding: 0 16px;

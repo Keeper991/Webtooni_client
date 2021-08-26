@@ -744,7 +744,6 @@ const BorderLine = styled.div`
 `;
 
 const BannerBox = styled.div`
-  width: 100%auto;
   height: 66px;
   background-color: ${Color.gray100};
   padding: 0 16px;
