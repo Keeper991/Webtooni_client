@@ -63,7 +63,7 @@ const Talk = () => {
       {/* 포스트 작성 버튼 */}
       <Permit>
         <Grid
-          position="fixed"
+          position="absolute"
           bottom="10px"
           right="10px"
           cursor="true"
