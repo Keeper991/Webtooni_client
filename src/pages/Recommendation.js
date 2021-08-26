@@ -55,11 +55,26 @@ const Recommendation = () => {
 
   const md_review = [
     {
-      userImg: "2",
-      userName: "MD김투니",
+      toonId: 84,
+      userImg: "11",
+      userName: "MD신투니",
       createDate: "08.18",
       reviewContent:
-        "판타지 장르 중에서는 최고로 꼽힐만한 작품 중 하나라고 생각합니다. 굉장히 넓은 세계관을 유지하면서도 세계관이 무너지지 않고 있습니다. 또한 그 넓은 이야기를 굉장히 높은 퀄리티의 그림과 연출로 풀어내고 있죠. 오랜기간 동안 사랑을 받은 이유가 분명히 있습니다.",
+        "귀여운 좀비물이에요. 생존물에서 거부감이 들 수 있는 그로테스크한 부분은 최소화되고 그림체는 둥글둥글해요. 이게 주인공 특유의 무덤덤함과 어우러지니 혈흔이 낭자하는 생존물이 아기자기한 모험물이 되었네요. 각자의 개성과 사연을 가진 사람들이 만나 생각도 못한 곳에서 웃음을 자아내고, 때론 진지하게 생각할 거리를 던져주는 만화. 추천합니다:)",
+    },
+  ];
+
+  const md_toon = [
+    {
+      toonAuthor: "이명재",
+      toonAvgPoint: 4.7,
+      toonId: 84,
+      toonImg:
+        "https://shared-comic.pstatic.net/thumb/webtoon/766648/thumbnail/thumbnail_IMAG06_f81dd605-e54a-4c36-89dd-f5f7ce585761.jpg",
+
+      toonTitle: "위아더좀비",
+      toonWeekday: "화",
+      totalPointCount: 3,
     },
   ];
 
@@ -224,10 +239,10 @@ const Recommendation = () => {
               #MD추천
             </Text>
             <Text type="h1" color={Color.white} fontWeight="bold">
-              네웹 대표 <br /> 글로벌 인기작!
+              네웹 대표 <br /> 떠오르는 인기작!
             </Text>
             <Text type="caption" color={Color.gray300}>
-              두근두근 청춘 로맨스물을 찾고 있다면?
+              뻔하지 않은 일상 속 소소한 재미를 찾고 있다면?
             </Text>
           </MdInfoBox>
           <PlatformImg>
@@ -236,24 +251,20 @@ const Recommendation = () => {
         </MdBox>
         <FlexToonGrid
           onClick={() => {
-            history.push(
-              `/detail/${md_offer_list && md_offer_list[0]?.toonId}`
-            );
+            history.push(`/detail/${md_toon[0].toonId}`);
           }}
         >
           <Image
             margin="0 7px"
-            src={md_offer_list && md_offer_list[0]?.toonImg}
+            src={md_toon[0].toonImg}
             shape="circle"
             size="64px"
           ></Image>
           <InfoGrid>
-            <Text fontWeight="medium">
-              {md_offer_list && md_offer_list[0]?.toonTitle}
-            </Text>
+            <Text fontWeight="medium">{md_toon[0].toonTitle}</Text>
             <FlexGrid>
               <Text type="caption" color={Color.gray400}>
-                {md_offer_list && md_offer_list[0]?.toonAuthor}
+                {md_toon[0].toonAuthor}
               </Text>
               <FillStar width="12px" height="12px" style={{ margin: "5px" }} />
               <Text
@@ -263,15 +274,15 @@ const Recommendation = () => {
                 margin="0 10px 0 0"
                 color={Color.primary}
               >
-                {md_offer_list && md_offer_list[0]?.toonAvgPoint}
+                {md_toon[0].toonAvgPoint}
               </Text>
               <Text type="caption" color={Color.gray400}>
-                {md_offer_list && md_offer_list[0]?.toonWeekday}
+                {md_toon[0].toonWeekday}
               </Text>
             </FlexGrid>
             <TextGrid>
               <Text type="caption" color={Color.gray800}>
-                긴 호흡을 지닌 네이버 웹툰 3대장!
+                인종이의 좀비 타워 속 귀여운 생존일기!
               </Text>
             </TextGrid>
           </InfoGrid>
@@ -301,7 +312,11 @@ const Recommendation = () => {
           </Button>
         </TitleGrid>
 
-        <FlexReviewerGrid>
+        <FlexReviewerGrid
+          onClick={() => {
+            history.push(`/userinfo/${best_reviewer_info?.userName}`);
+          }}
+        >
           <Image
             margin="0 7px"
             src={profileImgList[best_reviewer_info?.userImg]}
@@ -321,7 +336,7 @@ const Recommendation = () => {
           <FlexGrid>
             <TalkBubble></TalkBubble>
             <Button
-              width="118px"
+              width="130px"
               height="28px"
               padding="0"
               borderRadius="4px"
@@ -331,7 +346,7 @@ const Recommendation = () => {
               fontSize="12px"
               fontWeight="bold"
             >
-              이번 주 댓글 수 TOP
+              리뷰 작성 수 TOP!
             </Button>
           </FlexGrid>
         </FlexReviewerGrid>
@@ -453,14 +468,14 @@ const Recommendation = () => {
       <MdBox>
         <BookMark></BookMark>
         <MdInfoBox>
-          <Text type="small" color={Color.primary}>
+          <Text type="caption" fontWeight="bold" color={Color.primary}>
             #MD추천
           </Text>
           <Text type="h1" color={Color.white} fontWeight="bold">
-            네웹 대표 <br /> 글로벌 인기작!
+            네웹 대표 <br /> 떠오르는 인기작!
           </Text>
           <Text type="caption" color={Color.gray300}>
-            두근두근 청춘 로맨스물을 찾고 있다면?
+            뻔하지 않은 일상 속 소소한 재미를 찾고 있다면?
           </Text>
         </MdInfoBox>
         <PlatformImg>
@@ -469,22 +484,20 @@ const Recommendation = () => {
       </MdBox>
       <FlexToonGrid
         onClick={() => {
-          history.push(`/detail/${md_offer_list && md_offer_list[0]?.toonId}`);
+          history.push(`/detail/${md_toon[0].toonId}`);
         }}
       >
         <Image
           margin="0 7px"
-          src={md_offer_list && md_offer_list[0]?.toonImg}
+          src={md_toon[0].toonImg}
           shape="circle"
           size="64px"
         ></Image>
         <InfoGrid>
-          <Text fontWeight="medium">
-            {md_offer_list && md_offer_list[0]?.toonTitle}
-          </Text>
+          <Text fontWeight="medium">{md_toon[0].toonTitle}</Text>
           <FlexGrid>
             <Text type="caption" color={Color.gray400}>
-              {md_offer_list && md_offer_list[0]?.toonAuthor}
+              {md_toon[0].toonAuthor}
             </Text>
             <FillStar width="12px" height="12px" style={{ margin: "5px" }} />
             <Text
@@ -492,16 +505,17 @@ const Recommendation = () => {
               fontSize="12px"
               fontWeight="bold"
               margin="0 10px 0 0"
+              color={Color.primary}
             >
-              {md_offer_list && md_offer_list[0]?.toonAvgPoint}
+              {md_toon[0].toonAvgPoint}
             </Text>
             <Text type="caption" color={Color.gray400}>
-              {md_offer_list && md_offer_list[0]?.toonWeekday}
+              {md_toon[0].toonWeekday}
             </Text>
           </FlexGrid>
           <TextGrid>
             <Text type="caption" color={Color.gray800}>
-              긴 호흡을 지닌 네이버 웹툰 3대장!
+              인종이의 좀비 타워 속 귀여운 생존일기!
             </Text>
           </TextGrid>
         </InfoGrid>
@@ -531,7 +545,11 @@ const Recommendation = () => {
         </Button>
       </TitleGrid>
 
-      <FlexReviewerGrid>
+      <FlexReviewerGrid
+        onClick={() => {
+          history.push(`/userinfo/${best_reviewer_info?.userName}`);
+        }}
+      >
         <Image
           margin="0 7px"
           src={profileImgList[best_reviewer_info?.userImg]}
@@ -551,7 +569,7 @@ const Recommendation = () => {
         <FlexGrid>
           <TalkBubble></TalkBubble>
           <Button
-            width="118px"
+            width="130px"
             height="28px"
             padding="0"
             borderRadius="4px"
@@ -561,7 +579,7 @@ const Recommendation = () => {
             fontSize="12px"
             fontWeight="bold"
           >
-            이번 주 댓글 수 TOP
+            리뷰 작성 수 TOP!
           </Button>
         </FlexGrid>
       </FlexReviewerGrid>
@@ -752,6 +770,7 @@ const BannerBox = styled.div`
   display: flex;
   flex-direction: column;
   justify-content: center;
+  cursor: pointer;
   ${(props) =>
     props.margin ? "margin: 20px 20px 20px" : "margin: 40px 20px 20px"};
 `;
@@ -851,6 +870,7 @@ const FlexToonGrid = styled.div`
   align-items: center;
   margin: 20px 0;
   padding: 0 23px;
+  cursor: pointer;
 `;
 
 const FlexReviewerGrid = styled.div`
@@ -859,6 +879,7 @@ const FlexReviewerGrid = styled.div`
   width: 100%;
   margin: 10px 0 20px 0;
   padding: 0 16px;
+  cursor: pointer;
 `;
 
 const InfoGrid = styled.div`

@@ -464,7 +464,7 @@ const Detail = (props) => {
                   zIndex="2"
                   onClick={() => window.scrollTo(0, 0)}
                 >
-                  <GoTop />
+                  <GoTop style={{ cursor: "pointer" }} />
                 </Grid>
 
                 {(likeReviews.length > shownReview ||

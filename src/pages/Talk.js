@@ -70,7 +70,7 @@ const Talk = () => {
           zIndex="2"
           onClick={() => history.push("/talk/write")}
         >
-          <WriteButton />
+          <WriteButton style={{ cursor: "pointer" }} />
         </Grid>
       </Permit>
       <Grid

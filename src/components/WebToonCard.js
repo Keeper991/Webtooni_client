@@ -95,6 +95,7 @@ const Container = styled.div`
   background: ${Color.white};
   display: inline-block;
   position: relative;
+  cursor: pointer;
 `;
 
 const FlexGrid = styled.div`

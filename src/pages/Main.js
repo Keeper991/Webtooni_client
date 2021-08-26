@@ -124,26 +124,33 @@ const Main = () => {
 
   return (
     <React.Fragment>
-      <BannerSliderBox>
-        <Slick is_banner>
-          <TopBannerBoxWrap>
-            <a
-              href={"https://forms.gle/PHvvMnmSscUL7JLT9"}
-              target="_blank"
-              rel="noopener noreferrer"
-            >
-              바로가기
-            </a>
-            <TopBannerBox mint banner={BannerImg3}></TopBannerBox>
-          </TopBannerBoxWrap>
+      <BannerSliderBox onClickCapture={handleOnItemClick}>
+        <Slick
+          is_banner
+          _afterChange={handleAfterChange}
+          _beforeChange={handleBeforeChange}
+        >
+          <TopBannerBox
+            mint
+            banner={BannerImg3}
+            onClick={() => {
+              window.open("https://forms.gle/PHvvMnmSscUL7JLT9", "_blank");
+            }}
+          ></TopBannerBox>
 
-          <TopBannerBox banner={BannerImg1}></TopBannerBox>
-          <TopBannerBoxWrap>
-            <Button _onClick={() => history.push("/recommendation")}>
-              바로가기
-            </Button>
-            <TopBannerBox green banner={BannerImg2}></TopBannerBox>
-          </TopBannerBoxWrap>
+          <TopBannerBox
+            banner={BannerImg1}
+            onClick={() => {
+              history.push("/recommendation");
+            }}
+          ></TopBannerBox>
+          <TopBannerBox
+            green
+            banner={BannerImg2}
+            onClick={() => {
+              history.push("/recommendation");
+            }}
+          ></TopBannerBox>
         </Slick>
       </BannerSliderBox>
 
@@ -534,6 +541,7 @@ const TopBannerBox = styled.div`
   background-size: contain;
   background-repeat: no-repeat;
   background-position: center;
+  cursor: pointer;
   ${(props) => props.green && `background-color: #01d358`};
   ${(props) => props.mint && `background-color: #B2F1E6`};
   image-rendering: -moz-crisp-edges;
@@ -541,29 +549,6 @@ const TopBannerBox = styled.div`
   image-rendering: -webkit-optimize-contrast;
   image-rendering: crisp-edges;
   -ms-interpolation-mode: nearest-neighbor;
-`;
-
-const TopBannerBoxWrap = styled.div`
-  position: relative;
-  & > button,
-  & > a {
-    width: 125px;
-    height: 25px;
-    background-color: red;
-    position: absolute;
-    top: 105px;
-    left: 188px;
-    z-index: 5;
-    opacity: 0;
-  }
-  & > button {
-    width: 138px;
-    padding: 0;
-    top: 107px;
-    &:hover {
-      opacity: 0;
-    }
-  }
 `;
 
 const TitleGrid = styled.div`
@@ -662,6 +647,7 @@ const BannerBox = styled.div`
   display: flex;
   flex-direction: column;
   justify-content: center;
+  cursor: pointer;
 `;
 
 const FlexGrid = styled.div`
