@@ -102,6 +102,8 @@ const Slick = ({
         dots={false}
         autoplay={true}
         autoplaySpeed={4000}
+        beforeChange={_beforeChange}
+        afterChange={_afterChange}
       >
         {children}
       </BannerSliderWrap>
