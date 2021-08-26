@@ -130,7 +130,7 @@ const User = (props) => {
       datasets: [
         {
           backgroundColor: interestGenreList.map(
-            (genre) => Color[genre.replaceAll(" ", "")]
+            (genre) => Color[genre?.replaceAll(" ", "")]
           ),
           borderColor: "transparent",
           data: interestData,
@@ -425,7 +425,7 @@ const User = (props) => {
             작성한 리뷰
           </Text>
           {windowSize < 500 ? (
-            reviewList.length ? (
+            reviewList.filter((review) => review.reviewContent).length ? (
               <SlideWrap>
                 {reviewList.map((review, idx) => (
                   <ReviewCard
@@ -441,7 +441,7 @@ const User = (props) => {
                 작성된 리뷰가 없습니다.
               </EmptyInformationGuide>
             )
-          ) : reviewList.length ? (
+          ) : reviewList.filter((review) => review.reviewContent).length ? (
             <div onClickCapture={handleOnItemClick}>
               <Slick
                 _afterChange={handleAfterChange}
