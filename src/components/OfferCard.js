@@ -66,7 +66,7 @@ const Container = styled.div`
   width: 100%;
   height: auto;
   position: relative;
-
+  cursor: pointer;
   overflow: hidden;
 `;
 

@@ -168,6 +168,7 @@ const FlexToonGrid = styled.div`
   width: 100%;
   height: 90px;
   padding: 0 16px;
+  cursor: pointer;
   border-bottom: 1px solid ${Color.gray100};
   &:last-child {
     border-bottom: 1px solid ${Color.white};

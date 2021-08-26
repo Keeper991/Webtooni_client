@@ -124,18 +124,33 @@ const Main = () => {
 
   return (
     <React.Fragment>
-      <BannerSliderBox>
-        <Slick is_banner>
-          <a
-            href={"https://forms.gle/PHvvMnmSscUL7JLT9"}
-            target="_blank"
-            rel="noopener noreferrer"
-          >
-            <TopBannerBox mint banner={BannerImg3}></TopBannerBox>
-          </a>
+      <BannerSliderBox onClickCapture={handleOnItemClick}>
+        <Slick
+          is_banner
+          _afterChange={handleAfterChange}
+          _beforeChange={handleBeforeChange}
+        >
+          <TopBannerBox
+            mint
+            banner={BannerImg3}
+            onClick={() => {
+              window.open("https://forms.gle/PHvvMnmSscUL7JLT9", "_blank");
+            }}
+          ></TopBannerBox>
 
-          <TopBannerBox banner={BannerImg1}></TopBannerBox>
-          <TopBannerBox green banner={BannerImg2}></TopBannerBox>
+          <TopBannerBox
+            banner={BannerImg1}
+            onClick={() => {
+              history.push("/recommendation");
+            }}
+          ></TopBannerBox>
+          <TopBannerBox
+            green
+            banner={BannerImg2}
+            onClick={() => {
+              history.push("/recommendation");
+            }}
+          ></TopBannerBox>
         </Slick>
       </BannerSliderBox>
 
@@ -526,6 +541,7 @@ const TopBannerBox = styled.div`
   background-size: contain;
   background-repeat: no-repeat;
   background-position: center;
+  cursor: pointer;
   ${(props) => props.green && `background-color: #01d358`};
   ${(props) => props.mint && `background-color: #B2F1E6`};
   image-rendering: -moz-crisp-edges;
@@ -632,6 +648,7 @@ const BannerBox = styled.div`
   display: flex;
   flex-direction: column;
   justify-content: center;
+  cursor: pointer;
 `;
 
 const FlexGrid = styled.div`

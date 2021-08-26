@@ -162,5 +162,6 @@ const WriteBtn = styled.div`
   position: fixed;
   bottom: 10px;
   right: 10px;
+  cursor: pointer;
 `;
 export default Review;

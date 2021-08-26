@@ -129,6 +129,7 @@ const ReviewCard = (props) => {
         <PaddingBox>
           <FlexGrid>
             <FlexGrid
+              clickable
               onClick={() => history.push(`/userinfo/${props.userName}`)}
             >
               <Image
@@ -291,6 +292,7 @@ const FlexGrid = styled.div`
   align-items: center;
   justify-content: space-between;
   ${(props) => props.flexStart && `justify-content: start;`};
+  ${(props) => props.clickable && "cursor: pointer"};
 `;
 
 const FlexToonGrid = styled.div`
@@ -300,6 +302,7 @@ const FlexToonGrid = styled.div`
   align-items: center;
   border-top: 1px solid ${Color.gray200};
   padding: 16px;
+  cursor: pointer;
 `;
 
 const InfoGrid = styled.div`
