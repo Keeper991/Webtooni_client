@@ -61,6 +61,7 @@ const FlexToonGrid = styled.div`
   align-items: center;
   width: 100%;
   margin: 10px 0;
+  cursor: pointer;
 `;
 
 const ImageGrid = styled.div`

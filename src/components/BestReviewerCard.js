@@ -70,6 +70,7 @@ const Container = styled.div`
   border-radius: 5px;
   padding: 0px;
   position: relative;
+  cursor: pointer;
 `;
 
 const BottomGrid = styled.div`
