@@ -384,7 +384,6 @@ const SimpleContainer = styled.div`
   display: flex;
   align-items: center;
   justify-content: space-between;
-
   z-index: 5;
   ${(props) => (props.talk ? `border-top: 1px solid white;` : "")}
   ${(props) =>

@@ -599,7 +599,6 @@ const Grid = styled.div`
 const ToonBackground = styled.div`
   width: 102%;
   height: 342px;
-
   background-image: url(${(props) => props.src});
   background-size: cover;
   background-position: center;
