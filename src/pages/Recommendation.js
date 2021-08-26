@@ -148,7 +148,7 @@ const Recommendation = () => {
             좋아하실만한 웹툰을 추천해 드릴게요.
           </Text>
           <FlexGrid>
-            <Text tag="p" fontWeight="bold" color={Color.gray700}>
+            <Text fontWeight="bold" color={Color.gray700}>
               재밌게 본 웹툰의 리뷰를 등록해보세요!
             </Text>
             <Image
@@ -270,7 +270,7 @@ const Recommendation = () => {
               </Text>
             </FlexGrid>
             <TextGrid>
-              <Text tag="p" type="caption" color={Color.gray800}>
+              <Text type="caption" color={Color.gray800}>
                 긴 호흡을 지닌 네이버 웹툰 3대장!
               </Text>
             </TextGrid>
@@ -309,12 +309,7 @@ const Recommendation = () => {
             size="48px"
           ></Image>
           <FlexInfoGrid>
-            <Text
-              tag="p"
-              padding="3px 0 0 0"
-              fontWeight="medium"
-              color={Color.gray800}
-            >
+            <Text padding="3px 0 0 0" fontWeight="medium" color={Color.gray800}>
               {best_reviewer_info?.userName}
             </Text>
             <FlexGrid>
@@ -505,7 +500,7 @@ const Recommendation = () => {
             </Text>
           </FlexGrid>
           <TextGrid>
-            <Text tag="p" type="caption" color={Color.gray800}>
+            <Text type="caption" color={Color.gray800}>
               긴 호흡을 지닌 네이버 웹툰 3대장!
             </Text>
           </TextGrid>
@@ -544,12 +539,7 @@ const Recommendation = () => {
           size="48px"
         ></Image>
         <FlexInfoGrid>
-          <Text
-            tag="p"
-            padding="3px 0 0 0"
-            fontWeight="medium"
-            color={Color.gray800}
-          >
+          <Text padding="3px 0 0 0" fontWeight="medium" color={Color.gray800}>
             {best_reviewer_info?.userName}
           </Text>
           <FlexGrid>
