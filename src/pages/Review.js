@@ -46,41 +46,42 @@ const Review = () => {
         <Text type="h2" fontWeight="bold" color={Color.gray800}>
           리뷰 목록
         </Text>
+        <TabGrid>
+          <Button
+            _onClick={() => {
+              setIsBest(false);
+              dispatch(reviewAction.isLast(false));
+            }}
+            bgColor={Color.white}
+            width="50px"
+            height="30px"
+            border="none"
+            fontWeight="bold"
+            fontSize="13px"
+            padding="0"
+            color={!is_best ? Color.primary : Color.gray400}
+          >
+            최신순
+          </Button>
+          <Button
+            _onClick={() => {
+              setIsBest(true);
+              dispatch(reviewAction.isLast(false));
+            }}
+            bgColor={Color.white}
+            width="50px"
+            height="30px"
+            border="none"
+            fontWeight="bold"
+            fontSize="13px"
+            padding="0"
+            color={is_best ? Color.primary : Color.gray400}
+          >
+            좋아요순
+          </Button>
+        </TabGrid>
       </FlexGrid>
-      <TabGrid>
-        <Button
-          _onClick={() => {
-            setIsBest(false);
-            dispatch(reviewAction.isLast(false));
-          }}
-          bgColor={Color.white}
-          width="50px"
-          height="30px"
-          border="none"
-          fontWeight="bold"
-          fontSize="14px"
-          padding="0"
-          color={!is_best ? Color.gray900 : Color.gray400}
-        >
-          최신순
-        </Button>
-        <Button
-          _onClick={() => {
-            setIsBest(true);
-            dispatch(reviewAction.isLast(false));
-          }}
-          bgColor={Color.white}
-          width="50px"
-          height="30px"
-          border="none"
-          fontWeight="bold"
-          fontSize="14px"
-          padding="0"
-          color={is_best ? Color.gray900 : Color.gray400}
-        >
-          좋아요순
-        </Button>
-      </TabGrid>
+
       <Container>
         {is_best && (
           <InfinityScroll
@@ -143,7 +144,6 @@ const TabGrid = styled.div`
   display: flex;
   width: 100%;
   height: 42px;
-  padding: 0 20px;
   margin: 10px 0;
   align-items: center;
   justify-content: flex-end;
