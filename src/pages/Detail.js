@@ -55,7 +55,6 @@ const Detail = (props) => {
   const toonReviews = _toonReviews.filter(
     (review) => review.userName !== userName
   );
-
   const [myReview, setMyReview] = React.useState(initialState.current);
 
   //보여줄 리뷰 개수 설정
@@ -167,35 +166,41 @@ const Detail = (props) => {
   return (
     <React.Fragment>
       {toonOne && (
-        <>
+        <Grid>
           <Grid
             position="absolute"
+            margin="0 auto"
             overflow="hidden"
             top="0"
-            left="0"
             width="100%"
             height="337px"
             zIndex="0"
+            borderLeft={`1px solid white;`}
+            borderRight={`1px solid white;`}
           >
             <ToonBackground src={toonOne.toonImg} />
           </Grid>
           <Grid
             position="absolute"
+            margin="0 auto"
             top="0"
-            left="0"
             width="100%"
             bgColor="rgba(0,0,0,0.3)"
             height="337px"
             zIndex="1"
+            borderLeft={`1px solid white;`}
+            borderRight={`1px solid white;`}
           ></Grid>
           <Grid
             position="absolute"
+            margin="0 auto"
             top="0"
-            left="0"
             width="100%"
             bg="linear-gradient(transparent, rgba(0,0,0,0.5))"
             height="337px"
             zIndex="2"
+            borderLeft={`1px solid white;`}
+            borderRight={`1px solid white;`}
           ></Grid>
           <Grid padding="0 20px" margin="-50px 0 0 0" zIndex="2">
             {/* 웹툰 정보 */}
@@ -563,7 +568,7 @@ const Detail = (props) => {
               </SliderBox>
             )}
           </Grid>
-        </>
+        </Grid>
       )}
     </React.Fragment>
   );
@@ -571,6 +576,7 @@ const Detail = (props) => {
 
 const Grid = styled.div`
   width: ${(props) => props.width || "auto"};
+  max-width: ${(props) => props.maxWidth || "700px"};
   height: ${(props) => props.height || "auto"};
   display: ${(props) => (props.display ? props.display : "")};
   justify-content: ${(props) => (props.justify ? props.justify : "")};
@@ -588,6 +594,8 @@ const Grid = styled.div`
   background: ${(props) => props.bg || ""};
   ${(props) => (props.cursor ? "cursor: pointer" : "")};
   border-bottom: ${(props) => props.borderBottom || ""};
+  border-left: ${(props) => props.borderLeft || ""};
+  border-right: ${(props) => props.borderRight || ""};
   border-top: ${(props) => props.borderTop || ""};
   border: ${(props) => props.border || ""};
   border-radius: ${(props) => props.borderRadius || ""};
@@ -597,13 +605,13 @@ const Grid = styled.div`
 const ToonBackground = styled.div`
   width: 102%;
   height: 342px;
+
   background-image: url(${(props) => props.src});
   background-size: cover;
   background-position: center;
   filter: blur(5px);
   -webkit-filter: blur(5px);
-  margin-left: -5px;
-  margin-top: -5px;
+  margin: -5px -5px 0 -5px;
 `;
 
 const KakaoLogo = styled.div`
@@ -657,7 +665,7 @@ const CardSliderBox = styled.div`
   gap: 10px;
   &::-webkit-scrollbar {
     display: none;
-    width: 0 !important;
+    width: 0;
   }
 `;
 

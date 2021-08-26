@@ -75,7 +75,7 @@ const Header = (props) => {
   if (props.location.pathname === "/login") {
     return (
       <React.Fragment>
-        <SimpleContainer>
+        <SimpleContainer is_login>
           <HeaderWrap is_simple>
             <LeftOutlined
               style={{ fontSize: "18px", margin: "25px 0" }}
@@ -327,9 +327,13 @@ const PageBtnBox = styled.div`
 
 const Container = styled.div`
   width: 100vw;
+  max-width: 700px;
+  margin: 0 auto;
   top: 0;
   z-index: 90;
   position: fixed;
+  border-left: 1px solid ${Color.gray100};
+  border-right: 1px solid ${Color.gray100};
   transition: 0.4s ease;
   box-shadow: ${(props) =>
     props.isTop
@@ -342,7 +346,6 @@ const Container = styled.div`
 
 const HeaderWrap = styled.div`
   top: 0;
-  left: 0;
   z-index: 100;
   width: 100%;
   height: 70px;
@@ -370,26 +373,41 @@ const IconWrap = styled.div`
 `;
 
 const SimpleContainer = styled.div`
-  position: ${(props) => (props.talk || props.toon ? "fixed" : "absolute")};
+  position: fixed;
+  /* position: ${(props) =>
+    props.talk || props.toon ? "fixed" : "absolute"}; */
   top: 0;
-  left: 0;
   width: 100%;
+  max-width: 700px;
+  margin: 0 auto;
   height: 70px;
   display: flex;
   align-items: center;
   justify-content: space-between;
+
   z-index: 5;
   ${(props) => (props.talk ? `border-top: 1px solid white;` : "")}
   ${(props) =>
     props.underThumbnail
       ? `border-bottom: 1px solid ${Color.gray100}; box-shadow: rgba(0, 0, 0, 0.05) 0px 6px 24px 0px,
-    rgba(0, 0, 0, 0.08) 0px 0px 0px 1px; background-color: ${Color.white}; `
+    rgba(0, 0, 0, 0.08) 0px 0px 0px 1px; background-color: ${Color.white};  border-left: 1px solid ${Color.gray100};
+  border-right: 1px solid ${Color.gray100}; `
       : ""}
 
   ${(props) =>
     props.underTalk
       ? `border-bottom:0.5px solid ${Color.gray100}; box-shadow: rgba(0, 0, 0, 0.05) 0px 6px 24px 0px,
-    rgba(0, 0, 0, 0.08) 0px 0px 0px 1px;`
+    rgba(0, 0, 0, 0.08) 0px 0px 0px 1px; `
+      : ""}
+  ${(props) =>
+    !props.underTalk && props.talk
+      ? `border-left: 1px solid ${Color.gray100};
+  border-right: 1px solid ${Color.gray100};`
+      : ""}
+  ${(props) =>
+    props.is_login
+      ? `border-left: 1px solid ${Color.gray100};
+  border-right: 1px solid ${Color.gray100};`
       : ""}
 `;
 
