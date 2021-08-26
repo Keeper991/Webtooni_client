@@ -141,7 +141,7 @@ const Recommendation = () => {
                   key={idx}
                   {..._}
                   user_name={user_name}
-                  index={idx}
+                  index={idx + 1}
                   total_index={for_user_list.length}
                 ></OfferCard>
               );
