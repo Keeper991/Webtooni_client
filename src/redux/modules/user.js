@@ -175,6 +175,8 @@ const getUserPageInfoServer = (userName) => async (dispatch, getState) => {
     myReviews = myReviews.map((review) => {
       review.toonId = review.webtoon.toonId;
       review.userName = userName;
+      review.userImg = userImg;
+      review.createDate = Date.parse(review.createDate);
       return review;
     });
     dispatch(reviewActions.addReviewList(myReviews, "userPageReview"));

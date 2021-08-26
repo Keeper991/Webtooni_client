@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useRef } from "react";
 import styled from "styled-components";
 import { ConnectedRouter } from "connected-react-router";
 import { Route } from "react-router-dom";
@@ -32,14 +32,15 @@ import ScrollToTop from "./ScrollToTop";
 function App() {
   const dispatch = useDispatch();
   dispatch(userActions.loginCheck());
+  const containerRef = useRef();
 
   return (
-    <Container>
+    <Container ref={containerRef}>
       <ConnectedRouter history={history}>
         <GlobalStyle></GlobalStyle>
         <ScrollToTop></ScrollToTop>
         <Center>
-          <Header></Header>
+          <Header containerRef={containerRef}></Header>
         </Center>
         <Route path="/" exact component={Main} />
         <Route path="/detail/:id" exact component={Detail} />
@@ -73,19 +74,16 @@ const Center = styled.div`
 `;
 
 const Container = styled.section`
-  border-left: 1px solid ${Color.gray100};
-  border-right: 1px solid ${Color.gray100};
-  max-width: 700px;
-  margin: 0 auto;
   position: absolute;
   top: 0;
   left: 0;
   right: 0;
+  margin: 0 auto;
   padding-top: 130px;
-  height: 100vh;
-  overflow-y: scroll;
-  &::-webkit-scrollbar {
-    display: none;
+  max-width: 700px;
+  @media only screen and (min-width: 700px) {
+    border-left: 1px solid ${Color.gray100};
+    border-right: 1px solid ${Color.gray100};
   }
 `;
 

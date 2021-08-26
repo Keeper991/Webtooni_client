@@ -240,7 +240,7 @@ const Main = () => {
                 fontSize="10px"
                 fontWeight="bold"
                 borderRadius="27px"
-                padding="0px"
+                padding="0 0 2px 0"
                 color={Color.white}
                 bgColor={Color.naverGreen}
                 border="none"
@@ -274,7 +274,7 @@ const Main = () => {
                 fontSize="10px"
                 fontWeight="bold"
                 borderRadius="27px"
-                padding="0px"
+                padding="0 0 2px 0"
                 color={Color.white}
                 bgColor={Color.naverGreen}
                 border="none"
@@ -309,7 +309,7 @@ const Main = () => {
                 fontSize="10px"
                 fontWeight="bold"
                 borderRadius="27px"
-                padding="0px"
+                padding="0 0 2px 0"
                 color={Color.white}
                 bgColor={Color.kakaoYellow}
                 border="none"
@@ -343,7 +343,7 @@ const Main = () => {
                 fontSize="10px"
                 fontWeight="bold"
                 borderRadius="27px"
-                padding="0px"
+                padding="0 0 2px 0"
                 color={Color.white}
                 bgColor={Color.kakaoYellow}
                 border="none"
@@ -639,7 +639,6 @@ const ReviewTabGrid = styled.div`
 `;
 
 const BannerBox = styled.div`
-  width: 100%auto;
   height: 66px;
   background-color: ${Color.gray100};
   padding: 0 16px;

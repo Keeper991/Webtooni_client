@@ -51,10 +51,8 @@ const User = (props) => {
   ).length;
   const pointCount = reviewList.length - reviewCount;
 
-
   const [curSubscribePage, setCurSubscribePage] = React.useState(1);
   const [dragging, setDragging] = useState(false);
-
 
   const handleBeforeChange = React.useCallback(() => {
     setDragging(true);
@@ -140,6 +138,7 @@ const User = (props) => {
       ],
     },
     options: {
+      animation: false,
       plugins: {
         legend: {
           labels: {
@@ -166,6 +165,7 @@ const User = (props) => {
       ],
     },
     options: {
+      animation: false,
       plugins: {
         legend: {
           display: false,
@@ -388,26 +388,26 @@ const User = (props) => {
           >
             구독중인 웹툰
           </Text>
-          <Slick
-            is_variableWidth={false}
-            _afterChange={handleAfterChange}
-            _beforeChange={handleBeforeChange}
-          >
-            {subscribeList.length ? (
-              subscribeList.map((list, idx) => (
+          {subscribeList.length ? (
+            <Slick
+              is_variableWidth={false}
+              _afterChange={handleAfterChange}
+              _beforeChange={handleBeforeChange}
+            >
+              {subscribeList.map((list, idx) => (
                 <WebtoonListWrap key={idx} onClickCapture={handleOnItemClick}>
                   {list.map((item, i) => (
                     <ToonListCard key={i} {...item} />
                   ))}
                 </WebtoonListWrap>
-              ))
-            ) : (
-              <EmptyInformationGuide>
-                구독중인 웹툰이 없습니다.
-              </EmptyInformationGuide>
-            )}
-          </Slick>
-          {subscribeList.length && (
+              ))}
+            </Slick>
+          ) : (
+            <EmptyInformationGuide>
+              구독중인 웹툰이 없습니다.
+            </EmptyInformationGuide>
+          )}
+          {subscribeList.length !== 0 && (
             <SubscribePageNum>
               <Text type="num" fontSize="10px">
                 {`${curSubscribePage} / ${subscribeList.length}`}
@@ -425,44 +425,42 @@ const User = (props) => {
             작성한 리뷰
           </Text>
           {windowSize < 500 ? (
-            <SlideWrap>
-              {reviewList.length ? (
-                reviewList.map((review, idx) => (
+            reviewList.length ? (
+              <SlideWrap>
+                {reviewList.map((review, idx) => (
                   <ReviewCard
                     key={idx}
                     userImg={userInfo.userImg}
                     {...review}
                     like_list={like_list}
                   />
-                ))
-              ) : (
-                <EmptyInformationGuide>
-                  작성된 리뷰가 없습니다.
-                </EmptyInformationGuide>
-              )}
-            </SlideWrap>
-          ) : (
+                ))}
+              </SlideWrap>
+            ) : (
+              <EmptyInformationGuide>
+                작성된 리뷰가 없습니다.
+              </EmptyInformationGuide>
+            )
+          ) : reviewList.length ? (
             <div onClickCapture={handleOnItemClick}>
               <Slick
                 _afterChange={handleAfterChange}
                 _beforeChange={handleBeforeChange}
               >
-                {reviewList.length ? (
-                  reviewList.map((review, idx) => (
-                    <ReviewCard
-                      key={idx}
-                      userImg={userInfo.userImg}
-                      {...review}
-                      like_list={like_list}
-                    />
-                  ))
-                ) : (
-                  <EmptyInformationGuide>
-                    작성된 리뷰가 없습니다.
-                  </EmptyInformationGuide>
-                )}
+                {reviewList.map((review, idx) => (
+                  <ReviewCard
+                    key={idx}
+                    userImg={userInfo.userImg}
+                    {...review}
+                    like_list={like_list}
+                  />
+                ))}
               </Slick>
             </div>
+          ) : (
+            <EmptyInformationGuide>
+              작성된 리뷰가 없습니다.
+            </EmptyInformationGuide>
           )}
         </ReviewListArea>
       </Container>
@@ -607,7 +605,11 @@ const BarChartWrap = styled.div`
   height: 150px;
 `;
 
-const SubscribeListArea = styled.section``;
+const SubscribeListArea = styled.section`
+  .slick-slide {
+    margin-right: 0;
+  }
+`;
 
 const SubscribePageNum = styled.div`
   width: 36px;
@@ -627,7 +629,7 @@ const ReviewListArea = styled.section``;
 const EmptyInformationGuide = styled.div`
   color: ${Color.gray400};
   width: 100%;
-  height: 100%;
+  height: 220px;
   display: flex;
   justify-content: center;
   align-items: center;

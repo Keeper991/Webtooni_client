@@ -175,8 +175,6 @@ const Detail = (props) => {
             width="100%"
             height="337px"
             zIndex="0"
-            borderLeft={`1px solid white;`}
-            borderRight={`1px solid white;`}
           >
             <ToonBackground src={toonOne.toonImg} />
           </Grid>
@@ -188,8 +186,6 @@ const Detail = (props) => {
             bgColor="rgba(0,0,0,0.3)"
             height="337px"
             zIndex="1"
-            borderLeft={`1px solid white;`}
-            borderRight={`1px solid white;`}
           ></Grid>
           <Grid
             position="absolute"
@@ -199,8 +195,6 @@ const Detail = (props) => {
             bg="linear-gradient(transparent, rgba(0,0,0,0.5))"
             height="337px"
             zIndex="2"
-            borderLeft={`1px solid white;`}
-            borderRight={`1px solid white;`}
           ></Grid>
           <Grid padding="0 20px" margin="-50px 0 0 0" zIndex="2">
             {/* 웹툰 정보 */}
