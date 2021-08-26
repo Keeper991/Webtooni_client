@@ -126,16 +126,24 @@ const Main = () => {
     <React.Fragment>
       <BannerSliderBox>
         <Slick is_banner>
-          <a
-            href={"https://forms.gle/PHvvMnmSscUL7JLT9"}
-            target="_blank"
-            rel="noopener noreferrer"
-          >
+          <TopBannerBoxWrap>
+            <a
+              href={"https://forms.gle/PHvvMnmSscUL7JLT9"}
+              target="_blank"
+              rel="noopener noreferrer"
+            >
+              바로가기
+            </a>
             <TopBannerBox mint banner={BannerImg3}></TopBannerBox>
-          </a>
+          </TopBannerBoxWrap>
 
           <TopBannerBox banner={BannerImg1}></TopBannerBox>
-          <TopBannerBox green banner={BannerImg2}></TopBannerBox>
+          <TopBannerBoxWrap>
+            <Button _onClick={() => history.push("/recommendation")}>
+              바로가기
+            </Button>
+            <TopBannerBox green banner={BannerImg2}></TopBannerBox>
+          </TopBannerBoxWrap>
         </Slick>
       </BannerSliderBox>
 
@@ -535,6 +543,29 @@ const TopBannerBox = styled.div`
   -ms-interpolation-mode: nearest-neighbor;
 `;
 
+const TopBannerBoxWrap = styled.div`
+  position: relative;
+  & > button,
+  & > a {
+    width: 125px;
+    height: 25px;
+    background-color: red;
+    position: absolute;
+    top: 105px;
+    left: 188px;
+    z-index: 5;
+    opacity: 0;
+  }
+  & > button {
+    width: 138px;
+    padding: 0;
+    top: 107px;
+    &:hover {
+      opacity: 0;
+    }
+  }
+`;
+
 const TitleGrid = styled.div`
   display: flex;
   width: 100%;
@@ -623,7 +654,7 @@ const ReviewTabGrid = styled.div`
 `;
 
 const BannerBox = styled.div`
-  width: 100%auto;
+  width: 100%;
   height: 66px;
   background-color: ${Color.gray100};
   padding: 0 16px;
