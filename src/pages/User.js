@@ -51,15 +51,20 @@ const User = (props) => {
   ).length;
   const pointCount = reviewList.length - reviewCount;
 
+  const [curSubscribePage, setCurSubscribePage] = React.useState(1);
   const [dragging, setDragging] = React.useState(false);
 
   const handleBeforeChange = React.useCallback(() => {
     setDragging(true);
   }, [setDragging]);
 
-  const handleAfterChange = React.useCallback(() => {
-    setDragging(false);
-  }, [setDragging]);
+  const handleAfterChange = React.useCallback(
+    (currentSlide) => {
+      setDragging(false);
+      setCurSubscribePage(currentSlide + 1);
+    },
+    [setDragging]
+  );
 
   const handleOnItemClick = React.useCallback(
     (e) => {
@@ -69,12 +74,14 @@ const User = (props) => {
   );
 
   const getRatioByGenre = (toonList) => {
-    const genreList = toonList.map((toon) => toon.genres).flat();
+    let genreList = toonList.map((toon) => toon.genres).flat();
     const genreCases = genreList.filter(
       (genre, idx) =>
         genreList.indexOf(genre) === idx &&
         !(genre === "스토리" || genre === "옴니버스" || genre === "에피소드")
     );
+    genreList = genreList.filter((genre) => genreCases.includes(genre));
+
     const result = {};
     genreList.map((genre) => {
       result[genre] = (result[genre] || 0) + 1;
@@ -110,8 +117,8 @@ const User = (props) => {
       labels: interestGenreList,
       datasets: [
         {
-          backgroundColor: Array.from({ length: interestGenreList.length }).map(
-            (color) => "#" + Math.floor(Math.random() * 16777215).toString(16)
+          backgroundColor: interestGenreList.map(
+            (genre) => Color[genre.replaceAll(" ", "")]
           ),
           borderColor: "transparent",
           data: interestData,
@@ -124,6 +131,7 @@ const User = (props) => {
           labels: {
             boxWidth: 15,
             boxHeight: 15,
+            padding: 15,
           },
           position: "bottom",
         },
@@ -385,6 +393,13 @@ const User = (props) => {
               </EmptyInformationGuide>
             )}
           </Slick>
+          {subscribeList.length && (
+            <SubscribePageNum>
+              <Text type="num" fontSize="10px">
+                {`${curSubscribePage} / ${subscribeList.length}`}
+              </Text>
+            </SubscribePageNum>
+          )}
         </SubscribeListArea>
         <ReviewListArea>
           <Text
@@ -545,8 +560,8 @@ const ChartCaption = styled.div`
 `;
 
 const PieChartWrap = styled.div`
-  width: 300px;
-  height: 300px;
+  width: 325px;
+  height: 325px;
 `;
 
 const BarChartWrap = styled.div`
@@ -555,6 +570,17 @@ const BarChartWrap = styled.div`
 `;
 
 const SubscribeListArea = styled.section``;
+
+const SubscribePageNum = styled.div`
+  width: 36px;
+  height: 18px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  background-color: ${Color.gray100};
+  border-radius: 9px;
+  margin: 0 auto;
+`;
 
 const WebtoonListWrap = styled.div``;
 
