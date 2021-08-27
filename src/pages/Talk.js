@@ -59,11 +59,15 @@ const Talk = () => {
   const day = ("0" + date.getDate()).slice(-2);
   const today = year + "-" + month + "-" + day;
   return (
-    <Grid margin="-4px 0 0 0" borderTop={`8px solid ${Color.gray100}`}>
+    <Grid
+      position="relative"
+      margin="-4px 0 0 0"
+      borderTop={`8px solid ${Color.gray100}`}
+    >
       {/* 포스트 작성 버튼 */}
       <Permit>
         <Grid
-          position="absolute"
+          position="fixed"
           bottom="10px"
           right="10px"
           cursor="true"
@@ -100,13 +104,14 @@ const Talk = () => {
       >
         {post_list.map((post, idx) => (
           <Grid
+            position="relative"
             key={idx}
             borderBottom={`1px solid ${Color.gray100}`}
             padding="20px 0 10px"
             cursor="true"
             onClick={() => history.push(`/talk/detail/${post.postId}`)}
           >
-            <Text color={Color.gray800}>{post?.postTitle}</Text>
+            <Title>{post?.postTitle}</Title>
             <Grid
               display="flex"
               margin="7px 0 0 0"
@@ -150,6 +155,8 @@ const Talk = () => {
                 position="relative"
                 bgColor={Color.white}
                 padding="0 0 0 6px"
+                // top="20px"
+                // right="0"
               >
                 <Comment width="24px" height="24px" />
                 {String(post.talkCommentCount).length === 1 ? (
@@ -278,5 +285,15 @@ const PageBtnGrid = styled.div`
     border: 1px solid ${Color.primary};
     color: ${Color.primary};
   }
+`;
+
+const Title = styled.div`
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  color: ${Color.gray800};
+  font-size: 14px;
+  font-weight: 400;
+  margin: 0 33px 0 0;
 `;
 export default Talk;
