@@ -32,8 +32,6 @@ const Talk = () => {
 
   const [startPage, setStartPage] = React.useState(1); //페이지 번호 설정
 
-  const [select, isSelect] = React.useState(0); //선택한 페이지 표시
-
   let page_order = all_page_number.indexOf(cur_page) + 1; //클릭한 페이지 중 현재 페이지 순서
 
   //현재 페이지의 포스트 리스트
@@ -209,7 +207,7 @@ const Talk = () => {
             </Grid>
           )}
           {/* 선택 가능한 페이지 번호 */}
-          <PageBtnGrid select={select}>
+          <PageBtnGrid select={cur_page % 5 === 0 ? 5 : cur_page % 5}>
             {Array.from({ length: 5 }).map((_, idx) => {
               const page_btn_no = startPage + idx;
               if (page_btn_no <= last_page) {
@@ -225,7 +223,6 @@ const Talk = () => {
                     color={Color.gray400}
                     _onClick={() => {
                       getPagePosts(page_btn_no);
-                      isSelect(idx % 5);
                     }}
                   >
                     {page_btn_no}
@@ -281,7 +278,7 @@ const PageBtnGrid = styled.div`
   display: flex;
   justify-content: center;
   align-items: center;
-  & > button:nth-child(${(props) => props.select + 1}) {
+  & > button:nth-child(${(props) => props.select}) {
     border: 1px solid ${Color.primary};
     color: ${Color.primary};
   }
