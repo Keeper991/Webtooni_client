@@ -7,7 +7,7 @@ const InfinityScroll = (props) => {
 
   const _handleScroll = _.throttle(() => {
     const { innerHeight } = window;
-    const { scrollHeight } = document.body;
+    const scrollHeight = document.documentElement.scrollHeight;
 
     const scrollTop =
       (document.documentElement && document.documentElement.scrollTop) ||

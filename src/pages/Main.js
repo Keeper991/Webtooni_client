@@ -588,13 +588,9 @@ const BannerSliderBox = styled.div`
 
 const CenterSliderBox = styled.div`
   width: 100%;
-  height: 250px;
+  height: 300px;
   padding-top: 10px;
   overflow: hidden;
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  flex-direction: column;
 `;
 
 const MonthContainer = styled.div`
