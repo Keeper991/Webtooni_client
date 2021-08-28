@@ -125,11 +125,12 @@ const ReviewCard = (props) => {
   return (
     <React.Fragment>
       <Container main={props.main} review={props.review_page}>
-        <PaddingBox>
+        <PaddingBox main={props.main}>
           <FlexGrid>
             <FlexGrid
               clickable
               onClick={() => history.push(`/userinfo/${props.userName}`)}
+              review={props.review_page}
             >
               <Image
                 src={profileImgList[props.userImg]}
@@ -282,8 +283,9 @@ const MdContainer = styled.div`
 `;
 
 const PaddingBox = styled.div`
-  ${(props) => (props.md ? `width: 100%` : `width: 338px`)};
+  width: 100%;
   padding: 16px;
+  ${(props) => (props.main ? `width: 338px` : `width: 100%`)};
 `;
 
 const FlexGrid = styled.div`
