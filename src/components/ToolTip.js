@@ -4,7 +4,8 @@ import { QuestionCircleOutlined } from "@ant-design/icons";
 import { Color } from "../shared/common";
 import { Text } from "../elements";
 
-const ToolTip = ({ position, children }) => {
+const ToolTip = (props) => {
+  const { position, children, align } = props;
   const [yPos, xPos] = position.split("-");
   const translateX = `translateX(${
     xPos === "left" ? `-100%` : xPos === "right" ? `0` : `-50%`
@@ -12,7 +13,6 @@ const ToolTip = ({ position, children }) => {
   const translateY = `translateY(${yPos === "bottom" ? `2px` : `-100%`})`;
   const left = xPos === "left" ? `0` : xPos === "right" ? `100%` : `50%`;
   const top = yPos === "bottom" ? `100%` : `-2px`;
-
   return (
     <>
       <Container
@@ -21,6 +21,7 @@ const ToolTip = ({ position, children }) => {
         left={left}
         top={top}
         length={children.length}
+        align={align}
       >
         <QuestionCircleOutlined style={{ color: Color.gray400 }} />
         <Text
@@ -40,16 +41,18 @@ const ToolTip = ({ position, children }) => {
 
 ToolTip.defaultProps = {
   position: "top-center",
+  align: false,
 };
 
 const Container = styled.div`
   position: relative;
   & > p {
     display: none;
-    justify-content: center;
     z-index: 9;
-    width: ${({ length }) =>
-      length * 10 + 12 > 200 ? 200 : length * 10 + 6}px;
+    ${({ align }) => (align ? "justify-content:center" : "text-align: left")};
+    width: 200px;
+    /* width: ${({ length }) =>
+      length * 10 + 12 > 200 ? 200 : length * 10 + 6}px; */
     border: 1px solid ${Color.primaryLight};
     padding: 6px;
     background-color: ${Color.white};

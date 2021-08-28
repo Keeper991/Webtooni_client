@@ -4,7 +4,13 @@ import { useDispatch, useSelector } from "react-redux";
 import { actionCreators as webtoonActions } from "../redux/modules/webtoon";
 import { OfferCard } from "../components";
 import { Text, Image, Button } from "../elements";
-import { Slick, WebToonCard, SkeletonCard, ReviewCard } from "../components";
+import {
+  Slick,
+  WebToonCard,
+  SkeletonCard,
+  ReviewCard,
+  ToolTip,
+} from "../components";
 import profileImgList from "../images/profiles";
 import { Color } from "../shared/common";
 import { history } from "../redux/configureStore";
@@ -176,9 +182,15 @@ const Recommendation = () => {
         </BannerBox>
 
         <TitleGrid no_border>
-          <Text type="h2" fontWeight="bold" color={Color.gray800}>
-            비슷한 취향의 사용자가 본 웹툰
-          </Text>
+          <TooltipGrid>
+            <Text type="h2" fontWeight="bold" color={Color.gray800}>
+              비슷한 취향의 사용자가 본 웹툰
+            </Text>
+            <ToolTip position="top-center">
+              {user_name}님과 비슷한 평가를 남긴 사용자가 좋게 평가한
+              웹툰이에요!
+            </ToolTip>
+          </TooltipGrid>
           {is_login ? (
             <Button
               border="none"
@@ -983,6 +995,11 @@ const CardSliderBox = styled.div`
     display: none;
     width: 0 !important;
   }
+`;
+
+const TooltipGrid = styled.div`
+  display: flex;
+  gap: 5px;
 `;
 
 export default Recommendation;

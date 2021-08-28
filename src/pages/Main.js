@@ -13,6 +13,7 @@ import {
   WebToonMonth,
   Slick,
   SkeletonCard,
+  ToolTip,
 } from "../components";
 import { Button, Text, Image } from "../elements";
 import { Color } from "../shared/common";
@@ -155,9 +156,14 @@ const Main = () => {
       </BannerSliderBox>
 
       <TitleGrid no_margin>
-        <Text type="h2" fontWeight="bold">
-          금주의 웹투니버스 순위
-        </Text>
+        <TooltipGrid>
+          <Text type="h2" fontWeight="bold">
+            금주의 웹투니버스 순위
+          </Text>
+          <ToolTip position="top-center" align={true}>
+            2021.08.23 ~ 2021.08.29 기준
+          </ToolTip>
+        </TooltipGrid>
         <Button
           border="none"
           bgColor={Color.white}
@@ -244,10 +250,14 @@ const Main = () => {
                 color={Color.white}
                 bgColor={Color.naverGreen}
                 border="none"
-                margin="0 0 0 5px"
+                margin="0 5px"
               >
                 Top 10
               </Button>
+              <ToolTip position="bottom-center">
+                - 모든 순위는 웹투니버스 사이트 기준입니다. - 해당 평점과 순위는
+                매일 자정을 기준으로 업데이트됩니다.
+              </ToolTip>
             </TextGrid>
             {is_loading || naver_list.length === 0 ? (
               <RankGrid>
@@ -278,10 +288,14 @@ const Main = () => {
                 color={Color.white}
                 bgColor={Color.naverGreen}
                 border="none"
-                margin="0 0 0 5px"
+                margin="0 5px"
               >
                 Top 10
               </Button>
+              <ToolTip position="bottom-center">
+                - 모든 순위는 웹투니버스 사이트 기준입니다. - 해당 평점과 순위는
+                매일 자정을 기준으로 업데이트됩니다.
+              </ToolTip>
             </TextGrid>
             {is_loading || naver_list.length === 0 ? (
               <RankGrid>
@@ -313,10 +327,14 @@ const Main = () => {
                 color={Color.white}
                 bgColor={Color.kakaoDarkYellow}
                 border="none"
-                margin="0 0 0 5px"
+                margin="0 5px"
               >
                 Top 10
               </Button>
+              <ToolTip position="bottom-center">
+                - 모든 순위는 웹투니버스 사이트 기준입니다. - 해당 평점과 순위는
+                매일 자정을 기준으로 업데이트됩니다.
+              </ToolTip>
             </TextGrid>
             {is_loading || kakao_list.length === 0 ? (
               <RankGrid>
@@ -347,10 +365,14 @@ const Main = () => {
                 color={Color.white}
                 bgColor={Color.kakaoDarkYellow}
                 border="none"
-                margin="0 0 0 5px"
+                margin="0 5px"
               >
                 Top 10
               </Button>
+              <ToolTip position="bottom-center">
+                - 모든 순위는 웹투니버스 사이트 기준입니다. - 해당 평점과 순위는
+                매일 자정을 기준으로 업데이트됩니다.
+              </ToolTip>
             </TextGrid>
             {is_loading || kakao_list.length === 0 ? (
               <RankGrid>
@@ -512,9 +534,14 @@ const Main = () => {
       )}
 
       <TitleGrid>
-        <Text type="h2" fontWeight="bold">
-          베스트 리뷰어 🏆
-        </Text>
+        <TooltipGrid>
+          <Text type="h2" fontWeight="bold">
+            베스트 리뷰어 🏆
+          </Text>
+          <ToolTip position="top-right" align={true}>
+            리뷰를 가장 많이 쓴 리뷰어입니다! 모두 함께 축하해 주세요! 🎉
+          </ToolTip>
+        </TooltipGrid>
       </TitleGrid>
       <CenterSliderBox onClickCapture={handleOnItemClick}>
         <Slick
@@ -560,6 +587,11 @@ const TitleGrid = styled.div`
   padding: 10px 16px 0;
   align-items: center;
   justify-content: space-between;
+`;
+
+const TooltipGrid = styled.div`
+  display: flex;
+  gap: 5px;
 `;
 
 const ReviewTitleGrid = styled.div`
