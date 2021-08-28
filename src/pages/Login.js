@@ -12,7 +12,7 @@ const Login = (props) => {
   const is_login = useSelector((state) => state.user.is_login);
   useEffect(() => {
     if (is_login) {
-      history.replace();
+      history.goBack();
     }
   }, [is_login]);
 

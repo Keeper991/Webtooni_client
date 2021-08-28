@@ -49,7 +49,6 @@ const User = (props) => {
   const reviewCount = reviewList.filter(
     (review) => review.reviewContent
   ).length;
-  const pointCount = reviewList.length - reviewCount;
 
   const [curSubscribePage, setCurSubscribePage] = React.useState(1);
   const [dragging, setDragging] = useState(false);
@@ -302,7 +301,7 @@ const User = (props) => {
           <UserReviewAndLikeCount>
             <UserReviewAndLikeCountCol>
               <Text type="num" fontSize="20px">
-                {pointCount}
+                {reviewList.length}
               </Text>
               <Text fontWeight="bold" color={Color.gray400}>
                 평가한 웹툰

@@ -1,12 +1,11 @@
 import React from "react";
 import styled from "styled-components";
 import { history } from "../redux/configureStore";
-import { actionCreators as modalActions } from "../redux/modules/modal";
 import { useDispatch, useSelector } from "react-redux";
 import { Button, Image } from "../elements/index";
 import { withRouter } from "react-router";
 import { NavLink } from "react-router-dom";
-import { Color } from "./common";
+import { Color, globalConst } from "./common";
 import { title } from "../images/icons";
 import {
   UserOutlined,
@@ -148,6 +147,10 @@ const Header = (props) => {
                       border={`1px solid ${Color.gray200}`}
                       padding="7px 16px"
                       _onClick={() => {
+                        localStorage.setItem(
+                          globalConst.curRoute,
+                          props.location.pathname
+                        );
                         history.push("/login");
                       }}
                     >
@@ -209,6 +212,10 @@ const Header = (props) => {
                       border={`1px solid ${Color.white}`}
                       padding="7px 16px"
                       _onClick={() => {
+                        localStorage.setItem(
+                          globalConst.curRoute,
+                          props.location.pathname
+                        );
                         history.push("/login");
                       }}
                     >
@@ -267,6 +274,10 @@ const Header = (props) => {
                 border={`1px solid ${Color.gray200}`}
                 padding="7px 16px"
                 _onClick={() => {
+                  localStorage.setItem(
+                    globalConst.curRoute,
+                    props.location.pathname
+                  );
                   history.push("/login");
                 }}
               >
