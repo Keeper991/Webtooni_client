@@ -187,9 +187,11 @@ const Container = styled.div`
 `;
 
 const WriteBtn = styled.div`
-  position: fixed;
+  position: sticky;
+  display: block;
+  float: right;
   bottom: 10px;
-  right: 10px;
+  margin-right: 10px;
   cursor: pointer;
 `;
 export default Review;
