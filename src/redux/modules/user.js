@@ -5,6 +5,7 @@ import { setToken, getToken, removeToken } from "../../shared/PermitAuth";
 import { actionCreators as webtoonActions } from "./webtoon";
 import { actionCreators as reviewActions } from "./review";
 import { actionCreators as modalActions } from "./modal";
+import { globalConst } from "../../shared/common";
 
 const ADD_REVIEW_LIKE_LIST = "user/ADD_REVIEW_LIKE_LIST";
 const ADD_REVIEW_LIKE = "user/ADD_REVIEW_LIKE";
@@ -71,7 +72,11 @@ const socialLoginServer =
       infoRes.data.isShownWelcomeModal = Boolean(infoRes.data.userName);
       dispatch(setUser(infoRes.data));
       dispatch(loading(false));
-      infoRes.data.userName ? history.go(-2) : history.replace("/taste");
+      const curRoute = localStorage.getItem(globalConst.curRoute);
+      localStorage.removeItem(globalConst.curRoute);
+      infoRes.data.userName
+        ? history.replace(curRoute || "/")
+        : history.replace("/taste");
     } catch (e) {
       console.log(e);
       dispatch(modalActions.activeModal("error"));
