@@ -5,6 +5,10 @@ export const emailCheck = (email) => {
   return _reg.test(email);
 };
 
+export const globalConst = {
+  curRoute: "CUR_ROUTE",
+};
+
 export const Color = {
   black: "#000000",
   gray900: "#212121",

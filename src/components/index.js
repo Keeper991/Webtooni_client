@@ -10,6 +10,7 @@ import ProgressStepBtns from "./ProgressStepBtns";
 import TalkComment from "./TalkComment";
 import SkeletonCard from "./SkeletonCard";
 import ToonListCard from "./ToonListCard";
+import ToolTip from "./ToolTip";
 
 export {
   WebToonCard,
@@ -24,4 +25,5 @@ export {
   TalkComment,
   SkeletonCard,
   ToonListCard,
+  ToolTip,
 };
