@@ -10,7 +10,6 @@ import { actionCreators as reviewActions } from "../redux/modules/review";
 import { actionCreators as modalActions } from "../redux/modules/modal";
 import time from "../shared/time";
 import { kakao_webtoon_symbol, naver_webtoon_symbol } from "../images/symbols";
-import { over } from "lodash";
 
 const ReviewCard = (props) => {
   const dispatch = useDispatch();
@@ -125,7 +124,7 @@ const ReviewCard = (props) => {
   }
   return (
     <React.Fragment>
-      <Container main={props.main}>
+      <Container main={props.main} review={props.review_page}>
         <PaddingBox>
           <FlexGrid>
             <FlexGrid
@@ -264,7 +263,7 @@ const ReviewCard = (props) => {
 };
 
 const Container = styled.div`
-  width: 338px;
+  ${(props) => (props.review ? "width: 100%" : "width: 338px")};
   height: 100%;
   background: ${Color.gray100};
   display: block;

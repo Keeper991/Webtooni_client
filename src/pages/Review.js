@@ -30,7 +30,7 @@ const Review = () => {
         review.userName === userName &&
         review.reviewContent !== null)
   );
-  console.log(new_review);
+
   const best_review = review_list.filter((review) =>
     review.filterConditions.includes("reviewPageBest")
   );
@@ -111,7 +111,12 @@ const Review = () => {
           >
             {best_review_list?.map((_, idx) => {
               return (
-                <ReviewCard key={idx} {..._} like_list={like_list}></ReviewCard>
+                <ReviewCard
+                  key={idx}
+                  {..._}
+                  like_list={like_list}
+                  review_page
+                ></ReviewCard>
               );
             })}
           </InfinityScroll>
@@ -127,7 +132,12 @@ const Review = () => {
           >
             {new_review_list?.map((_, idx) => {
               return (
-                <ReviewCard key={idx} {..._} like_list={like_list}></ReviewCard>
+                <ReviewCard
+                  key={idx}
+                  {..._}
+                  like_list={like_list}
+                  review_page
+                ></ReviewCard>
               );
             })}
           </InfinityScroll>
