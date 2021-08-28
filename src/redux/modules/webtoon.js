@@ -163,6 +163,7 @@ const getToonOneServer = (webtoonId) => {
       let reviews = toonInfo.reviews;
       reviews = reviews.map((review) => {
         review.toonId = webtoonId;
+        review.createDate = Date.parse(review.createDate);
         return review;
       });
       dispatch(reviewActions.addReviewList(reviews, "detail"));

@@ -38,21 +38,28 @@ const Header = (props) => {
   const documentRef = React.useRef(document);
 
   const handleScroll = () => {
+    const { innerHeight } = window;
     const { pageYOffset } = window;
+    const { scrollHeight } = document.documentElement;
+    const scrollTop =
+      (document.documentElement && document.documentElement.scrollTop) ||
+      document.body.scrollTop;
     const deltaY = pageYOffset - pageY;
     const hide = pageYOffset !== 0 && deltaY >= 0;
 
-    if (pageYOffset === 0) {
+    if (pageYOffset <= 20 || scrollHeight - innerHeight - scrollTop <= 0) {
       setHide(false);
     }
+
     if (Math.abs(pageY - pageYOffset) < 50) {
       return;
     }
+
     setHide(hide);
     setPageY(pageYOffset);
   };
 
-  const throttleScroll = throttle(handleScroll, 100);
+  const throttleScroll = throttle(handleScroll, 50);
 
   React.useEffect(() => {
     documentRef.current.addEventListener("scroll", throttleScroll);
@@ -384,6 +391,7 @@ const SimpleContainer = styled.div`
   display: flex;
   align-items: center;
   justify-content: space-between;
+
   z-index: 5;
   ${(props) => (props.talk ? `border-top: 1px solid white;` : "")}
   ${(props) =>
