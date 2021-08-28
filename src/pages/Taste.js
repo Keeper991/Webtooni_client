@@ -10,7 +10,6 @@ import { useDispatch, useSelector } from "react-redux";
 
 import { actionCreators as modalActions } from "../redux/modules/modal";
 
-
 const SELECT_COUNT = 3;
 const TASTE_LS = "TASTE_LIST";
 
@@ -52,12 +51,7 @@ const Taste = () => {
   const progressStepClickHandlers = [
     () => history.push("/taste"),
     () => {
-      if(tastes.length > SELECT_COUNT) {
-
-        return;
-      }
       localStorage.setItem(TASTE_LS, tastes);
-
       tastes.length === SELECT_COUNT && history.push("/profile");
     },
   ];
@@ -76,7 +70,6 @@ const Taste = () => {
             취향을 알려주세요
           </Text>
           <Text>
-
             장르 {SELECT_COUNT}개를 골라주세요.
             <br />
             분석하여 취향에 딱 맞는 웹툰을 추천해드릴게요.
@@ -91,7 +84,6 @@ const Taste = () => {
                 _onClick={() => {
                   if (tastes.includes(genre)) {
                     setTastes(tastes.filter((t) => t !== genre));
-
                   } else if (tastes.length < SELECT_COUNT) {
                     setTastes([...tastes, genre]);
                   } else {
