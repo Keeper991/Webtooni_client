@@ -30,6 +30,7 @@ const OfferCard = (props) => {
             >
               {props.toonTitle}
             </Text>
+
             <FlexGrid flexStart>
               <Text type="caption" color={Color.white}>
                 {props.toonAuthor}
@@ -79,7 +80,13 @@ const ToonImgGrid = styled.div`
   background-size: cover;
   background-position: center;
   margin: 0 auto;
+`;
 
+const ToonImgBorderBox = styled.div`
+  width: 100%;
+  height: 282px;
+  overflow: hidden;
+  margin: 0 auto;
   &:before {
     content: "";
     width: 100%;
@@ -93,23 +100,15 @@ const ToonImgGrid = styled.div`
   }
 `;
 
-const ToonImgBorderBox = styled.div`
-  width: 100%;
-  height: 282px;
-
-  margin: 0 auto;
-`;
-
 const InfoGrid = styled.div`
   position: absolute;
   left: 20px;
-  bottom: 50px;
+  bottom: 60px;
   z-index: 2;
   text-shadow: 2px 1px 10px rgba(0, 0, 0, 0.3);
   display: flex;
   align-items: flex-start;
-  gap: 15px;
-  width: 100%;
+  gap: 10px;
 `;
 
 const FlexGrid = styled.div`
@@ -129,8 +128,12 @@ const Count = styled.div`
   display: flex;
   align-items: center;
   justify-content: center;
+  z-index: 3;
 `;
 
-const ToonBox = styled.div``;
+const ToonBox = styled.div`
+  width: 200px;
+  height: auto;
+`;
 
 export default OfferCard;

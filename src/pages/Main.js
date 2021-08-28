@@ -664,7 +664,6 @@ const CardSliderBox = styled.div`
   overflow-x: scroll;
   padding-right: 150px;
   gap: 10px;
-
   &::-webkit-scrollbar {
     display: none;
     width: 0 !important;

@@ -209,9 +209,9 @@ const Grid = styled.div`
 const StarPoint = styled.div`
   background-image: url("${(props) => props.stars}");
   width: 100px;
-  height: 18px;
+  height: 17.79px;
 
-  background-position-y: ${(props) => (10 - props.points * 2) * 18 * -1}px;
+  background-position-y: ${(props) => (10 - props.points * 2) * 17.79 * -1}px;
   background-repeat: no-repeat;
   background-size: cover;
 `;
