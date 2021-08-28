@@ -270,10 +270,18 @@ export default handleActions(
       }),
     [SUBSCRIBE]: (state, action) =>
       produce(state, (draft) => {
-        draft.subscribeList.push(action.payload.webtoonId);
-        draft.userList
-          .find((user) => user.userName === draft.info.userName)
-          ?.subscribeList.push(action.payload.webtoonId);
+        if (!draft.subscribeList.includes(action.payload.webtoonId)) {
+          draft.subscribeList.push(action.payload.webtoonId);
+        }
+        const userInList = draft.userList.find(
+          (user) => user.userName === draft.info.userName
+        );
+        if (
+          userInList &&
+          !userInList.subscribeList.includes(action.payload.webtoonId)
+        ) {
+          userInList.subscribeList.push(action.payload.webtoonId);
+        }
       }),
     [UNSUBSCRIBE]: (state, action) =>
       produce(state, (draft) => {
@@ -285,12 +293,14 @@ export default handleActions(
           subscribeList.splice(subscribeList.indexOf(webtoonId), 1);
         const subscribeListInUserList = draft.userList.find(
           (user) => user.userName === draft.info.userName
-        ).subscribeList;
-        subscribeListInUserList.includes(webtoonId) &&
-          subscribeListInUserList.splice(
-            subscribeListInUserList.indexOf(webtoonId),
-            1
-          );
+        )?.subscribeList;
+        if (subscribeListInUserList) {
+          subscribeListInUserList.includes(webtoonId) &&
+            subscribeListInUserList.splice(
+              subscribeListInUserList.indexOf(webtoonId),
+              1
+            );
+        }
       }),
     [SHOWN_WELCOME_MODAL]: (state, action) =>
       produce(state, (draft) => {
