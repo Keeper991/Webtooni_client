@@ -47,7 +47,7 @@ const Header = (props) => {
     const hide = pageYOffset !== 0 && deltaY >= 0;
 
     if (pageYOffset <= 20 || scrollHeight - innerHeight - scrollTop <= 0) {
-      setHide(false);
+      return;
     }
 
     if (Math.abs(pageY - pageYOffset) < 50) {
