@@ -455,6 +455,7 @@ const User = (props) => {
               >
                 {reviewList.map((review, idx) => (
                   <ReviewCard
+                    main
                     key={idx}
                     userImg={userInfo.userImg}
                     {...review}
@@ -648,9 +649,12 @@ const SlideWrap = styled.div`
   display: flex;
   flex-wrap: nowrap;
   overflow: scroll;
+  flex-direction: row;
+  padding-right: 150px;
   gap: 10px;
   &::-webkit-scrollbar {
     display: none;
+    width: 0 !important;
   }
 `;
 
