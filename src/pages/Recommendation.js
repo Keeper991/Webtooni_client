@@ -55,8 +55,10 @@ const Recommendation = () => {
   const similar_user_list = toon_list.filter((toon) =>
     toon.filterConditions.includes("similarUserOffer")
   );
-  const for_user_list = toon_list.filter((toon) =>
-    toon.filterConditions.includes("forUser")
+  const [for_user_list, set_for_user_list] = React.useState(
+    toon_list.filter((toon) =>
+      toon.filterConditions.includes("similarUserOffer")
+    )
   );
 
   const md_review = [
@@ -104,11 +106,11 @@ const Recommendation = () => {
 
   const handleBeforeChange = React.useCallback(() => {
     setDragging(true);
-  }, [setDragging]);
+  }, []);
 
   const handleAfterChange = React.useCallback(() => {
     setDragging(false);
-  }, [setDragging]);
+  }, []);
 
   const handleOnItemClick = React.useCallback(
     (e) => {
@@ -120,15 +122,21 @@ const Recommendation = () => {
   // effects
   React.useEffect(() => {
     if (!end_toon_list.length || !md_offer_list.length || !best_reviewer_list) {
-      dispatch(webtoonActions.getOfferWebtoonListForLogin());
+      dispatch(webtoonActions.getOfferWebtoonList());
     }
   }, []);
 
   React.useEffect(() => {
     if (is_login) {
-      dispatch(webtoonActions.getForUserWebtoonList());
+      dispatch(webtoonActions.getWebtoonListForLogin());
     }
   }, [is_login]);
+
+  React.useEffect(() => {
+    set_for_user_list(
+      toon_list.filter((toon) => toon.filterConditions.includes("forUser"))
+    );
+  }, [toon_list]);
 
   const is_loading = useSelector((state) => state.webtoon.is_loading);
 

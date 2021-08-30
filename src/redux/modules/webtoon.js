@@ -13,7 +13,8 @@ const ADD_TOON_ONE_INFO = "webtoon/ADD_TOON_ONE_INFO";
 const SET_TOON_AVG_POINT = "webtoon/SET_TOON_AVG_POINT";
 const START_LOADING = "webtoon/START_LOADING";
 const END_LOADING = "webtoon/END_LOADING";
-const REMOVE_TOONS_FOR_USER = "webtoon/REMOVE_TOONS_FOR_USER";
+const REMOVE_FOR_USER_FILTER_CONDITION =
+  "webtoon/REMOVE_FOR_USER_FILTER_CONDITION";
 const SET_CALLED_FOR_USER = "webtoon/SET_CALLED_FOR_USER";
 
 ///////////////////////////////////////////////////////////
@@ -42,7 +43,10 @@ const setToonAvgPoint = createAction(
 );
 const startLoading = createAction(START_LOADING, () => ({}));
 const endLoading = createAction(END_LOADING, () => ({}));
-const removeToonsForUser = createAction(REMOVE_TOONS_FOR_USER, () => ({}));
+const removeForUserFilterCondition = createAction(
+  REMOVE_FOR_USER_FILTER_CONDITION,
+  () => ({})
+);
 const setCalledForUser = createAction(SET_CALLED_FOR_USER, () => ({}));
 
 ///////////////////////////////////////////////////////////
@@ -80,7 +84,7 @@ const getRankWebtoonList = () => async (dispatch, getState) => {
 };
 
 // 비슷한 취향의 유저가 본, ~님을 위한 추천 불러오기
-const getForUserWebtoonList = () => async (dispatch, getState) => {
+const getWebtoonListForLogin = () => async (dispatch, getState) => {
   try {
     const isCalledForUser = getState().webtoon.is_called_for_user;
     let { data: forUserToons } = await offerAPI.getForUser();
@@ -89,7 +93,7 @@ const getForUserWebtoonList = () => async (dispatch, getState) => {
       return toon;
     });
     if (isCalledForUser) {
-      dispatch(removeToonsForUser());
+      dispatch(removeForUserFilterCondition());
     }
     dispatch(addToonList(forUserToons, "forUser"));
     if (!isCalledForUser) {
@@ -110,7 +114,7 @@ const getForUserWebtoonList = () => async (dispatch, getState) => {
 };
 
 // 추천 웹툰 리스트 받아오기 (완결작, MD, 베스트 리뷰어의 추천)
-const getOfferWebtoonListForLogin = () => {
+const getOfferWebtoonList = () => {
   return async function (dispatch, getState, { history }) {
     try {
       const { data: endOfferToons } = await offerAPI.getEnd();
@@ -382,16 +386,16 @@ export default handleActions(
       produce(state, (draft) => {
         draft.is_loading = false;
       }),
-    [REMOVE_TOONS_FOR_USER]: (state, action) =>
+    [REMOVE_FOR_USER_FILTER_CONDITION]: (state, action) =>
       produce(state, (draft) => {
-        draft.toon_list = draft.toon_list.map((toon) => {
-          const forUserIdx = toon.filterConditions.findIndex(
-            (fc) => fc === "forUser"
+        const filtered = draft.toon_list.filter((toon) =>
+          toon.filterConditions.includes("forUser")
+        );
+        filtered.map((toon) => {
+          toon.filterConditions.splice(
+            toon.filterConditions.indexOf("forUser"),
+            1
           );
-          if (forUserIdx !== -1) {
-            toon.filterConditions.splice(forUserIdx, 1);
-          }
-          return toon;
         });
       }),
     [SET_CALLED_FOR_USER]: (state, action) =>
@@ -404,8 +408,8 @@ export default handleActions(
 
 const actionCreators = {
   getRankWebtoonList,
-  getForUserWebtoonList,
-  getOfferWebtoonListForLogin,
+  getWebtoonListForLogin,
+  getOfferWebtoonList,
   getToonOneServer,
   addToonList,
   setToonAvgPoint,

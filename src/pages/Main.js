@@ -19,7 +19,7 @@ import { Button, Text, Image } from "../elements";
 import { Color } from "../shared/common";
 import BannerImg1 from "../images/banner1.jpg";
 import BannerImg2 from "../images/banner2.jpg";
-import BannerImg3 from "../images/banner3.png";
+// import BannerImg3 from "../images/banner3.png";
 
 const Main = () => {
   const dispatch = useDispatch();
@@ -39,6 +39,7 @@ const Main = () => {
 
   // states
   const [is_best, setIsBest] = React.useState(true);
+  const [updatePeriod, setUpdatePeriod] = React.useState("");
 
   // selectors
   const toon_list = useSelector((state) => state.webtoon.toon_list);
@@ -91,6 +92,11 @@ const Main = () => {
 
   React.useEffect(() => {
     dispatch(reviewerActions.getBestReviewer());
+    setUpdatePeriod(
+      `${new Date(
+        parseInt(new Date().getTime() - 604800000)
+      ).toLocaleDateString()} ~ ${new Date().toLocaleDateString()}`
+    );
   }, []);
 
   React.useEffect(() => {
@@ -161,7 +167,7 @@ const Main = () => {
             금주의 웹투니버스 순위
           </Text>
           <ToolTip position="top-center" align={true}>
-            2021.08.23 ~ 2021.08.29 기준
+            {`${updatePeriod} 기준`}
           </ToolTip>
         </TooltipGrid>
         <Button
