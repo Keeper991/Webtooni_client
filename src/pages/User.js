@@ -58,13 +58,9 @@ const User = (props) => {
     setDragging(true);
   }, [setDragging]);
 
-  const handleAfterChange = React.useCallback(
-    (currentSlide) => {
-      setDragging(false);
-      setCurSubscribePage(currentSlide + 1);
-    },
-    [setDragging]
-  );
+  const handleAfterChange = React.useCallback(() => {
+    setDragging(false);
+  }, [setDragging]);
 
   const handleOnItemClick = React.useCallback(
     (e) => {
@@ -72,6 +68,8 @@ const User = (props) => {
     },
     [dragging]
   );
+
+  console.log(dragging);
 
   const [windowSize, setWindowSize] = useState(window.innerWidth);
   const handleWindowResize = React.useCallback((event) => {
@@ -396,7 +394,10 @@ const User = (props) => {
           {subscribeList.length ? (
             <Slick
               is_variableWidth={false}
-              _afterChange={handleAfterChange}
+              _afterChange={(currentSlide) => {
+                handleAfterChange();
+                setCurSubscribePage(currentSlide + 1);
+              }}
               _beforeChange={handleBeforeChange}
             >
               {subscribeList.map((list, idx) => (
