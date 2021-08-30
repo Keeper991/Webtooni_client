@@ -35,7 +35,7 @@ const Header = (props) => {
   const [pageY, setPageY] = React.useState(0);
 
   const documentRef = React.useRef(document);
-
+  const { pageYOffset } = window;
   const handleScroll = () => {
     const { innerHeight } = window;
     const { pageYOffset } = window;
@@ -69,6 +69,8 @@ const Header = (props) => {
   }, [pageY]);
 
   const isTalk = props.location.pathname.includes("talk");
+
+  console.log(pageYOffset);
   if (
     props.location.pathname.includes("/talk/write") ||
     props.location.pathname === "/review/search" ||
@@ -101,14 +103,14 @@ const Header = (props) => {
     return (
       <React.Fragment>
         <SimpleContainer
-          underThumbnail={!isTalk && pageY >= 250}
-          underTalk={isTalk && pageY >= 5}
-          topTalk={isTalk && pageY < 5}
+          underThumbnail={!isTalk && pageYOffset >= 250}
+          underTalk={isTalk && pageYOffset >= 5}
+          topTalk={isTalk && pageYOffset < 5}
           toon={isTalk ? false : true}
           talk={isTalk ? true : false}
         >
           <HeaderWrap is_simple bgColor={isTalk ? Color.white : "transparent"}>
-            {isTalk || pageY >= 250 ? (
+            {isTalk || pageYOffset >= 250 ? (
               // 톡톡 & 웹툰 상세 썸네일 이후 헤더
               <>
                 <LeftOutlined
@@ -235,7 +237,7 @@ const Header = (props) => {
 
   return (
     <React.Fragment>
-      <Container isHide={hide} isTop={pageY <= 10}>
+      <Container isHide={hide} isTop={pageYOffset <= 10}>
         <HeaderWrap>
           <Button
             _onClick={() => {
