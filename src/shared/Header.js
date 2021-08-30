@@ -45,7 +45,9 @@ const Header = (props) => {
       document.body.scrollTop;
     const deltaY = pageYOffset - pageY;
     const hide = pageYOffset !== 0 && deltaY >= 0;
-
+    if (pageYOffset === 0) {
+      setHide(false);
+    }
     if (pageYOffset <= 20 || scrollHeight - innerHeight - scrollTop <= 0) {
       return;
     }
