@@ -62,7 +62,7 @@ const WebToonCard = (props) => {
                 fontWeight="bold"
                 color={Color.gray700}
               >
-                {props.toonAvgPoint}
+                {props.fixed ? props.fixedAvgPoint : props.toonAvgPoint}
               </Text>
             </FlexGrid>
           </FlexGrid>

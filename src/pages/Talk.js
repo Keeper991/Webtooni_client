@@ -1,14 +1,8 @@
 import React, { useEffect } from "react";
 import { useSelector, useDispatch } from "react-redux";
 import styled from "styled-components";
-import { Text, Button } from "../elements";
-import {
-  WriteButton,
-  Comment,
-  TalkAlarm,
-  MegaPhone,
-  Mega,
-} from "../images/icons";
+import { Text, Button, Image } from "../elements";
+import { WriteButton, Comment, TalkAlarm, Mega } from "../images/icons";
 import { actionCreators as talkActions } from "../redux/modules/talk";
 import { history } from "../redux/configureStore";
 import { Color } from "../shared/common";
@@ -73,13 +67,13 @@ const Talk = () => {
       <Permit>
         <Grid
           position="fixed"
-          bottom="10px"
-          right="10px"
+          bottom="41px"
+          right="41px"
           cursor="true"
           zIndex="2"
           onClick={() => history.push("/talk/write")}
         >
-          <WriteButton style={{ cursor: "pointer" }} />
+          <Image src={WriteButton} shape="square" size="64px" />
         </Grid>
       </Permit>
       <Grid

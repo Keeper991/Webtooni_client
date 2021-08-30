@@ -25,7 +25,7 @@ const User = (props) => {
 
   const [userInfo, setUserInfo] = useState({
     userName: "",
-    userImg: 0,
+    userImg: -1,
     userGrade: "",
     userScore: 0,
     genre: [],
@@ -259,7 +259,11 @@ const User = (props) => {
           </UserInfoHeader>
           <UserImg>
             <Image
-              src={profileImgList[userInfo.userImg]}
+              src={
+                userInfo.userImg !== -1
+                  ? profileImgList[userInfo.userImg]
+                  : "https://i.imgur.com/vfagKjd.png"
+              }
               shape="circle"
               size="150px"
               margin="40px 0 0 0"

@@ -59,9 +59,11 @@ const GlobalStyle = createGlobalStyle`
   
   * {
     box-sizing: border-box;
+    &:focus, &:active {
+      outline: none;
+    }
   }
   body {
-    /* position: relative; */
     font-family: 'Noto Sans KR', -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Roboto', 'Oxygen',
       'Ubuntu', 'Cantarell', 'Fira Sans', 'Droid Sans', 'Helvetica Neue',
       sans-serif;

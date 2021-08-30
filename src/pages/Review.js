@@ -1,6 +1,6 @@
 import React from "react";
 import { ReviewCard } from "../components";
-import { Text, Button } from "../elements";
+import { Text, Button, Image } from "../elements";
 import { useDispatch, useSelector } from "react-redux";
 import { actionCreators as reviewAction } from "../redux/modules/review";
 import styled from "styled-components";
@@ -144,12 +144,12 @@ const Review = () => {
         )}
       </Container>
       {is_login && (
-        <WriteBtn>
-          <WriteButton
-            onClick={() => {
-              history.push("/review/search");
-            }}
-          ></WriteButton>
+        <WriteBtn
+          onClick={() => {
+            history.push("/review/search");
+          }}
+        >
+          <Image src={WriteButton} shape="square" size="64px"></Image>
         </WriteBtn>
       )}
     </React.Fragment>
@@ -190,8 +190,8 @@ const WriteBtn = styled.div`
   position: sticky;
   display: block;
   float: right;
-  bottom: 10px;
-  margin-right: 10px;
+  bottom: 41px;
+  right: 41px;
   cursor: pointer;
 `;
 export default Review;

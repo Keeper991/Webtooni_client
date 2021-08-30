@@ -131,13 +131,13 @@ const Main = () => {
           _afterChange={handleAfterChange}
           _beforeChange={handleBeforeChange}
         >
-          <TopBannerBox
+          {/* <TopBannerBox
             mint
             banner={BannerImg3}
             onClick={() => {
               window.open("https://forms.gle/PHvvMnmSscUL7JLT9", "_blank");
             }}
-          ></TopBannerBox>
+          ></TopBannerBox> */}
 
           <TopBannerBox
             banner={BannerImg1}
@@ -195,6 +195,7 @@ const Main = () => {
                     index={idx + 1}
                     {..._}
                     rank
+                    fixed
                   ></WebToonCard>
                 );
               })}
@@ -221,6 +222,7 @@ const Main = () => {
                     index={idx + 1}
                     {..._}
                     rank
+                    fixed
                   ></WebToonCard>
                 );
               })}

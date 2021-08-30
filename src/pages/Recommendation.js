@@ -128,7 +128,7 @@ const Recommendation = () => {
     if (is_login) {
       dispatch(webtoonActions.getForUserWebtoonList());
     }
-  }, []);
+  }, [is_login]);
 
   const is_loading = useSelector((state) => state.webtoon.is_loading);
 
@@ -382,7 +382,7 @@ const Recommendation = () => {
             ) : (
               <CardSliderBox>
                 {best_reviewer_list?.map((_, idx) => {
-                  return <WebToonCard key={idx} {..._}></WebToonCard>;
+                  return <WebToonCard key={idx} {..._} fixed></WebToonCard>;
                 })}
               </CardSliderBox>
             )}
@@ -401,7 +401,7 @@ const Recommendation = () => {
                 _beforeChange={handleBeforeChange}
               >
                 {best_reviewer_list?.map((_, idx) => {
-                  return <WebToonCard key={idx} {..._}></WebToonCard>;
+                  return <WebToonCard key={idx} {..._} fixed></WebToonCard>;
                 })}
               </Slick>
             )}
