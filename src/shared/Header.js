@@ -33,6 +33,7 @@ const Header = (props) => {
 
   const [hide, setHide] = React.useState(false);
   const [pageY, setPageY] = React.useState(0);
+  const [isTop, setIsTop] = React.useState(false);
 
   const documentRef = React.useRef(document);
   const { pageYOffset } = window;
@@ -45,6 +46,12 @@ const Header = (props) => {
       document.body.scrollTop;
     const deltaY = pageYOffset - pageY;
     const hide = pageYOffset !== 0 && deltaY >= 0;
+
+    if (pageYOffset <= 20) {
+      setIsTop(true);
+    } else {
+      setIsTop(false);
+    }
     if (pageYOffset === 0) {
       setHide(false);
     }
@@ -236,7 +243,7 @@ const Header = (props) => {
 
   return (
     <React.Fragment>
-      <Container isHide={hide} isTop={pageYOffset <= 10}>
+      <Container isHide={hide} isTop={isTop}>
         <HeaderWrap>
           <Button
             _onClick={() => {
@@ -356,12 +363,11 @@ const Container = styled.div`
   border-left: 1px solid ${Color.gray100};
   border-right: 1px solid ${Color.gray100};
   transition: 0.4s ease;
-  box-shadow: ${(props) =>
+  ${(props) =>
     props.isTop
-      ? `0`
-      : `rgba(0, 0, 0, 0.05) 0px 6px 24px 0px,
+      ? null
+      : `box-shadow: rgba(0, 0, 0, 0.05) 0px 6px 24px 0px,
     rgba(0, 0, 0, 0.08) 0px 0px 0px 1px;`};
-
   ${({ isHide }) => isHide && "transform: translateY(-70px);"}
 `;
 
