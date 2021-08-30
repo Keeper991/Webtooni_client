@@ -125,7 +125,6 @@ const Recommendation = () => {
   }, []);
 
   React.useEffect(() => {
-    console.log("asdf");
     if (is_login) {
       dispatch(webtoonActions.getForUserWebtoonList());
     }
@@ -383,7 +382,7 @@ const Recommendation = () => {
             ) : (
               <CardSliderBox>
                 {best_reviewer_list?.map((_, idx) => {
-                  return <WebToonCard key={idx} {..._}></WebToonCard>;
+                  return <WebToonCard key={idx} {..._} fixed></WebToonCard>;
                 })}
               </CardSliderBox>
             )}
@@ -402,7 +401,7 @@ const Recommendation = () => {
                 _beforeChange={handleBeforeChange}
               >
                 {best_reviewer_list?.map((_, idx) => {
-                  return <WebToonCard key={idx} {..._}></WebToonCard>;
+                  return <WebToonCard key={idx} {..._} fixed></WebToonCard>;
                 })}
               </Slick>
             )}

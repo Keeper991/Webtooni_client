@@ -55,18 +55,21 @@ const getRankWebtoonList = () => async (dispatch, getState) => {
     let { data: webtooniToons } = await webtoonAPI.getWebtooniRank();
     webtooniToons = webtooniToons.map((toon) => {
       toon.genres = toon.genres || [];
+      toon.fixedAvgPoint = toon.toonAvgPoint;
       return toon;
     });
     dispatch(addToonList(webtooniToons, "webtooni"));
     let { data: naverToons } = await webtoonAPI.getNaverRank();
     naverToons = naverToons.map((toon) => {
       toon.genres = toon.genres || [];
+      toon.fixedAvgPoint = toon.toonAvgPoint;
       return toon;
     });
     dispatch(addToonList(naverToons, "naver"));
     let { data: kakaoToons } = await webtoonAPI.getKakaoRank();
     kakaoToons = kakaoToons.map((toon) => {
       toon.genres = toon.genres || [];
+      toon.fixedAvgPoint = toon.toonAvgPoint;
       return toon;
     });
     dispatch(addToonList(kakaoToons, "kakao"));
@@ -115,7 +118,7 @@ const getOfferWebtoonListForLogin = () => {
       let { data: mdOfferToon } = await offerAPI.getMd();
       mdOfferToon.genres = mdOfferToon.genres || [];
       dispatch(addToonList([mdOfferToon], "mdOffer"));
-      const {
+      let {
         data: {
           userInfoOnlyResponseDto: bestReviewerOfferUserInfo,
           webtoonAndGenreResponseDtos: bestReviewerOfferToons,
@@ -125,7 +128,10 @@ const getOfferWebtoonListForLogin = () => {
       let best_user_info = bestReviewerOfferUserInfo;
 
       best_user_info.userScore = userScoreConvert(best_user_info.userScore);
-
+      bestReviewerOfferToons = bestReviewerOfferToons.map((toon) => {
+        toon.fixedAvgPoint = toon.toonAvgPoint;
+        return toon;
+      });
       dispatch(addToonList(bestReviewerOfferToons, "bestReviewerOffer"));
       dispatch(reviewerActions.setBestReviewerOfferUserInfo(best_user_info));
     } catch (err) {
