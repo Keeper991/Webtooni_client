@@ -5,6 +5,7 @@ import { actionCreators as userActions } from "./user";
 import { actionCreators as reviewActions } from "./review";
 import { actionCreators as reviewerActions } from "./reviewer";
 import { actionCreators as modalActions } from "./modal";
+import { userScoreConvert } from "../../shared/common";
 
 const ADD_TOON_LIST = "webtoon/ADD_TOON_LIST";
 const ADD_TOON_ONE = "webtoon/ADD_TOON_ONE";
@@ -109,10 +110,13 @@ const getOfferWebtoonListForLogin = () => {
           webtoonAndGenreResponseDtos: bestReviewerOfferToons,
         },
       } = await offerAPI.getBestReviewersChoice();
+
+      let best_user_info = bestReviewerOfferUserInfo;
+
+      best_user_info.userScore = userScoreConvert(best_user_info.userScore);
+
       dispatch(addToonList(bestReviewerOfferToons, "bestReviewerOffer"));
-      dispatch(
-        reviewerActions.setBestReviewerOfferUserInfo(bestReviewerOfferUserInfo)
-      );
+      dispatch(reviewerActions.setBestReviewerOfferUserInfo(best_user_info));
     } catch (err) {
       console.log(err);
       if (err.message === "Request failed with status code 401") {
