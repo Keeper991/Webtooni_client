@@ -70,7 +70,6 @@ const Header = (props) => {
 
   const isTalk = props.location.pathname.includes("talk");
 
-  console.log(pageYOffset);
   if (
     props.location.pathname.includes("/talk/write") ||
     props.location.pathname === "/review/search" ||
