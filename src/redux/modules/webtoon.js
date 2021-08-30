@@ -12,6 +12,8 @@ const ADD_TOON_ONE_INFO = "webtoon/ADD_TOON_ONE_INFO";
 const SET_TOON_AVG_POINT = "webtoon/SET_TOON_AVG_POINT";
 const START_LOADING = "webtoon/START_LOADING";
 const END_LOADING = "webtoon/END_LOADING";
+const REMOVE_TOONS_FOR_USER = "webtoon/REMOVE_TOONS_FOR_USER";
+const SET_CALLED_FOR_USER = "webtoon/SET_CALLED_FOR_USER";
 
 ///////////////////////////////////////////////////////////
 // action Creators
@@ -39,6 +41,8 @@ const setToonAvgPoint = createAction(
 );
 const startLoading = createAction(START_LOADING, () => ({}));
 const endLoading = createAction(END_LOADING, () => ({}));
+const removeToonsForUser = createAction(REMOVE_TOONS_FOR_USER, () => ({}));
+const setCalledForUser = createAction(SET_CALLED_FOR_USER, () => ({}));
 
 ///////////////////////////////////////////////////////////
 // thunks
@@ -74,15 +78,22 @@ const getRankWebtoonList = () => async (dispatch, getState) => {
 // 비슷한 취향의 유저가 본, ~님을 위한 추천 불러오기
 const getForUserWebtoonList = () => async (dispatch, getState) => {
   try {
-    const { data: similarUserOfferToons } =
-      await offerAPI.getSimilarUsersChoice();
-    dispatch(addToonList(similarUserOfferToons, "similarUserOffer"));
+    const isCalledForUser = getState().webtoon.is_called_for_user;
     let { data: forUserToons } = await offerAPI.getForUser();
     forUserToons = forUserToons.map((toon) => {
       toon.genres = toon.genres || [];
       return toon;
     });
+    if (isCalledForUser) {
+      dispatch(removeToonsForUser());
+    }
     dispatch(addToonList(forUserToons, "forUser"));
+    if (!isCalledForUser) {
+      const { data: similarUserOfferToons } =
+        await offerAPI.getSimilarUsersChoice();
+      dispatch(addToonList(similarUserOfferToons, "similarUserOffer"));
+      dispatch(setCalledForUser());
+    }
   } catch (e) {
     console.log(e);
     if (e.message === "Request failed with status code 401") {
@@ -266,6 +277,7 @@ const getSimilarGenre = (webtoonId) => async (dispatch) => {
 const initialState = {
   toon_list: [],
   is_loading: false,
+  is_called_for_user: false,
 };
 
 export default handleActions(
@@ -359,6 +371,22 @@ export default handleActions(
     [END_LOADING]: (state, action) =>
       produce(state, (draft) => {
         draft.is_loading = false;
+      }),
+    [REMOVE_TOONS_FOR_USER]: (state, action) =>
+      produce(state, (draft) => {
+        draft.toon_list = draft.toon_list.map((toon) => {
+          const forUserIdx = toon.filterConditions.findIndex(
+            (fc) => fc === "forUser"
+          );
+          if (forUserIdx !== -1) {
+            toon.filterConditions.splice(forUserIdx, 1);
+          }
+          return toon;
+        });
+      }),
+    [SET_CALLED_FOR_USER]: (state, action) =>
+      produce(state, (draft) => {
+        draft.is_called_for_user = true;
       }),
   },
   initialState

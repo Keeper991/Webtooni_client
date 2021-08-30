@@ -125,10 +125,10 @@ const Recommendation = () => {
   }, []);
 
   React.useEffect(() => {
-    if (is_login && (!for_user_list?.length || !similar_user_list.length)) {
+    if (is_login) {
       dispatch(webtoonActions.getForUserWebtoonList());
     }
-  }, [is_login]);
+  }, []);
 
   const is_loading = useSelector((state) => state.webtoon.is_loading);
 
