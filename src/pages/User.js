@@ -430,6 +430,7 @@ const User = (props) => {
               <SlideWrap>
                 {reviewList.map((review, idx) => (
                   <ReviewCard
+                    main
                     key={idx}
                     userImg={userInfo.userImg}
                     {...review}
@@ -625,7 +626,9 @@ const SubscribePageNum = styled.div`
 
 const WebtoonListWrap = styled.div``;
 
-const ReviewListArea = styled.section``;
+const ReviewListArea = styled.section`
+  padding: 19px 0 19px 16px !important;
+`;
 
 const EmptyInformationGuide = styled.div`
   color: ${Color.gray400};
