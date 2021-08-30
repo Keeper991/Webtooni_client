@@ -16,6 +16,7 @@ const Slick = ({
   is_center,
   is_offer,
   is_banner,
+  is_talk,
   _beforeChange,
   _afterChange,
   ...props
@@ -122,6 +123,10 @@ const Slick = ({
     );
   }
 
+  if (is_talk) {
+    return <TalkSliderWrap {...talkMode}>{children}</TalkSliderWrap>;
+  }
+
   return (
     <SliderWrap
       infinite={is_infinite}
@@ -157,6 +162,18 @@ const offerMode = {
   speed: 700,
   autoplaySpeed: 5000,
   cssEase: "ease-in-out",
+};
+
+const talkMode = {
+  infinite: true,
+  slidesToShow: 1,
+  slidesToScroll: 1,
+  autoplay: true,
+  arrows: false,
+  speed: 700,
+  autoplaySpeed: 5000,
+  cssEase: "ease-in-out",
+  vertical: true,
 };
 
 const centerMode = {
@@ -253,6 +270,10 @@ const CenterSliderWrap = styled(Slider)`
   .slick-list {
     margin: 10px -80px;
   }
+`;
+
+const TalkSliderWrap = styled(Slider)`
+  width: 100%;
 `;
 
 const LeftArrow = styled.div`

@@ -5,7 +5,7 @@ import { setToken, getToken, removeToken } from "../../shared/PermitAuth";
 import { actionCreators as webtoonActions } from "./webtoon";
 import { actionCreators as reviewActions } from "./review";
 import { actionCreators as modalActions } from "./modal";
-import { globalConst } from "../../shared/common";
+import { globalConst, userScoreConvert } from "../../shared/common";
 
 const ADD_REVIEW_LIKE_LIST = "user/ADD_REVIEW_LIKE_LIST";
 const ADD_REVIEW_LIKE = "user/ADD_REVIEW_LIKE";
@@ -164,7 +164,7 @@ const getUserPageInfoServer = (userName) => async (dispatch, getState) => {
       data: {
         myWebtoons,
         myReviews,
-        userInfoResponseDto: { userImg, userGrade, genres },
+        userInfoResponseDto: { userImg, userGrade, userScore, genres },
       },
     } = await userAPI.getUserPageInfo(userName);
     // 구독한 웹툰 리스트 추가.
@@ -193,9 +193,11 @@ const getUserPageInfoServer = (userName) => async (dispatch, getState) => {
       userName,
       userImg,
       userGrade,
+      userScore: userScoreConvert(userScore),
       genre: genres,
       subscribeList: subscribeIdList,
     };
+
     dispatch(addUserData(userData));
 
     // 현재 로그인된 유저의 경우, 구독 리스트 추가.

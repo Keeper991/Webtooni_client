@@ -20,6 +20,7 @@ import { ReactComponent as Medal } from "./Medal.svg";
 import { ReactComponent as DownArrowPrimary } from "./DownArrowPrimary.svg";
 import { ReactComponent as TalkBubble } from "./TalkBubble.svg";
 import Stars from "./Stars.png";
+import Mega from "./MegaPhone.png";
 
 export {
   BackButton,
@@ -44,4 +45,5 @@ export {
   Medal,
   DownArrowPrimary,
   TalkBubble,
+  Mega,
 };

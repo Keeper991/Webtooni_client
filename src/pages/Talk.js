@@ -2,11 +2,18 @@ import React, { useEffect } from "react";
 import { useSelector, useDispatch } from "react-redux";
 import styled from "styled-components";
 import { Text, Button } from "../elements";
-import { WriteButton, Comment, TalkAlarm } from "../images/icons";
+import {
+  WriteButton,
+  Comment,
+  TalkAlarm,
+  MegaPhone,
+  Mega,
+} from "../images/icons";
 import { actionCreators as talkActions } from "../redux/modules/talk";
 import { history } from "../redux/configureStore";
 import { Color } from "../shared/common";
 import { Permit } from "../shared/PermitAuth";
+import { Slick } from "../components";
 
 const Talk = () => {
   const all_post_list = useSelector((store) => store.talk.post_list); //조회한 페이지의 전체 포스트 목록
@@ -78,16 +85,31 @@ const Talk = () => {
       <Grid
         position="relative"
         height="66px"
-        padding="24px 0 24px 20px"
+        padding="0 0 0 14px"
         margin="20px"
         display="flex"
         align="center"
         borderRadius="8px"
         bgColor={Color.gray100}
       >
-        <Text fontWeight="medium" color={Color.gray800}>
-          웹툰 추천과 감상을 공유해보세요
-        </Text>
+        <MegaPhoneEmoji image={Mega}></MegaPhoneEmoji>
+        <SliderBox>
+          <Slick is_talk>
+            <Text fontWeight="medium" color={Color.gray800} tag="p">
+              웹툰 전문가에게 다양한 웹툰을 추천받아보세요!
+            </Text>
+            <Text fontWeight="medium" color={Color.gray800} tag="p">
+              지나친 욕설과 비방은 자제해주세요.
+            </Text>
+            <Text fontWeight="medium" color={Color.gray800} tag="p">
+              이용이 제한될 수 있습니다.
+            </Text>
+            <Text fontWeight="medium" color={Color.gray800} tag="p">
+              많은 분들과 웹툰을 공유해보세요!
+            </Text>
+          </Slick>
+        </SliderBox>
+
         <Grid position="absolute" top="5" right="0">
           <TalkAlarm />
         </Grid>
@@ -293,4 +315,23 @@ const Title = styled.div`
   font-weight: 400;
   margin: 0 33px 0 0;
 `;
+
+const SliderBox = styled.div`
+  width: 87%;
+  height: 30px;
+  display: flex;
+  align-items: center;
+  z-index: 3;
+  margin-left: 5px;
+`;
+
+const MegaPhoneEmoji = styled.div`
+  width: 24px;
+  height: 24px;
+  background-image: url(${Mega});
+  background-position: center;
+  background-repeat: no-repeat;
+  background-size: cover;
+`;
+
 export default Talk;

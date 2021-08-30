@@ -1,7 +1,7 @@
 import React, { useEffect, useRef, useState } from "react";
 import styled from "styled-components";
 import { Button, Image, Text } from "../elements";
-import { Color } from "../shared/common";
+import { Color, userGradeIcon } from "../shared/common";
 import { UploadOutlined } from "@ant-design/icons";
 import profileImgList from "../images/profiles";
 import { Pen } from "../images/icons";
@@ -27,6 +27,7 @@ const User = (props) => {
     userName: "",
     userImg: 0,
     userGrade: "",
+    userScore: 0,
     genre: [],
   });
   const [subscribeList, setSubscribeList] = useState([]);
@@ -203,6 +204,7 @@ const User = (props) => {
         userName: userData.userName,
         userImg: userData.userImg,
         userGrade: userData.userGrade,
+        userScore: userData.userScore,
         genre: filteredGenre,
       });
       setSubscribeList(dividedSubscribeList);
@@ -293,9 +295,9 @@ const User = (props) => {
                 fontWeight="bold"
                 color={Color.primary}
               >
-                Lv.1
+                Lv.{userInfo.userScore}
               </Text>
-              <Text type="h2">{userInfo.userGrade}</Text>
+              <Text type="h2">{userGradeIcon(userInfo?.userGrade)}</Text>
             </UserGrade>
           </UserNameAndGrade>
           <UserReviewAndLikeCount>

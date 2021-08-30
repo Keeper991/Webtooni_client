@@ -12,7 +12,7 @@ import {
   ToolTip,
 } from "../components";
 import profileImgList from "../images/profiles";
-import { Color } from "../shared/common";
+import { Color, userGradeIcon } from "../shared/common";
 import { history } from "../redux/configureStore";
 import { ReactComponent as FillStar } from "../images/icons/FillStar.svg";
 import { NaverBigLogo } from "../images/symbols";
@@ -340,8 +340,16 @@ const Recommendation = () => {
               {best_reviewer_info?.userName}
             </Text>
             <FlexGrid>
-              <Text type="caption" color={Color.gray400}>
-                {best_reviewer_info?.userGrade}
+              <Text
+                type="caption"
+                color={Color.primary}
+                fontWeight="bold"
+                margin="0 3px 0 0"
+              >
+                Lv.{best_reviewer_info?.userScore}
+              </Text>
+              <Text type="caption">
+                {userGradeIcon(best_reviewer_info?.userGrade)}
               </Text>
             </FlexGrid>
           </FlexInfoGrid>
@@ -573,8 +581,16 @@ const Recommendation = () => {
             {best_reviewer_info?.userName}
           </Text>
           <FlexGrid>
-            <Text type="caption" color={Color.gray400}>
-              {best_reviewer_info?.userGrade}
+            <Text
+              type="caption"
+              color={Color.primary}
+              fontWeight="bold"
+              margin="0 3px 0 0"
+            >
+              Lv.{best_reviewer_info?.userScore}
+            </Text>
+            <Text type="caption">
+              {userGradeIcon(best_reviewer_info?.userGrade)}
             </Text>
           </FlexGrid>
         </FlexInfoGrid>

@@ -39,3 +39,12 @@ export const Color = {
   로맨스판타지: "#9DDEF4",
   액션무협: "#7596B5",
 };
+
+export const userScoreConvert = (userScore) => {
+  return parseInt(userScore / 10);
+};
+
+export const userGradeIcon = (userGrade) => {
+  const icons = ["🥚", "🐣", "🐥", "🐓", "🍗"];
+  return icons[userGrade - 1];
+};

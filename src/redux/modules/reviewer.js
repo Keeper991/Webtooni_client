@@ -1,6 +1,7 @@
 import { createAction, handleActions } from "redux-actions";
 import { produce } from "immer";
 import { reviewAPI, reviewerAPI } from "../../shared/API";
+import { userScoreConvert } from "../../shared/common";
 
 const SET_BEST_REVIEWER = "reviewer/SET_BEST_REVIEWER";
 const SET_BEST_REVIEWER_OFFER_USER_INFO =
@@ -31,7 +32,13 @@ const getBestReviewer = () => {
   return async function (dispatch, getState, { history }) {
     try {
       const response = await reviewerAPI.getBestReviewer();
-      dispatch(setBestReviewer(response.data));
+      let best_user = response.data;
+      best_user = best_user.map((user_info) => {
+        user_info.user.userScore = userScoreConvert(user_info.user.userScore);
+        return user_info;
+      });
+
+      dispatch(setBestReviewer(best_user));
     } catch (err) {
       console.log(err);
     }
@@ -53,7 +60,12 @@ const getMainReview = () => {
 
 const initialState = {
   best_reviewer: [],
-  best_reviewer_offer_user_info: { userName: "", userImg: -1, userGrade: "" },
+  best_reviewer_offer_user_info: {
+    userName: "",
+    userImg: -1,
+    userGrade: "",
+    userScore: "",
+  },
   //
   main_review: [],
   md_offer: {},
