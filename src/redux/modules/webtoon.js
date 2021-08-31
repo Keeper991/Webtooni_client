@@ -5,6 +5,7 @@ import { actionCreators as userActions } from "./user";
 import { actionCreators as reviewActions } from "./review";
 import { actionCreators as reviewerActions } from "./reviewer";
 import { actionCreators as modalActions } from "./modal";
+import { userScoreConvert } from "../../shared/common";
 
 const ADD_TOON_LIST = "webtoon/ADD_TOON_LIST";
 const ADD_TOON_ONE = "webtoon/ADD_TOON_ONE";
@@ -12,6 +13,9 @@ const ADD_TOON_ONE_INFO = "webtoon/ADD_TOON_ONE_INFO";
 const SET_TOON_AVG_POINT = "webtoon/SET_TOON_AVG_POINT";
 const START_LOADING = "webtoon/START_LOADING";
 const END_LOADING = "webtoon/END_LOADING";
+const REMOVE_FOR_USER_FILTER_CONDITION =
+  "webtoon/REMOVE_FOR_USER_FILTER_CONDITION";
+const SET_CALLED_FOR_USER = "webtoon/SET_CALLED_FOR_USER";
 
 ///////////////////////////////////////////////////////////
 // action Creators
@@ -39,6 +43,11 @@ const setToonAvgPoint = createAction(
 );
 const startLoading = createAction(START_LOADING, () => ({}));
 const endLoading = createAction(END_LOADING, () => ({}));
+const removeForUserFilterCondition = createAction(
+  REMOVE_FOR_USER_FILTER_CONDITION,
+  () => ({})
+);
+const setCalledForUser = createAction(SET_CALLED_FOR_USER, () => ({}));
 
 ///////////////////////////////////////////////////////////
 // thunks
@@ -50,18 +59,21 @@ const getRankWebtoonList = () => async (dispatch, getState) => {
     let { data: webtooniToons } = await webtoonAPI.getWebtooniRank();
     webtooniToons = webtooniToons.map((toon) => {
       toon.genres = toon.genres || [];
+      toon.fixedAvgPoint = toon.toonAvgPoint;
       return toon;
     });
     dispatch(addToonList(webtooniToons, "webtooni"));
     let { data: naverToons } = await webtoonAPI.getNaverRank();
     naverToons = naverToons.map((toon) => {
       toon.genres = toon.genres || [];
+      toon.fixedAvgPoint = toon.toonAvgPoint;
       return toon;
     });
     dispatch(addToonList(naverToons, "naver"));
     let { data: kakaoToons } = await webtoonAPI.getKakaoRank();
     kakaoToons = kakaoToons.map((toon) => {
       toon.genres = toon.genres || [];
+      toon.fixedAvgPoint = toon.toonAvgPoint;
       return toon;
     });
     dispatch(addToonList(kakaoToons, "kakao"));
@@ -72,17 +84,24 @@ const getRankWebtoonList = () => async (dispatch, getState) => {
 };
 
 // 비슷한 취향의 유저가 본, ~님을 위한 추천 불러오기
-const getForUserWebtoonList = () => async (dispatch, getState) => {
+const getWebtoonListForLogin = () => async (dispatch, getState) => {
   try {
-    const { data: similarUserOfferToons } =
-      await offerAPI.getSimilarUsersChoice();
-    dispatch(addToonList(similarUserOfferToons, "similarUserOffer"));
+    const isCalledForUser = getState().webtoon.is_called_for_user;
     let { data: forUserToons } = await offerAPI.getForUser();
     forUserToons = forUserToons.map((toon) => {
       toon.genres = toon.genres || [];
       return toon;
     });
+    if (isCalledForUser) {
+      dispatch(removeForUserFilterCondition());
+    }
     dispatch(addToonList(forUserToons, "forUser"));
+    if (!isCalledForUser) {
+      const { data: similarUserOfferToons } =
+        await offerAPI.getSimilarUsersChoice();
+      dispatch(addToonList(similarUserOfferToons, "similarUserOffer"));
+      dispatch(setCalledForUser());
+    }
   } catch (e) {
     console.log(e);
     if (e.message === "Request failed with status code 401") {
@@ -95,7 +114,7 @@ const getForUserWebtoonList = () => async (dispatch, getState) => {
 };
 
 // 추천 웹툰 리스트 받아오기 (완결작, MD, 베스트 리뷰어의 추천)
-const getOfferWebtoonListForLogin = () => {
+const getOfferWebtoonList = () => {
   return async function (dispatch, getState, { history }) {
     try {
       const { data: endOfferToons } = await offerAPI.getEnd();
@@ -103,16 +122,22 @@ const getOfferWebtoonListForLogin = () => {
       let { data: mdOfferToon } = await offerAPI.getMd();
       mdOfferToon.genres = mdOfferToon.genres || [];
       dispatch(addToonList([mdOfferToon], "mdOffer"));
-      const {
+      let {
         data: {
           userInfoOnlyResponseDto: bestReviewerOfferUserInfo,
           webtoonAndGenreResponseDtos: bestReviewerOfferToons,
         },
       } = await offerAPI.getBestReviewersChoice();
+
+      let best_user_info = bestReviewerOfferUserInfo;
+
+      best_user_info.userScore = userScoreConvert(best_user_info.userScore);
+      bestReviewerOfferToons = bestReviewerOfferToons.map((toon) => {
+        toon.fixedAvgPoint = toon.toonAvgPoint;
+        return toon;
+      });
       dispatch(addToonList(bestReviewerOfferToons, "bestReviewerOffer"));
-      dispatch(
-        reviewerActions.setBestReviewerOfferUserInfo(bestReviewerOfferUserInfo)
-      );
+      dispatch(reviewerActions.setBestReviewerOfferUserInfo(best_user_info));
     } catch (err) {
       console.log(err);
       if (err.message === "Request failed with status code 401") {
@@ -163,6 +188,7 @@ const getToonOneServer = (webtoonId) => {
       let reviews = toonInfo.reviews;
       reviews = reviews.map((review) => {
         review.toonId = webtoonId;
+        review.createDate = Date.parse(review.createDate);
         return review;
       });
       dispatch(reviewActions.addReviewList(reviews, "detail"));
@@ -265,6 +291,7 @@ const getSimilarGenre = (webtoonId) => async (dispatch) => {
 const initialState = {
   toon_list: [],
   is_loading: false,
+  is_called_for_user: false,
 };
 
 export default handleActions(
@@ -359,14 +386,30 @@ export default handleActions(
       produce(state, (draft) => {
         draft.is_loading = false;
       }),
+    [REMOVE_FOR_USER_FILTER_CONDITION]: (state, action) =>
+      produce(state, (draft) => {
+        const filtered = draft.toon_list.filter((toon) =>
+          toon.filterConditions.includes("forUser")
+        );
+        filtered.map((toon) => {
+          toon.filterConditions.splice(
+            toon.filterConditions.indexOf("forUser"),
+            1
+          );
+        });
+      }),
+    [SET_CALLED_FOR_USER]: (state, action) =>
+      produce(state, (draft) => {
+        draft.is_called_for_user = true;
+      }),
   },
   initialState
 );
 
 const actionCreators = {
   getRankWebtoonList,
-  getForUserWebtoonList,
-  getOfferWebtoonListForLogin,
+  getWebtoonListForLogin,
+  getOfferWebtoonList,
   getToonOneServer,
   addToonList,
   setToonAvgPoint,

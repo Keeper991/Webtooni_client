@@ -76,6 +76,11 @@ const Modal = () => {
         <Text>권한이 없습니다.</Text>
       </AlertModal>
     ),
+    overChoice: (
+      <AlertModal Icon={WarningOutlined}>
+        <Text>3개만 선택 가능합니다.</Text>
+      </AlertModal>
+    ),
     wait: (
       <AlertModal Icon={LoadingOutlined}>
         <Text>응답 대기중입니다.</Text>

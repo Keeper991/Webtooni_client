@@ -4,9 +4,15 @@ import { useDispatch, useSelector } from "react-redux";
 import { actionCreators as webtoonActions } from "../redux/modules/webtoon";
 import { OfferCard } from "../components";
 import { Text, Image, Button } from "../elements";
-import { Slick, WebToonCard, SkeletonCard, ReviewCard } from "../components";
+import {
+  Slick,
+  WebToonCard,
+  SkeletonCard,
+  ReviewCard,
+  ToolTip,
+} from "../components";
 import profileImgList from "../images/profiles";
-import { Color } from "../shared/common";
+import { Color, userGradeIcon } from "../shared/common";
 import { history } from "../redux/configureStore";
 import { ReactComponent as FillStar } from "../images/icons/FillStar.svg";
 import { NaverBigLogo } from "../images/symbols";
@@ -49,8 +55,10 @@ const Recommendation = () => {
   const similar_user_list = toon_list.filter((toon) =>
     toon.filterConditions.includes("similarUserOffer")
   );
-  const for_user_list = toon_list.filter((toon) =>
-    toon.filterConditions.includes("forUser")
+  const [for_user_list, set_for_user_list] = React.useState(
+    toon_list.filter((toon) =>
+      toon.filterConditions.includes("similarUserOffer")
+    )
   );
 
   const md_review = [
@@ -98,11 +106,11 @@ const Recommendation = () => {
 
   const handleBeforeChange = React.useCallback(() => {
     setDragging(true);
-  }, [setDragging]);
+  }, []);
 
   const handleAfterChange = React.useCallback(() => {
     setDragging(false);
-  }, [setDragging]);
+  }, []);
 
   const handleOnItemClick = React.useCallback(
     (e) => {
@@ -114,15 +122,21 @@ const Recommendation = () => {
   // effects
   React.useEffect(() => {
     if (!end_toon_list.length || !md_offer_list.length || !best_reviewer_list) {
-      dispatch(webtoonActions.getOfferWebtoonListForLogin());
+      dispatch(webtoonActions.getOfferWebtoonList());
     }
   }, []);
 
   React.useEffect(() => {
-    if (is_login && (!for_user_list?.length || !similar_user_list.length)) {
-      dispatch(webtoonActions.getForUserWebtoonList());
+    if (is_login) {
+      dispatch(webtoonActions.getWebtoonListForLogin());
     }
   }, [is_login]);
+
+  React.useEffect(() => {
+    set_for_user_list(
+      toon_list.filter((toon) => toon.filterConditions.includes("forUser"))
+    );
+  }, [toon_list]);
 
   const is_loading = useSelector((state) => state.webtoon.is_loading);
 
@@ -176,9 +190,15 @@ const Recommendation = () => {
         </BannerBox>
 
         <TitleGrid no_border>
-          <Text type="h2" fontWeight="bold" color={Color.gray800}>
-            비슷한 취향의 사용자가 본 웹툰
-          </Text>
+          <TooltipGrid>
+            <Text type="h2" fontWeight="bold" color={Color.gray800}>
+              비슷한 취향의 사용자가 본 웹툰
+            </Text>
+            <ToolTip position="top-center">
+              {user_name}님과 비슷한 평가를 남긴 사용자가 좋게 평가한
+              웹툰이에요!
+            </ToolTip>
+          </TooltipGrid>
           {is_login ? (
             <Button
               border="none"
@@ -328,8 +348,16 @@ const Recommendation = () => {
               {best_reviewer_info?.userName}
             </Text>
             <FlexGrid>
-              <Text type="caption" color={Color.gray400}>
-                {best_reviewer_info?.userGrade}
+              <Text
+                type="caption"
+                color={Color.primary}
+                fontWeight="bold"
+                margin="0 3px 0 0"
+              >
+                Lv.{best_reviewer_info?.userScore}
+              </Text>
+              <Text type="caption">
+                {userGradeIcon(best_reviewer_info?.userGrade)}
               </Text>
             </FlexGrid>
           </FlexInfoGrid>
@@ -362,7 +390,7 @@ const Recommendation = () => {
             ) : (
               <CardSliderBox>
                 {best_reviewer_list?.map((_, idx) => {
-                  return <WebToonCard key={idx} {..._}></WebToonCard>;
+                  return <WebToonCard key={idx} {..._} fixed></WebToonCard>;
                 })}
               </CardSliderBox>
             )}
@@ -381,7 +409,7 @@ const Recommendation = () => {
                 _beforeChange={handleBeforeChange}
               >
                 {best_reviewer_list?.map((_, idx) => {
-                  return <WebToonCard key={idx} {..._}></WebToonCard>;
+                  return <WebToonCard key={idx} {..._} fixed></WebToonCard>;
                 })}
               </Slick>
             )}
@@ -561,8 +589,16 @@ const Recommendation = () => {
             {best_reviewer_info?.userName}
           </Text>
           <FlexGrid>
-            <Text type="caption" color={Color.gray400}>
-              {best_reviewer_info?.userGrade}
+            <Text
+              type="caption"
+              color={Color.primary}
+              fontWeight="bold"
+              margin="0 3px 0 0"
+            >
+              Lv.{best_reviewer_info?.userScore}
+            </Text>
+            <Text type="caption">
+              {userGradeIcon(best_reviewer_info?.userGrade)}
             </Text>
           </FlexGrid>
         </FlexInfoGrid>
@@ -983,6 +1019,11 @@ const CardSliderBox = styled.div`
     display: none;
     width: 0 !important;
   }
+`;
+
+const TooltipGrid = styled.div`
+  display: flex;
+  gap: 5px;
 `;
 
 export default Recommendation;

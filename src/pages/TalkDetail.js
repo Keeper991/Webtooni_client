@@ -129,7 +129,13 @@ const TalkDetail = (props) => {
               borderBottom={`8px solid ${Color.gray100}`}
             >
               <Grid borderBottom={`1px solid ${Color.gray200}`} padding="20px">
-                <Text type="h2" color={Color.gray800}>
+                <Text
+                  whiteSpace="pre-wrap"
+                  wordBreak="break-all"
+                  lineHeight="24px"
+                  type="h2"
+                  color={Color.gray800}
+                >
                   {post.postTitle}
                 </Text>
                 <Grid

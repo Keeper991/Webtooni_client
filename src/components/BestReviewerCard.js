@@ -5,6 +5,7 @@ import { Color } from "../shared/common";
 import profileImgList from "../images/profiles";
 import { history } from "../redux/configureStore";
 import { Medal } from "../images/icons";
+import { userGradeIcon } from "../shared/common";
 const BestReveiwerCard = (props) => {
   const [first, setFirst] = React.useState(false);
 
@@ -18,7 +19,7 @@ const BestReveiwerCard = (props) => {
     <React.Fragment>
       <Container
         onClick={() => {
-          history.push(`/userinfo/${props.user.userName}`);
+          history.push(`/userinfo/${props.user?.userName}`);
         }}
       >
         {first && (
@@ -32,18 +33,21 @@ const BestReveiwerCard = (props) => {
           size="64px"
         ></Image>
         <Text type="medium" fontWeight="bold" color={Color.gray800}>
-          {props.user.userName ? props.user.userName : "null"}
+          {props.user?.userName}
         </Text>
-        <Text type="caption" color={Color.gray600}>
-          {props.user.userGrade ? props.user.userGrade : "null"}
-        </Text>
+        <FlexInfoGrid>
+          <Text type="caption" color={Color.primary} fontWeight="bold">
+            Lv.{props.user?.userScore}
+          </Text>
+          <Text type="caption">{userGradeIcon(props.user?.userGrade)}</Text>
+        </FlexInfoGrid>
         <BottomGrid>
           <FlexGrid>
             <Text type="small" fontWeight="bold" color={Color.gray400}>
               리뷰 수
             </Text>
             <Text type="num" fontSize="14px" fontWeight="bold">
-              {props.reviewCount}
+              {props?.reviewCount}
             </Text>
           </FlexGrid>
           <FlexGrid>
@@ -51,7 +55,7 @@ const BestReveiwerCard = (props) => {
               좋아요 수
             </Text>
             <Text type="num" fontSize="14px" fontWeight="bold">
-              {props.likeCount}
+              {props?.likeCount}
             </Text>
           </FlexGrid>
         </BottomGrid>
@@ -94,6 +98,13 @@ const MedalGrid = styled.div`
   position: absolute;
   top: -5px;
   left: 7px;
+`;
+
+const FlexInfoGrid = styled.div`
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 3px;
 `;
 
 export default BestReveiwerCard;

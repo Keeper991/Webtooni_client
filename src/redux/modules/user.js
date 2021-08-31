@@ -5,6 +5,7 @@ import { setToken, getToken, removeToken } from "../../shared/PermitAuth";
 import { actionCreators as webtoonActions } from "./webtoon";
 import { actionCreators as reviewActions } from "./review";
 import { actionCreators as modalActions } from "./modal";
+import { globalConst, userScoreConvert } from "../../shared/common";
 
 const ADD_REVIEW_LIKE_LIST = "user/ADD_REVIEW_LIKE_LIST";
 const ADD_REVIEW_LIKE = "user/ADD_REVIEW_LIKE";
@@ -71,7 +72,11 @@ const socialLoginServer =
       infoRes.data.isShownWelcomeModal = Boolean(infoRes.data.userName);
       dispatch(setUser(infoRes.data));
       dispatch(loading(false));
-      infoRes.data.userName ? history.go(-2) : history.replace("/taste");
+      const curRoute = localStorage.getItem(globalConst.curRoute);
+      localStorage.removeItem(globalConst.curRoute);
+      infoRes.data.userName
+        ? history.replace(curRoute || "/")
+        : history.replace("/taste");
     } catch (e) {
       console.log(e);
       dispatch(modalActions.activeModal("error"));
@@ -159,7 +164,7 @@ const getUserPageInfoServer = (userName) => async (dispatch, getState) => {
       data: {
         myWebtoons,
         myReviews,
-        userInfoResponseDto: { userImg, userGrade, genres },
+        userInfoResponseDto: { userImg, userGrade, userScore, genres },
       },
     } = await userAPI.getUserPageInfo(userName);
     // 구독한 웹툰 리스트 추가.
@@ -188,9 +193,11 @@ const getUserPageInfoServer = (userName) => async (dispatch, getState) => {
       userName,
       userImg,
       userGrade,
+      userScore: userScoreConvert(userScore),
       genre: genres,
       subscribeList: subscribeIdList,
     };
+
     dispatch(addUserData(userData));
 
     // 현재 로그인된 유저의 경우, 구독 리스트 추가.
@@ -270,10 +277,18 @@ export default handleActions(
       }),
     [SUBSCRIBE]: (state, action) =>
       produce(state, (draft) => {
-        draft.subscribeList.push(action.payload.webtoonId);
-        draft.userList
-          .find((user) => user.userName === draft.info.userName)
-          ?.subscribeList.push(action.payload.webtoonId);
+        if (!draft.subscribeList.includes(action.payload.webtoonId)) {
+          draft.subscribeList.push(action.payload.webtoonId);
+        }
+        const userInList = draft.userList.find(
+          (user) => user.userName === draft.info.userName
+        );
+        if (
+          userInList &&
+          !userInList.subscribeList.includes(action.payload.webtoonId)
+        ) {
+          userInList.subscribeList.push(action.payload.webtoonId);
+        }
       }),
     [UNSUBSCRIBE]: (state, action) =>
       produce(state, (draft) => {
@@ -285,12 +300,14 @@ export default handleActions(
           subscribeList.splice(subscribeList.indexOf(webtoonId), 1);
         const subscribeListInUserList = draft.userList.find(
           (user) => user.userName === draft.info.userName
-        ).subscribeList;
-        subscribeListInUserList.includes(webtoonId) &&
-          subscribeListInUserList.splice(
-            subscribeListInUserList.indexOf(webtoonId),
-            1
-          );
+        )?.subscribeList;
+        if (subscribeListInUserList) {
+          subscribeListInUserList.includes(webtoonId) &&
+            subscribeListInUserList.splice(
+              subscribeListInUserList.indexOf(webtoonId),
+              1
+            );
+        }
       }),
     [SHOWN_WELCOME_MODAL]: (state, action) =>
       produce(state, (draft) => {
