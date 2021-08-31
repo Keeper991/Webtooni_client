@@ -26,7 +26,7 @@
 <br/>
 ### ⚒️ Tools
 ----
->
+``
 - View (React with JavaScript, React-Router, Styled-components, React-Slick, Chart.js)
 - State Management (Redux, Redux-Thunk, Immer, Redux-actions, history)
 - Http Requests (axios)
@@ -35,7 +35,7 @@
 - Infrastructure (AWS S3, Route 53)
 - Design Tool (Figma)
 - Other Tools (Git, Github, notion, Slack etc.)
-
+``
 ### 📌 페이지 구성
 ____
 - 메인 페이지
