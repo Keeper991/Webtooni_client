@@ -5,7 +5,7 @@ import { useDispatch, useSelector } from "react-redux";
 import { Button, Image } from "../elements/index";
 import { withRouter } from "react-router";
 import { NavLink } from "react-router-dom";
-import { Color, globalConst } from "./common";
+import { Color, globalConst, maxWidth } from "./common";
 import { title } from "../images/icons";
 import {
   UserOutlined,
@@ -355,7 +355,7 @@ const PageBtnBox = styled.div`
 
 const Container = styled.div`
   width: 100vw;
-  max-width: 700px;
+  max-width: ${maxWidth};
   margin: 0 auto;
   top: 0;
   z-index: 90;
@@ -401,11 +401,9 @@ const IconWrap = styled.div`
 
 const SimpleContainer = styled.div`
   position: fixed;
-  /* position: ${(props) =>
-    props.talk || props.toon ? "fixed" : "absolute"}; */
   top: 0;
   width: 100%;
-  max-width: 700px;
+  max-width: ${maxWidth};
   margin: 0 auto;
   height: 70px;
   display: flex;

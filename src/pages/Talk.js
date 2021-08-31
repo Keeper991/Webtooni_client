@@ -58,212 +58,214 @@ const Talk = () => {
   const day = ("0" + date.getDate()).slice(-2);
   const today = year + "-" + month + "-" + day;
   return (
-    <Grid
-      position="relative"
-      margin="-4px 0 0 0"
-      borderTop={`8px solid ${Color.gray100}`}
-    >
+    <>
+      <Grid
+        position="relative"
+        margin="-4px 0 0 0"
+        borderTop={`8px solid ${Color.gray100}`}
+      >
+        <Grid
+          position="relative"
+          height="66px"
+          padding="0 0 0 14px"
+          margin="20px"
+          display="flex"
+          align="center"
+          borderRadius="8px"
+          bgColor={Color.gray100}
+        >
+          <MegaPhoneEmoji image={Mega}></MegaPhoneEmoji>
+          <SliderBox>
+            <Slick is_talk>
+              <Text fontWeight="medium" color={Color.gray800} tag="p">
+                웹툰 전문가에게 다양한 웹툰을 추천받아보세요!
+              </Text>
+              <Text fontWeight="medium" color={Color.gray800} tag="p">
+                지나친 욕설과 비방은 자제해주세요.
+              </Text>
+              <Text fontWeight="medium" color={Color.gray800} tag="p">
+                이용이 제한될 수 있습니다.
+              </Text>
+              <Text fontWeight="medium" color={Color.gray800} tag="p">
+                많은 분들과 웹툰을 공유해보세요!
+              </Text>
+            </Slick>
+          </SliderBox>
+
+          <Grid position="absolute" top="5" right="0">
+            <TalkAlarm />
+          </Grid>
+        </Grid>
+
+        {/* 포스트 리스트 */}
+        <Grid
+          bgColor={Color.white}
+          margin="42px 0 0 0"
+          padding="0 20px 20px 20px"
+          borderTop={`2px solid ${Color.gray100}`}
+        >
+          {post_list.map((post, idx) => (
+            <Grid
+              position="relative"
+              key={idx}
+              borderBottom={`1px solid ${Color.gray100}`}
+              padding="20px 0 10px"
+              cursor="true"
+              onClick={() => history.push(`/talk/detail/${post.postId}`)}
+            >
+              <Title>{post?.postTitle}</Title>
+              <Grid
+                display="flex"
+                margin="7px 0 0 0"
+                justify="space-between"
+                align="center"
+              >
+                <Grid display="flex">
+                  <Text
+                    color={Color.gray400}
+                    type="num"
+                    fontSize="12px"
+                    whiteSpace="nowrap"
+                    padding="0 12px 0 0"
+                  >
+                    {post.userName}
+                  </Text>
+                  <Text
+                    color={Color.gray400}
+                    type="num"
+                    fontSize="12px"
+                    whiteSpace="nowrap"
+                    padding="0 12px 0 0"
+                  >
+                    {/* 작성일 오늘인지에 따라 날짜만/시간만 표기 */}
+                    {today === post.createDate.substr(0, 10)
+                      ? post.createDate.substr(11, 5)
+                      : post.createDate.substr(5, 5)}
+                  </Text>
+                  <Text
+                    color={Color.gray400}
+                    whiteSpace="nowrap"
+                    padding="0 12px 0 0"
+                    type="num"
+                    fontSize="12px"
+                  >
+                    좋아요&nbsp;{post.likeNum}
+                  </Text>
+                </Grid>
+
+                <Grid
+                  position="relative"
+                  bgColor={Color.white}
+                  padding="0 0 0 6px"
+                  // top="20px"
+                  // right="0"
+                >
+                  <Comment width="24px" height="24px" />
+                  {String(post.talkCommentCount).length === 1 ? (
+                    <Grid position="absolute" top="-1px" left="52%">
+                      <Text
+                        type="num"
+                        fontSize="9px"
+                        fontWeight="bold"
+                        whiteSpace="nowrap"
+                        color={Color.primary}
+                      >
+                        {post.talkCommentCount}
+                      </Text>
+                    </Grid>
+                  ) : (
+                    <Grid position="absolute" top="-1px" left="42%">
+                      <Text
+                        type="num"
+                        fontSize="9px"
+                        fontWeight="bold"
+                        whiteSpace="nowrap"
+                        color={Color.primary}
+                      >
+                        {post.talkCommentCount}
+                      </Text>
+                    </Grid>
+                  )}
+                </Grid>
+              </Grid>
+            </Grid>
+          ))}
+          <Grid
+            display="flex"
+            padding="32px 16px"
+            justify="center"
+            align="center"
+          >
+            {/* 이전 페이지 목록 보여주기 */}
+            {startPage !== 1 && (
+              <Grid
+                onClick={() => {
+                  setStartPage(startPage - 5);
+                  getPagePosts(startPage);
+                }}
+                padding="0 15px 0 0"
+              >
+                <Text type="caption" color={Color.gray700}>
+                  이전
+                </Text>
+              </Grid>
+            )}
+            {/* 선택 가능한 페이지 번호 */}
+            <PageBtnGrid select={cur_page % 5 === 0 ? 5 : cur_page % 5}>
+              {Array.from({ length: 5 }).map((_, idx) => {
+                const page_btn_no = startPage + idx;
+                if (page_btn_no <= last_page) {
+                  return (
+                    <Button
+                      key={idx}
+                      shape="circle"
+                      size="32px"
+                      margin="5px"
+                      bgColor={Color.white}
+                      border={`1px solid ${Color.gray300}`}
+                      fontSize="12px"
+                      color={Color.gray400}
+                      _onClick={() => {
+                        getPagePosts(page_btn_no);
+                      }}
+                    >
+                      {page_btn_no}
+                    </Button>
+                  );
+                }
+              })}
+            </PageBtnGrid>
+            {/* 다음 페이지 목록 보여주기 */}
+            {startPage + 5 <= last_page && (
+              <Grid
+                onClick={() => {
+                  setStartPage(startPage + 5);
+                  getPagePosts(startPage);
+                }}
+                padding="0 0 0 15px"
+              >
+                <Text type="caption" color={Color.gray700}>
+                  다음
+                </Text>
+              </Grid>
+            )}
+          </Grid>
+        </Grid>
+      </Grid>
       {/* 포스트 작성 버튼 */}
       <Permit>
         <Grid
-          position="fixed"
+          position="sticky"
           bottom="41px"
           right="41px"
           cursor="true"
-          zIndex="2"
+          style={{ float: "right" }}
           onClick={() => history.push("/talk/write")}
         >
           <Image src={WriteButton} shape="square" size="64px" />
         </Grid>
       </Permit>
-      <Grid
-        position="relative"
-        height="66px"
-        padding="0 0 0 14px"
-        margin="20px"
-        display="flex"
-        align="center"
-        borderRadius="8px"
-        bgColor={Color.gray100}
-      >
-        <MegaPhoneEmoji image={Mega}></MegaPhoneEmoji>
-        <SliderBox>
-          <Slick is_talk>
-            <Text fontWeight="medium" color={Color.gray800} tag="p">
-              웹툰 전문가에게 다양한 웹툰을 추천받아보세요!
-            </Text>
-            <Text fontWeight="medium" color={Color.gray800} tag="p">
-              지나친 욕설과 비방은 자제해주세요.
-            </Text>
-            <Text fontWeight="medium" color={Color.gray800} tag="p">
-              이용이 제한될 수 있습니다.
-            </Text>
-            <Text fontWeight="medium" color={Color.gray800} tag="p">
-              많은 분들과 웹툰을 공유해보세요!
-            </Text>
-          </Slick>
-        </SliderBox>
-
-        <Grid position="absolute" top="5" right="0">
-          <TalkAlarm />
-        </Grid>
-      </Grid>
-
-      {/* 포스트 리스트 */}
-      <Grid
-        bgColor={Color.white}
-        margin="42px 0 0 0"
-        padding="0 20px 20px 20px"
-        borderTop={`2px solid ${Color.gray100}`}
-      >
-        {post_list.map((post, idx) => (
-          <Grid
-            position="relative"
-            key={idx}
-            borderBottom={`1px solid ${Color.gray100}`}
-            padding="20px 0 10px"
-            cursor="true"
-            onClick={() => history.push(`/talk/detail/${post.postId}`)}
-          >
-            <Title>{post?.postTitle}</Title>
-            <Grid
-              display="flex"
-              margin="7px 0 0 0"
-              justify="space-between"
-              align="center"
-            >
-              <Grid display="flex">
-                <Text
-                  color={Color.gray400}
-                  type="num"
-                  fontSize="12px"
-                  whiteSpace="nowrap"
-                  padding="0 12px 0 0"
-                >
-                  {post.userName}
-                </Text>
-                <Text
-                  color={Color.gray400}
-                  type="num"
-                  fontSize="12px"
-                  whiteSpace="nowrap"
-                  padding="0 12px 0 0"
-                >
-                  {/* 작성일 오늘인지에 따라 날짜만/시간만 표기 */}
-                  {today === post.createDate.substr(0, 10)
-                    ? post.createDate.substr(11, 5)
-                    : post.createDate.substr(5, 5)}
-                </Text>
-                <Text
-                  color={Color.gray400}
-                  whiteSpace="nowrap"
-                  padding="0 12px 0 0"
-                  type="num"
-                  fontSize="12px"
-                >
-                  좋아요&nbsp;{post.likeNum}
-                </Text>
-              </Grid>
-
-              <Grid
-                position="relative"
-                bgColor={Color.white}
-                padding="0 0 0 6px"
-                // top="20px"
-                // right="0"
-              >
-                <Comment width="24px" height="24px" />
-                {String(post.talkCommentCount).length === 1 ? (
-                  <Grid position="absolute" top="-1px" left="52%">
-                    <Text
-                      type="num"
-                      fontSize="9px"
-                      fontWeight="bold"
-                      whiteSpace="nowrap"
-                      color={Color.primary}
-                    >
-                      {post.talkCommentCount}
-                    </Text>
-                  </Grid>
-                ) : (
-                  <Grid position="absolute" top="-1px" left="42%">
-                    <Text
-                      type="num"
-                      fontSize="9px"
-                      fontWeight="bold"
-                      whiteSpace="nowrap"
-                      color={Color.primary}
-                    >
-                      {post.talkCommentCount}
-                    </Text>
-                  </Grid>
-                )}
-              </Grid>
-            </Grid>
-          </Grid>
-        ))}
-        <Grid
-          display="flex"
-          padding="32px 16px"
-          justify="center"
-          align="center"
-        >
-          {/* 이전 페이지 목록 보여주기 */}
-          {startPage !== 1 && (
-            <Grid
-              onClick={() => {
-                setStartPage(startPage - 5);
-                getPagePosts(startPage);
-              }}
-              padding="0 15px 0 0"
-            >
-              <Text type="caption" color={Color.gray700}>
-                이전
-              </Text>
-            </Grid>
-          )}
-          {/* 선택 가능한 페이지 번호 */}
-          <PageBtnGrid select={cur_page % 5 === 0 ? 5 : cur_page % 5}>
-            {Array.from({ length: 5 }).map((_, idx) => {
-              const page_btn_no = startPage + idx;
-              if (page_btn_no <= last_page) {
-                return (
-                  <Button
-                    key={idx}
-                    shape="circle"
-                    size="32px"
-                    margin="5px"
-                    bgColor={Color.white}
-                    border={`1px solid ${Color.gray300}`}
-                    fontSize="12px"
-                    color={Color.gray400}
-                    _onClick={() => {
-                      getPagePosts(page_btn_no);
-                    }}
-                  >
-                    {page_btn_no}
-                  </Button>
-                );
-              }
-            })}
-          </PageBtnGrid>
-          {/* 다음 페이지 목록 보여주기 */}
-          {startPage + 5 <= last_page && (
-            <Grid
-              onClick={() => {
-                setStartPage(startPage + 5);
-                getPagePosts(startPage);
-              }}
-              padding="0 0 0 15px"
-            >
-              <Text type="caption" color={Color.gray700}>
-                다음
-              </Text>
-            </Grid>
-          )}
-        </Grid>
-      </Grid>
-    </Grid>
+    </>
   );
 };
 
