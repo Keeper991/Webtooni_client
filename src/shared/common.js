@@ -48,3 +48,5 @@ export const userGradeIcon = (userGrade) => {
   const icons = ["🥚", "🐣", "🐥", "🐓", "🍗"];
   return icons[userGrade - 1];
 };
+
+export const maxWidth = "700px";

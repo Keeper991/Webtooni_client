@@ -4,7 +4,7 @@ import { ConnectedRouter } from "connected-react-router";
 import { Route } from "react-router-dom";
 import { history } from "../redux/configureStore";
 import { useDispatch } from "react-redux";
-import { Color } from "../shared/common";
+import { Color, maxWidth } from "../shared/common";
 import { actionCreators as userActions } from "../redux/modules/user";
 import {
   Main,
@@ -80,7 +80,7 @@ const Container = styled.section`
   right: 0;
   margin: 0 auto;
   padding-top: 130px;
-  max-width: 700px;
+  max-width: ${maxWidth};
   min-height: 100vh;
   @media only screen and (min-width: 700px) {
     border-left: 1px solid ${Color.gray100};
