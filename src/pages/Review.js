@@ -1,6 +1,6 @@
 import React from "react";
 import { ReviewCard } from "../components";
-import { Text, Button } from "../elements";
+import { Text, Button, Image } from "../elements";
 import { useDispatch, useSelector } from "react-redux";
 import { actionCreators as reviewAction } from "../redux/modules/review";
 import styled from "styled-components";
@@ -15,17 +15,30 @@ const Review = () => {
   const [is_best, setIsBest] = React.useState(false);
 
   const is_login = useSelector((state) => state.user.is_login);
-
+  const userName = useSelector((state) => state.user.info.userName);
   const is_loading_review = useSelector(
     (state) => state.review.is_loading_review
   );
 
   const review_list = useSelector((state) => state.review.review_list);
 
-  let new_review_list = [...review_list];
+  const new_review = review_list.filter(
+    (review) =>
+      review.filterConditions.includes("reviewPage") ||
+      review.filterConditions.length === 0 ||
+      (review.filterConditions.includes("detail") &&
+        review.userName === userName &&
+        review.reviewContent !== null)
+  );
+
+  const best_review = review_list.filter((review) =>
+    review.filterConditions.includes("reviewPageBest")
+  );
+
+  let new_review_list = [...new_review];
   new_review_list.sort((a, b) => b.createDate - a.createDate);
 
-  let best_review_list = [...review_list];
+  let best_review_list = [...best_review];
   best_review_list.sort((a, b) => b.likeCount - a.likeCount);
 
   const like_list = useSelector((state) => state.user.reviewLikeList);
@@ -36,10 +49,18 @@ const Review = () => {
   const is_last = useSelector((state) => state.review.is_last);
 
   React.useEffect(() => {
-    dispatch(reviewAction.getReviewList(new_page_num));
-    dispatch(reviewAction.getReviewListOrderByLike(best_page_num));
+    if (new_page_num === 1) {
+      dispatch(reviewAction.getReviewList(new_page_num));
+    }
   }, []);
 
+  const handleBest = () => {
+    setIsBest(true);
+    dispatch(reviewAction.isLast(false));
+    if (best_page_num === 1) {
+      dispatch(reviewAction.getReviewListOrderByLike(best_page_num));
+    }
+  };
   return (
     <React.Fragment>
       <FlexGrid>
@@ -64,10 +85,7 @@ const Review = () => {
             최신순
           </Button>
           <Button
-            _onClick={() => {
-              setIsBest(true);
-              dispatch(reviewAction.isLast(false));
-            }}
+            _onClick={handleBest}
             bgColor={Color.white}
             width="50px"
             height="30px"
@@ -93,7 +111,12 @@ const Review = () => {
           >
             {best_review_list?.map((_, idx) => {
               return (
-                <ReviewCard key={idx} {..._} like_list={like_list}></ReviewCard>
+                <ReviewCard
+                  key={idx}
+                  {..._}
+                  like_list={like_list}
+                  review_page
+                ></ReviewCard>
               );
             })}
           </InfinityScroll>
@@ -109,19 +132,24 @@ const Review = () => {
           >
             {new_review_list?.map((_, idx) => {
               return (
-                <ReviewCard key={idx} {..._} like_list={like_list}></ReviewCard>
+                <ReviewCard
+                  key={idx}
+                  {..._}
+                  like_list={like_list}
+                  review_page
+                ></ReviewCard>
               );
             })}
           </InfinityScroll>
         )}
       </Container>
       {is_login && (
-        <WriteBtn>
-          <WriteButton
-            onClick={() => {
-              history.push("/review/search");
-            }}
-          ></WriteButton>
+        <WriteBtn
+          onClick={() => {
+            history.push("/review/search");
+          }}
+        >
+          <Image src={WriteButton} shape="square" size="64px"></Image>
         </WriteBtn>
       )}
     </React.Fragment>
@@ -159,9 +187,11 @@ const Container = styled.div`
 `;
 
 const WriteBtn = styled.div`
-  position: fixed;
-  bottom: 10px;
-  right: 10px;
+  position: sticky;
+  display: block;
+  float: right;
+  bottom: 41px;
+  right: 41px;
   cursor: pointer;
 `;
 export default Review;

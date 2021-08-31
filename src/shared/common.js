@@ -5,6 +5,10 @@ export const emailCheck = (email) => {
   return _reg.test(email);
 };
 
+export const globalConst = {
+  curRoute: "CUR_ROUTE",
+};
+
 export const Color = {
   black: "#000000",
   gray900: "#212121",
@@ -35,3 +39,14 @@ export const Color = {
   로맨스판타지: "#9DDEF4",
   액션무협: "#7596B5",
 };
+
+export const userScoreConvert = (userScore) => {
+  return parseInt(userScore / 10);
+};
+
+export const userGradeIcon = (userGrade) => {
+  const icons = ["🥚", "🐣", "🐥", "🐓", "🍗"];
+  return icons[userGrade - 1];
+};
+
+export const maxWidth = "700px";

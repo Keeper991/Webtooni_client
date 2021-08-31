@@ -62,7 +62,7 @@ const WebToonCard = (props) => {
                 fontWeight="bold"
                 color={Color.gray700}
               >
-                {props.toonAvgPoint}
+                {props.fixed ? props.fixedAvgPoint : props.toonAvgPoint}
               </Text>
             </FlexGrid>
           </FlexGrid>
@@ -73,7 +73,12 @@ const WebToonCard = (props) => {
           </TitleWrap>
           <FlexGrid>
             <AuthorWrap>
-              <Text tag="p" type="caption" color={Color.gray400}>
+              <Text
+                tag="p"
+                type="caption"
+                color={Color.gray400}
+                padding="0 0 5px 0"
+              >
                 {props.toonAuthor}
               </Text>
             </AuthorWrap>

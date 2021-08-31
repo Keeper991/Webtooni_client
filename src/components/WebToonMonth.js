@@ -39,7 +39,7 @@ const WebToonMonth = (props) => {
                 style={{ margin: "0 5px" }}
               />
               <Text type="num" fontSize="12px">
-                {props.toonAvgPoint}
+                {props.fixedAvgPoint}
               </Text>
             </FlexGrid>
           </FlexGrid>

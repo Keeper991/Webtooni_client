@@ -1,12 +1,11 @@
 import React from "react";
 import styled from "styled-components";
 import { history } from "../redux/configureStore";
-import { actionCreators as modalActions } from "../redux/modules/modal";
 import { useDispatch, useSelector } from "react-redux";
 import { Button, Image } from "../elements/index";
 import { withRouter } from "react-router";
 import { NavLink } from "react-router-dom";
-import { Color } from "./common";
+import { Color, globalConst, maxWidth } from "./common";
 import { title } from "../images/icons";
 import {
   UserOutlined,
@@ -34,25 +33,41 @@ const Header = (props) => {
 
   const [hide, setHide] = React.useState(false);
   const [pageY, setPageY] = React.useState(0);
+  const [isTop, setIsTop] = React.useState(false);
 
   const documentRef = React.useRef(document);
-
+  const { pageYOffset } = window;
   const handleScroll = () => {
+    const { innerHeight } = window;
     const { pageYOffset } = window;
+    const { scrollHeight } = document.documentElement;
+    const scrollTop =
+      (document.documentElement && document.documentElement.scrollTop) ||
+      document.body.scrollTop;
     const deltaY = pageYOffset - pageY;
     const hide = pageYOffset !== 0 && deltaY >= 0;
 
+    if (pageYOffset <= 20) {
+      setIsTop(true);
+    } else {
+      setIsTop(false);
+    }
     if (pageYOffset === 0) {
       setHide(false);
     }
+    if (pageYOffset <= 20 || scrollHeight - innerHeight - scrollTop <= 0) {
+      return;
+    }
+
     if (Math.abs(pageY - pageYOffset) < 50) {
       return;
     }
+
     setHide(hide);
     setPageY(pageYOffset);
   };
 
-  const throttleScroll = throttle(handleScroll, 100);
+  const throttleScroll = throttle(handleScroll, 50);
 
   React.useEffect(() => {
     documentRef.current.addEventListener("scroll", throttleScroll);
@@ -61,6 +76,7 @@ const Header = (props) => {
   }, [pageY]);
 
   const isTalk = props.location.pathname.includes("talk");
+
   if (
     props.location.pathname.includes("/talk/write") ||
     props.location.pathname === "/review/search" ||
@@ -93,14 +109,14 @@ const Header = (props) => {
     return (
       <React.Fragment>
         <SimpleContainer
-          underThumbnail={!isTalk && pageY >= 250}
-          underTalk={isTalk && pageY >= 5}
-          topTalk={isTalk && pageY < 5}
+          underThumbnail={!isTalk && pageYOffset >= 250}
+          underTalk={isTalk && pageYOffset >= 5}
+          topTalk={isTalk && pageYOffset < 5}
           toon={isTalk ? false : true}
           talk={isTalk ? true : false}
         >
           <HeaderWrap is_simple bgColor={isTalk ? Color.white : "transparent"}>
-            {isTalk || pageY >= 250 ? (
+            {isTalk || pageYOffset >= 250 ? (
               // 톡톡 & 웹툰 상세 썸네일 이후 헤더
               <>
                 <LeftOutlined
@@ -141,6 +157,10 @@ const Header = (props) => {
                       border={`1px solid ${Color.gray200}`}
                       padding="7px 16px"
                       _onClick={() => {
+                        localStorage.setItem(
+                          globalConst.curRoute,
+                          props.location.pathname
+                        );
                         history.push("/login");
                       }}
                     >
@@ -202,6 +222,10 @@ const Header = (props) => {
                       border={`1px solid ${Color.white}`}
                       padding="7px 16px"
                       _onClick={() => {
+                        localStorage.setItem(
+                          globalConst.curRoute,
+                          props.location.pathname
+                        );
                         history.push("/login");
                       }}
                     >
@@ -219,7 +243,7 @@ const Header = (props) => {
 
   return (
     <React.Fragment>
-      <Container isHide={hide} isTop={pageY <= 10}>
+      <Container isHide={hide} isTop={isTop}>
         <HeaderWrap>
           <Button
             _onClick={() => {
@@ -260,6 +284,10 @@ const Header = (props) => {
                 border={`1px solid ${Color.gray200}`}
                 padding="7px 16px"
                 _onClick={() => {
+                  localStorage.setItem(
+                    globalConst.curRoute,
+                    props.location.pathname
+                  );
                   history.push("/login");
                 }}
               >
@@ -327,7 +355,7 @@ const PageBtnBox = styled.div`
 
 const Container = styled.div`
   width: 100vw;
-  max-width: 700px;
+  max-width: ${maxWidth};
   margin: 0 auto;
   top: 0;
   z-index: 90;
@@ -335,12 +363,11 @@ const Container = styled.div`
   border-left: 1px solid ${Color.gray100};
   border-right: 1px solid ${Color.gray100};
   transition: 0.4s ease;
-  box-shadow: ${(props) =>
+  ${(props) =>
     props.isTop
-      ? `0`
-      : `rgba(0, 0, 0, 0.05) 0px 6px 24px 0px,
+      ? null
+      : `box-shadow: rgba(0, 0, 0, 0.05) 0px 6px 24px 0px,
     rgba(0, 0, 0, 0.08) 0px 0px 0px 1px;`};
-
   ${({ isHide }) => isHide && "transform: translateY(-70px);"}
 `;
 
@@ -374,16 +401,15 @@ const IconWrap = styled.div`
 
 const SimpleContainer = styled.div`
   position: fixed;
-  /* position: ${(props) =>
-    props.talk || props.toon ? "fixed" : "absolute"}; */
   top: 0;
   width: 100%;
-  max-width: 700px;
+  max-width: ${maxWidth};
   margin: 0 auto;
   height: 70px;
   display: flex;
   align-items: center;
   justify-content: space-between;
+
   z-index: 5;
   ${(props) => (props.talk ? `border-top: 1px solid white;` : "")}
   ${(props) =>

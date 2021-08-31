@@ -87,6 +87,7 @@ const Taste = () => {
                   } else if (tastes.length < SELECT_COUNT) {
                     setTastes([...tastes, genre]);
                   } else {
+                    dispatch(modalActions.activeModal("overChoice"));
                     return;
                   }
                 }}
@@ -97,6 +98,7 @@ const Taste = () => {
           ))}
         </TasteArea>
       </ContentWrap>
+
       {tastes.length < SELECT_COUNT ? (
         <Button width="100%" margin="0 auto" disabled>
           선택완료

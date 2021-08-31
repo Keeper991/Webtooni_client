@@ -1,7 +1,7 @@
 import React, { useEffect, useRef, useState } from "react";
 import styled from "styled-components";
 import { Button, Image, Text } from "../elements";
-import { Color } from "../shared/common";
+import { Color, userGradeIcon } from "../shared/common";
 import { UploadOutlined } from "@ant-design/icons";
 import profileImgList from "../images/profiles";
 import { Pen } from "../images/icons";
@@ -25,8 +25,9 @@ const User = (props) => {
 
   const [userInfo, setUserInfo] = useState({
     userName: "",
-    userImg: 0,
+    userImg: -1,
     userGrade: "",
+    userScore: 0,
     genre: [],
   });
   const [subscribeList, setSubscribeList] = useState([]);
@@ -49,7 +50,6 @@ const User = (props) => {
   const reviewCount = reviewList.filter(
     (review) => review.reviewContent
   ).length;
-  const pointCount = reviewList.length - reviewCount;
 
   const [curSubscribePage, setCurSubscribePage] = React.useState(1);
   const [dragging, setDragging] = useState(false);
@@ -58,13 +58,9 @@ const User = (props) => {
     setDragging(true);
   }, [setDragging]);
 
-  const handleAfterChange = React.useCallback(
-    (currentSlide) => {
-      setDragging(false);
-      setCurSubscribePage(currentSlide + 1);
-    },
-    [setDragging]
-  );
+  const handleAfterChange = React.useCallback(() => {
+    setDragging(false);
+  }, [setDragging]);
 
   const handleOnItemClick = React.useCallback(
     (e) => {
@@ -72,6 +68,8 @@ const User = (props) => {
     },
     [dragging]
   );
+
+  console.log(dragging);
 
   const [windowSize, setWindowSize] = useState(window.innerWidth);
   const handleWindowResize = React.useCallback((event) => {
@@ -204,6 +202,7 @@ const User = (props) => {
         userName: userData.userName,
         userImg: userData.userImg,
         userGrade: userData.userGrade,
+        userScore: userData.userScore,
         genre: filteredGenre,
       });
       setSubscribeList(dividedSubscribeList);
@@ -258,7 +257,11 @@ const User = (props) => {
           </UserInfoHeader>
           <UserImg>
             <Image
-              src={profileImgList[userInfo.userImg]}
+              src={
+                userInfo.userImg !== -1
+                  ? profileImgList[userInfo.userImg]
+                  : "https://i.imgur.com/vfagKjd.png"
+              }
               shape="circle"
               size="150px"
               margin="40px 0 0 0"
@@ -294,15 +297,15 @@ const User = (props) => {
                 fontWeight="bold"
                 color={Color.primary}
               >
-                Lv.1
+                Lv.{userInfo.userScore}
               </Text>
-              <Text type="h2">{userInfo.userGrade}</Text>
+              <Text type="h2">{userGradeIcon(userInfo?.userGrade)}</Text>
             </UserGrade>
           </UserNameAndGrade>
           <UserReviewAndLikeCount>
             <UserReviewAndLikeCountCol>
               <Text type="num" fontSize="20px">
-                {pointCount}
+                {reviewList.length}
               </Text>
               <Text fontWeight="bold" color={Color.gray400}>
                 평가한 웹툰
@@ -391,7 +394,10 @@ const User = (props) => {
           {subscribeList.length ? (
             <Slick
               is_variableWidth={false}
-              _afterChange={handleAfterChange}
+              _afterChange={(currentSlide) => {
+                handleAfterChange();
+                setCurSubscribePage(currentSlide + 1);
+              }}
               _beforeChange={handleBeforeChange}
             >
               {subscribeList.map((list, idx) => (
@@ -429,6 +435,7 @@ const User = (props) => {
               <SlideWrap>
                 {reviewList.map((review, idx) => (
                   <ReviewCard
+                    main
                     key={idx}
                     userImg={userInfo.userImg}
                     {...review}
@@ -449,6 +456,7 @@ const User = (props) => {
               >
                 {reviewList.map((review, idx) => (
                   <ReviewCard
+                    main
                     key={idx}
                     userImg={userInfo.userImg}
                     {...review}
@@ -624,7 +632,9 @@ const SubscribePageNum = styled.div`
 
 const WebtoonListWrap = styled.div``;
 
-const ReviewListArea = styled.section``;
+const ReviewListArea = styled.section`
+  padding: 19px 0 19px 16px !important;
+`;
 
 const EmptyInformationGuide = styled.div`
   color: ${Color.gray400};
@@ -640,9 +650,12 @@ const SlideWrap = styled.div`
   display: flex;
   flex-wrap: nowrap;
   overflow: scroll;
+  flex-direction: row;
+  padding-right: 150px;
   gap: 10px;
   &::-webkit-scrollbar {
     display: none;
+    width: 0 !important;
   }
 `;
 
