@@ -28,6 +28,7 @@ import Header from "./Header";
 import GlobalStyle from "./GlobalStyle";
 import Modal from "./Modals/Modal";
 import ScrollToTop from "./ScrollToTop";
+import GA from "./ga";
 
 function App() {
   const dispatch = useDispatch();
@@ -62,6 +63,7 @@ function App() {
         <Route path="/userinfo/:userName" exact component={User} />
       </ConnectedRouter>
       <Modal />
+      <GA />
     </Container>
   );
 }
