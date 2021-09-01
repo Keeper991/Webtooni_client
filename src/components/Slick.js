@@ -6,6 +6,8 @@ import "slick-carousel/slick/slick-theme.css";
 
 import { Color } from "../shared/common";
 import React from "react";
+
+// 종류별 슬릭 구현(웹툰/리뷰/배너 등)
 // children에 width나 display 속성을 사용할 경우, !important를 붙여줄 것.
 const Slick = ({
   width,

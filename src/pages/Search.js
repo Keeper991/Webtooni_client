@@ -7,9 +7,11 @@ import { Color } from "../shared/common";
 import styled from "styled-components";
 
 const Search = () => {
+  //states
   const [search_value, setSearchValue] = React.useState("");
   const [search_result, setSearchResult] = React.useState([]);
 
+  //검색 웹툰 요청
   const getSearchResult = async (keyword) => {
     if (keyword.length === 0) {
       setSearchResult([]);

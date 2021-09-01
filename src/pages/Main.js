@@ -19,7 +19,6 @@ import { Button, Text, Image } from "../elements";
 import { Color } from "../shared/common";
 import BannerImg1 from "../images/banner1.jpg";
 import BannerImg2 from "../images/banner2.jpg";
-// import BannerImg3 from "../images/banner3.png";
 
 const Main = () => {
   const dispatch = useDispatch();
@@ -88,8 +87,7 @@ const Main = () => {
     [dragging]
   );
 
-  // effects
-
+  // effects (리뷰어 및 리뷰 정보 요청)
   React.useEffect(() => {
     dispatch(reviewerActions.getBestReviewer());
     setUpdatePeriod(
@@ -115,14 +113,17 @@ const Main = () => {
     }
   }, []);
 
+  //플랫폼별 웹툰 리스트
   const naver_list_1 = naver_list.slice(0, 5);
   const naver_list_2 = naver_list.slice(5, 10);
 
   const kakao_list_1 = kakao_list.slice(0, 5);
   const kakao_list_2 = kakao_list.slice(5, 10);
 
+  //좋아요 리뷰 리스트
   const like_list = useSelector((state) => state.user.reviewLikeList);
 
+  //로그인 직후 웰컴 모달
   React.useEffect(() => {
     if (is_login && !isShownWelcomeModal && userName) {
       dispatch(modalActions.activeModal("welcome"));
@@ -131,20 +132,13 @@ const Main = () => {
 
   return (
     <React.Fragment>
+      {/* 배너 */}
       <BannerSliderBox onClickCapture={handleOnItemClick}>
         <Slick
           is_banner
           _afterChange={handleAfterChange}
           _beforeChange={handleBeforeChange}
         >
-          {/* <TopBannerBox
-            mint
-            banner={BannerImg3}
-            onClick={() => {
-              window.open("https://forms.gle/PHvvMnmSscUL7JLT9", "_blank");
-            }}
-          ></TopBannerBox> */}
-
           <TopBannerBox
             banner={BannerImg1}
             onClick={() => {

@@ -11,15 +11,20 @@ import { actionCreators as modalActions } from "../redux/modules/modal";
 import time from "../shared/time";
 import { kakao_webtoon_symbol, naver_webtoon_symbol } from "../images/symbols";
 
+// 리뷰 카드 (메인,추천,리뷰,유저페이지 활용)
 const ReviewCard = (props) => {
   const dispatch = useDispatch();
+  //states
   const [showMore, setShowMore] = React.useState(false);
   const [overflowActive, setOverflowActive] = React.useState(false);
+  //selectors
   const is_login = useSelector((state) => state.user.is_login);
   const toon_list = useSelector((state) => state.webtoon.toon_list);
+
   const toonInfo = toon_list.find((toon) => toon.toonId === props.toonId);
   const textRef = React.useRef();
 
+  // 더보기 버튼 노출 여부
   const is_ellipsis_active = (e) => {
     return e?.offsetHeight < e?.scrollHeight || e?.offsetWidth < e?.scrollWidth;
   };
@@ -35,7 +40,7 @@ const ReviewCard = (props) => {
     }
     setOverflowActive(false);
   }, [is_ellipsis_active]);
-
+  // 더보기/줄이기 토글
   const handleTextToggle = () => {
     if (showMore) {
       setShowMore(false);
@@ -44,6 +49,7 @@ const ReviewCard = (props) => {
     }
   };
 
+  // 좋아요 기능
   const handleLike = () => {
     if (document.location.href.includes("userinfo")) return;
     if (is_login) {
@@ -58,11 +64,12 @@ const ReviewCard = (props) => {
     }
   };
 
-  // 별점만 있는 리뷰면 보이지 않음.
+  // 리뷰 내용 없이 별점만 있는 경우
   if (!props.reviewContent) {
     return <></>;
   }
 
+  // md 추천 리뷰일 경우
   if (props.md) {
     return (
       <React.Fragment>
@@ -122,6 +129,8 @@ const ReviewCard = (props) => {
       </React.Fragment>
     );
   }
+
+  // 일반 리뷰일 경우
   return (
     <React.Fragment>
       <Container main={props.main} review={props.review_page}>

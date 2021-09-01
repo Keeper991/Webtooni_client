@@ -15,14 +15,14 @@ import { history } from "../redux/configureStore";
 
 const User = (props) => {
   const dispatch = useDispatch();
-  const urlUserName = props.match.params.userName;
+
+  //selectors
   const userList = useSelector((state) => state.user.userList);
   const toon_list = useSelector((state) => state.webtoon.toon_list);
   const review_list = useSelector((state) => state.review.review_list);
   const like_list = useSelector((state) => state.user.reviewLikeList);
 
-  const shareRef = useRef();
-
+  //states
   const [userInfo, setUserInfo] = useState({
     userName: "",
     userImg: -1,
@@ -33,7 +33,11 @@ const User = (props) => {
   const [subscribeList, setSubscribeList] = useState([]);
   const [reviewList, setReviewList] = useState([]);
 
+  const urlUserName = props.match.params.userName;
   const userData = userList.find((user) => user.userName === urlUserName);
+
+  const shareRef = useRef();
+
   const totalSubscribeToonList = toon_list.filter((toon) =>
     userData?.subscribeList.includes(toon.toonId)
   );
@@ -41,12 +45,13 @@ const User = (props) => {
     toon_list.find((toon) => toon.toonId === review.toonId)
   );
 
+  //구독OR리뷰작성한 웹툰 리스트(+중복 제거)
   let totalToonList = [...totalSubscribeToonList, ...totalReviewToonList];
   totalToonList = totalToonList.filter(
     (toon, idx) =>
       totalToonList.findIndex((_toon) => _toon.toonId === toon.toonId) === idx
   );
-
+  //리뷰 수(별점만 준 경우 제외)
   const reviewCount = reviewList.filter(
     (review) => review.reviewContent
   ).length;
@@ -69,8 +74,7 @@ const User = (props) => {
     [dragging]
   );
 
-  console.log(dragging);
-
+  //window size
   const [windowSize, setWindowSize] = useState(window.innerWidth);
   const handleWindowResize = React.useCallback((event) => {
     setWindowSize(window.innerWidth);
@@ -83,6 +87,9 @@ const User = (props) => {
     };
   }, [handleWindowResize]);
 
+  //////////////////////////////////////
+  //차트 표시를 위한 사용자 맞춤 데이터들//
+  //////////////////////////////////////
   const getRatioByGenre = (toonList) => {
     let genreList = toonList.map((toon) => toon.genres).flat();
     const genreCases = genreList.filter(
@@ -232,6 +239,7 @@ const User = (props) => {
                 border="none"
                 margin="0 0 0 5px"
               >
+                {/* 주소 복사(for 공유) */}
                 <UploadOutlined
                   onClick={() => {
                     shareRef.current.select();
@@ -256,6 +264,7 @@ const User = (props) => {
             </UserInfoHeaderCol>
           </UserInfoHeader>
           <UserImg>
+            {/* 유저이미지 or 기본이미지 */}
             <Image
               src={
                 userInfo.userImg !== -1
@@ -266,6 +275,7 @@ const User = (props) => {
               size="150px"
               margin="40px 0 0 0"
             />
+            {/* 프로필 수정 버튼 */}
             <PermitStrict authorName={urlUserName}>
               <Button
                 shape="circle"

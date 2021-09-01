@@ -6,9 +6,11 @@ import { Color } from "../shared/common";
 import { FillStar } from "../images/icons";
 import { kakao_webtoon_symbol, naver_webtoon_symbol } from "../images/symbols";
 
+//전체 웹툰 리스트 카드
 const ToonListCard = (props) => {
   const is_search = props.search;
 
+  //웹툰 검색페이지용
   if (is_search) {
     return (
       <React.Fragment>
@@ -80,6 +82,7 @@ const ToonListCard = (props) => {
     );
   }
 
+  // 종류별 웹툰 더보기 페이지 & 유저페이지 구독 웹툰 리스트에 활용
   return (
     <React.Fragment>
       <FlexToonGrid

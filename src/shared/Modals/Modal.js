@@ -134,13 +134,16 @@ const Modal = () => {
     ),
   };
   return (
+    // 모달 활성화 여부
     <Container isActive={isActiveModal}>
+      {/* 모달 종류 */}
       <Content>{kinds[modalKind]}</Content>
       <ModalBg
         onClick={() => {
           if (modalKind === "welcome" || modalKind === "noAuth") {
             handlers[modalKind]();
           }
+          // 모달 비활성화
           dispatch(modalActions.inactiveModal());
         }}
       />

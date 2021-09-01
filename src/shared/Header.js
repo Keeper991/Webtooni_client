@@ -17,6 +17,7 @@ import {
 const Header = (props) => {
   const dispatch = useDispatch();
 
+  //selectors
   const is_login = useSelector((state) => state.user.is_login);
   const userName = useSelector((state) => state.user.info.userName);
 
@@ -31,12 +32,15 @@ const Header = (props) => {
     };
   };
 
+  //states
   const [hide, setHide] = React.useState(false);
   const [pageY, setPageY] = React.useState(0);
   const [isTop, setIsTop] = React.useState(false);
 
   const documentRef = React.useRef(document);
   const { pageYOffset } = window;
+
+  // 스크롤에 따른 헤어 숨김/표시 처리
   const handleScroll = () => {
     const { innerHeight } = window;
     const { pageYOffset } = window;
@@ -77,6 +81,7 @@ const Header = (props) => {
 
   const isTalk = props.location.pathname.includes("talk");
 
+  // 헤더 없는 페이지
   if (
     props.location.pathname.includes("/talk/write") ||
     props.location.pathname === "/review/search" ||
@@ -88,6 +93,7 @@ const Header = (props) => {
     return null;
   }
 
+  // 로그인 페이지
   if (props.location.pathname === "/login") {
     return (
       <React.Fragment>
@@ -105,6 +111,7 @@ const Header = (props) => {
     );
   }
 
+  // 웹툰 상세 및 톡톡 상세 페이지
   if (props.location.pathname.includes("/detail")) {
     return (
       <React.Fragment>
@@ -241,6 +248,7 @@ const Header = (props) => {
     );
   }
 
+  // 그 외 모든 페이지
   return (
     <React.Fragment>
       <Container isHide={hide} isTop={isTop}>

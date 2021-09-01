@@ -31,23 +31,27 @@ const Taste = () => {
   const dispatch = useDispatch();
   const [tastes, setTastes] = useState([]);
 
+  //selectors
   const is_login = useSelector((state) => state.user.is_login);
   const isChecking = useSelector((state) => state.user.isChecking);
   const is_shown_modal = useSelector(
     (state) => state.user.info.isShownWelcomeModal
   );
 
+  // 선택한 취향 불러오기
   useEffect(() => {
     const tasteDataLS = localStorage.getItem(TASTE_LS);
     tasteDataLS && setTastes(tasteDataLS.split(","));
   }, []);
 
+  // 잘못된 접근 시 알림
   useEffect(() => {
     if (!isChecking && !(is_login === true && is_shown_modal === false)) {
       dispatch(modalActions.activeModal("noAuth"));
     }
   }, [is_login, isChecking]);
 
+  // 취향/프로필 페이지 이동 함수
   const progressStepClickHandlers = [
     () => history.push("/taste"),
     () => {
@@ -75,6 +79,8 @@ const Taste = () => {
             분석하여 취향에 딱 맞는 웹툰을 추천해드릴게요.
           </Text>
         </TitleArea>
+
+        {/* 취향 선택 */}
         <TasteArea>
           {genreList.map((genre, i) => (
             <TasteBtnWrap key={i} active={tastes.includes(genre)}>
@@ -87,6 +93,7 @@ const Taste = () => {
                   } else if (tastes.length < SELECT_COUNT) {
                     setTastes([...tastes, genre]);
                   } else {
+                    // 선택 3개 초과 시 알림
                     dispatch(modalActions.activeModal("overChoice"));
                     return;
                   }

@@ -6,6 +6,7 @@ import { Color } from "../shared/common";
 import { FillStar } from "../images/icons";
 import { kakao_webtoon_symbol, naver_webtoon_symbol } from "../images/symbols";
 
+// 웹툰 정보 카드(for 메인,추천,상세페이지)
 const WebToonCard = (props) => {
   return (
     <React.Fragment>

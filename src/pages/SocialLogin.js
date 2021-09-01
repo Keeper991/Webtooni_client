@@ -1,16 +1,18 @@
 import React, { useEffect } from "react";
 import { actionCreators as userActions } from "../redux/modules/user";
-import { useDispatch, useSelector } from "react-redux";
+import { useDispatch } from "react-redux";
 import Loader from "react-loader-spinner";
 import styled from "styled-components";
 import { Color } from "../shared/common";
 
 const SocialLogin = (props) => {
   const dispatch = useDispatch();
+  //플랫폼 구분
   const platform = props.location.pathname
     .split("user/")[1]
     .split("/callback")[0];
 
+  // 소셜로그인 요청
   useEffect(() => {
     let code = props.location.search.split("code=")[1];
     if (platform === "naver") {

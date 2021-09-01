@@ -9,14 +9,16 @@ import { history } from "../redux/configureStore";
 import { Color } from "../shared/common";
 
 const ToonList = (props) => {
+  const dispatch = useDispatch();
+
   const toon_list_name = props.match.params.id;
   const toon_id = props.location.state?.toon_id;
-
-  const dispatch = useDispatch();
 
   const is_loading = useSelector((state) => state.webtoon.is_loading);
   const user_info = useSelector((state) => state.user.info);
   const toon_list = useSelector((state) => state.webtoon.toon_list);
+
+  //각 웹툰 리스트 가져오기
   const webtooni_list = toon_list.filter((toon) =>
     toon.filterConditions.includes("webtooni")
   );
@@ -62,6 +64,7 @@ const ToonList = (props) => {
     }
   }, []);
 
+  //웹투니버스 순위 리스트 보여주기
   if (toon_list_name === "webtooniverse_rank") {
     return (
       <React.Fragment>
@@ -108,6 +111,7 @@ const ToonList = (props) => {
     );
   }
 
+  //완결 웹툰 리스트 보여주기
   if (toon_list_name === "end_toon") {
     return (
       <React.Fragment>
@@ -154,6 +158,7 @@ const ToonList = (props) => {
     );
   }
 
+  //베스트리뷰어의 리스트 보여주기
   if (toon_list_name === "best_reviewer") {
     return (
       <React.Fragment>
@@ -200,6 +205,7 @@ const ToonList = (props) => {
     );
   }
 
+  //비슷한 추천리스트 보여주기
   if (toon_list_name === "similar_toon") {
     return (
       <React.Fragment>
@@ -246,6 +252,7 @@ const ToonList = (props) => {
     );
   }
 
+  //비슷한 장르 리스트 보여주기
   if (toon_list_name === "similar_genre") {
     return (
       <React.Fragment>

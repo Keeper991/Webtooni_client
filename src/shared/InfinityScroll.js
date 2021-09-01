@@ -5,6 +5,7 @@ import Loader from "react-loader-spinner";
 const InfinityScroll = (props) => {
   const { children, callNext, loading, is_next } = props;
 
+  // 무한스크롤 구현
   const _handleScroll = _.throttle(() => {
     const { innerHeight } = window;
     const scrollHeight = document.documentElement.scrollHeight;
