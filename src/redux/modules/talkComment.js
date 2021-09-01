@@ -5,6 +5,9 @@ import { actionCreators as talkActions } from "./talk";
 import { actionCreators as userActions } from "./user";
 import { actionCreators as modalActions } from "./modal";
 
+///////////////////////////////////////////////////////////
+// action type
+///////////////////////////////////////////////////////////
 const SET_COMMENT_ALL = "SET_COMMENT_ALL";
 const ADD_COMMENT_ONE = "ADD_COMMENT_ONE";
 const EDIT_COMMENT_ONE = "EDIT_COMMENT_ONE";
@@ -12,6 +15,9 @@ const DELETE_COMMENT_ONE = "DELETE_COMMENT_ONE";
 const RESET_COMMENT = "RESET_COMMENT";
 const LOADING = "talkComment/LOADING";
 
+///////////////////////////////////////////////////////////
+// action creators
+///////////////////////////////////////////////////////////
 const setCommentAll = createAction(SET_COMMENT_ALL, (commentList) => ({
   commentList,
 }));
@@ -33,25 +39,9 @@ const loading = createAction(LOADING, (is_loading) => ({
   is_loading,
 }));
 
-const initialState = {
-  list: [
-    // {
-    //   postId: "1",
-    //   commentId: "댓글 postId",
-    //   userName: "닉네임",
-    //   commentContent: "댓글 내용",
-    //   createDate: "1970-01-02T00:00:00",
-    // },
-    // {
-    //   postId: "2",
-    //   commentId: "댓글 postId",
-    //   userName: "닉네임",
-    //   commentContent: "댓글 내용",
-    //   createDate: "1970-01-02T00:00:00",
-    // },
-  ],
-  is_loading: false,
-};
+///////////////////////////////////////////////////////////
+// thunks
+///////////////////////////////////////////////////////////
 
 //포스트 별 댓글 리스트 불러오기
 const getCommentAllServer = (postId) => {
@@ -102,7 +92,7 @@ const editCommentServer = (commentId, commentContent) => {
     try {
       dispatch(loading(true));
 
-      const response = await talkAPI.editComment({
+      await talkAPI.editComment({
         commentId,
         commentContent,
       });
@@ -126,7 +116,7 @@ const deleteCommentServer = (postId, commentId, commentCount) => {
     try {
       dispatch(loading(true));
 
-      const response = await talkAPI.deleteComment({ commentId });
+      await talkAPI.deleteComment({ commentId });
       dispatch(deleteCommentOne(commentId));
       //톡 리듀서에서 포스트 댓글 수 수정
       const post_list = getState().talk.post_list;
@@ -146,6 +136,15 @@ const deleteCommentServer = (postId, commentId, commentCount) => {
       dispatch(loading(false));
     }
   };
+};
+
+///////////////////////////////////////////////////////////
+// initialState & reducer
+///////////////////////////////////////////////////////////
+
+const initialState = {
+  list: [],
+  is_loading: false,
 };
 
 export default handleActions(

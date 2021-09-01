@@ -2,6 +2,7 @@ const time = (value) => {
   const today = new Date();
   const timeValue = new Date(value);
 
+  // 현재 기준 시간 경과 표시
   const betweenTime = Math.floor(
     (today.getTime() - timeValue.getTime()) / 1000 / 60
   );

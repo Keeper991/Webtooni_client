@@ -14,10 +14,13 @@ const PROFILE_LS = "PROFILE";
 const USERNAME_LS = "USERNAME";
 
 const Profile = ({ location: { state } }) => {
-  const [profile, setProfile] = useState(-1);
-  const [userName, setUserName] = useState("");
   const dispatch = useDispatch();
 
+  //states
+  const [profile, setProfile] = useState(-1);
+  const [userName, setUserName] = useState("");
+
+  //selectors
   const isLogin = useSelector((state) => state.user.is_login);
   const isShownWelcomeModal = useSelector(
     (state) => state.user.info.isShownWelcomeModal
@@ -29,18 +32,22 @@ const Profile = ({ location: { state } }) => {
   const curUserImg = useSelector((state) => state.user.info.userImg);
   const curGenres = useSelector((state) => state.user.info.genres);
 
+  //effects
   useEffect(() => {
     const tasteDataLS = localStorage.getItem(TASTE_LS);
+    // 프로필 수정 시 기존 데이터 불러오기
     if (isEditFromUserPage) {
       setProfile(curUserImg);
       setUserName(curUserName);
       localStorage.setItem(TASTE_LS, curGenres);
       return;
     }
+    // 취향 미선택 시 취향 선택 페이지 이동
     if (!tasteDataLS) {
       history.replace("/taste");
     }
 
+    // 프로필 설정
     const profileDataLS = localStorage.getItem(PROFILE_LS);
     profileDataLS && setProfile(parseInt(profileDataLS));
     const userNameDataLS = localStorage.getItem(USERNAME_LS);
@@ -51,12 +58,14 @@ const Profile = ({ location: { state } }) => {
     if (isEditFromUserPage) {
       return;
     }
+    // 잘못된 접근 시 메인페이지 이동
     if (!isChecking && !(isLogin === true && isShownWelcomeModal === false)) {
       dispatch(modalActions.activeModal("noAuth"));
       history.push("/");
     }
   }, [isLogin, isChecking]);
 
+  // 취향/프로필 페이지 이동 함수
   const progressStepClickHandlers = [
     () => {
       localStorage.setItem(PROFILE_LS, profile);
@@ -66,6 +75,7 @@ const Profile = ({ location: { state } }) => {
     () => history.push("/profile"),
   ];
 
+  // 작성한 프로필 등록
   const submitUserInfo = () => {
     if (!/^[a-zA-Z0-9가-힣_]{3,8}$/.test(userName)) {
       dispatch(modalActions.activeModal("invalidName"));
@@ -91,6 +101,7 @@ const Profile = ({ location: { state } }) => {
     <Container>
       <ContentWrap>
         <ProgressArea>
+          {/* 최초 로그인 시의 취향/프로필페이지 이동 버튼 */}
           {!isEditFromUserPage && (
             <ProgressStepBtns
               currentPageNum={2}
@@ -104,6 +115,7 @@ const Profile = ({ location: { state } }) => {
           </Text>
         </TitleArea>
         {profile === -1 ? (
+          // 프로필 이미지 선택
           <ProfileArea>
             {profileImgList.map((profileImg, i) => (
               <Button
@@ -123,6 +135,7 @@ const Profile = ({ location: { state } }) => {
             ))}
           </ProfileArea>
         ) : (
+          // 닉네임 설정
           <>
             <ReSelectBtnArea>
               <Button
@@ -159,11 +172,14 @@ const Profile = ({ location: { state } }) => {
           </>
         )}
       </ContentWrap>
+
       {profile === -1 || !userName ? (
+        // 프로필 이미지 선택 후 비활성화된 버튼
         <Button width="100%" margin="0 auto" disabled>
           가입완료
         </Button>
       ) : (
+        // 최종 완료 버튼
         <Button
           width="100%"
           margin="0 auto"

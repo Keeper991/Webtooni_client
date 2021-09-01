@@ -14,14 +14,19 @@ const Review = () => {
 
   const [is_best, setIsBest] = React.useState(false);
 
+  //selectors
   const is_login = useSelector((state) => state.user.is_login);
   const userName = useSelector((state) => state.user.info.userName);
   const is_loading_review = useSelector(
     (state) => state.review.is_loading_review
   );
-
   const review_list = useSelector((state) => state.review.review_list);
+  const like_list = useSelector((state) => state.user.reviewLikeList);
+  const new_page_num = useSelector((state) => state.review.new_page_num);
+  const best_page_num = useSelector((state) => state.review.best_page_num);
+  const is_last = useSelector((state) => state.review.is_last);
 
+  //최신순 리뷰
   const new_review = review_list.filter(
     (review) =>
       review.filterConditions.includes("reviewPage") ||
@@ -31,29 +36,24 @@ const Review = () => {
         review.reviewContent !== null)
   );
 
-  const best_review = review_list.filter((review) =>
-    review.filterConditions.includes("reviewPageBest")
-  );
-
   let new_review_list = [...new_review];
   new_review_list.sort((a, b) => b.createDate - a.createDate);
 
+  //좋아요순 리뷰
+  const best_review = review_list.filter((review) =>
+    review.filterConditions.includes("reviewPageBest")
+  );
   let best_review_list = [...best_review];
   best_review_list.sort((a, b) => b.likeCount - a.likeCount);
 
-  const like_list = useSelector((state) => state.user.reviewLikeList);
-
-  const new_page_num = useSelector((state) => state.review.new_page_num);
-  const best_page_num = useSelector((state) => state.review.best_page_num);
-
-  const is_last = useSelector((state) => state.review.is_last);
-
+  //최초 페이지 진입 시 리뷰 요청(최신순 1페이지)
   React.useEffect(() => {
     if (new_page_num === 1) {
       dispatch(reviewAction.getReviewList(new_page_num));
     }
   }, []);
 
+  //리뷰 요청(좋아요순 1페이지)
   const handleBest = () => {
     setIsBest(true);
     dispatch(reviewAction.isLast(false));
@@ -68,6 +68,7 @@ const Review = () => {
           리뷰 목록
         </Text>
         <TabGrid>
+          {/* 최신순/좋아요순 정렬 버튼 */}
           <Button
             _onClick={() => {
               setIsBest(false);
@@ -101,6 +102,7 @@ const Review = () => {
       </FlexGrid>
 
       <Container>
+        {/* 좋아요 순 리뷰 */}
         {is_best && (
           <InfinityScroll
             loading={is_loading_review}
@@ -122,6 +124,7 @@ const Review = () => {
           </InfinityScroll>
         )}
 
+        {/* 최신 순 리뷰 */}
         {!is_best && (
           <InfinityScroll
             loading={is_loading_review}
@@ -143,6 +146,8 @@ const Review = () => {
           </InfinityScroll>
         )}
       </Container>
+
+      {/* 리뷰 작성 버튼(로그인용) */}
       {is_login && (
         <WriteBtn
           onClick={() => {

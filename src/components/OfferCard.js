@@ -5,6 +5,7 @@ import { Color } from "../shared/common";
 import { history } from "../redux/configureStore";
 import { FillStar } from "../images/icons";
 
+// 추천페이지용 웹툰 카드
 const OfferCard = (props) => {
   return (
     <React.Fragment>

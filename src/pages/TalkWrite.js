@@ -10,19 +10,20 @@ import { BackButton } from "../images/icons";
 
 const TalkWrite = (props) => {
   const dispatch = useDispatch();
+
+  //selectors
   const is_login = useSelector((store) => store.user.is_login);
-  const [contentAlert, isContentAlert] = React.useState(false);
+  const userName = useSelector((store) => store.user.info?.userName);
   const loading_talk = useSelector((store) => store.talk.is_loading);
 
-  //톡 포스트 수정 시 기존 포스트 가져오기
+  const [contentAlert, isContentAlert] = React.useState(false);
+
+  //포스트 수정 시 기존 포스트 가져오기
   const post_id = props.match.params.id;
   const post_list = useSelector((store) => store.talk.post_list);
   const prevPost = post_list.filter((p) => String(p.postId) === post_id)[0];
 
-  //로그인 유저 정보
-  const userName = useSelector((store) => store.user.info?.userName);
-
-  //톡 포스트 작성하기
+  //포스트 작성
   const [post, setPost] = React.useState({
     postTitle: prevPost?.postTitle,
     postContent: prevPost?.postContent,
@@ -30,17 +31,17 @@ const TalkWrite = (props) => {
 
   //상황 별 분기
   useEffect(() => {
-    //로그인 안 했으면 메인으로 이동
+    //비로그인 시
     if (!is_login) {
       dispatch(modalActions.activeModal("needLogin"));
       return;
     }
-    //유저가 포스트 작성자가 아닐 때 메인으로 이동
+    //유저가 포스트 작성자가 아닐 경우
     if (post_id && userName !== prevPost.userName) {
       dispatch(modalActions.activeModal("noAuth"));
       return;
     }
-    //기존 포스트 상세 정보가 없으면 서버에 요청
+    //기존 포스트 상세 정보가 없으면 요청
     if (post_id && !prevPost) {
       dispatch(talkActions.getPostOneServer(post_id));
       return;

@@ -5,6 +5,9 @@ import { actionCreators as webtoonActions } from "./webtoon";
 import { actionCreators as userActions } from "./user";
 import { actionCreators as modalActions } from "./modal";
 
+///////////////////////////////////////////////////////////
+// action type
+///////////////////////////////////////////////////////////
 const ADD_REVIEW_LIST = "review/ADD_REVIEW_LIST";
 const SET_PAGE_NUM = "review/SET_PAGE_NUM";
 const SET_PAGE_NUM_BEST = "review/SET_PAGE_NUM_BEST";
@@ -83,6 +86,7 @@ const changeAuthorInfo = createAction(
 ///////////////////////////////////////////////////////////
 // thunks
 ///////////////////////////////////////////////////////////
+
 // 메인 페이지의 베스트 리뷰 & 최신 리뷰 불러오기
 const getMainReviewList = () => {
   return async function (dispatch, getState, { history }) {
@@ -140,9 +144,9 @@ const getMainReviewList = () => {
   };
 };
 
-// 리뷰 페이지의 리뷰 불러오기(Pagination, Infinity Scroll)
+// 리뷰 페이지의 최신순 리뷰 불러오기(Pagination, Infinity Scroll)
 const getReviewList = (page_num) => {
-  return async function (dispatch, getState, { history }) {
+  return async function (dispatch) {
     try {
       dispatch(loading(true));
       let {
@@ -154,7 +158,9 @@ const getReviewList = (page_num) => {
         return;
       }
 
-      dispatch(setPage(page_num + 1));
+      dispatch(setPage(page_num + 1)); //다음 페이지번호 설정(for무한스크롤)
+
+      //리뷰에서 웹툰 리스트 분리/저장
       let reviewsToons = reviews.map((review) => {
         return {
           toonId: review.toonId,
@@ -174,11 +180,14 @@ const getReviewList = (page_num) => {
           ) === idx
       );
       dispatch(webtoonActions.addToonList(reviewsToons, "reviewPage"));
+
+      //리뷰 작성시간 parse
       reviews = reviews.map((review) => {
         review.createDate = Date.parse(review.creatDate || review.createDate);
         return review;
       });
 
+      //리뷰 정보 저장 & 사용자가 좋아요 누른 리뷰 리스트 분리/저장
       dispatch(addReviewList(reviews, "reviewPage"));
       dispatch(setTotalReviewCount(postCount));
       likeReviewIdList &&
@@ -189,8 +198,9 @@ const getReviewList = (page_num) => {
   };
 };
 
+//좋아요 순 리뷰 불러오기
 const getReviewListOrderByLike = (page_num) => {
-  return async function (dispatch, getState, { history }) {
+  return async function (dispatch) {
     try {
       dispatch(loading(true));
       let {
@@ -203,6 +213,7 @@ const getReviewListOrderByLike = (page_num) => {
       }
 
       dispatch(setPageBest(page_num + 1));
+      //리뷰에서 웹툰 리스트 분리/저장
       let reviewsToons = reviews.map((review) => {
         return {
           toonId: review.toonId,
@@ -226,6 +237,8 @@ const getReviewListOrderByLike = (page_num) => {
         review.createDate = Date.parse(review.creatDate || review.createDate);
         return review;
       });
+
+      //리뷰 정보 저장 & 사용자가 좋아요 누른 리뷰 리스트 분리/저장
       dispatch(addReviewList(reviews, "reviewPageBest"));
       dispatch(setTotalReviewCount(postCount));
       likeReviewIdList &&
@@ -242,6 +255,8 @@ const likeReviewServer = (reviewId, bool) => {
     try {
       dispatch(loading(true));
       await reviewAPI.likeReview(reviewId);
+
+      // 리뷰의 좋아요 수 조정 & 사용자가 좋아요 누른 리뷰 리스트 조정
       if (bool) {
         dispatch(userActions.addReviewLike(reviewId));
         dispatch(addReviewLike(reviewId));
@@ -261,7 +276,7 @@ const likeReviewServer = (reviewId, bool) => {
   };
 };
 
-// 웹툰 별점 주기 및 수정
+// 웹툰 별점 생성 및 수정
 const putStarServer = (webtoonId, userPointNumber) => {
   return async function (dispatch, getState) {
     try {
@@ -313,6 +328,8 @@ const updateReviewServer = (reviewId, reviewContent, from_detail) => {
   return async function (dispatch, getState, { history }) {
     try {
       dispatch(loading(true));
+
+      //서버에서 받아온 리뷰 작성일 포함해 리뷰 저장
       const {
         data: { createDate },
       } = await reviewAPI.putReview({ reviewId, reviewContent });
@@ -322,6 +339,7 @@ const updateReviewServer = (reviewId, reviewContent, from_detail) => {
       let createDateParse = Date.parse(createDate);
       dispatch(updateReview(reviewId, reviewContent, createDateParse));
 
+      //작성 후 페이지 이동
       if (from_detail) {
         history.push({
           pathname: `/detail/${toonId}`,
@@ -377,6 +395,7 @@ const initialState = {
 
 export default handleActions(
   {
+    // 리뷰 리스트 추가(중복 여부에 따라 카테고리 생성)
     [ADD_REVIEW_LIST]: (state, action) =>
       produce(state, (draft) => {
         action.payload.review_list.map((review) => {

@@ -14,7 +14,6 @@ import profileImgList from "../images/profiles";
 const DetailReview = (props) => {
   const {
     reviewId,
-    userGrade,
     userImg,
     userName,
     createDate,
@@ -23,22 +22,27 @@ const DetailReview = (props) => {
     likeCount,
   } = props.review;
   const dispatch = useDispatch();
+
+  //selectors
   const is_login = useSelector((store) => store.user.is_login);
   const reviewLikeList = useSelector((store) => store.user.reviewLikeList);
   const loading = useSelector((store) => store.review.is_loading_review);
 
-  const myColor = props.isMe ? Color.primaryLight : Color.gray200;
-
+  //states, refs
   const [reviewHeight, setReviewHeight] = React.useState("44px");
   const [showMore, isShowMore] = React.useState(true);
   const [showBtn, isShowBtn] = React.useState(false);
   const reviewRef = React.useRef();
-  const reviewGridRef = React.useRef();
 
+  //내가 작성한 리뷰 표시
+  const myColor = props.isMe ? Color.primaryLight : Color.gray200;
+
+  //리뷰 내용 더보기(리뷰 높이 44px 이상일 때 활성화)
   useEffect(() => {
     isShowBtn(reviewRef.current?.scrollHeight > 44);
   }, []);
   const showAll = () => {
+    // 더보기/줄이기 클릭 시 리뷰 컨테이너 높이조절(overflow:hidden으로 고정값 이상의 리뷰 감추기)
     if (showMore) {
       setReviewHeight("auto");
       isShowMore(false);
@@ -65,6 +69,7 @@ const DetailReview = (props) => {
     }
   };
 
+  // 리뷰 내용 없이 별점만 있을 경우
   if (!reviewContent) {
     return <></>;
   }
@@ -107,7 +112,6 @@ const DetailReview = (props) => {
         padding="0 4px"
         height={reviewHeight}
         overflow="hidden"
-        ref={reviewGridRef}
       >
         <Text
           tag="p"
@@ -123,8 +127,6 @@ const DetailReview = (props) => {
       {showBtn &&
         (showMore ? (
           <Grid position="absolute" bottom="45px" left="21px">
-            {/* <Text>&nbsp;...</Text>
-            <br /> */}
             <Text color={Color.gray400} _onClick={showAll}>
               &nbsp;... 더보기{" "}
             </Text>

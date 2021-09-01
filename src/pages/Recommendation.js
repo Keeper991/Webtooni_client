@@ -37,6 +37,7 @@ const Recommendation = () => {
   // selectors
   const is_login = useSelector((state) => state.user.is_login);
   const user_name = useSelector((state) => state.user.info.userName);
+  const is_loading = useSelector((state) => state.webtoon.is_loading);
   const toon_list = useSelector((state) => state.webtoon.toon_list);
   const best_reviewer_info = useSelector(
     (state) => state.reviewer.best_reviewer_offer_user_info
@@ -119,13 +120,12 @@ const Recommendation = () => {
     [dragging]
   );
 
-  // effects
+  // effects (웹툰 리스트 요청)
   React.useEffect(() => {
     if (!end_toon_list.length || !md_offer_list.length || !best_reviewer_list) {
       dispatch(webtoonActions.getOfferWebtoonList());
     }
   }, []);
-
   React.useEffect(() => {
     if (is_login) {
       dispatch(webtoonActions.getWebtoonListForLogin());
@@ -138,8 +138,7 @@ const Recommendation = () => {
     );
   }, [toon_list]);
 
-  const is_loading = useSelector((state) => state.webtoon.is_loading);
-
+  // 로그인 시 보여줄 페이지
   if (is_login) {
     return (
       <React.Fragment>
@@ -473,6 +472,7 @@ const Recommendation = () => {
     );
   }
 
+  // 비로그인 시 보여줄 페이지
   return (
     <React.Fragment>
       <BorderLine>

@@ -12,17 +12,19 @@ import { LeftOutlined } from "@ant-design/icons";
 
 const ReviewWrite = (props) => {
   const dispatch = useDispatch();
-  const is_login = useSelector((store) => store.user.is_login); //로그인 여부 판별
-  const userName = useSelector((store) => store.user.info.userName); //로그인 유저 네임
+
+  //selectors
+  const is_login = useSelector((store) => store.user.is_login);
+  const userName = useSelector((store) => store.user.info.userName);
   const loading = useSelector((store) => store.review.is_loading_review);
 
-  //별점 이력이 있으면 기존 별점 가져오기
-  const webtoon_id = parseInt(props.match.params.webtoon_id);
   const toon_list = useSelector((store) => store.webtoon.toon_list);
-  const toonOne = toon_list.find((toon) => toon.toonId === webtoon_id);
-  const toonTitle = props.location.state.toonTitle;
-  const review_list = useSelector((store) => store.review.review_list);
+  const webtoon_id = parseInt(props.match.params.webtoon_id);
+  const toonOne = toon_list.find((toon) => toon.toonId === webtoon_id); //웹툰 정보
+  const toonTitle = props.location.state.toonTitle; //웹툰 제목
+  const review_list = useSelector((store) => store.review.review_list); //리뷰 리스트
   const prev_review = review_list.find(
+    // 기존 리뷰 찾기
     (review) => review.userName === userName && review.toonId === webtoon_id
   );
 
@@ -32,14 +34,15 @@ const ReviewWrite = (props) => {
   //내용 미입력시 메세지 띄우기
   const [contentAlert, isContentAlert] = React.useState(false);
 
-  //상황 별 분기
   useEffect(() => {
+    //기존 리뷰 불러오기
     if (prev_review) {
       if (prev_review.reviewContent) {
         setReview(prev_review.reviewContent);
       }
       setStarPoint(prev_review.userPointNumber);
     }
+    //웹툰 정보 요청(웹툰&리뷰 정보 없을 때)
     if (!toonOne || !toonOne.filterConditions.includes("detail")) {
       dispatch(webtoonActions.getToonOneServer(webtoon_id));
     }
@@ -47,6 +50,7 @@ const ReviewWrite = (props) => {
 
   //리뷰 등록
   const uploadReview = () => {
+    // 내용 미입력 시 알림
     if (!review || starPoint === 0) {
       isContentAlert(true);
       setTimeout(function () {
@@ -106,6 +110,7 @@ const ReviewWrite = (props) => {
           </Text>
         </Button>
       </Grid>
+      {/* 웹툰 제목 */}
       <Grid
         padding="32px 20px 0"
         bgColor={Color.white}
@@ -135,7 +140,7 @@ const ReviewWrite = (props) => {
           </Text>
         </Grid>
       </Grid>
-
+      {/* 별점 주기 */}
       <Grid padding="20px 20px 15px">
         <DetailStar
           starPoint={starPoint}
@@ -151,7 +156,7 @@ const ReviewWrite = (props) => {
           }}
         />
       </Grid>
-
+      {/* 내용 입력 */}
       <Grid
         position="relative"
         display="flex"
