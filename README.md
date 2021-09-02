@@ -28,6 +28,9 @@
 * BackEnd(Spring) - 김연우, 이원희, 석상필, 이중원
 * Designer - 오승철
 
+## FrontEnd 프로젝트 구조
+![budy-architecture](https://user-images.githubusercontent.com/85473148/131841529-2a6a77d6-330d-467c-b611-5abb8fadc33a.png)
+
 ## ⚒️ Tools
 
 > - View (React with JavaScript, React-Router, Styled-components, React-Slick, Chart.js)
