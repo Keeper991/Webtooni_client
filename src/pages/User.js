@@ -74,6 +74,7 @@ const User = (props) => {
     [dragging]
   );
 
+
   //window size
   const [windowSize, setWindowSize] = useState(window.innerWidth);
   const handleWindowResize = React.useCallback((event) => {

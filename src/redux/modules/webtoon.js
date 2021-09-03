@@ -95,7 +95,6 @@ const getWebtoonListForLogin = () => async (dispatch, getState) => {
       toon.genres = toon.genres || [];
       return toon;
     });
-
     // 사용자 맞춤 추천 리스트가 이미 존재하는 경우_ 기존 리스트의 카테고리 제거
     if (isCalledForUser) {
       dispatch(removeForUserFilterCondition());
