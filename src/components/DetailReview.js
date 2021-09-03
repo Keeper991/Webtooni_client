@@ -37,7 +37,8 @@ const DetailReview = (props) => {
   //내가 작성한 리뷰 표시
   const myColor = props.isMe ? Color.primaryLight : Color.gray200;
 
-  //리뷰 내용 더보기(리뷰 높이 44px 이상일 때 활성화)
+  //리뷰 내용 더보기(리뷰 높이 44px 이상일 때 활성화
+  // 주의 : (X) reviewRef.current.style.height -> 값을 넣을 수는 있지만 읽을 수는 없음 -> .scrollHeight 이용
   useEffect(() => {
     isShowBtn(reviewRef.current?.scrollHeight > 44);
   }, []);
