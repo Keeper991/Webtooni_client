@@ -1,21 +1,21 @@
 import React, { useEffect } from "react";
 import { useSelector, useDispatch } from "react-redux";
 import styled from "styled-components";
-import { Button, Input, Text, Image } from "../elements";
+import { Input, Text, Image } from "../elements";
 import { actionCreators as talkCommentActions } from "../redux/modules/talkComment";
 import { actionCreators as modalActions } from "../redux/modules/modal";
 import { Color } from "../shared/common";
-import { Permit, PermitStrict } from "../shared/PermitAuth";
+import { PermitStrict } from "../shared/PermitAuth";
 import profileImgList from "../images/profiles";
 
 const TalkComment = (props) => {
   const dispatch = useDispatch();
+  const { comment_info, commentCount } = props;
   const loading_talkComment = useSelector(
     (store) => store.talkComment.is_loading
   );
-  const { comment_info, commentCount } = props;
 
-  //댓글 수정
+  //댓글 수정 작성 (입력창 자동높이조절 적용_최대 3줄)
   const [edit, isEdit] = React.useState(false);
   const [comment, setComment] = React.useState(comment_info.commentContent);
   const commentRef = React.useRef();
@@ -91,8 +91,6 @@ const TalkComment = (props) => {
             align="flex-start"
             width="100%"
             padding="0 5px"
-            // borderTop={`1px solid ${Color.gray200}`}
-            // borderBottom={`1px solid ${Color.gray200}`}
           >
             <Grid flex="0 0 28px" display="flex">
               <Image
@@ -143,7 +141,7 @@ const TalkComment = (props) => {
                   {comment_info.userName}
                 </Text>
                 <Text type="num" fontSize="12px" color={Color.gray400}>
-                  {/* 작성일 오늘인지에 따라 날짜만/시간만 표기 */}
+                  {/* 작성일/시간 표기 */}
                   {today === comment_info.createDate.substr(0, 10)
                     ? comment_info.createDate.substr(11, 5)
                     : comment_info.createDate.substr(5, 5)}

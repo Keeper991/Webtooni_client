@@ -6,6 +6,8 @@ import profileImgList from "../images/profiles";
 import { history } from "../redux/configureStore";
 import { Medal } from "../images/icons";
 import { userGradeIcon } from "../shared/common";
+
+//메인페이지용 베스트리뷰어 카드
 const BestReveiwerCard = (props) => {
   const [first, setFirst] = React.useState(false);
 

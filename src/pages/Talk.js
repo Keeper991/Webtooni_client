@@ -10,20 +10,23 @@ import { Permit } from "../shared/PermitAuth";
 import { Slick } from "../components";
 
 const Talk = () => {
+  const dispatch = useDispatch();
+
+  //selectors
   const all_post_list = useSelector((store) => store.talk.post_list); //조회한 페이지의 전체 포스트 목록
-  const all_page_number = useSelector((store) => store.talk.page_number_list); //클릭한 페이지 목록
+  const all_page_number = useSelector((store) => store.talk.page_number_list); //선택한 페이지 목록
   let cur_page = useSelector((store) => store.talk.cur_page); //현재 페이지 번호
   const post_count = useSelector((store) => store.talk.post_count); //전체 포스트 수
+
   const post_per_page = 10; //페이지 별 포스트 수
   let last_page = 1; //마지막 페이지 번호
 
-  const dispatch = useDispatch();
-
   useEffect(() => {
-    if (all_page_number.length === 0) dispatch(talkActions.getPageServer(1)); //처음 페이지 진입 시 1번 페이지 포스트 요청
+    //최초 페이지 진입 시 요청
+    if (all_page_number.length === 0) dispatch(talkActions.getPageServer(1));
   }, []);
 
-  //마지막 페이지 번호 구하기
+  //마지막 페이지 번호
   if (post_count === 0) {
   } else if (post_count % post_per_page === 0) {
     last_page = parseInt(post_count / post_per_page);
@@ -33,7 +36,7 @@ const Talk = () => {
 
   const [startPage, setStartPage] = React.useState(1); //페이지 번호 설정
 
-  let page_order = all_page_number.indexOf(cur_page) + 1; //클릭한 페이지 중 현재 페이지 순서
+  let page_order = all_page_number.indexOf(cur_page) + 1; //선택한 페이지 중 현재 페이지 순서
 
   //현재 페이지의 포스트 리스트
   let post_list = all_post_list.filter(
@@ -42,12 +45,12 @@ const Talk = () => {
       idx < page_order * post_per_page
   );
 
-  //클릭한 페이지의 포스트 목록 가져오기
+  //선택 페이지의 포스트 목록 불러오기
   const getPagePosts = (page_number) => {
     if (!all_page_number.includes(page_number)) {
-      dispatch(talkActions.getPageServer(page_number)); //새로운 페이지번호를 클릭한 경우
+      dispatch(talkActions.getPageServer(page_number)); //새로운 페이지번호 선택 시
     } else {
-      dispatch(talkActions.setPageNumber(page_number)); //기 조회한 페이지 번호를 클릭한 경우
+      dispatch(talkActions.setPageNumber(page_number)); //조회한 페이지 번호 선택 시
     }
   };
 
@@ -137,7 +140,7 @@ const Talk = () => {
                     whiteSpace="nowrap"
                     padding="0 12px 0 0"
                   >
-                    {/* 작성일 오늘인지에 따라 날짜만/시간만 표기 */}
+                    {/* 작성일/시간 표기 */}
                     {today === post.createDate.substr(0, 10)
                       ? post.createDate.substr(11, 5)
                       : post.createDate.substr(5, 5)}
@@ -157,8 +160,6 @@ const Talk = () => {
                   position="relative"
                   bgColor={Color.white}
                   padding="0 0 0 6px"
-                  // top="20px"
-                  // right="0"
                 >
                   <Comment width="24px" height="24px" />
                   {String(post.talkCommentCount).length === 1 ? (
@@ -253,6 +254,7 @@ const Talk = () => {
         </Grid>
       </Grid>
       {/* 포스트 작성 버튼 */}
+      {/* : 컴포넌트 최하단으로 이동 -> 버튼이 페이지에 고정되는 문제 해결 */}
       <Permit>
         <Grid
           position="sticky"
@@ -268,7 +270,6 @@ const Talk = () => {
     </>
   );
 };
-
 const Grid = styled.div`
   width: ${(props) => props.width || "auto"};
   height: ${(props) => props.height || "auto"};
@@ -290,6 +291,7 @@ const Grid = styled.div`
   border-bottom: ${(props) => props.borderBottom || ""};
   border: ${(props) => props.border || ""};
   border-radius: ${(props) => props.borderRadius || ""};
+  float: ${(props) => props.float || ""};
 `;
 
 const PageBtnGrid = styled.div`

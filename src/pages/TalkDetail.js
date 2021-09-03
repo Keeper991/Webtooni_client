@@ -8,18 +8,26 @@ import { actionCreators as modalActions } from "../redux/modules/modal";
 import { TalkComment } from "../components";
 import { Color } from "../shared/common";
 import { EmptyHeart, FillHeart, Comment, Delete } from "../images/icons";
-import { Permit, PermitStrict } from "../shared/PermitAuth";
+import { PermitStrict } from "../shared/PermitAuth";
 import profileImgList from "../images/profiles";
 
 const TalkDetail = (props) => {
-  //톡 포스트 가져오기
-  const post_id = props.match.params.id;
+  //selectors
+  const is_login = useSelector((store) => store.user.is_login);
+  const userImg = useSelector((store) => store.user.info.userImg);
+  const loading_talk = useSelector((store) => store.talk.is_loading);
+  const loading_talkComment = useSelector(
+    (store) => store.talkComment.is_loading
+  );
+
+  //포스트 조회
   const post_list = useSelector((store) => store.talk.post_list);
+  const post_id = props.match.params.id;
   const post = post_list.filter((p) => {
     return String(p.postId) === post_id;
   })[0];
 
-  //댓글 가져오기
+  //댓글 조회
   const comment_all = useSelector((store) => store.talkComment.list);
   const comment_list = comment_all.filter(
     (item) => item.postId === parseInt(post_id)
@@ -36,15 +44,8 @@ const TalkDetail = (props) => {
     }
   }, []);
 
-  const is_login = useSelector((store) => store.user.is_login);
-  const userImg = useSelector((store) => store.user.info.userImg);
-  const loading_talk = useSelector((store) => store.talk.is_loading);
-  const loading_talkComment = useSelector(
-    (store) => store.talkComment.is_loading
-  );
-
-  //포스트 삭제하기
-  const [dltMsg, isDltMsg] = React.useState(false); //삭제 메세지
+  //포스트 삭제
+  const [dltMsg, isDltMsg] = React.useState(false);
   const deletePost = () => {
     if (!is_login) {
       dispatch(modalActions.activeModal("needLogin"));
@@ -67,9 +68,8 @@ const TalkDetail = (props) => {
     }
   };
 
-  //댓글
-  // const [cmtInp, isCmtInp] = React.useState(false); //댓글 입력창 보이기
-  const [comment, setComment] = React.useState(""); //댓글 입력하기
+  //댓글 자동높이조절
+  const [comment, setComment] = React.useState("");
   const commentRef = React.useRef();
   const writeComment = React.useCallback((e) => {
     setComment(e.target.value);
@@ -77,6 +77,7 @@ const TalkDetail = (props) => {
     commentRef.current.style.height = commentRef.current.scrollHeight + "px";
   }, []);
 
+  //댓글 등록
   const uploadCmt = () => {
     if (!is_login) {
       dispatch(modalActions.activeModal("needLogin"));
@@ -90,7 +91,6 @@ const TalkDetail = (props) => {
       return;
     }
     if (is_login) {
-      // isCmtInp(true);
       dispatch(
         talkCommentActions.addCommentServer(
           parseInt(post_id),
@@ -100,7 +100,6 @@ const TalkDetail = (props) => {
       );
       setComment("");
       commentRef.current.style.height = "24px";
-      // isCmtInp(false);
     }
   };
 
@@ -161,7 +160,7 @@ const TalkDetail = (props) => {
                       whiteSpace="nowrap"
                       padding="0 12px 0 0"
                     >
-                      {/* 작성일 오늘인지에 따라 날짜만/시간만 표기 */}
+                      {/* 작성일/시간 표기 */}
                       {today === post.createDate.substr(0, 10)
                         ? post.createDate.substr(11, 5)
                         : post.createDate.substr(5, 5)}
@@ -221,7 +220,6 @@ const TalkDetail = (props) => {
                       color={Color.gray700}
                       whiteSpace="nowrap"
                       margin="0 0 0 4px"
-                      // _onClick={()=>isCmtInp(true)}
                     >
                       댓글&nbsp;{post.talkCommentCount}개
                     </Text>
@@ -284,7 +282,6 @@ const TalkDetail = (props) => {
                 ))}
 
               {/* 댓글 작성 */}
-              {/* {cmtInp && ( */}
               <Grid
                 cmtInpt
                 display="flex"
@@ -330,7 +327,6 @@ const TalkDetail = (props) => {
                   작성
                 </Text>
               </Grid>
-              {/* )} */}
             </Grid>
           </Grid>
           {/* 삭제메세지 띄우기 */}

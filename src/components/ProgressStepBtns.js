@@ -3,6 +3,7 @@ import { Color } from "../shared/common";
 import styled from "styled-components";
 import { Button, Text } from "../elements";
 
+// 취향/프로필페이지 이동을 위한 단계별 숫자 버튼
 const ProgressStepBtns = ({ currentPageNum, clickHandlers, ...props }) => {
   return (
     <>

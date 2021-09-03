@@ -6,6 +6,8 @@ import { Text } from "../elements";
 
 const ToolTip = (props) => {
   const { position, children, align } = props;
+
+  // 적용할 위치 설정
   const [yPos, xPos] = position.split("-");
   const translateX = `translateX(${
     xPos === "left" ? `-100%` : xPos === "right" ? `0` : `-50%`

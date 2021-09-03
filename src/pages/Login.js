@@ -10,7 +10,9 @@ import { history } from "../redux/configureStore";
 
 const Login = (props) => {
   const is_login = useSelector((state) => state.user.is_login);
+
   useEffect(() => {
+    // 로그인 후 이전 페이지로 이동
     if (is_login) {
       history.goBack();
     }

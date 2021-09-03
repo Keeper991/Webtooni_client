@@ -7,6 +7,9 @@ import { actionCreators as reviewerActions } from "./reviewer";
 import { actionCreators as modalActions } from "./modal";
 import { userScoreConvert } from "../../shared/common";
 
+///////////////////////////////////////////////////////////
+// action type
+///////////////////////////////////////////////////////////
 const ADD_TOON_LIST = "webtoon/ADD_TOON_LIST";
 const ADD_TOON_ONE = "webtoon/ADD_TOON_ONE";
 const ADD_TOON_ONE_INFO = "webtoon/ADD_TOON_ONE_INFO";
@@ -58,8 +61,8 @@ const getRankWebtoonList = () => async (dispatch, getState) => {
   try {
     let { data: webtooniToons } = await webtoonAPI.getWebtooniRank();
     webtooniToons = webtooniToons.map((toon) => {
-      toon.genres = toon.genres || [];
-      toon.fixedAvgPoint = toon.toonAvgPoint;
+      toon.genres = toon.genres || []; //장르 속성 항상 추가(for 장르 정보가 없는 경우의 에러 방지)
+      toon.fixedAvgPoint = toon.toonAvgPoint; //fixedAvgPoint 속성 추가(for 웹툰 평점 변경 후에도 기존의 고정된 평점 필요(메인페이지 랭킹 용))
       return toon;
     });
     dispatch(addToonList(webtooniToons, "webtooni"));
@@ -83,7 +86,7 @@ const getRankWebtoonList = () => async (dispatch, getState) => {
   }
 };
 
-// 비슷한 취향의 유저가 본, ~님을 위한 추천 불러오기
+//  ~님을 위한 & 비슷한 취향의 유저가 본 추천 불러오기
 const getWebtoonListForLogin = () => async (dispatch, getState) => {
   try {
     const isCalledForUser = getState().webtoon.is_called_for_user;
@@ -92,10 +95,15 @@ const getWebtoonListForLogin = () => async (dispatch, getState) => {
       toon.genres = toon.genres || [];
       return toon;
     });
+    // 사용자 맞춤 추천 리스트가 이미 존재하는 경우_ 기존 리스트의 카테고리 제거
     if (isCalledForUser) {
       dispatch(removeForUserFilterCondition());
     }
+
+    // 사용자 맞춤 추천 리스트 저장(매 요청 시 업데이트)
     dispatch(addToonList(forUserToons, "forUser"));
+
+    // 추천 리스트가 존재하지 않는 경우_ 비슷한 취향의 유저 추천 리스트 요청
     if (!isCalledForUser) {
       const { data: similarUserOfferToons } =
         await offerAPI.getSimilarUsersChoice();
@@ -113,7 +121,7 @@ const getWebtoonListForLogin = () => async (dispatch, getState) => {
   }
 };
 
-// 추천 웹툰 리스트 받아오기 (완결작, MD, 베스트 리뷰어의 추천)
+// 추천 웹툰 리스트 불러오기 (완결작, MD, 베스트 리뷰어의 추천)
 const getOfferWebtoonList = () => {
   return async function (dispatch, getState, { history }) {
     try {
@@ -122,6 +130,8 @@ const getOfferWebtoonList = () => {
       let { data: mdOfferToon } = await offerAPI.getMd();
       mdOfferToon.genres = mdOfferToon.genres || [];
       dispatch(addToonList([mdOfferToon], "mdOffer"));
+
+      // 베스트 리뷰어의 경우 리뷰어 정보와 웹툰 정보를 분리해 각 모듈에서 관리
       let {
         data: {
           userInfoOnlyResponseDto: bestReviewerOfferUserInfo,
@@ -150,9 +160,9 @@ const getOfferWebtoonList = () => {
   };
 };
 
-//웹툰 상세정보 받아오기
+//웹툰 상세정보 & 비슷한 장르 웹툰 불러오기
 const getToonOneServer = (webtoonId) => {
-  return async function (dispatch, getState, { history }) {
+  return async function (dispatch, getState) {
     try {
       const {
         data: { userLikeReviewList, myListOrNot, ...toonInfo },
@@ -160,15 +170,14 @@ const getToonOneServer = (webtoonId) => {
       let { data: similarGenreToons } = await offerAPI.getSimilarGenre(
         webtoonId
       );
-      // 로그인한 유저가 좋아요한 리뷰 리스트 추가.
+      // 로그인한 유저가 좋아요한 리뷰 리스트 추가
       userLikeReviewList &&
         dispatch(userActions.addReviewLikeList(userLikeReviewList));
 
       // 구독한 경우 구독 리스트 추가
       myListOrNot && dispatch(userActions.subscribe(webtoonId));
 
-      // 비슷한 장르 웹툰 리스트 추가
-      // 중복제거
+      // 비슷한 장르 웹툰 리스트 추가(중복제거 & 대단위 장르 제외)
       similarGenreToons = similarGenreToons.filter(
         (toon, idx) =>
           similarGenreToons.findIndex(
@@ -184,7 +193,7 @@ const getToonOneServer = (webtoonId) => {
       });
       dispatch(addToonList(similarGenreToons, webtoonId));
 
-      // 리뷰 리스트를 리뷰 모듈의 리뷰 리스트에 추가
+      // 리뷰 리스트를 리뷰 모듈에 분리/저장
       let reviews = toonInfo.reviews;
       reviews = reviews.map((review) => {
         review.toonId = webtoonId;
@@ -193,7 +202,7 @@ const getToonOneServer = (webtoonId) => {
       });
       dispatch(reviewActions.addReviewList(reviews, "detail"));
 
-      // 웹툰 상세 정보 추가
+      // 웹툰 상세 정보 추가(기존 정보의 여부에 따라 분기)
       const idx = getState().webtoon.toon_list.findIndex(
         (toon) => toon.toonId === webtoonId
       );
@@ -206,16 +215,12 @@ const getToonOneServer = (webtoonId) => {
     } catch (err) {
       console.log(err, "getToonOneError");
       dispatch(modalActions.activeModal("failLoad"));
-      // history.replace("/");
     }
   };
 };
 
-// 웹툰리스트의 더보기 페이지를 위한 thunk
-// getWebtooniRank
-// getEndToonOffer
-// getBestReviewerOffer
-// getSimilarUserOffer
+// 웹툰리스트의 더보기 페이지를 위한 thunk //
+// (메인페이지 더보기) 웹투니 랭크 요청
 const getWebtooniRank = () => async (dispatch) => {
   try {
     let { data: webtooniToons } = await webtoonAPI.getWebtooniRank();
@@ -229,7 +234,7 @@ const getWebtooniRank = () => async (dispatch) => {
     dispatch(modalActions.activeModal("failLoad"));
   }
 };
-
+// (추천페이지 더보기) 완결 웹툰 요청
 const getEndToonOffer = () => async (dispatch) => {
   try {
     const { data: endOfferToons } = await offerAPI.getEnd();
@@ -239,7 +244,7 @@ const getEndToonOffer = () => async (dispatch) => {
     dispatch(modalActions.activeModal("failLoad"));
   }
 };
-
+//(추천페이지 더보기) 베스트 리뷰어의 웹툰 요청
 const getBestReviewerOffer = () => async (dispatch) => {
   try {
     const {
@@ -257,7 +262,7 @@ const getBestReviewerOffer = () => async (dispatch) => {
     dispatch(modalActions.activeModal("failLoad"));
   }
 };
-
+// (추천페이지 더보기) 비슷한 취향의 유저 웹툰 요청
 const getSimilarUserOffer = () => async (dispatch) => {
   try {
     const { data: similarUserOfferToons } =
@@ -269,6 +274,7 @@ const getSimilarUserOffer = () => async (dispatch) => {
   }
 };
 
+// (상세페이지 더보기) 비슷한 장르 웹툰 요청
 const getSimilarGenre = (webtoonId) => async (dispatch) => {
   try {
     let { data: similarGenreToons } = await offerAPI.getSimilarGenre(webtoonId);
@@ -288,6 +294,10 @@ const getSimilarGenre = (webtoonId) => async (dispatch) => {
   }
 };
 
+///////////////////////////////////////////////////////////
+// initialState & reducer
+///////////////////////////////////////////////////////////
+
 const initialState = {
   toon_list: [],
   is_loading: false,
@@ -299,13 +309,18 @@ export default handleActions(
     [ADD_TOON_LIST]: (state, action) =>
       produce(state, (draft) => {
         action.payload.toons.map((toon, index) => {
+          // 각 웹툰 별 정보 선별/수정 후 기존 리스트에 추가
           const toonIdx = draft.toon_list.findIndex(
             (totalToon) => totalToon.toonId === toon.toonId
           );
+
+          // 기존 리스트에 받아온 웹툰이 없을 때
           if (toonIdx === -1) {
+            // 웹툰에 카테고리 생성/추가
             if (action.payload.category) {
               toon.filterConditions = [action.payload.category];
             }
+            // 세 가지 랭크 정보는 순위를 value로 하여 추가
             if (
               action.payload.category === "webtooni" ||
               action.payload.category === "naver" ||
@@ -314,7 +329,11 @@ export default handleActions(
               toon[action.payload.category[0] + "Rank"] = index;
             }
             draft.toon_list.push(toon);
-          } else {
+          }
+
+          // 기존 리스트에 받아온 웹툰이 있을 때
+          else {
+            // 카테고리 추가(중복 제거)
             if (action.payload.category) {
               draft.toon_list[toonIdx].filterConditions.push(
                 action.payload.category
@@ -327,6 +346,7 @@ export default handleActions(
                     condition
                   ) === idx
               );
+              // 랭크 정보에 순위 덮어쓰기
               if (
                 action.payload.category === "webtooni" ||
                 action.payload.category === "naver" ||
@@ -336,16 +356,21 @@ export default handleActions(
               }
             }
 
+            // 장르 재설정 //
+            // 1.기존 장르 + 받아온 장르 정보 혼합
             let genres = [...draft.toon_list[toonIdx].genres, ...toon.genres];
+            // 2.중복 제거
             genres = genres.filter(
               (genre, idx) => genres.indexOf(genre) === idx
             );
+            // 3.대단위 장르 제외
             genres = genres.filter(
               (genre) =>
                 genre !== "스토리" &&
                 genre !== "옴니버스" &&
                 genre !== "에피소드"
             );
+            // 4.장르 정보 재설정
             draft.toon_list[toonIdx] = {
               ...draft.toon_list[toonIdx],
               ...toon,
@@ -354,6 +379,7 @@ export default handleActions(
           }
         });
       }),
+    // 상세 정보 요청 시: 기존 리스트에 웹툰 정보가 있을 경우_기존 정보에 웹툰의 카테고리 및 상세 정보 추가
     [ADD_TOON_ONE_INFO]: (state, action) =>
       produce(state, (draft) => {
         draft.toon_list[action.payload.toonIdx].filterConditions.push(
@@ -365,11 +391,14 @@ export default handleActions(
           ...action.payload.toonOne,
         };
       }),
+    // 상세 정보 요청 시: 기존 리스트에 웹툰 정보가 없을 경우_웹툰 추가(+디테일 표시)
     [ADD_TOON_ONE]: (state, action) =>
       produce(state, (draft) => {
         action.payload.toonOne.filterConditions = ["detail"];
         draft.toon_list.push(action.payload.toonOne);
       }),
+
+    // 별점 수정(toonAvgPoint 변동 값 vs fixedAvgPoint 고정 값 )
     [SET_TOON_AVG_POINT]: (state, action) =>
       produce(state, (draft) => {
         const toonIdx = draft.toon_list.findIndex(
@@ -386,6 +415,8 @@ export default handleActions(
       produce(state, (draft) => {
         draft.is_loading = false;
       }),
+
+    // 사용자 추천 용 카테고리 제거
     [REMOVE_FOR_USER_FILTER_CONDITION]: (state, action) =>
       produce(state, (draft) => {
         const filtered = draft.toon_list.filter((toon) =>

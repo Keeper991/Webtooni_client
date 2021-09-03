@@ -1,70 +1,60 @@
-# Getting Started with Create React App
+# 💫 Welcome to Webtooniverse_Client
 
-This project was bootstrapped with [Create React App](https://github.com/facebook/create-react-app).
+![webtooni1](https://user-images.githubusercontent.com/85473148/131535241-8df4279a-d681-4941-9b25-8a40fda721a3.jpg)
 
-## Available Scripts
+## 🌟 웹툰을 사랑하는 사람들의 공간, 웹투니버스
+ <br>
+웹툰을 사랑하는 사람들이 모여, 웹툰에 대한 의견을 나누고 
+사이트 혹은 유저로부터 웹툰을 추천받을 수 있는 웹사이트입니다. <br> <br>
 
-In the project directory, you can run:
+> [웹투니버스 바로가기](https://webtooni.co.kr/) <br> <br>
+> 
+## ✨ 기획 의도 
+ <br><br>
+점점 커져가는 웹툰 시장에 따라 여러 플랫폼들이 생겨나고 있는 가운데 <br>
+1. 이곳저곳을 번거롭게 왔다 갔다 하지 않고 내가 구독 중인 웹툰들을 한 눈에 보고 <br>
+2. 또 취향에 맞는 웹툰들을 추천받고 소통하며 공유하는 공간을 만들고자<br>
 
-### `yarn start`
+서비스를 기획하게 되었습니다.
+<br>
+###### 현재 지원 플랫폼 : 네이버 웹툰, 카카오 웹툰
+<br>
 
-Runs the app in the development mode.\
-Open [http://localhost:3000](http://localhost:3000) to view it in the browser.
+## 👨‍👩‍👧‍👧  팀원
 
-The page will reload if you make edits.\
-You will also see any lint errors in the console.
+<br>
 
-### `yarn test`
+* FrontEnd(React) - 박세현, 신은혜, 박준영
+* BackEnd(Spring) - 김연우, 이원희, 석상필, 이중원
+* Designer - 오승철
 
-Launches the test runner in the interactive watch mode.\
-See the section about [running tests](https://facebook.github.io/create-react-app/docs/running-tests) for more information.
+## 🏗 FrontEnd 프로젝트 구조
+![budy-architecture](https://user-images.githubusercontent.com/85473148/131841529-2a6a77d6-330d-467c-b611-5abb8fadc33a.png)
 
-### `yarn build`
+## ⚒️ Tools
 
-Builds the app for production to the `build` folder.\
-It correctly bundles React in production mode and optimizes the build for the best performance.
+> - View (React with JavaScript, React-Router, Styled-components, React-Slick, Chart.js)
+> - State Management (Redux, Redux-Thunk, Immer, Redux-actions, history)
+> - Http Requests (axios)
+> - Build Tool (Create React App)
+> - Code Quality Tool (Prettier)
+> - Infrastructure (AWS S3, Route 53)
+> - Design Tool (Figma)
+> - Other Tools (Git, Github, notion, Slack etc.)
 
-The build is minified and the filenames include the hashes.\
-Your app is ready to be deployed!
+## 📌 페이지 구성
 
-See the section about [deployment](https://facebook.github.io/create-react-app/docs/deployment) for more information.
+- 메인 페이지
+- 웹툰 상세 페이지
+- 추천 페이지
+- 리뷰 페이지
+- 톡톡 게시판
+- 로그인 페이지
+- 검색 페이지
+- 유저 페이지
 
-### `yarn eject`
+## 🎥 Demo
 
-**Note: this is a one-way operation. Once you `eject`, you can’t go back!**
+![ezgif com-gif-maker](https://user-images.githubusercontent.com/85473148/131540426-8d17e043-010b-4250-b366-01f784faad45.gif)
+![ezgif com-gif-maker (2)](https://user-images.githubusercontent.com/85473148/131542223-841cb615-a910-4d6c-b385-3938add41b44.gif)
 
-If you aren’t satisfied with the build tool and configuration choices, you can `eject` at any time. This command will remove the single build dependency from your project.
-
-Instead, it will copy all the configuration files and the transitive dependencies (webpack, Babel, ESLint, etc) right into your project so you have full control over them. All of the commands except `eject` will still work, but they will point to the copied scripts so you can tweak them. At this point you’re on your own.
-
-You don’t have to ever use `eject`. The curated feature set is suitable for small and middle deployments, and you shouldn’t feel obligated to use this feature. However we understand that this tool wouldn’t be useful if you couldn’t customize it when you are ready for it.
-
-## Learn More
-
-You can learn more in the [Create React App documentation](https://facebook.github.io/create-react-app/docs/getting-started).
-
-To learn React, check out the [React documentation](https://reactjs.org/).
-
-### Code Splitting
-
-This section has moved here: [https://facebook.github.io/create-react-app/docs/code-splitting](https://facebook.github.io/create-react-app/docs/code-splitting)
-
-### Analyzing the Bundle Size
-
-This section has moved here: [https://facebook.github.io/create-react-app/docs/analyzing-the-bundle-size](https://facebook.github.io/create-react-app/docs/analyzing-the-bundle-size)
-
-### Making a Progressive Web App
-
-This section has moved here: [https://facebook.github.io/create-react-app/docs/making-a-progressive-web-app](https://facebook.github.io/create-react-app/docs/making-a-progressive-web-app)
-
-### Advanced Configuration
-
-This section has moved here: [https://facebook.github.io/create-react-app/docs/advanced-configuration](https://facebook.github.io/create-react-app/docs/advanced-configuration)
-
-### Deployment
-
-This section has moved here: [https://facebook.github.io/create-react-app/docs/deployment](https://facebook.github.io/create-react-app/docs/deployment)
-
-### `yarn build` fails to minify
-
-This section has moved here: [https://facebook.github.io/create-react-app/docs/troubleshooting#npm-run-build-fails-to-minify](https://facebook.github.io/create-react-app/docs/troubleshooting#npm-run-build-fails-to-minify)

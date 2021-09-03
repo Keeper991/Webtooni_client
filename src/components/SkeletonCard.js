@@ -2,6 +2,7 @@ import React from "react";
 import styled, { keyframes } from "styled-components";
 import { Color } from "../shared/common";
 
+//종류별 스켈레톤 카드(랭킹, 더보기, 메인리뷰, 그 외 웹툰)
 const SkeletonCard = (props) => {
   if (props.rank) {
     return (

@@ -7,10 +7,12 @@ import { actionCreators as reviewActions } from "./review";
 import { actionCreators as modalActions } from "./modal";
 import { globalConst, userScoreConvert } from "../../shared/common";
 
+///////////////////////////////////////////////////////////
+// action type
+///////////////////////////////////////////////////////////
 const ADD_REVIEW_LIKE_LIST = "user/ADD_REVIEW_LIKE_LIST";
 const ADD_REVIEW_LIKE = "user/ADD_REVIEW_LIKE";
 const REMOVE_REVIEW_LIKE = "user/REMOVE_REVIEW_LIKE";
-//
 const SET_USER = "user/SET_USER";
 const LOG_OUT = "user/LOG_OUT";
 const SET_SUBSCRIBE_LIST = "user/SET_SUBSCRIBE";
@@ -21,6 +23,9 @@ const SET_IS_CHECKING = "user/SET_IS_CHECKING";
 const LOADING = "user/LOADING";
 const ADD_USER_DATA = "user/ADD_USER_DATA";
 
+///////////////////////////////////////////////////////////
+// action creators
+///////////////////////////////////////////////////////////
 const addReviewLikeList = createAction(ADD_REVIEW_LIKE_LIST, (reviewList) => ({
   reviewList,
 }));
@@ -30,7 +35,6 @@ const addReviewLike = createAction(ADD_REVIEW_LIKE, (reviewId) => ({
 const removeReviewLike = createAction(REMOVE_REVIEW_LIKE, (reviewId) => ({
   reviewId,
 }));
-//
 const setUser = createAction(SET_USER, (info) => ({ info }));
 const logOut = createAction(LOG_OUT, () => ({}));
 const setSubscribeList = createAction(SET_SUBSCRIBE_LIST, (webtoonIdList) => ({
@@ -56,6 +60,7 @@ const addUserData = createAction(ADD_USER_DATA, (userData) => ({ userData }));
 // thunks
 ///////////////////////////////////////////////////////////
 
+//소셜로그인 요청, 회원정보 받아오기
 const socialLoginServer =
   (platform, code) =>
   async (dispatch, getState, { history }) => {
@@ -84,6 +89,7 @@ const socialLoginServer =
     }
   };
 
+//로그인여부 체크 요청
 const loginCheck =
   () =>
   async (dispatch, getState, { history }) => {
@@ -108,6 +114,7 @@ const loginCheck =
     dispatch(setIsChecking());
   };
 
+//구독 요청
 const subscribeServer = (webtoonId, bool) => async (dispatch, getState) => {
   try {
     dispatch(loading(true));
@@ -125,6 +132,7 @@ const subscribeServer = (webtoonId, bool) => async (dispatch, getState) => {
   }
 };
 
+//회원정보 수정 요청
 const setUserServer =
   (info, callback, isEdit) =>
   async (dispatch, getState, { history }) => {
@@ -158,6 +166,7 @@ const setUserServer =
     }
   };
 
+//유저페이지 정보 요청
 const getUserPageInfoServer = (userName) => async (dispatch, getState) => {
   try {
     let {
@@ -167,7 +176,7 @@ const getUserPageInfoServer = (userName) => async (dispatch, getState) => {
         userInfoResponseDto: { userImg, userGrade, userScore, genres },
       },
     } = await userAPI.getUserPageInfo(userName);
-    // 구독한 웹툰 리스트 추가.
+    // 구독한 웹툰 리스트 추가
     dispatch(webtoonActions.addToonList(myWebtoons, "userPageSubscribe"));
 
     // 내가 쓴 리뷰의 웹툰들
@@ -210,6 +219,10 @@ const getUserPageInfoServer = (userName) => async (dispatch, getState) => {
   }
 };
 
+///////////////////////////////////////////////////////////
+// initialState & reducer
+///////////////////////////////////////////////////////////
+
 const initialState = {
   info: {
     userName: "",
@@ -247,6 +260,7 @@ export default handleActions(
       }),
 
     [SET_USER]: (state, action) =>
+      // 로그인 사용자의 회원정보 저장
       produce(state, (draft) => {
         draft.info = action.payload.info;
         draft.is_login = true;
@@ -259,6 +273,7 @@ export default handleActions(
         }
       }),
     [LOG_OUT]: (state, action) =>
+      // 로그아웃 시 유저 정보 리셋
       produce(state, (draft) => {
         removeToken();
         draft.info = initialState.info;
@@ -276,6 +291,7 @@ export default handleActions(
         draft.subscribeList = [...new Set(draft.subscribeList)];
       }),
     [SUBSCRIBE]: (state, action) =>
+      // 구독리스트와 유저리스트 정보에 웹툰 추가
       produce(state, (draft) => {
         if (!draft.subscribeList.includes(action.payload.webtoonId)) {
           draft.subscribeList.push(action.payload.webtoonId);
@@ -291,6 +307,7 @@ export default handleActions(
         }
       }),
     [UNSUBSCRIBE]: (state, action) =>
+      // 구독리스트와 유저리스트 정보에서 웹툰 삭제
       produce(state, (draft) => {
         const {
           payload: { webtoonId },

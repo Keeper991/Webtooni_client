@@ -2,8 +2,11 @@ import React from "react";
 import styled from "styled-components";
 import { FillStar, EmptyStar } from "../images/icons";
 
+// 별점 주기
+// _채워진 별을 빈 별로 덮고 클릭 위치를 감지해 빈 별 가리기(아래의 채워진 별 드러내기)
+// _각 별에 좌우 공간을 두어 0.5점 구현
+
 const DetailStar = ({ onStarClick, starPoint }) => {
-  //별점 주기
   const starScores = [1, 2, 3, 4, 5];
   const starWidth = 32;
   const hideEmptyStar = (starWidth + 8) * starPoint; //선택한 별 보이기(빈 별 감추기)

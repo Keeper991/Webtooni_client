@@ -10,13 +10,16 @@ import { LeftOutlined } from "@ant-design/icons";
 import { history } from "../redux/configureStore";
 
 const ReviewSearch = () => {
+  //states
   const [search_value, setSearchValue] = React.useState("");
   const [search_result, setSearchResult] = React.useState([]);
   const [unwritten_list, set_unwritten_list] = React.useState([]);
 
+  //selectors
   const is_login = useSelector((state) => state.user.is_login);
   const user_name = useSelector((state) => state.user.info.userName);
 
+  //UnwrittenList 요청
   React.useEffect(() => {
     const callUnwrittenList = async () => {
       try {
@@ -29,6 +32,7 @@ const ReviewSearch = () => {
     callUnwrittenList();
   }, []);
 
+  //검색 웹툰 요청
   const getSearchResult = async (keyword) => {
     if (keyword.length === 0) {
       setSearchResult([]);
