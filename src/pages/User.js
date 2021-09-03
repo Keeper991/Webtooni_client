@@ -51,10 +51,10 @@ const User = (props) => {
     (toon, idx) =>
       totalToonList.findIndex((_toon) => _toon.toonId === toon.toonId) === idx
   );
-  //리뷰 수(별점만 준 경우 제외)
-  const reviewCount = reviewList.filter(
+  //리뷰 리스트(별점만 준 경우 제외)
+  const reviewContentCount = reviewList.filter(
     (review) => review.reviewContent
-  ).length;
+  );
 
   const [curSubscribePage, setCurSubscribePage] = React.useState(1);
   const [dragging, setDragging] = useState(false);
@@ -324,7 +324,7 @@ const User = (props) => {
             <SeparateLine />
             <UserReviewAndLikeCountCol>
               <Text type="num" fontSize="20px">
-                {reviewCount}
+                {reviewContentCount.length}
               </Text>
               <Text fontWeight="bold" color={Color.gray400}>
                 작성한 리뷰
@@ -441,7 +441,7 @@ const User = (props) => {
             작성한 리뷰
           </Text>
           {windowSize < 500 ? (
-            reviewList.filter((review) => review.reviewContent).length ? (
+            reviewContentCount.length ? (
               <SlideWrap>
                 {reviewList.map((review, idx) => (
                   <ReviewCard
@@ -458,7 +458,7 @@ const User = (props) => {
                 작성된 리뷰가 없습니다.
               </EmptyInformationGuide>
             )
-          ) : reviewList.filter((review) => review.reviewContent).length ? (
+          ) : reviewContentCount.length ? (
             <div onClickCapture={handleOnItemClick}>
               <Slick
                 _afterChange={handleAfterChange}
