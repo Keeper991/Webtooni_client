@@ -5,6 +5,7 @@ import { history } from "../redux/configureStore";
 import { Color } from "../shared/common";
 import { ReactComponent as FillStar } from "../images/icons/FillStar.svg";
 
+// 메인페이지 플랫폼별 Top10용 웹툰 카드
 const WebToonMonth = (props) => {
   return (
     <React.Fragment>

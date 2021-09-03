@@ -5,6 +5,9 @@ import { actionCreators as talkCommentActions } from "./talkComment";
 import { actionCreators as userActions } from "./user";
 import { actionCreators as modalActions } from "./modal";
 
+///////////////////////////////////////////////////////////
+// action type
+///////////////////////////////////////////////////////////
 const SET_PAGE = "talk/SET_PAGE";
 const ADD_POST_ONE = "talk/ADD_POST_ONE";
 const EDIT_POST_ONE = "talk/EDIT_POST_ONE";
@@ -14,6 +17,9 @@ const SET_POST_COUNT = "talk/SET_POST_COUNT";
 const TOGGLE_LIKE = "talk/TOGGLE_LIKE";
 const LOADING = "talk/LOADING";
 
+///////////////////////////////////////////////////////////
+// action creators
+///////////////////////////////////////////////////////////
 const setPage = createAction(SET_PAGE, (post_list, page_number) => ({
   post_list,
   page_number,
@@ -37,23 +43,9 @@ const loading = createAction(LOADING, (is_loading) => ({
   is_loading,
 }));
 
-const initialState = {
-  post_list: [
-    // {
-    //   postId: "1",
-    //   postTitle: "게시글 제목",
-    //   userName: "닉네임",
-    //   postContent: "게시글 내용...",
-    //   talkCommentCount: 3, //댓글 수 변수명은 임시로 지정
-    //   createDate: "1970-01-02T00:00:00",
-    //   likeNum: 5,
-    // },
-  ],
-  page_number_list: [], //조회한 페이지 번호
-  cur_page: 1,
-  post_count: 1, //전체 포스트 수
-  is_loading: false,
-};
+///////////////////////////////////////////////////////////
+// thunks
+///////////////////////////////////////////////////////////
 
 //페이지 별 리스트 불러오기
 const getPageServer = (page_number) => {
@@ -78,7 +70,7 @@ const addPostServer = (postTitle, postContent) => {
 
       const response = await talkAPI.addPost({ postTitle, postContent });
       const { userImg, userName, userGrade } = getState().user.info;
-      const is_detail = false; //상세정보 여부(작성OR상세)
+      const is_detail = false; //상세정보 여부 구분(포스트작성OR상세페이지)
       dispatch(
         addPostOne(
           { ...response.data, userImg, userName, userGrade },
@@ -155,7 +147,7 @@ const getPostOneServer = (post_id) => {
     try {
       const response = await talkAPI.getOne(post_id);
       const post = response.data;
-      const is_detail = true; //상세정보 여부(작성OR상세)
+      const is_detail = true; //상세정보 여부(포스트작성OR상세페이지)
       dispatch(addPostOne(post, is_detail));
     } catch (err) {
       console.log(err, "getTalkOneError");
@@ -184,18 +176,25 @@ const likePostServer = (post_id) => {
   };
 };
 
+///////////////////////////////////////////////////////////
+// initialState & reducer
+///////////////////////////////////////////////////////////
+
+const initialState = {
+  post_list: [],
+  page_number_list: [], //조회한 페이지 번호
+  cur_page: 1,
+  post_count: 1, //전체 포스트 수
+  is_loading: false,
+};
+
 export default handleActions(
   {
     [SET_PAGE]: (state, action) =>
       produce(state, (draft) => {
-        const _list = action.payload.post_list;
-        // 메인/상세 데이터 구분 -> for 좋아요 데이터 여부 판별
-        const __list = _list.map((_) => {
-          _.is_main = true;
-          return _;
-        });
+        const __list = action.payload.post_list;
 
-        //기존 리스트와 중복되는 데이터 삭제 후 리스트 추가
+        //기존 리스트와 중복되는 데이터 삭제 후 리스트 추가 (상세정보 url 접속 후 메인으로 이동 시)
         const idx = __list.findIndex(
           (_) =>
             draft.post_list.find((__) => {
@@ -226,16 +225,18 @@ export default handleActions(
           });
         }
       }),
+
+    //포스트 추가(상세정보 or 작성 포스트)
     [ADD_POST_ONE]: (state, action) =>
       produce(state, (draft) => {
         let idx = draft.post_list.findIndex(
           (p) => p.postId === parseInt(action.payload.post_one.postId)
         );
-        // 상세페이지 url로 접속 or 포스트 작성 시
+        // 상세페이지 url로 접속 or 포스트 작성 시 포스트 추가
         if (idx === -1) {
           draft.post_list.push(action.payload.post_one);
         } else {
-          // 메인 -> 상세 이동 시
+          // 메인 -> 상세 이동 시 기존 포스트에 덮어쓰기
           draft.post_list[idx] = {
             ...action.payload.post_one,
           };
@@ -256,7 +257,7 @@ export default handleActions(
         //좋아요 여부, 좋아요 수 변경
         if (post.ilike === true) {
           post.ilike = false;
-          post.likeNum -= 1; //변수명 나중에 수정
+          post.likeNum -= 1;
         } else if (post.ilike === false) {
           post.ilike = true;
           post.likeNum += 1;
