@@ -14,6 +14,7 @@ import Profile from "./Profile";
 import ToonList from "./ToonList";
 import SocialLogin from "./SocialLogin";
 import ReviewWrite from "./ReviewWrite";
+import Check from "./Check";
 
 export {
   Main,
@@ -32,4 +33,5 @@ export {
   SocialLogin,
   ReviewWrite,
   ReviewSearch,
+  Check,
 };
