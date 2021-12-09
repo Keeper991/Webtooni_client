@@ -11,6 +11,7 @@ import TalkComment from "./TalkComment";
 import SkeletonCard from "./SkeletonCard";
 import ToonListCard from "./ToonListCard";
 import ToolTip from "./ToolTip";
+import Slider from "./Slider";
 
 export {
   WebToonCard,
@@ -26,4 +27,5 @@ export {
   SkeletonCard,
   ToonListCard,
   ToolTip,
+  Slider,
 };

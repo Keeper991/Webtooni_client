@@ -1,7 +1,6 @@
 import React from "react";
 import styled from "styled-components";
 import { Text, Image } from "../elements";
-import { Color } from "../shared/common";
 import { title } from "../images/icons";
 
 const Check = (props) => {

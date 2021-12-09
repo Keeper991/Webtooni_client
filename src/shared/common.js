@@ -26,6 +26,8 @@ export const Color = {
   kakaoYellow: "#FEE500",
   kakaoDarkYellow: "#FFCD00",
   naverGreen: "#02C759",
+  green: "#01d358",
+  mint: "#B2F1E6",
   로맨스: "#F88384",
   일상: "#FFCD6F",
   판타지: "#B894FB",
@@ -50,3 +52,24 @@ export const userGradeIcon = (userGrade) => {
 };
 
 export const maxWidth = "700px";
+
+export function debounce(fn, ms = 500) {
+  let timerId;
+  return (...args) => {
+    if (timerId) clearTimeout(timerId);
+    timerId = setTimeout(() => fn(...args), ms);
+  };
+}
+
+export function throttle(fn, ms = 500) {
+  let isWaiting = false;
+  return (...args) => {
+    if (!isWaiting) {
+      fn(...args);
+      isWaiting = true;
+      setTimeout(() => {
+        isWaiting = false;
+      }, ms);
+    }
+  };
+}
