@@ -62,13 +62,12 @@ export function debounce(fn, ms = 500) {
 }
 
 export function throttle(fn, ms = 500) {
-  let isWaiting = false;
+  let timerId;
   return (...args) => {
-    if (!isWaiting) {
-      fn(...args);
-      isWaiting = true;
-      setTimeout(() => {
-        isWaiting = false;
+    if (!timerId) {
+      timerId = setTimeout(() => {
+        fn(...args);
+        timerId = undefined;
       }, ms);
     }
   };
