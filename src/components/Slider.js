@@ -11,22 +11,17 @@ const Slider = ({
   isInfinite = false,
   isVariableWidth = true,
 }) => {
-  const [dragging, setDragging] = React.useState(false);
+  const dragging = React.useRef(false);
 
-  const handleBeforeChange = React.useCallback(() => {
-    setDragging(true);
-  }, [setDragging]);
-
-  const handleAfterChange = React.useCallback(() => {
-    setDragging(false);
-  }, [setDragging]);
-
-  const handleOnItemClick = React.useCallback(
-    (e) => {
-      if (dragging) e.stopPropagation();
-    },
-    [dragging]
-  );
+  const handleBeforeChange = () => {
+    dragging.current = true;
+  };
+  const handleAfterChange = () => {
+    dragging.current = false;
+  };
+  const handleOnItemClick = (e) => {
+    if (dragging.current) e.stopPropagation();
+  };
 
   return isSlick ? (
     <SliderBox onClickCapture={handleOnItemClick}>

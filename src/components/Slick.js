@@ -307,4 +307,4 @@ const RightArrow = styled.div`
     font-weight: bold;
   }
 `;
-export default React.memo(Slick);
+export default Slick;
