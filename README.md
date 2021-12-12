@@ -10,7 +10,7 @@
 <br><br>
 
 > [웹투니버스 바로가기](http://webtooni.co.kr/)  
-> [Github Wiki 바로가기](https://https://github.com/Keeper991/Webtooni_client/wiki)
+> [Github Wiki 바로가기](https://github.com/Keeper991/Webtooni_client/wiki)
 
 ## ✨ 기획 의도 
 <br>
